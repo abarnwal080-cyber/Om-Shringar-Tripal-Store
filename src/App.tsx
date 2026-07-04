@@ -38,6 +38,7 @@ import InquiryForm from "./components/InquiryForm";
 import AIChatbot from "./components/AIChatbot";
 import SupplierPopup from "./components/SupplierPopup";
 import HeroCarousel from "./components/HeroCarousel";
+import StoreStatusCard from "./components/StoreStatusCard";
 import { TRANSLATIONS } from "./translations";
 
 // Safe dynamic icon loader to keep code modular and readable
@@ -289,6 +290,24 @@ export default function App() {
             {/* Hero Text Column */}
             <div className="lg:col-span-7 flex flex-col text-left">
               
+              {/* Best Rate Dealer Highlight Badge (Highly Optimized for Search Ranking & Google Indexing) */}
+              <div className="mb-6 flex flex-col gap-1.5 p-4 rounded-2xl bg-orange-500/10 border border-orange-500/20 backdrop-blur-md max-w-xl">
+                <div className="flex items-center gap-2 text-brand-orange text-xs sm:text-sm font-black uppercase tracking-wider">
+                  <span className="text-base animate-bounce">🏆</span>
+                  <span>BIHAR'S #1 TRUSTED PLASTIC DEALER</span>
+                </div>
+                <h2 className="text-white text-sm sm:text-base md:text-lg font-black leading-snug">
+                  {lang === "en" 
+                    ? "Best Rate Provider Dealer of Bihar for All Plastic Products & Waterproof Tarpaulins" 
+                    : "बिहार में सभी प्लास्टिक उत्पादों और वाटरप्रूफ तिरपाल के सर्वश्रेष्ठ एवं सबसे कम रेट वाले डीलर"}
+                </h2>
+                <p className="text-[10px] sm:text-xs text-slate-300 font-mono">
+                  {lang === "en" 
+                    ? "Browse best dealer of plastic sheet or tarpaulin at Bihar — Wholesale rates guaranteed" 
+                    : "बिहार में सबसे विश्वसनीय प्लास्टिक शीट और तिरपाल सप्लायर — डायरेक्ट थोक दाम"}
+                </p>
+              </div>
+
               {/* Trust Badges Bar */}
               <div className="flex flex-wrap gap-2.5 mb-6">
                 {(lang === "en" 
@@ -326,9 +345,14 @@ export default function App() {
               </h1>
 
               {/* Subheading */}
-              <p className="text-slate-300 text-base sm:text-lg md:text-xl leading-relaxed max-w-2xl mb-10">
+              <p className="text-slate-300 text-base sm:text-lg md:text-xl leading-relaxed max-w-2xl mb-6">
                 {t.heroSubtitle}
               </p>
+
+              {/* Dynamic Live Store Status Card */}
+              <div className="max-w-md mb-8">
+                <StoreStatusCard currentLanguage={lang} />
+              </div>
 
               {/* CTA Buttons */}
               <div className="flex flex-col sm:flex-row gap-3.5 mb-12">
@@ -906,20 +930,8 @@ export default function App() {
                   </div>
                 </div>
 
-                <div className="flex gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-100">
-                  <div className="w-10 h-10 bg-white border border-slate-100 rounded-xl flex items-center justify-center text-brand-orange shrink-0">
-                    <Clock className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-sm text-brand-blue-dark font-display">Business Hours</h4>
-                    <p className="text-xs sm:text-sm text-slate-500 mt-1 leading-relaxed">
-                      {BUSINESS_INFO.hours}
-                    </p>
-                    <span className="text-[10px] font-bold font-mono text-emerald-500 bg-emerald-50 px-2 py-0.5 rounded-full mt-1 inline-block">
-                      OPEN MON-SAT
-                    </span>
-                  </div>
-                </div>
+                {/* Live Store Status & Timing Card */}
+                <StoreStatusCard currentLanguage={lang} variant="light" className="shadow-sm border-slate-100" />
 
                 <div className="flex gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-100">
                   <div className="w-10 h-10 bg-white border border-slate-100 rounded-xl flex items-center justify-center text-brand-orange shrink-0">

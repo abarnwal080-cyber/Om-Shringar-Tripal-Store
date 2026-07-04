@@ -84,33 +84,25 @@ export default function HeroCarousel({ currentLanguage, onImageChange }: HeroCar
 
   const nextSlide = useCallback(() => {
     setDirection("right");
-    setCurrentIndex((prevIndex) => {
-      const nextIdx = (prevIndex + 1) % HERO_SLIDES.length;
-      if (onImageChange) {
-        onImageChange(HERO_SLIDES[nextIdx].image);
-      }
-      return nextIdx;
-    });
-  }, [onImageChange]);
+    setCurrentIndex((prevIndex) => (prevIndex + 1) % HERO_SLIDES.length);
+  }, []);
 
   const prevSlide = useCallback(() => {
     setDirection("left");
-    setCurrentIndex((prevIndex) => {
-      const nextIdx = (prevIndex - 1 + HERO_SLIDES.length) % HERO_SLIDES.length;
-      if (onImageChange) {
-        onImageChange(HERO_SLIDES[nextIdx].image);
-      }
-      return nextIdx;
-    });
-  }, [onImageChange]);
+    setCurrentIndex((prevIndex) => (prevIndex - 1 + HERO_SLIDES.length) % HERO_SLIDES.length);
+  }, []);
 
   const goToSlide = (slideIndex: number) => {
     setDirection(slideIndex > currentIndex ? "right" : "left");
     setCurrentIndex(slideIndex);
-    if (onImageChange) {
-      onImageChange(HERO_SLIDES[slideIndex].image);
-    }
   };
+
+  // Safe side-effect to notify parent component when image changes, preventing React render/setState warnings
+  useEffect(() => {
+    if (onImageChange) {
+      onImageChange(HERO_SLIDES[currentIndex].image);
+    }
+  }, [currentIndex, onImageChange]);
 
   // Autoplay effect
   useEffect(() => {
