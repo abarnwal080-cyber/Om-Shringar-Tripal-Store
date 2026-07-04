@@ -1,0 +1,6 @@
+{
+  "name": "Om Shringar Tirpal Store",
+  "description": "Wholesale & Retail Tarpaulin Dealer in Siwan, Bihar - Quality Tarpaulin, Plastic Sheets, Construction Rolls, and Agricultural Covers since 2000.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
