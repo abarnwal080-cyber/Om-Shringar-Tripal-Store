@@ -36,6 +36,8 @@ import ProductCard from "./components/ProductCard";
 import BrandCarousel from "./components/BrandCarousel";
 import InquiryForm from "./components/InquiryForm";
 import AIChatbot from "./components/AIChatbot";
+import SupplierPopup from "./components/SupplierPopup";
+import HeroCarousel from "./components/HeroCarousel";
 import { TRANSLATIONS } from "./translations";
 
 // Safe dynamic icon loader to keep code modular and readable
@@ -50,6 +52,8 @@ export default function App() {
   const [prefilledProduct, setPrefilledProduct] = useState("");
   const [activeTab, setActiveTab] = useState("All");
   const [expandedFAQ, setExpandedFAQ] = useState<number | null>(null);
+  const [supplierOpen, setSupplierOpen] = useState(false);
+  const [heroBgImage, setHeroBgImage] = useState("https://cpimg.tistatic.com/10847398/b/4/LDPE-Sheet.jpeg");
 
   const inquiryRef = useRef<HTMLDivElement>(null);
   const t = TRANSLATIONS[lang];
@@ -383,8 +387,8 @@ export default function App() {
                 >
                   {/* Background overlay image */}
                   <div 
-                    className="absolute inset-0 opacity-15 mix-blend-overlay bg-cover bg-center pointer-events-none"
-                    style={{ backgroundImage: `url('https://cpimg.tistatic.com/10847398/b/4/LDPE-Sheet.jpeg')` }}
+                    className="absolute inset-0 opacity-15 mix-blend-overlay bg-cover bg-center pointer-events-none transition-all duration-700 ease-in-out"
+                    style={{ backgroundImage: `url('${heroBgImage}')` }}
                   />
 
                   {/* Top card header */}
@@ -402,20 +406,8 @@ export default function App() {
                     </div>
                   </div>
 
-                  {/* Mid illustrative collage image */}
-                  <div className="my-5 relative rounded-2xl overflow-hidden border border-white/10 aspect-video shadow-md bg-slate-900 group">
-                    <img 
-                      src="https://cpimg.tistatic.com/10847398/b/4/LDPE-Sheet.jpeg" 
-                      alt="Construction heavy-duty black and blue polythene roll sheet stack" 
-                      referrerPolicy="no-referrer"
-                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent flex items-end p-4">
-                      <p className="text-xs font-bold text-slate-200">
-                        High-Strength LDPE & HDPE Polymer Plastic Sheeting
-                      </p>
-                    </div>
-                  </div>
+                  {/* Mid illustrative autoplay image carousel */}
+                  <HeroCarousel currentLanguage={lang} onImageChange={setHeroBgImage} />
 
                   {/* Bottom details / badges list */}
                   <div className="space-y-3 relative z-10 border-t border-white/10 pt-4 text-xs">
@@ -466,6 +458,19 @@ export default function App() {
 
       {/* 4. BRAND PARTNERS BAR (CAROUSEL) */}
       <BrandCarousel />
+
+      {/* Meet the Supplier CTA Section */}
+      <div className="flex justify-center pb-12 bg-slate-50 border-b border-slate-100 relative z-10">
+        <motion.button
+          whileHover={{ y: -3, scale: 1.02, boxShadow: "0 12px 30px -5px rgba(249, 115, 22, 0.35)" }}
+          whileTap={{ scale: 0.97 }}
+          onClick={() => setSupplierOpen(true)}
+          className="flex items-center gap-2.5 px-10 py-4 bg-gradient-to-r from-orange-600 to-amber-500 hover:from-orange-700 hover:to-amber-600 text-white font-extrabold text-base rounded-full shadow-xl transition-all border border-orange-500/20 cursor-pointer"
+        >
+          <span className="text-xl">🤝</span>
+          <span>{t.meetSupplier}</span>
+        </motion.button>
+      </div>
 
       {/* 5. ABOUT US SECTION */}
       <section id="about" className="py-20 bg-white relative overflow-hidden">
@@ -1126,6 +1131,9 @@ export default function App() {
 
       {/* AI Assistant Chatbot (Floating Left Aligned) */}
       <AIChatbot currentLanguage={lang} onLanguageChange={setLang} />
+
+      {/* Supplier Popup Modal */}
+      <SupplierPopup isOpen={supplierOpen} onClose={() => setSupplierOpen(false)} />
 
     </div>
   );
