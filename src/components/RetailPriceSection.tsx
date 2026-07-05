@@ -61,7 +61,7 @@ const PRICE_ITEMS: PriceItem[] = [
     }
   },
   {
-    image: "https://cpimg.tistatic.com/10847398/b/4/LDPE-Sheet.jpeg",
+    image: "https://plain-apac-prod-public.komododecks.com/202607/05/7O9jo950h35goeKsP6Gr/image.png",
     en: {
       name: "Construction Black Polythene Roll",
       price: "₹100 / Kg",
