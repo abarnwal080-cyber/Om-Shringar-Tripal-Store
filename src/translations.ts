@@ -67,6 +67,7 @@ export interface TranslationSet {
   chatbotPlaceholder: string;
   chatbotGreeting: string;
   meetSupplier: string;
+  getRetailPrice: string;
 }
 
 export const TRANSLATIONS: Record<"en" | "hi", TranslationSet> = {
@@ -138,7 +139,8 @@ export const TRANSLATIONS: Record<"en" | "hi", TranslationSet> = {
     chatbotSubtitle: "Online • Vinod Kumar Varnawal",
     chatbotPlaceholder: "Ask about sizes, prices, location, brands...",
     chatbotGreeting: "Namaste! Welcome to Om Shringar Tirpal Store. I can help you with product sizes, wholesale pricing, store location, and brand partners. What can I help you with today?",
-    meetSupplier: "Meet the Supplier"
+    meetSupplier: "Meet the Supplier",
+    getRetailPrice: "Get Retail Price"
   },
   hi: {
     navAbout: "हमारे बारे में",
@@ -208,6 +210,7 @@ export const TRANSLATIONS: Record<"en" | "hi", TranslationSet> = {
     chatbotSubtitle: "ऑनलाइन • विनोद कुमार वर्णवाल",
     chatbotPlaceholder: "साइज़, दाम, पता, ब्रांड आदि पूछें...",
     chatbotGreeting: "नमस्ते! ओम श्रृंगार तिरपाल स्टोर में स्वागत है। मैं आपकी साइज़, थोक मूल्य, स्टोर के पते और उपलब्ध ब्रांडों की जानकारी में मदद कर सकता हूँ। आज मैं आपकी क्या सहायता करूँ?",
-    meetSupplier: "सप्लायर से मिलें"
+    meetSupplier: "सप्लायर से मिलें",
+    getRetailPrice: "खुदरा मूल्य सूची देखें"
   }
 };

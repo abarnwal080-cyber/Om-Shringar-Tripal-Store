@@ -37,6 +37,8 @@ import BrandCarousel from "./components/BrandCarousel";
 import InquiryForm from "./components/InquiryForm";
 import AIChatbot from "./components/AIChatbot";
 import SupplierPopup from "./components/SupplierPopup";
+import RetailPriceModal from "./components/RetailPriceModal";
+import RetailPriceSection from "./components/RetailPriceSection";
 import HeroCarousel from "./components/HeroCarousel";
 import StoreStatusCard from "./components/StoreStatusCard";
 import { TRANSLATIONS } from "./translations";
@@ -54,6 +56,7 @@ export default function App() {
   const [activeTab, setActiveTab] = useState("All");
   const [expandedFAQ, setExpandedFAQ] = useState<number | null>(null);
   const [supplierOpen, setSupplierOpen] = useState(false);
+  const [retailOpen, setRetailOpen] = useState(false);
   const [heroBgImage, setHeroBgImage] = useState("https://cpimg.tistatic.com/10847398/b/4/LDPE-Sheet.jpeg");
 
   const inquiryRef = useRef<HTMLDivElement>(null);
@@ -160,6 +163,13 @@ export default function App() {
             >
               🌐 {lang === "en" ? "हिन्दी" : "English"}
             </button>
+            <button
+              onClick={() => setRetailOpen(true)}
+              className="bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-full font-bold text-sm transition-all shadow-lg flex items-center gap-1.5"
+            >
+              <Tag className="w-4 h-4" />
+              {t.getRetailPrice}
+            </button>
             <a
               href="#enquire"
               className="bg-orange-600 hover:bg-orange-700 text-white px-5 py-2.5 rounded-full font-bold text-sm transition-all shadow-lg flex items-center"
@@ -237,6 +247,20 @@ export default function App() {
                 >
                   {t.navFindStore}
                 </a>
+
+                {/* Mobile Retail Price Button */}
+                <div className="py-2 border-t border-slate-100">
+                  <button
+                    onClick={() => {
+                      setMobileMenuOpen(false);
+                      setRetailOpen(true);
+                    }}
+                    className="w-full flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-xl font-bold text-sm transition-all shadow-md active:scale-95"
+                  >
+                    <Tag className="w-4 h-4 text-white" />
+                    <span>{t.getRetailPrice}</span>
+                  </button>
+                </div>
 
                 {/* Mobile Language Toggle */}
                 <div className="py-2 border-t border-slate-100 flex items-center justify-between">
@@ -355,7 +379,7 @@ export default function App() {
               </div>
 
               {/* CTA Buttons */}
-              <div className="flex flex-col sm:flex-row gap-3.5 mb-12">
+              <div className="flex flex-col sm:flex-row flex-wrap gap-3.5 mb-12">
                 <a
                   href={BUSINESS_INFO.phoneFormatted}
                   className="flex items-center justify-center gap-2 bg-orange-600 hover:bg-orange-700 text-white px-8 py-4 rounded-full font-extrabold text-base transition-all duration-200 shadow-lg hover:shadow-orange-600/30 active:scale-95 animate-pulse"
@@ -372,6 +396,13 @@ export default function App() {
                   <MessageSquare className="w-5 h-5" />
                   {t.heroCtaWhatsApp}
                 </a>
+                <button
+                  onClick={() => setRetailOpen(true)}
+                  className="flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-700 hover:to-teal-600 text-white px-8 py-4 rounded-full font-extrabold text-base transition-all duration-200 shadow-lg hover:shadow-emerald-500/30 active:scale-95 cursor-pointer"
+                >
+                  <Tag className="w-5 h-5 text-white animate-pulse" />
+                  <span>{t.getRetailPrice}</span>
+                </button>
               </div>
 
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 pt-8 border-t border-white/10">
@@ -1146,6 +1177,9 @@ export default function App() {
 
       {/* Supplier Popup Modal */}
       <SupplierPopup isOpen={supplierOpen} onClose={() => setSupplierOpen(false)} />
+
+      {/* Retail Price Popup Modal */}
+      <RetailPriceModal isOpen={retailOpen} onClose={() => setRetailOpen(false)} currentLanguage={lang} onOpenInquiry={() => handleEnquire("")} />
 
     </div>
   );
