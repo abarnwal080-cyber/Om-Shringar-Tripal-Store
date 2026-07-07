@@ -41,6 +41,7 @@ import RetailPriceModal from "./components/RetailPriceModal";
 import RetailPriceSection from "./components/RetailPriceSection";
 import HeroCarousel from "./components/HeroCarousel";
 import StoreStatusCard from "./components/StoreStatusCard";
+import AutoInquiryModal from "./components/AutoInquiryModal";
 import { TRANSLATIONS } from "./translations";
 
 // Safe dynamic icon loader to keep code modular and readable
@@ -1180,6 +1181,9 @@ export default function App() {
 
       {/* Retail Price Popup Modal */}
       <RetailPriceModal isOpen={retailOpen} onClose={() => setRetailOpen(false)} currentLanguage={lang} onOpenInquiry={() => handleEnquire("")} />
+
+      {/* Auto Load Inquiry Popup */}
+      <AutoInquiryModal currentLanguage={lang} />
 
     </div>
   );
