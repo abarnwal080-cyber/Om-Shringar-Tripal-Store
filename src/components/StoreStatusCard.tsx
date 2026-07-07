@@ -112,10 +112,10 @@ export default function StoreStatusCard({ currentLanguage, className = "", varia
       className={`relative overflow-hidden rounded-2xl border ${
         isOpen
           ? isDark
-            ? "bg-emerald-950/25 border-emerald-500/20 hover:border-emerald-500/40 text-white"
+            ? "bg-slate-900 border-slate-800 text-white shadow-lg hover:border-slate-700"
             : "bg-emerald-50/90 border-emerald-200 hover:border-emerald-300 text-slate-800"
           : isDark
-            ? "bg-amber-950/25 border-amber-500/20 hover:border-amber-500/40 text-white"
+            ? "bg-slate-900 border-slate-800 text-white shadow-lg hover:border-slate-700"
             : "bg-amber-50/90 border-amber-200 hover:border-amber-300 text-slate-800"
       } p-4 transition-all duration-300 backdrop-blur-md ${className}`}
     >

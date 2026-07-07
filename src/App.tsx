@@ -41,6 +41,7 @@ import RetailPriceModal from "./components/RetailPriceModal";
 import RetailPriceSection from "./components/RetailPriceSection";
 import HeroCarousel from "./components/HeroCarousel";
 import StoreStatusCard from "./components/StoreStatusCard";
+import CustomerSuccessCarousel from "./components/CustomerSuccessCarousel";
 import { TRANSLATIONS } from "./translations";
 
 // Safe dynamic icon loader to keep code modular and readable
@@ -301,73 +302,35 @@ export default function App() {
       </header>
 
       {/* 3. HERO SECTION */}
-      <section className="relative animate-rainbow-neon text-white overflow-hidden py-16 lg:py-28">
+      <section className="relative bg-gradient-to-b from-white via-slate-50 to-white text-slate-900 border-b border-slate-200/80 overflow-hidden py-16 lg:py-28">
         
-        {/* Soft bottom dark/light blend overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/50 via-transparent to-transparent pointer-events-none z-0" />
-
-        {/* Soft Animated Rainbow Neon Aurora / Floating Blobs (using GPU acceleration transform & opacity) */}
+        {/* Soft elegant warm ambient glow */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none select-none z-0">
-          
-          {/* Cyan/Blue Drift Blob */}
-          <div className="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] rounded-full bg-[radial-gradient(circle,rgba(6,182,212,0.22)_0%,transparent_70%)] animate-drift-one blur-3xl will-change-transform" />
-          
-          {/* Pink/Purple Drift Blob */}
-          <div className="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] rounded-full bg-[radial-gradient(circle,rgba(236,72,153,0.2)_0%,transparent_70%)] animate-drift-two blur-3xl will-change-transform" />
-          
-          {/* Orange/Yellow Aurora Light Wave */}
-          <div className="absolute top-[20%] right-[10%] w-[50%] h-[50%] rounded-full bg-[radial-gradient(circle,rgba(249,115,22,0.18)_0%,transparent_75%)] animate-drift-three blur-3xl will-change-transform" />
-          
-          {/* Emerald Green Aurora Wave */}
-          <div className="absolute bottom-[10%] left-[10%] w-[50%] h-[50%] rounded-full bg-[radial-gradient(circle,rgba(16,185,129,0.18)_0%,transparent_75%)] animate-drift-four blur-3xl will-change-transform" />
-
-          {/* Deep Navy/Blue Glow Core */}
-          <div className="absolute top-[30%] left-[30%] w-[40%] h-[40%] rounded-full bg-[radial-gradient(circle,rgba(59,130,246,0.2)_0%,transparent_70%)] animate-slow-pulse blur-3xl will-change-transform" />
-          
-          {/* Slowly Moving Glowing Neon Sweep Lines */}
-          <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-cyan-500/10 to-transparent h-[150%] w-[10px] blur-xl opacity-30 -skew-x-12 animate-neon-sweep will-change-transform" />
-          <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-purple-500/10 to-transparent h-[150%] w-[15px] blur-xl opacity-30 -skew-x-12 animate-neon-sweep will-change-transform [animation-delay:4s]" />
-          <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-orange-500/10 to-transparent h-[150%] w-[12px] blur-xl opacity-25 -skew-x-12 animate-neon-sweep will-change-transform [animation-delay:8s]" />
-
-          {/* Tiny Glowing Stars & Particle Dots (Subtle) */}
-          <div className="absolute inset-0 opacity-40 mix-blend-screen pointer-events-none">
-            <div className="absolute top-[12%] left-[8%] w-1.5 h-1.5 bg-cyan-400 rounded-full blur-[0.5px] animate-particle-twinkle" />
-            <div className="absolute top-[32%] left-[4%] w-1 h-1 bg-white rounded-full blur-[0.5px] animate-particle-twinkle [animation-delay:1.5s]" />
-            <div className="absolute top-[20%] left-[45%] w-1.5 h-1.5 bg-orange-400 rounded-full blur-[0.5px] animate-particle-twinkle [animation-delay:3s]" />
-            <div className="absolute top-[15%] left-[85%] w-1 h-1 bg-pink-400 rounded-full blur-[0.5px] animate-particle-twinkle [animation-delay:0.8s]" />
-            <div className="absolute top-[48%] left-[92%] w-1.5 h-1.5 bg-emerald-400 rounded-full blur-[0.5px] animate-particle-twinkle [animation-delay:4s]" />
-            <div className="absolute top-[68%] left-[12%] w-1 h-1 bg-white rounded-full blur-[0.5px] animate-particle-twinkle [animation-delay:2s]" />
-            <div className="absolute top-[75%] left-[38%] w-1.5 h-1.5 bg-cyan-400 rounded-full blur-[0.5px] animate-particle-twinkle [animation-delay:5.2s]" />
-            <div className="absolute top-[85%] left-[72%] w-1 h-1 bg-purple-400 rounded-full blur-[0.5px] animate-particle-twinkle [animation-delay:1.8s]" />
-            <div className="absolute top-[55%] left-[62%] w-1.5 h-1.5 bg-white rounded-full blur-[0.5px] animate-particle-twinkle [animation-delay:2.7s]" />
-            <div className="absolute top-[28%] left-[76%] w-1 h-1 bg-yellow-400 rounded-full blur-[0.5px] animate-particle-twinkle [animation-delay:3.5s]" />
-            <div className="absolute top-[92%] left-[15%] w-1.5 h-1.5 bg-pink-400 rounded-full blur-[0.5px] animate-particle-twinkle [animation-delay:4.5s]" />
-            <div className="absolute top-[80%] left-[90%] w-1 h-1 bg-cyan-400 rounded-full blur-[0.5px] animate-particle-twinkle [animation-delay:0.3s]" />
-          </div>
-
+          <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-[radial-gradient(circle,rgba(234,88,12,0.04)_0%,transparent_70%)] blur-3xl" />
+          <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-[radial-gradient(circle,rgba(16,185,129,0.04)_0%,transparent_70%)] blur-3xl" />
         </div>
 
         {/* Backdrop Grid Pattern Overlay */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff02_1px,transparent_1px),linear-gradient(to_bottom,#ffffff02_1px,transparent_1px)] bg-[size:36px_36px] pointer-events-none z-0" />
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#e2e8f080_1px,transparent_1px),linear-gradient(to_bottom,#e2e8f080_1px,transparent_1px)] bg-[size:36px_36px] pointer-events-none z-0" />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
             
             {/* Hero Text Column with Premium Glassmorphism Backdrop */}
-            <div className="lg:col-span-7 flex flex-col text-left p-6 sm:p-8 rounded-3xl bg-slate-950/85 border border-white/10 backdrop-blur-xl shadow-2xl relative">
+            <div className="lg:col-span-7 flex flex-col text-left p-6 sm:p-10 rounded-3xl bg-white/90 border border-slate-200/60 backdrop-blur-md shadow-xl relative">
               
               {/* Best Rate Dealer Highlight Badge (Highly Optimized for Search Ranking & Google Indexing) */}
-              <div className="mb-6 flex flex-col gap-1.5 p-4 rounded-2xl bg-slate-900/95 border border-orange-500/35 backdrop-blur-md max-w-xl">
-                <div className="flex items-center gap-2 text-orange-400 text-xs sm:text-sm font-black uppercase tracking-wider">
+              <div className="mb-6 flex flex-col gap-1.5 p-4 rounded-2xl bg-orange-500/5 border border-orange-500/20 max-w-xl">
+                <div className="flex items-center gap-2 text-orange-600 text-xs sm:text-sm font-black uppercase tracking-wider">
                   <span className="text-base animate-bounce">🏆</span>
                   <span>BIHAR'S #1 TRUSTED PLASTIC DEALER</span>
                 </div>
-                <h2 className="text-white text-sm sm:text-base md:text-lg font-black leading-snug">
+                <h2 className="text-slate-800 text-sm sm:text-base md:text-lg font-extrabold leading-snug">
                   {lang === "en" 
                     ? "Best Rate Provider Dealer of Bihar for All Plastic Products & Waterproof Tarpaulins" 
                     : "बिहार में सभी प्लास्टिक उत्पादों और वाटरप्रूफ तिरपाल के सर्वश्रेष्ठ एवं सबसे कम रेट वाले डीलर"}
                 </h2>
-                <p className="text-[10px] sm:text-xs text-slate-300 font-mono">
+                <p className="text-[10px] sm:text-xs text-slate-600 font-mono">
                   {lang === "en" 
                     ? "Browse best dealer of plastic sheet or tarpaulin at Bihar — Wholesale rates guaranteed" 
                     : "बिहार में सबसे विश्वसनीय प्लास्टिक शीट और तिरपाल सप्लायर — डायरेक्ट थोक दाम"}
@@ -382,7 +345,7 @@ export default function App() {
                 ).map((badge, idx) => (
                   <span 
                     key={idx}
-                    className="text-[11px] md:text-xs font-bold font-mono tracking-wide bg-white/10 border border-white/15 text-orange-400 px-3 py-1.5 rounded-full backdrop-blur-sm shadow-sm"
+                    className="text-[11px] md:text-xs font-bold font-mono tracking-wide bg-orange-500/5 border border-orange-500/10 text-orange-600 px-3 py-1.5 rounded-full shadow-sm"
                   >
                     {badge}
                   </span>
@@ -390,11 +353,11 @@ export default function App() {
               </div>
 
               {/* Title Header */}
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black font-display tracking-tight leading-[1.1] mb-6">
+              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black font-display tracking-tight leading-[1.1] mb-6 text-slate-900">
                 {lang === "en" ? (
                   <>
                     Trusted Tarpaulin & <br />
-                    <span className="bg-gradient-to-r from-orange-400 via-amber-300 to-yellow-300 bg-clip-text text-transparent drop-shadow-sm">
+                    <span className="bg-gradient-to-r from-orange-600 to-amber-500 bg-clip-text text-transparent font-black">
                       Plastic Sheet Dealer
                     </span> <br className="hidden sm:inline" />
                     Since 2000
@@ -402,7 +365,7 @@ export default function App() {
                 ) : (
                   <>
                     भरोसेमंद तिरपाल और <br />
-                    <span className="bg-gradient-to-r from-orange-400 via-amber-300 to-yellow-300 bg-clip-text text-transparent drop-shadow-sm">
+                    <span className="bg-gradient-to-r from-orange-600 to-amber-500 bg-clip-text text-transparent font-black">
                       प्लास्टिक शीट डीलर
                     </span> <br className="hidden sm:inline" />
                     सन 2000 से
@@ -411,7 +374,7 @@ export default function App() {
               </h1>
 
               {/* Subheading */}
-              <p className="text-slate-100 text-base sm:text-lg md:text-xl leading-relaxed max-w-2xl mb-6 font-medium">
+              <p className="text-slate-600 text-base sm:text-lg md:text-xl leading-relaxed max-w-2xl mb-6 font-medium">
                 {t.heroSubtitle}
               </p>
 
@@ -447,22 +410,22 @@ export default function App() {
                 </button>
               </div>
 
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 pt-8 border-t border-white/10">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 pt-8 border-t border-slate-200">
                 <div>
-                  <div className="text-3xl font-extrabold text-orange-400 font-display">26+</div>
-                  <div className="text-xs text-slate-200 mt-1 font-semibold">{lang === "en" ? "Years of Trust (Est. 2000)" : "वर्षों का अटूट विश्वास"}</div>
+                  <div className="text-3xl font-extrabold text-orange-600 font-display">26+</div>
+                  <div className="text-xs text-slate-500 mt-1 font-semibold">{lang === "en" ? "Years of Trust (Est. 2000)" : "वर्षों का अटूट विश्वास"}</div>
                 </div>
                 <div>
-                  <div className="text-3xl font-extrabold text-orange-400 font-display">50+</div>
-                  <div className="text-xs text-slate-200 mt-1 font-semibold">{lang === "en" ? "Size Configurations" : "साइज़ कॉम्बिनेशन"}</div>
+                  <div className="text-3xl font-extrabold text-orange-600 font-display">50+</div>
+                  <div className="text-xs text-slate-500 mt-1 font-semibold">{lang === "en" ? "Size Configurations" : "साइज़ कॉम्बिनेशन"}</div>
                 </div>
                 <div>
-                  <div className="text-3xl font-extrabold text-orange-400 font-display">100%</div>
-                  <div className="text-xs text-slate-200 mt-1 font-semibold">{lang === "en" ? "Waterproof & UV Tested" : "वाटरप्रूफ एवं टिकाऊ"}</div>
+                  <div className="text-3xl font-extrabold text-orange-600 font-display">100%</div>
+                  <div className="text-xs text-slate-500 mt-1 font-semibold">{lang === "en" ? "Waterproof & UV Tested" : "वाटरप्रूफ एवं टिकाऊ"}</div>
                 </div>
                 <div>
-                  <div className="text-3xl font-extrabold text-orange-400 font-display">10k+</div>
-                  <div className="text-xs text-slate-200 mt-1 font-semibold">{lang === "en" ? "Happy Customers" : "खुशहाल ग्राहक"}</div>
+                  <div className="text-3xl font-extrabold text-orange-600 font-display">10k+</div>
+                  <div className="text-xs text-slate-500 mt-1 font-semibold">{lang === "en" ? "Happy Customers" : "खुशहाल ग्राहक"}</div>
                 </div>
               </div>
 
@@ -473,18 +436,18 @@ export default function App() {
               <div className="relative w-full max-w-sm sm:max-w-md aspect-square">
                 
                 {/* Decorative border frame */}
-                <div className="absolute inset-0 border border-white/5 rounded-3xl -rotate-3 scale-[1.02] bg-gradient-to-tr from-brand-blue-royal/20 to-brand-orange/5 pointer-events-none" />
+                <div className="absolute inset-0 border border-slate-200 rounded-3xl -rotate-3 scale-[1.02] bg-gradient-to-tr from-orange-500/5 to-amber-500/5 pointer-events-none" />
 
                 {/* Main Hero Bento Card */}
                 <motion.div 
                   initial={{ opacity: 0, scale: 0.95 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ duration: 0.8 }}
-                  className="w-full h-full glass-panel-dark rounded-3xl p-6 border border-white/15 shadow-2xl relative overflow-hidden flex flex-col justify-between"
+                  className="w-full h-full bg-white rounded-3xl p-6 border border-slate-200/80 shadow-2xl relative overflow-hidden flex flex-col justify-between"
                 >
                   {/* Background overlay image */}
                   <div 
-                    className="absolute inset-0 opacity-15 mix-blend-overlay bg-cover bg-center pointer-events-none transition-all duration-700 ease-in-out"
+                    className="absolute inset-0 opacity-10 bg-cover bg-center pointer-events-none transition-all duration-700 ease-in-out"
                     style={{ backgroundImage: `url('${heroBgImage}')` }}
                   />
 
@@ -494,11 +457,11 @@ export default function App() {
                       <span className="text-xs font-bold text-brand-orange font-mono uppercase tracking-widest">
                         PREMIUM QUALITY
                       </span>
-                      <h3 className="text-xl sm:text-2xl font-extrabold font-display mt-1">
+                      <h3 className="text-xl sm:text-2xl font-extrabold font-display mt-1 text-slate-900">
                         Om Shringar Tirpal
                       </h3>
                     </div>
-                    <div className="bg-emerald-500/25 border border-emerald-500 text-emerald-400 text-[10px] font-bold font-mono px-2 py-1 rounded">
+                    <div className="bg-emerald-50 border border-emerald-500/30 text-emerald-700 text-[10px] font-bold font-mono px-2 py-1 rounded">
                       STOCK IN HAND
                     </div>
                   </div>
@@ -507,18 +470,18 @@ export default function App() {
                   <HeroCarousel currentLanguage={lang} onImageChange={setHeroBgImage} />
 
                   {/* Bottom details / badges list */}
-                  <div className="space-y-3 relative z-10 border-t border-white/10 pt-4 text-xs">
-                    <div className="flex justify-between text-slate-300">
+                  <div className="space-y-3 relative z-10 border-t border-slate-100 pt-4 text-xs">
+                    <div className="flex justify-between text-slate-500">
                       <span>Store Head Office:</span>
-                      <strong className="text-white">Maharajganj, Siwan</strong>
+                      <strong className="text-slate-900">Maharajganj, Siwan</strong>
                     </div>
-                    <div className="flex justify-between text-slate-300">
+                    <div className="flex justify-between text-slate-500">
                       <span>Brand Quality Assurance:</span>
-                      <strong className="text-brand-orange">ISO 9001:2015 Approved</strong>
+                      <strong className="text-orange-600">ISO 9001:2015 Approved</strong>
                     </div>
-                    <div className="flex justify-between text-slate-300">
+                    <div className="flex justify-between text-slate-500">
                       <span>Serving Districts:</span>
-                      <strong className="text-white">Siwan, Gopalganj, Saran</strong>
+                      <strong className="text-slate-900">Siwan, Gopalganj, Saran</strong>
                     </div>
                   </div>
                 </motion.div>
@@ -883,6 +846,9 @@ export default function App() {
         </div>
       </section>
 
+      {/* CUSTOMER SUCCESS STORIES */}
+      <CustomerSuccessCarousel currentLanguage={lang} onEnquire={handleEnquire} />
+
       {/* 10. INTERACTIVE FAQ & INQUIRY FORM */}
       <section id="enquire" ref={inquiryRef} className="py-20 bg-slate-50 border-t border-slate-100 relative">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -1004,7 +970,7 @@ export default function App() {
                 </div>
 
                 {/* Live Store Status & Timing Card */}
-                <StoreStatusCard currentLanguage={lang} variant="light" className="shadow-sm border-slate-100" />
+                <StoreStatusCard currentLanguage={lang} variant="dark" className="shadow-lg border-slate-800" />
 
                 <div className="flex gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-100">
                   <div className="w-10 h-10 bg-white border border-slate-100 rounded-xl flex items-center justify-center text-brand-orange shrink-0">
