@@ -41,7 +41,6 @@ import RetailPriceModal from "./components/RetailPriceModal";
 import RetailPriceSection from "./components/RetailPriceSection";
 import HeroCarousel from "./components/HeroCarousel";
 import StoreStatusCard from "./components/StoreStatusCard";
-import AutoInquiryModal from "./components/AutoInquiryModal";
 import { TRANSLATIONS } from "./translations";
 
 // Safe dynamic icon loader to keep code modular and readable
@@ -105,7 +104,7 @@ export default function App() {
               Owner: {BUSINESS_INFO.owner} (Formerly Goyal Traders)
             </span>
           </div>
-
+ 
           {/* Scrolling CTA message / Contact */}
           <div className="flex items-center gap-3">
             <span className="font-bold text-brand-orange animate-pulse flex items-center gap-1">
@@ -123,7 +122,7 @@ export default function App() {
           </div>
         </div>
       </div>
-
+ 
       {/* 2. GLASSMORPHIC STICKY NAVIGATION BAR */}
       <header className="w-full bg-brand-blue-dark border-b border-white/10 sticky top-9 sm:top-8 z-40 shadow-md transition-all duration-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
@@ -144,7 +143,7 @@ export default function App() {
               </div>
             </div>
           </a>
-
+ 
           {/* Desktop Navigation Links */}
           <nav className="hidden lg:flex items-center gap-8 font-semibold text-sm text-blue-100">
             <a href="#about" className="hover:text-orange-400 transition-colors">{t.navAbout}</a>
@@ -155,7 +154,7 @@ export default function App() {
             <a href="#enquire" className="hover:text-orange-400 transition-colors">{t.navInquiry}</a>
             <a href="#contact" className="hover:text-orange-400 transition-colors">{t.navFindStore}</a>
           </nav>
-
+ 
           {/* Nav Right CTA */}
           <div className="hidden lg:flex items-center gap-3">
             <button
@@ -178,8 +177,8 @@ export default function App() {
               {lang === "en" ? "Get Bulk Quote" : "थोक भाव पाएं"}
             </a>
           </div>
-
-          {/* Mobile Hamburguer Toggle */}
+ 
+          {/* Mobile Hamburger Toggle */}
           <button
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             className="lg:hidden p-2 rounded-xl hover:bg-white/10 text-white transition-colors"
@@ -302,22 +301,64 @@ export default function App() {
       </header>
 
       {/* 3. HERO SECTION */}
-      <section className="relative bg-gradient-to-b from-slate-950 via-slate-900 to-slate-950 text-white overflow-hidden py-16 lg:py-28">
-        {/* Background Grid Accent */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff03_1px,transparent_1px),linear-gradient(to_bottom,#ffffff03_1px,transparent_1px)] bg-[size:32px_32px] pointer-events-none" />
-        {/* Subtle Ambient Color Blobs */}
-        <div className="absolute -right-32 -top-32 w-[500px] h-[500px] bg-brand-orange/10 rounded-full blur-[120px] pointer-events-none" />
-        <div className="absolute -left-32 -bottom-32 w-[500px] h-[500px] bg-brand-blue-royal/15 rounded-full blur-[120px] pointer-events-none" />
+      <section className="relative animate-rainbow-neon text-white overflow-hidden py-16 lg:py-28">
+        
+        {/* Soft bottom dark/light blend overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/50 via-transparent to-transparent pointer-events-none z-0" />
+
+        {/* Soft Animated Rainbow Neon Aurora / Floating Blobs (using GPU acceleration transform & opacity) */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none select-none z-0">
+          
+          {/* Cyan/Blue Drift Blob */}
+          <div className="absolute top-[-10%] left-[-10%] w-[60%] h-[60%] rounded-full bg-[radial-gradient(circle,rgba(6,182,212,0.22)_0%,transparent_70%)] animate-drift-one blur-3xl will-change-transform" />
+          
+          {/* Pink/Purple Drift Blob */}
+          <div className="absolute bottom-[-10%] right-[-10%] w-[60%] h-[60%] rounded-full bg-[radial-gradient(circle,rgba(236,72,153,0.2)_0%,transparent_70%)] animate-drift-two blur-3xl will-change-transform" />
+          
+          {/* Orange/Yellow Aurora Light Wave */}
+          <div className="absolute top-[20%] right-[10%] w-[50%] h-[50%] rounded-full bg-[radial-gradient(circle,rgba(249,115,22,0.18)_0%,transparent_75%)] animate-drift-three blur-3xl will-change-transform" />
+          
+          {/* Emerald Green Aurora Wave */}
+          <div className="absolute bottom-[10%] left-[10%] w-[50%] h-[50%] rounded-full bg-[radial-gradient(circle,rgba(16,185,129,0.18)_0%,transparent_75%)] animate-drift-four blur-3xl will-change-transform" />
+
+          {/* Deep Navy/Blue Glow Core */}
+          <div className="absolute top-[30%] left-[30%] w-[40%] h-[40%] rounded-full bg-[radial-gradient(circle,rgba(59,130,246,0.2)_0%,transparent_70%)] animate-slow-pulse blur-3xl will-change-transform" />
+          
+          {/* Slowly Moving Glowing Neon Sweep Lines */}
+          <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-cyan-500/10 to-transparent h-[150%] w-[10px] blur-xl opacity-30 -skew-x-12 animate-neon-sweep will-change-transform" />
+          <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-purple-500/10 to-transparent h-[150%] w-[15px] blur-xl opacity-30 -skew-x-12 animate-neon-sweep will-change-transform [animation-delay:4s]" />
+          <div className="absolute inset-0 bg-gradient-to-tr from-transparent via-orange-500/10 to-transparent h-[150%] w-[12px] blur-xl opacity-25 -skew-x-12 animate-neon-sweep will-change-transform [animation-delay:8s]" />
+
+          {/* Tiny Glowing Stars & Particle Dots (Subtle) */}
+          <div className="absolute inset-0 opacity-40 mix-blend-screen pointer-events-none">
+            <div className="absolute top-[12%] left-[8%] w-1.5 h-1.5 bg-cyan-400 rounded-full blur-[0.5px] animate-particle-twinkle" />
+            <div className="absolute top-[32%] left-[4%] w-1 h-1 bg-white rounded-full blur-[0.5px] animate-particle-twinkle [animation-delay:1.5s]" />
+            <div className="absolute top-[20%] left-[45%] w-1.5 h-1.5 bg-orange-400 rounded-full blur-[0.5px] animate-particle-twinkle [animation-delay:3s]" />
+            <div className="absolute top-[15%] left-[85%] w-1 h-1 bg-pink-400 rounded-full blur-[0.5px] animate-particle-twinkle [animation-delay:0.8s]" />
+            <div className="absolute top-[48%] left-[92%] w-1.5 h-1.5 bg-emerald-400 rounded-full blur-[0.5px] animate-particle-twinkle [animation-delay:4s]" />
+            <div className="absolute top-[68%] left-[12%] w-1 h-1 bg-white rounded-full blur-[0.5px] animate-particle-twinkle [animation-delay:2s]" />
+            <div className="absolute top-[75%] left-[38%] w-1.5 h-1.5 bg-cyan-400 rounded-full blur-[0.5px] animate-particle-twinkle [animation-delay:5.2s]" />
+            <div className="absolute top-[85%] left-[72%] w-1 h-1 bg-purple-400 rounded-full blur-[0.5px] animate-particle-twinkle [animation-delay:1.8s]" />
+            <div className="absolute top-[55%] left-[62%] w-1.5 h-1.5 bg-white rounded-full blur-[0.5px] animate-particle-twinkle [animation-delay:2.7s]" />
+            <div className="absolute top-[28%] left-[76%] w-1 h-1 bg-yellow-400 rounded-full blur-[0.5px] animate-particle-twinkle [animation-delay:3.5s]" />
+            <div className="absolute top-[92%] left-[15%] w-1.5 h-1.5 bg-pink-400 rounded-full blur-[0.5px] animate-particle-twinkle [animation-delay:4.5s]" />
+            <div className="absolute top-[80%] left-[90%] w-1 h-1 bg-cyan-400 rounded-full blur-[0.5px] animate-particle-twinkle [animation-delay:0.3s]" />
+          </div>
+
+        </div>
+
+        {/* Backdrop Grid Pattern Overlay */}
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#ffffff02_1px,transparent_1px),linear-gradient(to_bottom,#ffffff02_1px,transparent_1px)] bg-[size:36px_36px] pointer-events-none z-0" />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
             
-            {/* Hero Text Column */}
-            <div className="lg:col-span-7 flex flex-col text-left">
+            {/* Hero Text Column with Premium Glassmorphism Backdrop */}
+            <div className="lg:col-span-7 flex flex-col text-left p-6 sm:p-8 rounded-3xl bg-slate-950/85 border border-white/10 backdrop-blur-xl shadow-2xl relative">
               
               {/* Best Rate Dealer Highlight Badge (Highly Optimized for Search Ranking & Google Indexing) */}
-              <div className="mb-6 flex flex-col gap-1.5 p-4 rounded-2xl bg-orange-500/10 border border-orange-500/20 backdrop-blur-md max-w-xl">
-                <div className="flex items-center gap-2 text-brand-orange text-xs sm:text-sm font-black uppercase tracking-wider">
+              <div className="mb-6 flex flex-col gap-1.5 p-4 rounded-2xl bg-slate-900/95 border border-orange-500/35 backdrop-blur-md max-w-xl">
+                <div className="flex items-center gap-2 text-orange-400 text-xs sm:text-sm font-black uppercase tracking-wider">
                   <span className="text-base animate-bounce">🏆</span>
                   <span>BIHAR'S #1 TRUSTED PLASTIC DEALER</span>
                 </div>
@@ -341,7 +382,7 @@ export default function App() {
                 ).map((badge, idx) => (
                   <span 
                     key={idx}
-                    className="text-[11px] md:text-xs font-bold font-mono tracking-wide bg-white/5 border border-white/10 text-brand-orange px-3 py-1.5 rounded-full backdrop-blur-sm shadow-sm"
+                    className="text-[11px] md:text-xs font-bold font-mono tracking-wide bg-white/10 border border-white/15 text-orange-400 px-3 py-1.5 rounded-full backdrop-blur-sm shadow-sm"
                   >
                     {badge}
                   </span>
@@ -353,7 +394,7 @@ export default function App() {
                 {lang === "en" ? (
                   <>
                     Trusted Tarpaulin & <br />
-                    <span className="bg-gradient-to-r from-brand-orange to-amber-400 bg-clip-text text-transparent">
+                    <span className="bg-gradient-to-r from-orange-400 via-amber-300 to-yellow-300 bg-clip-text text-transparent drop-shadow-sm">
                       Plastic Sheet Dealer
                     </span> <br className="hidden sm:inline" />
                     Since 2000
@@ -361,7 +402,7 @@ export default function App() {
                 ) : (
                   <>
                     भरोसेमंद तिरपाल और <br />
-                    <span className="bg-gradient-to-r from-brand-orange to-amber-400 bg-clip-text text-transparent">
+                    <span className="bg-gradient-to-r from-orange-400 via-amber-300 to-yellow-300 bg-clip-text text-transparent drop-shadow-sm">
                       प्लास्टिक शीट डीलर
                     </span> <br className="hidden sm:inline" />
                     सन 2000 से
@@ -370,7 +411,7 @@ export default function App() {
               </h1>
 
               {/* Subheading */}
-              <p className="text-slate-300 text-base sm:text-lg md:text-xl leading-relaxed max-w-2xl mb-6">
+              <p className="text-slate-100 text-base sm:text-lg md:text-xl leading-relaxed max-w-2xl mb-6 font-medium">
                 {t.heroSubtitle}
               </p>
 
@@ -408,20 +449,20 @@ export default function App() {
 
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 pt-8 border-t border-white/10">
                 <div>
-                  <div className="text-3xl font-extrabold text-brand-orange font-display">26+</div>
-                  <div className="text-xs text-slate-400 mt-1">{lang === "en" ? "Years of Trust (Est. 2000)" : "वर्षों का अटूट विश्वास"}</div>
+                  <div className="text-3xl font-extrabold text-orange-400 font-display">26+</div>
+                  <div className="text-xs text-slate-200 mt-1 font-semibold">{lang === "en" ? "Years of Trust (Est. 2000)" : "वर्षों का अटूट विश्वास"}</div>
                 </div>
                 <div>
-                  <div className="text-3xl font-extrabold text-brand-orange font-display">50+</div>
-                  <div className="text-xs text-slate-400 mt-1">{lang === "en" ? "Size Configurations" : "साइज़ कॉम्बिनेशन"}</div>
+                  <div className="text-3xl font-extrabold text-orange-400 font-display">50+</div>
+                  <div className="text-xs text-slate-200 mt-1 font-semibold">{lang === "en" ? "Size Configurations" : "साइज़ कॉम्बिनेशन"}</div>
                 </div>
                 <div>
-                  <div className="text-3xl font-extrabold text-brand-orange font-display">100%</div>
-                  <div className="text-xs text-slate-400 mt-1">{lang === "en" ? "Waterproof & UV Tested" : "वाटरप्रूफ एवं टिकाऊ"}</div>
+                  <div className="text-3xl font-extrabold text-orange-400 font-display">100%</div>
+                  <div className="text-xs text-slate-200 mt-1 font-semibold">{lang === "en" ? "Waterproof & UV Tested" : "वाटरप्रूफ एवं टिकाऊ"}</div>
                 </div>
                 <div>
-                  <div className="text-3xl font-extrabold text-brand-orange font-display">10k+</div>
-                  <div className="text-xs text-slate-400 mt-1">{lang === "en" ? "Happy Customers" : "खुशहाल ग्राहक"}</div>
+                  <div className="text-3xl font-extrabold text-orange-400 font-display">10k+</div>
+                  <div className="text-xs text-slate-200 mt-1 font-semibold">{lang === "en" ? "Happy Customers" : "खुशहाल ग्राहक"}</div>
                 </div>
               </div>
 
@@ -1181,9 +1222,6 @@ export default function App() {
 
       {/* Retail Price Popup Modal */}
       <RetailPriceModal isOpen={retailOpen} onClose={() => setRetailOpen(false)} currentLanguage={lang} onOpenInquiry={() => handleEnquire("")} />
-
-      {/* Auto Load Inquiry Popup */}
-      <AutoInquiryModal currentLanguage={lang} />
 
     </div>
   );

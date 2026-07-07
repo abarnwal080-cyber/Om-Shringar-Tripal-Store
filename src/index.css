@@ -24,6 +24,92 @@
   }
 }
 
+/* Keyframes and classes for premium Rainbow Neon Animated Background */
+@keyframes rainbow-neon-flow {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animate-rainbow-neon {
+  background: linear-gradient(-45deg, #ff007f, #7928ca, #00f0ff, #39ff14, #ff5e00, #fffb00);
+  background-size: 400% 400%;
+  animation: rainbow-neon-flow 12s ease infinite;
+}
+
+@keyframes drift-one {
+  0% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }
+  33% { transform: translate3d(8%, -15%, 0) scale(1.2) rotate(120deg); }
+  66% { transform: translate3d(-12%, 10%, 0) scale(0.8) rotate(240deg); }
+  100% { transform: translate3d(0, 0, 0) scale(1) rotate(360deg); }
+}
+
+@keyframes drift-two {
+  0% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }
+  40% { transform: translate3d(-15%, 8%, 0) scale(1.15) rotate(-90deg); }
+  70% { transform: translate3d(10%, -10%, 0) scale(0.9) rotate(180deg); }
+  100% { transform: translate3d(0, 0, 0) scale(1) rotate(360deg); }
+}
+
+@keyframes drift-three {
+  0% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }
+  50% { transform: translate3d(12%, 12%, 0) scale(0.85) rotate(180deg); }
+  100% { transform: translate3d(0, 0, 0) scale(1) rotate(360deg); }
+}
+
+@keyframes drift-four {
+  0% { transform: translate3d(0, 0, 0) scale(1) rotate(0deg); }
+  45% { transform: translate3d(-10%, -12%, 0) scale(1.2) rotate(-120deg); }
+  80% { transform: translate3d(8%, 8%, 0) scale(0.95) rotate(-240deg); }
+  100% { transform: translate3d(0, 0, 0) scale(1) rotate(-360deg); }
+}
+
+@keyframes neon-sweep {
+  0% { transform: translate3d(-100%, -100%, 0) rotate(-35deg); opacity: 0; }
+  10% { opacity: 0.15; }
+  50% { opacity: 0.25; }
+  90% { opacity: 0.15; }
+  100% { transform: translate3d(200%, 200%, 0) rotate(-35deg); opacity: 0; }
+}
+
+@keyframes slow-pulse {
+  0%, 100% { opacity: 0.15; transform: scale(1); }
+  50% { opacity: 0.35; transform: scale(1.12); }
+}
+
+@keyframes particle-twinkle {
+  0%, 100% { opacity: 0.15; transform: scale(0.8); }
+  50% { opacity: 0.7; transform: scale(1.2); }
+}
+
+.animate-drift-one {
+  animation: drift-one 24s ease-in-out infinite;
+}
+.animate-drift-two {
+  animation: drift-two 28s ease-in-out infinite;
+}
+.animate-drift-three {
+  animation: drift-three 20s ease-in-out infinite;
+}
+.animate-drift-four {
+  animation: drift-four 32s ease-in-out infinite;
+}
+.animate-neon-sweep {
+  animation: neon-sweep 15s cubic-bezier(0.25, 1, 0.5, 1) infinite;
+}
+.animate-slow-pulse {
+  animation: slow-pulse 12s ease-in-out infinite;
+}
+.animate-particle-twinkle {
+  animation: particle-twinkle 6s ease-in-out infinite;
+}
+
 /* Custom premium visual style rules matching Sleek Interface */
 .glass-panel {
   background: rgba(255, 255, 255, 0.85);
