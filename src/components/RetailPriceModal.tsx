@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { X, Phone, AlertCircle } from "lucide-react";
+import { X, Phone, AlertCircle, ArrowRight } from "lucide-react";
 import { BUSINESS_INFO } from "../data";
 
 interface RetailPriceModalProps {
@@ -64,7 +64,7 @@ const PRICE_ITEMS: PriceItem[] = [
     }
   },
   {
-    image: "https://plain-apac-prod-public.komododecks.com/202607/05/7O9jo950h35goeKsP6Gr/image.png",
+    image: "https://plain-apac-prod-public.komododecks.com/202607/03/eckT9KEMGbavrebTJwPJ/image.png",
     en: {
       name: "Construction Black Polythene Roll",
       price: "₹100 / Kg",
@@ -260,7 +260,7 @@ export default function RetailPriceModal({ isOpen, onClose, currentLanguage, onO
                 })}
               </div>
 
-              {/* Instant Call Row */}
+              {/* Instant WhatsApp Integrated Enquiry */}
               <div className="p-5 rounded-2xl bg-slate-950/60 border border-slate-800 flex flex-col sm:flex-row items-center justify-between gap-4">
                 <div className="text-center sm:text-left">
                   <h4 className="font-extrabold text-sm text-white">
@@ -268,28 +268,24 @@ export default function RetailPriceModal({ isOpen, onClose, currentLanguage, onO
                   </h4>
                   <p className="text-[11px] text-slate-400 mt-0.5">
                     {isEn 
-                      ? "Directly talk with our proprietor on Phone or WhatsApp."
-                      : "विशेष थोक आर्डर या बड़ी आवश्यकताओं हेतु सीधे बात करें।"}
+                      ? "Get custom wholesale pricing via our interactive WhatsApp assistant."
+                      : "हमारे व्हाट्सएप-इंटीग्रेटेड असिस्टेंट के माध्यम से थोक भाव प्राप्त करें।"}
                   </p>
                 </div>
 
                 <div className="flex gap-2.5 w-full sm:w-auto">
-                  <a
-                    href={BUSINESS_INFO.phoneFormatted}
-                    className="flex-1 sm:flex-initial flex items-center justify-center gap-1.5 py-2.5 px-4 rounded-full bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs transition-colors"
+                  <button
+                    onClick={() => {
+                      onClose();
+                      if (onOpenInquiry) {
+                        onOpenInquiry();
+                      }
+                    }}
+                    className="flex-1 sm:flex-initial flex items-center justify-center gap-1.5 py-2.5 px-5 rounded-full bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs transition-colors cursor-pointer"
                   >
-                    <Phone className="w-3.5 h-3.5" />
-                    <span>{isEn ? "Call Now" : "कॉल करें"}</span>
-                  </a>
-                  <a
-                    href={BUSINESS_INFO.whatsappLink}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="flex-1 sm:flex-initial flex items-center justify-center gap-1.5 py-2.5 px-4 rounded-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs transition-colors"
-                  >
-                    <span className="text-sm">💬</span>
-                    <span>WhatsApp</span>
-                  </a>
+                    <span>{isEn ? "Enquire Now" : "पूछताछ शुरू करें"}</span>
+                    <ArrowRight className="w-3.5 h-3.5" />
+                  </button>
                 </div>
               </div>
             </div>

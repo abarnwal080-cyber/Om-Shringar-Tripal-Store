@@ -61,7 +61,7 @@ const PRICE_ITEMS: PriceItem[] = [
     }
   },
   {
-    image: "https://plain-apac-prod-public.komododecks.com/202607/05/7O9jo950h35goeKsP6Gr/image.png",
+    image: "https://plain-apac-prod-public.komododecks.com/202607/03/eckT9KEMGbavrebTJwPJ/image.png",
     en: {
       name: "Construction Black Polythene Roll",
       price: "₹100 / Kg",
@@ -301,32 +301,14 @@ export default function RetailPriceSection({ currentLanguage, onOpenInquiry }: R
           </ul>
 
           {/* CTA Row */}
-          <div className="mt-8 flex flex-col sm:flex-row gap-4">
-            <a
-              href={BUSINESS_INFO.phoneFormatted}
-              className="flex items-center justify-center gap-2 py-3.5 px-6 rounded-full bg-gradient-to-r from-orange-500 to-amber-500 text-white font-extrabold text-sm shadow-md shadow-orange-500/20 hover:shadow-orange-500/30 hover:scale-[1.02] active:scale-[0.98] transition-all"
-            >
-              <Phone className="w-4 h-4" />
-              <span>{isEn ? "Call for Latest Price" : "ताजा रेट के लिए कॉल करें"}</span>
-            </a>
-
-            <a
-              href={BUSINESS_INFO.whatsappLink}
-              target="_blank"
-              rel="noreferrer"
-              className="flex items-center justify-center gap-2 py-3.5 px-6 rounded-full bg-gradient-to-r from-emerald-600 to-teal-600 text-white font-extrabold text-sm shadow-md shadow-emerald-600/20 hover:shadow-emerald-600/30 hover:scale-[1.02] active:scale-[0.98] transition-all"
-            >
-              <span className="text-base">💬</span>
-              <span>{isEn ? "WhatsApp for Wholesale Price" : "थोक रेट के लिए व्हाट्सएप करें"}</span>
-            </a>
-
+          <div className="mt-8 flex flex-col sm:flex-row gap-4 justify-center items-center">
             {onOpenInquiry && (
               <button
                 onClick={onOpenInquiry}
-                className="flex items-center justify-center gap-2 py-3.5 px-6 rounded-full bg-slate-900 hover:bg-slate-800 text-white font-extrabold text-sm shadow-md hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer"
+                className="w-full sm:w-auto flex items-center justify-center gap-2.5 py-4 px-10 rounded-full bg-gradient-to-r from-orange-600 to-amber-500 hover:from-orange-700 hover:to-amber-600 text-white font-extrabold text-sm shadow-xl shadow-orange-600/15 hover:shadow-orange-600/25 hover:scale-[1.02] active:scale-[0.98] transition-all cursor-pointer"
               >
-                <span>{isEn ? "Submit Bulk Inquiry" : "थोक पूछताछ भेजें"}</span>
-                <ArrowRight className="w-4 h-4 text-brand-orange" />
+                <span>{isEn ? "Open WhatsApp Integrated Quote Assistant" : "व्हाट्सएप-इंटीग्रेटेड पूछताछ शुरू करें"}</span>
+                <ArrowRight className="w-4 h-4 text-white" />
               </button>
             )}
           </div>

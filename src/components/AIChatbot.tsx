@@ -12,11 +12,11 @@ interface Message {
 }
 
 interface AIChatbotProps {
-  currentLanguage: "en" | "hi";
-  onLanguageChange: (lang: "en" | "hi") => void;
+  currentLanguage?: "en" | "hi";
+  onLanguageChange?: (lang: "en" | "hi") => void;
 }
 
-export default function AIChatbot({ currentLanguage, onLanguageChange }: AIChatbotProps) {
+export default function AIChatbot({ currentLanguage = "en", onLanguageChange }: AIChatbotProps) {
   const [isOpen, setIsOpen] = useState(false);
   const [messages, setMessages] = useState<Message[]>([]);
   const [inputVal, setInputVal] = useState("");
@@ -132,15 +132,6 @@ export default function AIChatbot({ currentLanguage, onLanguageChange }: AIChatb
     <>
       {/* FLOATING ACTION BUTTON - ALIGNED TO LEFT */}
       <div className="fixed left-6 bottom-6 z-50 flex flex-col items-start gap-3">
-        {/* Language Quick Switcher atop Chatbot */}
-        <button
-          onClick={() => onLanguageChange(currentLanguage === "en" ? "hi" : "en")}
-          className="bg-[#001f3f] hover:bg-[#003366] text-white w-12 h-12 rounded-full flex items-center justify-center shadow-2xl hover:scale-110 active:scale-95 transition-all duration-300 border border-white/20 cursor-pointer group"
-          title={currentLanguage === "en" ? "Translate to Hindi" : "Translate to English"}
-        >
-          <Languages className="w-5 h-5 text-orange-400 group-hover:rotate-12 transition-transform" />
-        </button>
-
         {/* Chat Toggle Button */}
         <button
           onClick={() => setIsOpen(!isOpen)}
@@ -193,19 +184,6 @@ export default function AIChatbot({ currentLanguage, onLanguageChange }: AIChatb
                 aria-label="Close Chat"
               >
                 <X className="w-5 h-5" />
-              </button>
-            </div>
-
-            {/* Language Banner inside chat */}
-            <div className="bg-slate-50 border-b border-slate-100 px-4 py-2 flex items-center justify-between text-xs text-slate-500">
-              <span className="flex items-center gap-1">
-                🌐 Language/भाषा: <strong>{currentLanguage === "en" ? "English" : "हिन्दी"}</strong>
-              </span>
-              <button
-                onClick={() => onLanguageChange(currentLanguage === "en" ? "hi" : "en")}
-                className="text-orange-600 font-bold hover:underline"
-              >
-                {currentLanguage === "en" ? "हिन्दी में बात करें" : "Switch to English"}
               </button>
             </div>
 

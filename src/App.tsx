@@ -20,7 +20,8 @@ import {
   Warehouse,
   Truck,
   Sprout,
-  Users
+  Users,
+  ArrowRight
 } from "lucide-react";
 
 import {
@@ -35,6 +36,7 @@ import {
 import ProductCard from "./components/ProductCard";
 import BrandCarousel from "./components/BrandCarousel";
 import InquiryForm from "./components/InquiryForm";
+import InquiryModal from "./components/InquiryModal";
 import AIChatbot from "./components/AIChatbot";
 import SupplierPopup from "./components/SupplierPopup";
 import RetailPriceModal from "./components/RetailPriceModal";
@@ -42,6 +44,7 @@ import RetailPriceSection from "./components/RetailPriceSection";
 import HeroCarousel from "./components/HeroCarousel";
 import StoreStatusCard from "./components/StoreStatusCard";
 import CustomerSuccessCarousel from "./components/CustomerSuccessCarousel";
+import CustomerReviews from "./components/CustomerReviews";
 import { TRANSLATIONS } from "./translations";
 
 // Safe dynamic icon loader to keep code modular and readable
@@ -51,22 +54,22 @@ function DynamicIcon({ name, className }: { name: string; className?: string }) 
 }
 
 export default function App() {
-  const [lang, setLang] = useState<"en" | "hi">("en");
+  const lang = "en";
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [prefilledProduct, setPrefilledProduct] = useState("");
   const [activeTab, setActiveTab] = useState("All");
   const [expandedFAQ, setExpandedFAQ] = useState<number | null>(null);
   const [supplierOpen, setSupplierOpen] = useState(false);
   const [retailOpen, setRetailOpen] = useState(false);
-  const [heroBgImage, setHeroBgImage] = useState("https://plain-apac-prod-public.komododecks.com/202607/05/7O9jo950h35goeKsP6Gr/image.png");
+  const [heroBgImage, setHeroBgImage] = useState("https://plain-apac-prod-public.komododecks.com/202607/03/eckT9KEMGbavrebTJwPJ/image.png");
+  const [inquiryOpen, setInquiryOpen] = useState(false);
 
   const inquiryRef = useRef<HTMLDivElement>(null);
   const t = TRANSLATIONS[lang];
 
   const handleEnquire = (productName: string) => {
     setPrefilledProduct(productName);
-    // Smooth scroll to inquiry form
-    inquiryRef.current?.scrollIntoView({ behavior: "smooth" });
+    setInquiryOpen(true);
   };
 
   const clearPrefill = () => {
@@ -113,13 +116,9 @@ export default function App() {
               {BUSINESS_INFO.ctaText}
             </span>
             <span className="text-slate-400 hidden sm:inline">•</span>
-            <a 
-              href={BUSINESS_INFO.phoneFormatted} 
-              className="hover:text-brand-orange font-bold transition-colors flex items-center gap-1 text-[11px] sm:text-xs font-mono"
-            >
-              <Phone className="w-3 h-3 text-brand-orange" />
-              {BUSINESS_INFO.phone}
-            </a>
+            <span className="text-[11px] sm:text-xs font-semibold font-mono flex items-center gap-1.5 text-blue-200">
+              🕒 {BUSINESS_INFO.hours}
+            </span>
           </div>
         </div>
       </div>
@@ -131,8 +130,12 @@ export default function App() {
           {/* Logo Branding */}
           <a href="#" className="flex flex-col">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-lg bg-orange-500 flex items-center justify-center text-white font-bold text-xl shadow-md">
-                OS
+              <div className="w-10 h-10 rounded-lg bg-orange-500 flex items-center justify-center text-white shadow-md p-1.5 shrink-0">
+                <svg viewBox="0 0 24 24" className="w-full h-full text-white" fill="none" stroke="currentColor" strokeWidth="2.5">
+                  <path d="M12 2L2 7l10 5 10-5-10-5z" fill="rgba(255,255,255,0.15)" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M2 17l10 5 10-5" strokeLinecap="round" strokeLinejoin="round"/>
+                  <path d="M2 12l10 5 10-5" strokeLinecap="round" strokeLinejoin="round"/>
+                </svg>
               </div>
               <div>
                 <span className="font-bold text-lg sm:text-xl font-display text-white tracking-tight block">
@@ -159,24 +162,18 @@ export default function App() {
           {/* Nav Right CTA */}
           <div className="hidden lg:flex items-center gap-3">
             <button
-              onClick={() => setLang(lang === "en" ? "hi" : "en")}
-              className="flex items-center gap-1.5 px-3.5 py-2 rounded-full border border-white/10 bg-white/5 text-xs font-bold text-blue-100 hover:text-white hover:bg-white/15 transition-all cursor-pointer mr-1"
-            >
-              🌐 {lang === "en" ? "हिन्दी" : "English"}
-            </button>
-            <button
               onClick={() => setRetailOpen(true)}
-              className="bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-full font-bold text-sm transition-all shadow-lg flex items-center gap-1.5"
+              className="bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-full font-bold text-sm transition-all shadow-lg flex items-center gap-1.5 cursor-pointer"
             >
               <Tag className="w-4 h-4" />
               {t.getRetailPrice}
             </button>
-            <a
-              href="#enquire"
-              className="bg-orange-600 hover:bg-orange-700 text-white px-5 py-2.5 rounded-full font-bold text-sm transition-all shadow-lg flex items-center"
+            <button
+              onClick={() => handleEnquire("")}
+              className="bg-orange-600 hover:bg-orange-700 text-white px-5 py-2.5 rounded-full font-bold text-sm transition-all shadow-lg flex items-center cursor-pointer"
             >
               {lang === "en" ? "Get Bulk Quote" : "थोक भाव पाएं"}
-            </a>
+            </button>
           </div>
  
           {/* Mobile Hamburger Toggle */}
@@ -263,37 +260,17 @@ export default function App() {
                   </button>
                 </div>
 
-                {/* Mobile Language Toggle */}
-                <div className="py-2 border-t border-slate-100 flex items-center justify-between">
-                  <span className="text-sm font-semibold text-slate-500">Language / भाषा</span>
+                <div className="pt-4 border-t border-slate-100 flex flex-col gap-3">
                   <button
                     onClick={() => {
-                      setLang(lang === "en" ? "hi" : "en");
                       setMobileMenuOpen(false);
+                      handleEnquire("");
                     }}
-                    className="flex items-center gap-1.5 px-4 py-2 rounded-full border border-slate-200 bg-slate-50 text-xs font-bold text-slate-700 hover:bg-slate-100 transition-all cursor-pointer"
+                    className="flex items-center justify-center gap-2 py-3.5 px-4 rounded-xl bg-gradient-to-r from-orange-600 to-amber-500 text-white font-extrabold text-sm shadow-md cursor-pointer hover:from-orange-700 hover:to-amber-600 transition-colors uppercase tracking-wider active:scale-95"
                   >
-                    🌐 {lang === "en" ? "Switch to हिन्दी" : "Switch to English"}
+                    <Sparkles className="w-4 h-4" />
+                    <span>Get Free Quote Now</span>
                   </button>
-                </div>
-
-                <div className="pt-4 border-t border-slate-100 flex flex-col gap-3">
-                  <a
-                    href={BUSINESS_INFO.phoneFormatted}
-                    className="flex items-center justify-center gap-2 py-3 px-4 rounded-full bg-[#001f3f] text-white font-bold text-sm shadow cursor-pointer"
-                  >
-                    <Phone className="w-4 h-4 text-orange-400" />
-                    {lang === "en" ? "Call Mr. Vinod Kumar" : "श्री विनोद कुमार को कॉल करें"}
-                  </a>
-                  <a
-                    href={getWhatsAppGeneralLink()}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="flex items-center justify-center gap-2 py-3 px-4 rounded-full bg-[#25D366] text-white font-bold text-sm shadow cursor-pointer"
-                  >
-                    <MessageSquare className="w-4 h-4" />
-                    {lang === "en" ? "WhatsApp Chat" : "व्हाट्सएप चैट करें"}
-                  </a>
                 </div>
               </div>
             </motion.div>
@@ -432,8 +409,8 @@ export default function App() {
             </div>
 
             {/* Hero Premium Stack Collage */}
-            <div className="lg:col-span-5 relative w-full flex justify-center">
-              <div className="relative w-full max-w-sm sm:max-w-md aspect-square">
+            <div className="lg:col-span-5 relative w-full flex flex-col items-center gap-6">
+              <div className="relative w-full max-w-sm sm:max-w-md aspect-[3/4]">
                 
                 {/* Decorative border frame */}
                 <div className="absolute inset-0 border border-slate-200 rounded-3xl -rotate-3 scale-[1.02] bg-gradient-to-tr from-orange-500/5 to-amber-500/5 pointer-events-none" />
@@ -486,30 +463,42 @@ export default function App() {
                   </div>
                 </motion.div>
 
-                {/* Floating badge for owner */}
-                <div className="absolute -bottom-4 -left-4 bg-white text-slate-900 px-4 py-3 rounded-2xl shadow-xl flex items-center gap-3 border border-slate-100 max-w-[210px]">
-                  <div className="w-10 h-10 rounded-full bg-brand-orange/10 flex items-center justify-center text-brand-orange shrink-0">
-                    <PhoneCall className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <div className="text-[10px] font-bold font-mono text-slate-400 uppercase tracking-wider">
-                      DIRECT INQUIRY
-                    </div>
-                    <div className="text-xs font-bold text-brand-blue-dark">
-                      Mr. Vinod Varnawal
-                    </div>
-                    <div className="text-[11px] font-mono text-brand-blue-royal font-bold">
-                      +91 9852076197
-                    </div>
-                  </div>
-                </div>
-
                 {/* Floating banner on right */}
                 <div className="absolute -top-4 -right-4 bg-brand-orange text-white px-3.5 py-2 rounded-xl shadow-lg text-xs font-bold font-mono tracking-widest uppercase rotate-3">
                   ★ WHOLESALER
                 </div>
 
               </div>
+
+              {/* Direct Inquiry Owner details positioned perfectly underneath the frame */}
+              <motion.div 
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 0.3 }}
+                className="w-full max-w-sm sm:max-w-md bg-white text-slate-900 p-4 rounded-2xl shadow-lg flex items-center justify-between border border-slate-100 hover:shadow-xl transition-shadow relative z-10"
+              >
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center text-orange-600 shrink-0">
+                    <PhoneCall className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <div className="text-[9px] font-extrabold font-mono text-slate-400 uppercase tracking-widest">
+                      DIRECT INQUIRY
+                    </div>
+                    <div className="text-sm font-extrabold text-slate-900 font-display">
+                      Mr. Vinod Varnawal
+                    </div>
+                  </div>
+                </div>
+                
+                <a
+                  href="tel:+919852076197"
+                  className="bg-orange-600 hover:bg-orange-700 text-white text-xs font-black px-4 py-2.5 rounded-full transition-colors font-mono tracking-wider flex items-center gap-1.5 shadow-md shadow-orange-600/10 cursor-pointer"
+                >
+                  <span>📞 Call Store</span>
+                  <span className="font-mono font-bold">+91 9852076197</span>
+                </a>
+              </motion.div>
             </div>
 
           </div>
@@ -531,6 +520,9 @@ export default function App() {
           <span>{t.meetSupplier}</span>
         </motion.button>
       </div>
+
+      {/* CUSTOMER 5-STAR REVIEWS SECTION */}
+      <CustomerReviews />
 
       {/* 5. ABOUT US SECTION */}
       <section id="about" className="py-20 bg-white relative overflow-hidden">
@@ -846,8 +838,7 @@ export default function App() {
         </div>
       </section>
 
-      {/* CUSTOMER SUCCESS STORIES */}
-      <CustomerSuccessCarousel currentLanguage={lang} onEnquire={handleEnquire} />
+
 
       {/* 10. INTERACTIVE FAQ & INQUIRY FORM */}
       <section id="enquire" ref={inquiryRef} className="py-20 bg-slate-50 border-t border-slate-100 relative">
@@ -905,28 +896,71 @@ export default function App() {
                 ))}
               </div>
 
-              {/* Fast phone call card */}
+              {/* Fast interactive quote assistant card */}
               <div className="mt-8 p-6 bg-orange-600 text-white rounded-3xl shadow-lg relative overflow-hidden flex flex-col sm:flex-row justify-between items-center gap-4">
                 <div className="absolute right-0 bottom-0 w-32 h-32 bg-white/5 rounded-full blur-xl pointer-events-none" />
                 <div className="text-center sm:text-left">
-                  <h4 className="font-bold text-lg font-display">Need Instant Answers?</h4>
-                  <p className="text-xs text-white/85 mt-1">Directly speak with our proprietor Vinod Kumar.</p>
+                  <h4 className="font-bold text-lg font-display">Have Specific Sizing Needs?</h4>
+                  <p className="text-xs text-white/85 mt-1">Get dynamic wholesale rates for customized sizes.</p>
                 </div>
-                <a
-                  href={BUSINESS_INFO.phoneFormatted}
-                  className="bg-brand-blue-dark hover:bg-brand-blue-royal text-white text-xs sm:text-sm font-bold px-6 py-3 rounded-full transition shadow shrink-0"
+                <button
+                  onClick={() => {
+                    setPrefilledProduct("");
+                    setInquiryOpen(true);
+                  }}
+                  className="bg-brand-blue-dark hover:bg-brand-blue-royal text-white text-xs sm:text-sm font-bold px-6 py-3 rounded-full transition shadow shrink-0 cursor-pointer"
                 >
-                  Call Now: {BUSINESS_INFO.phone}
-                </a>
+                  Start Quote Assistant
+                </button>
               </div>
             </div>
 
-            {/* Inquiry Form Right Column */}
-            <div className="lg:col-span-7 w-full">
-              <InquiryForm
-                prefilledProduct={prefilledProduct}
-                onClearPrefill={clearPrefill}
-              />
+            {/* Beautiful Interactive Banner Card that triggers the conversational typeform modal */}
+            <div className="lg:col-span-7 w-full bg-gradient-to-br from-[#001f3f] to-[#000c1a] rounded-3xl p-8 sm:p-12 border border-white/10 shadow-2xl relative overflow-hidden flex flex-col justify-between min-h-[380px] text-white">
+              {/* Decorative glows */}
+              <div className="absolute -right-16 -top-16 w-48 h-48 bg-orange-500/20 rounded-full blur-3xl pointer-events-none" />
+              <div className="absolute -left-16 -bottom-16 w-48 h-48 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
+              
+              <div className="relative z-10 space-y-6">
+                <div className="inline-flex items-center gap-2 bg-orange-500/10 border border-orange-500/25 text-orange-400 text-xs font-bold font-mono px-3.5 py-1.5 rounded-full">
+                  <Sparkles className="w-3.5 h-3.5 animate-pulse" />
+                  <span>DIRECT FACTORY WHOLESALE RATES</span>
+                </div>
+                
+                <h3 className="text-2xl sm:text-3xl font-extrabold font-display leading-tight tracking-tight">
+                  Get Instant Wholesale Pricing <br />
+                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-amber-300">
+                    Direct on Your WhatsApp
+                  </span>
+                </h3>
+                
+                <p className="text-slate-300 text-sm sm:text-base leading-relaxed max-w-lg">
+                  Use our premium conversational assistant to select your sizes and requirements. Get personalized factory quotes in seconds, direct to your WhatsApp!
+                </p>
+              </div>
+              
+              <div className="relative z-10 pt-8 mt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
+                <div className="flex items-center gap-3">
+                  <div className="w-10 h-10 bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 rounded-xl flex items-center justify-center font-bold">
+                    💬
+                  </div>
+                  <div className="text-left">
+                    <span className="block text-[10px] text-slate-400 uppercase font-mono font-bold">Integrated With</span>
+                    <strong className="text-xs sm:text-sm text-slate-100">WhatsApp Business API Link</strong>
+                  </div>
+                </div>
+                
+                <button
+                  onClick={() => {
+                    setPrefilledProduct("");
+                    setInquiryOpen(true);
+                  }}
+                  className="w-full sm:w-auto bg-gradient-to-r from-orange-600 to-amber-500 hover:from-orange-700 hover:to-amber-600 text-white font-extrabold text-sm px-8 py-4 rounded-full flex items-center justify-center gap-2 transition-all shadow-lg shadow-orange-600/10 hover:shadow-orange-600/20 hover:scale-[1.02] active:scale-95 cursor-pointer"
+                >
+                  <span>Enquire Now</span>
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+              </div>
             </div>
 
           </div>
@@ -1135,59 +1169,51 @@ export default function App() {
         </div>
       </footer>
 
-      {/* 13. FLOATING AND STICKY BOTTOM ACTION CTA WIDGETS */}
+      {/* 13. FLOATING ACTION CTA WIDGETS */}
       
-      {/* Floating Buttons: Desktop Only */}
-      <div className="hidden sm:flex flex-col gap-3 fixed right-6 bottom-6 z-40">
-        {/* Floating Call */}
-        <a
-          href={BUSINESS_INFO.phoneFormatted}
-          aria-label="Call Proprietor Mr. Vinod Kumar"
-          className="w-14 h-14 bg-[#001f3f] text-white rounded-full shadow-2xl flex items-center justify-center hover:bg-brand-blue-royal transition-all duration-300 hover:scale-110 border border-white/10"
+      {/* Floating Vertical "Enquire Now" Tab: Desktop Only */}
+      <div className="hidden md:flex fixed left-0 top-[40%] z-40 transform -translate-y-1/2">
+        <button
+          onClick={() => handleEnquire("")}
+          className="bg-gradient-to-r from-orange-600 to-amber-500 hover:from-orange-700 hover:to-amber-600 text-white font-extrabold text-xs tracking-wider uppercase py-4 px-3 rounded-r-2xl shadow-2xl flex items-center gap-2 [writing-mode:vertical-lr] rotate-180 transition-all duration-300 hover:translate-x-1 cursor-pointer select-none border-t border-r border-b border-white/20 relative group"
         >
-          <Phone className="w-6 h-6 text-brand-orange" />
-        </a>
-        
-        {/* Floating WhatsApp */}
-        <a
-          href={getWhatsAppGeneralLink()}
-          target="_blank"
-          rel="noreferrer"
-          aria-label="WhatsApp Inquiry Om Shringar Tirpal Store"
-          className="w-14 h-14 bg-[#25D366] text-white rounded-full shadow-2xl flex items-center justify-center hover:bg-[#20ba5a] transition-all duration-300 hover:scale-110"
-        >
-          <MessageSquare className="w-6 h-6" />
-        </a>
+          <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity rounded-r-2xl pointer-events-none" />
+          <span className="animate-pulse">✨ Enquire Now</span>
+        </button>
       </div>
 
-      {/* Sticky Bottom Bar: Mobile Only */}
-      <div className="sm:hidden fixed bottom-0 inset-x-0 h-16 bg-white border-t border-slate-200 shadow-2xl grid grid-cols-2 z-40 divide-x divide-slate-100">
-        <a
-          href={BUSINESS_INFO.phoneFormatted}
-          className="flex items-center justify-center gap-2 text-[#001f3f] font-extrabold text-sm active:bg-slate-50 transition-colors"
+      {/* Unified Floating WhatsApp Quote Button: Mobile & Desktop (Aligned Bottom Right) */}
+      <div className="fixed right-6 bottom-6 z-40">
+        <button
+          onClick={() => handleEnquire("")}
+          aria-label="WhatsApp Integrated Inquiry"
+          className="bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white font-extrabold text-xs sm:text-sm px-5 py-3.5 rounded-full shadow-2xl flex items-center gap-2.5 hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer relative group border border-emerald-400/20"
         >
-          <Phone className="w-4 h-4 text-brand-orange" />
-          <span>Call Store</span>
-        </a>
-        <a
-          href={getWhatsAppGeneralLink()}
-          target="_blank"
-          rel="noreferrer"
-          className="flex items-center justify-center gap-2 text-[#25D366] font-extrabold text-sm active:bg-slate-50 transition-colors"
-        >
-          <MessageSquare className="w-4 h-4" />
-          <span>WhatsApp Chat</span>
-        </a>
+          {/* Pulsating Ring Indicator */}
+          <span className="absolute inset-0 rounded-full border-2 border-emerald-500/40 animate-ping pointer-events-none" />
+          
+          <MessageSquare className="w-5 h-5 text-white group-hover:rotate-12 transition-transform shrink-0" />
+          <span className="uppercase tracking-wider font-black">Get Quote</span>
+        </button>
       </div>
 
       {/* AI Assistant Chatbot (Floating Left Aligned) */}
-      <AIChatbot currentLanguage={lang} onLanguageChange={setLang} />
+      <AIChatbot currentLanguage={lang} />
 
       {/* Supplier Popup Modal */}
       <SupplierPopup isOpen={supplierOpen} onClose={() => setSupplierOpen(false)} />
 
       {/* Retail Price Popup Modal */}
       <RetailPriceModal isOpen={retailOpen} onClose={() => setRetailOpen(false)} currentLanguage={lang} onOpenInquiry={() => handleEnquire("")} />
+
+      {/* Conversational Quote Assistant Typeform Modal */}
+      <InquiryModal
+        isOpen={inquiryOpen}
+        onClose={() => setInquiryOpen(false)}
+        prefilledProduct={prefilledProduct}
+        onClearPrefill={clearPrefill}
+        currentLanguage={lang}
+      />
 
     </div>
   );

@@ -176,29 +176,10 @@ export default function ProductCard({ product, onEnquire }: ProductCardProps) {
         </div>
 
         {/* Buttons Action Bar */}
-        <div className="space-y-3 mt-auto pt-4 border-t border-slate-100">
-          <div className="grid grid-cols-2 gap-2">
-            <a
-              href={BUSINESS_INFO.phoneFormatted}
-              className="flex items-center justify-center gap-1.5 py-3 px-3 rounded-full bg-brand-blue-dark hover:bg-brand-blue-royal text-white text-xs md:text-sm font-semibold transition-all duration-200 shadow-sm"
-            >
-              <Phone className="w-3.5 h-3.5" />
-              Call Now
-            </a>
-            <a
-              href={getWhatsAppLink(product.name)}
-              target="_blank"
-              rel="noreferrer"
-              className="flex items-center justify-center gap-1.5 py-3 px-3 rounded-full bg-[#25D366] hover:bg-[#20ba5a] text-white text-xs md:text-sm font-semibold transition-all duration-200 shadow-sm"
-            >
-              <MessageSquare className="w-3.5 h-3.5" />
-              WhatsApp
-            </a>
-          </div>
-          
+        <div className="mt-auto pt-4 border-t border-slate-100">
           <button
             onClick={() => onEnquire(product.name)}
-            className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-full bg-orange-600 hover:bg-orange-700 text-white font-bold text-sm transition-all duration-200 shadow-md active:scale-[0.98]"
+            className="w-full flex items-center justify-center gap-2 py-3.5 px-4 rounded-full bg-gradient-to-r from-orange-600 to-amber-500 hover:from-orange-700 hover:to-amber-600 text-white font-extrabold text-sm transition-all duration-200 shadow-md hover:scale-[1.01] active:scale-[0.98] cursor-pointer"
           >
             <span>Enquire / Get Quote</span>
             <ArrowRight className="w-4 h-4" />

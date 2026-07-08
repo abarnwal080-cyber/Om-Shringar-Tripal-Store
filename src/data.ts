@@ -116,7 +116,6 @@ export const PRODUCTS: Product[] = [
     category: "Moisture & Damp Proofing",
     description: "Multi-layered high-density black polythene sheet rolls serving as a robust foundation moisture barrier, agricultural cover, and heavy-duty dust shield.",
     images: [
-      "https://plain-apac-prod-public.komododecks.com/202607/05/7O9jo950h35goeKsP6Gr/image.png",
       "https://plain-apac-prod-public.komododecks.com/202607/03/eckT9KEMGbavrebTJwPJ/image.png",
       "https://cpimg.tistatic.com/07558039/b/4/Road-Construction-Polyethylene-Sheet.jpg",
       "https://cpimg.tistatic.com/07558039/b/4/Road-Construction-Polyethylene-Sheet.jpg", // Note: duplicated in prompt, keeping it exactly as requested!

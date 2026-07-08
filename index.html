@@ -152,6 +152,430 @@
     </script>
   </head>
   <body>
+    <!-- ============================================================================ -->
+    <!-- PREMIUM PRELOADER (NEWLY INTEGRATED)                                         -->
+    <!-- Luxury Industrial Theme for Om Shringar Tirpal Store                         -->
+    <!-- Features: Floating Particles, Centered Embossed OS Emblem, Spinning Orbit    -->
+    <!-- Rings, Authoritative Partner Logo Fade Carousel                              -->
+    <!-- ============================================================================ -->
+    <div id="premium-preloader">
+      <style>
+        #premium-preloader {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background: radial-gradient(circle at center, #001f3f 0%, #000c1a 100%);
+          z-index: 999999;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          transition: opacity 0.6s cubic-bezier(0.25, 1, 0.5, 1), visibility 0.6s;
+          overflow: hidden;
+          color: #ffffff;
+        }
+
+        #premium-preloader.fade-out {
+          opacity: 0;
+          visibility: hidden;
+        }
+
+        /* Floating light particles background */
+        .particles-container {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          pointer-events: none;
+        }
+
+        .preloader-particle {
+          position: absolute;
+          background: rgba(234, 88, 12, 0.35); /* Brand orange accent */
+          border-radius: 50%;
+          pointer-events: none;
+          animation: preloaderFloatUp 6s infinite linear;
+        }
+
+        @keyframes preloaderFloatUp {
+          0% {
+            transform: translateY(105vh) scale(0.5);
+            opacity: 0;
+          }
+          10% {
+            opacity: 0.8;
+          }
+          90% {
+            opacity: 0.8;
+          }
+          100% {
+            transform: translateY(-5vh) scale(1.2);
+            opacity: 0;
+          }
+        }
+
+        /* Central branding */
+        .preloader-main {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          position: relative;
+          z-index: 10;
+        }
+
+        .preloader-logo-container {
+          position: relative;
+          width: 120px;
+          height: 120px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-bottom: 24px;
+        }
+
+        .preloader-glowing-ring {
+          position: absolute;
+          width: 100%;
+          height: 100%;
+          border-radius: 50%;
+          border: 2px solid transparent;
+          border-top-color: #ea580c; /* brand orange */
+          border-bottom-color: rgba(234, 88, 12, 0.2);
+          animation: preloaderSpin 1.5s linear infinite;
+        }
+
+        .preloader-glowing-ring.ring-reverse {
+          width: 85%;
+          height: 85%;
+          border-top-color: transparent;
+          border-bottom-color: transparent;
+          border-left-color: #ffffff;
+          border-right-color: rgba(255, 255, 255, 0.15);
+          animation: preloaderSpinReverse 2s linear infinite;
+        }
+
+        @keyframes preloaderSpin {
+          0% { transform: rotate(0deg); }
+          100% { transform: rotate(360deg); }
+        }
+
+        @keyframes preloaderSpinReverse {
+          0% { transform: rotate(360deg); }
+          100% { transform: rotate(0deg); }
+        }
+
+        .preloader-logo-emblem {
+          position: relative;
+          width: 72px;
+          height: 72px;
+          background: #ea580c; /* brand orange */
+          border-radius: 20px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          box-shadow: 0 0 25px rgba(234, 88, 12, 0.6);
+          animation: preloaderPulseLogo 2s ease-in-out infinite;
+        }
+
+        .preloader-logo-emblem span {
+          font-family: "Outfit", "Inter", sans-serif;
+          font-size: 30px;
+          font-weight: 800;
+          color: #ffffff;
+          letter-spacing: -0.5px;
+          text-shadow: 0 2px 4px rgba(0,0,0,0.25);
+        }
+
+        @keyframes preloaderPulseLogo {
+          0%, 100% {
+            transform: scale(1);
+            box-shadow: 0 0 25px rgba(234, 88, 12, 0.6);
+          }
+          50% {
+            transform: scale(1.04);
+            box-shadow: 0 0 40px rgba(234, 88, 12, 0.9);
+          }
+        }
+
+        .preloader-text-container {
+          text-align: center;
+          margin-bottom: 32px;
+        }
+
+        .preloader-brand-title {
+          font-family: "Outfit", "Inter", sans-serif;
+          font-size: 24px;
+          font-weight: 800;
+          letter-spacing: 0.5px;
+          color: #ffffff;
+          margin: 0 0 6px 0;
+          text-transform: uppercase;
+          animation: preloaderFadeInDown 0.8s cubic-bezier(0.25, 1, 0.5, 1) both;
+        }
+
+        .preloader-brand-subtitle {
+          font-family: "Inter", sans-serif;
+          font-size: 12px;
+          font-weight: 700;
+          color: #ea580c; /* Brand orange accent */
+          letter-spacing: 1.5px;
+          margin: 0;
+          text-transform: uppercase;
+          animation: preloaderFadeInUp 0.8s cubic-bezier(0.25, 1, 0.5, 1) both;
+          animation-delay: 0.2s;
+        }
+
+        @keyframes preloaderFadeInDown {
+          0% {
+            opacity: 0;
+            transform: translateY(-15px);
+          }
+          100% {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        @keyframes preloaderFadeInUp {
+          0% {
+            opacity: 0;
+            transform: translateY(15px);
+          }
+          100% {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        /* Authorized partners section */
+        .preloader-partners {
+          margin-top: 16px;
+          text-align: center;
+          animation: preloaderFadeIn 1s ease both;
+          animation-delay: 0.4s;
+          width: 100%;
+          max-width: 320px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        }
+
+        .preloader-partners-heading {
+          font-family: "Inter", sans-serif;
+          font-size: 10px;
+          font-weight: 700;
+          color: #64748b; /* slate-500 */
+          letter-spacing: 2px;
+          text-transform: uppercase;
+          margin-bottom: 12px;
+        }
+
+        .preloader-partners-track {
+          position: relative;
+          height: 48px;
+          width: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .preloader-partner-item {
+          position: absolute;
+          opacity: 0;
+          transform: translateY(10px) scale(0.95);
+          transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          pointer-events: none;
+          background: rgba(255, 255, 255, 0.03);
+          border: 1px solid rgba(255, 255, 255, 0.08);
+          padding: 6px 16px;
+          border-radius: 9999px;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+        }
+
+        .preloader-partner-item.active {
+          opacity: 1;
+          transform: translateY(0) scale(1);
+          pointer-events: auto;
+        }
+
+        .preloader-partner-item img {
+          height: 20px;
+          max-width: 90px;
+          object-fit: contain;
+          border-radius: 4px;
+          background: #ffffff;
+          padding: 2px 4px;
+        }
+
+        .preloader-partner-item span {
+          font-family: "Outfit", "Inter", sans-serif;
+          font-size: 11px;
+          font-weight: 700;
+          color: #f1f5f9;
+        }
+
+        @keyframes preloaderFadeIn {
+          0% { opacity: 0; }
+          100% { opacity: 1; }
+        }
+
+        /* Adjustments for smaller mobile screens */
+        @media (max-width: 480px) {
+          .preloader-brand-title {
+            font-size: 20px;
+          }
+          .preloader-brand-subtitle {
+            font-size: 11px;
+          }
+          .preloader-logo-container {
+            width: 100px;
+            height: 100px;
+          }
+          .preloader-logo-emblem {
+            width: 60px;
+            height: 60px;
+          }
+          .preloader-logo-emblem span {
+            font-size: 24px;
+          }
+        }
+      </style>
+
+      <!-- Floating particle system -->
+      <div class="particles-container">
+        <div class="preloader-particle" style="left: 10%; width: 4px; height: 4px; animation-duration: 5s; animation-delay: 0s;"></div>
+        <div class="preloader-particle" style="left: 25%; width: 6px; height: 6px; animation-duration: 7s; animation-delay: 1.5s; background: rgba(255,255,255,0.25);"></div>
+        <div class="preloader-particle" style="left: 40%; width: 3px; height: 3px; animation-duration: 4s; animation-delay: 0.5s;"></div>
+        <div class="preloader-particle" style="left: 55%; width: 5px; height: 5px; animation-duration: 6s; animation-delay: 2s;"></div>
+        <div class="preloader-particle" style="left: 70%; width: 7px; height: 7px; animation-duration: 8s; animation-delay: 1s; background: rgba(255,255,255,0.2);"></div>
+        <div class="preloader-particle" style="left: 85%; width: 4px; height: 4px; animation-duration: 5s; animation-delay: 2.5s;"></div>
+        <div class="preloader-particle" style="left: 15%; width: 5px; height: 5px; animation-duration: 6.5s; animation-delay: 3s;"></div>
+        <div class="preloader-particle" style="left: 48%; width: 4px; height: 4px; animation-duration: 5.5s; animation-delay: 3.5s; background: rgba(255,255,255,0.35);"></div>
+        <div class="preloader-particle" style="left: 63%; width: 3px; height: 3px; animation-duration: 4.5s; animation-delay: 1.8s;"></div>
+        <div class="preloader-particle" style="left: 92%; width: 6px; height: 6px; animation-duration: 7.5s; animation-delay: 0.8s;"></div>
+      </div>
+
+      <!-- Main center element -->
+      <div class="preloader-main">
+        <!-- Logo Emblem with Dual Orbit Rings -->
+        <div class="preloader-logo-container">
+          <div class="preloader-glowing-ring"></div>
+          <div class="preloader-glowing-ring ring-reverse"></div>
+          <div class="preloader-logo-emblem">
+            <svg viewBox="0 0 24 24" style="width: 40px; height: 40px; color: #ffffff;" fill="none" stroke="currentColor" stroke-width="2.5">
+              <path d="M12 2L2 7l10 5 10-5-10-5z" fill="rgba(255,255,255,0.15)" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M2 17l10 5 10-5" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M2 12l10 5 10-5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </div>
+        </div>
+
+        <!-- Typography Branding Section -->
+        <div class="preloader-text-container">
+          <h1 class="preloader-brand-title">Om Shringar Tirpal Store</h1>
+          <p class="preloader-brand-subtitle">Premium Tarpaulin & Plastic Sheets</p>
+        </div>
+
+        <!-- Authorized Trading Partner Carousel -->
+        <div class="preloader-partners">
+          <span class="preloader-partners-heading">Trading Partner Of</span>
+          <div class="preloader-partners-track">
+            <div class="preloader-partner-item active">
+              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQhYupOFug5Yj8fRM0Q74ENy_gKWvv5Dy6M9SlsFfbaJTHeWNACb06XwCwy&s=10" alt="Shalimar" />
+              <span>Shalimar</span>
+            </div>
+            <div class="preloader-partner-item">
+              <img src="https://plain-apac-prod-public.komododecks.com/202607/03/oDtfecDE2xAWZLABiKFx/image.jpg" alt="Greatpaulin" />
+              <span>Greatpaulin</span>
+            </div>
+            <div class="preloader-partner-item">
+              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQeMUnP6Z2TnQ59-T8IoNdUnuS71PtlmQcf7bQIttKIS6MUbQv_4_OmhU4&s=10" alt="Silpaulin" />
+              <span>Silpaulin</span>
+            </div>
+            <div class="preloader-partner-item">
+              <img src="https://plain-apac-prod-public.komododecks.com/202607/03/nH1liaiAJsZ72n7WVMa5/image.jpg" alt="Capstone Cheetah" />
+              <span>Cheetah</span>
+            </div>
+            <div class="preloader-partner-item">
+              <img src="https://media.licdn.com/dms/image/v2/C560BAQFljvsCvp1y2w/company-logo_200_200/company-logo_200_200/0/1630584191714/vision_plastics_inc_logo?e=2147483647&v=beta&t=D5xt-vVoXRwqmnW2EX33_rczHrjV-GGGW1AxWZXcZmE" alt="Vision" />
+              <span>Vision</span>
+            </div>
+            <div class="preloader-partner-item">
+              <img src="https://plain-apac-prod-public.komododecks.com/202607/03/m7zkbhNPvoPwDA32B9BY/image.jpg" alt="Goldpaulin" />
+              <span>Goldpaulin</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Script to handle brand logo carousel cycling and smart transition timeout -->
+    <script>
+      (function() {
+        var startTime = Date.now();
+        var isPageLoaded = false;
+        
+        // Partner logos carousel logic
+        var currentBrand = 0;
+        var brandItems = document.querySelectorAll('.preloader-partner-item');
+        var carouselInterval;
+        
+        if (brandItems.length > 0) {
+          carouselInterval = setInterval(function() {
+            brandItems[currentBrand].classList.remove('active');
+            currentBrand = (currentBrand + 1) % brandItems.length;
+            brandItems[currentBrand].classList.add('active');
+          }, 1800);
+        }
+
+        // Action to trigger preloader fade out and complete DOM removal
+        function hidePreloader() {
+          var preloader = document.getElementById('premium-preloader');
+          if (preloader) {
+            preloader.classList.add('fade-out');
+            if (carouselInterval) clearInterval(carouselInterval);
+            
+            // Clean up from DOM once transition completes
+            setTimeout(function() {
+              preloader.remove();
+            }, 600);
+          }
+        }
+
+        // Logic to coordinate load event and 4.5s timer
+        function checkAndHide() {
+          var elapsedTime = Date.now() - startTime;
+          var minDuration = 4500; // Keep showing for at least 4500ms
+          
+          if (elapsedTime >= minDuration) {
+            hidePreloader();
+          } else {
+            setTimeout(hidePreloader, minDuration - elapsedTime);
+          }
+        }
+
+        // Normal full load completion
+        window.addEventListener('load', function() {
+          isPageLoaded = true;
+          checkAndHide();
+        });
+
+        // Fail-safe backup trigger (maximum 8 seconds load delay safeguard)
+        setTimeout(function() {
+          if (!isPageLoaded) {
+            hidePreloader();
+          }
+        }, 8000);
+      })();
+    </script>
+
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>

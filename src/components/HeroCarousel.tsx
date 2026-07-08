@@ -38,7 +38,7 @@ const HERO_SLIDES: Slide[] = [
     }
   },
   {
-    image: "https://plain-apac-prod-public.komododecks.com/202607/05/7O9jo950h35goeKsP6Gr/image.png",
+    image: "https://plain-apac-prod-public.komododecks.com/202607/03/eckT9KEMGbavrebTJwPJ/image.png",
     en: {
       title: "Construction Black Polythene Roll",
       subtitle: "Heavy-duty foundation damp proofing & barrier"
@@ -147,7 +147,7 @@ export default function HeroCarousel({ currentLanguage, onImageChange }: HeroCar
 
   return (
     <div
-      className="my-5 relative rounded-2xl overflow-hidden border border-white/10 aspect-video shadow-xl bg-slate-950 group"
+      className="my-5 relative rounded-2xl overflow-hidden border border-white/10 aspect-[4/3] shadow-xl bg-slate-950 group"
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
