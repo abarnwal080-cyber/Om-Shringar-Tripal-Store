@@ -38,7 +38,7 @@ export const BUSINESS_INFO = {
   supportBadge: "24×7 Customer Support",
   address: "Om Shringar Tirpal Store, Meetha Hatti, Kazi Bazar, Maharajganj, Siwan, Bihar – 841238",
   landmark: "Near Kazi Bazar, Meetha Hatti Road",
-  googleMapsUrl: "https://share.google/krl827CFj5ilrGzOh",
+  googleMapsUrl: "https://share.google/NKvH5pnab2Z7fFKp2",
   hours: "Monday – Saturday: 6:00 AM – 9:00 PM",
 };
 

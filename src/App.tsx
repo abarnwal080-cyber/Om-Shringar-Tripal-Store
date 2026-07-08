@@ -304,8 +304,8 @@ export default function App() {
                 </div>
                 <h2 className="text-slate-800 text-sm sm:text-base md:text-lg font-extrabold leading-snug">
                   {lang === "en" 
-                    ? "Best Rate Provider Dealer of Bihar for All Plastic Products & Waterproof Tarpaulins" 
-                    : "बिहार में सभी प्लास्टिक उत्पादों और वाटरप्रूफ तिरपाल के सर्वश्रेष्ठ एवं सबसे कम रेट वाले डीलर"}
+                    ? "Best Rate Provider Dealer of Bihar for All Plastic Sheets & Waterproof Tarpaulins" 
+                    : "बिहार में सभी प्लास्टिक शीट्स और वाटरप्रूफ तिरपाल के सर्वश्रेष्ठ एवं सबसे कम रेट वाले डीलर"}
                 </h2>
                 <p className="text-[10px] sm:text-xs text-slate-600 font-mono">
                   {lang === "en" 
@@ -1045,24 +1045,12 @@ export default function App() {
                 {/* We can use an iframe to embed a real live Google Maps iframe or OpenStreetMap! Let's embed a real Google Map for মহারাজগঞ্জ (Maharajganj) Siwan, Bihar */}
                 <iframe
                   title="Om Shringar Tirpal Store Google Maps Location"
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d14331.066068212629!2d84.47547081734914!2d26.113038665977926!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3992faf453beab69%3A0xe21f5fa6498ee3e8!2sMaharajganj%2C%20Bihar%20841238!5e0!3m2!1sen!2sin!4v1719999999999!5m2!1sen!2sin"
+                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d223.91629173090806!2d84.50128406584182!3d26.10999340821257!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3992ef4fff9f0e1d%3A0xa7ddfd61780664c3!2sOm%20Shringar%20Tirpal%20Store!5e0!3m2!1sen!2sin!4v1783526928179!5m2!1sen!2sin"
                   className="w-full h-full border-0"
                   allowFullScreen
                   loading="lazy"
-                  referrerPolicy="no-referrer-when-downgrade"
+                  referrerPolicy="strict-origin-when-cross-origin"
                 ></iframe>
-                
-                {/* Overlap Map Floating Badge */}
-                <div className="absolute top-4 left-4 bg-brand-blue-dark text-white p-3.5 rounded-2xl shadow-xl flex items-center gap-2.5 max-w-[280px] backdrop-blur-md border border-white/10">
-                  <div className="w-8 h-8 rounded-full bg-brand-orange/20 text-brand-orange flex items-center justify-center">
-                    <MapPin className="w-4 h-4" />
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-xs font-display">Om Shringar Tirpal Store</h4>
-                    <p className="text-[10px] text-slate-300 mt-0.5 leading-tight">Meetha Hatti, Kazi Bazar Maharajganj, Siwan, Bihar 841238</p>
-                  </div>
-                </div>
-
               </div>
             </div>
 

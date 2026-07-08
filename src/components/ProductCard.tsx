@@ -1,6 +1,6 @@
 import { useState, useEffect, MouseEvent } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { ChevronLeft, ChevronRight, Phone, MessageSquare, CheckCircle2, ArrowRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, Phone, MessageSquare, CheckCircle2, ArrowRight, Share2 } from "lucide-react";
 import { Product, BUSINESS_INFO } from "../data";
 
 interface ProductCardProps {
@@ -11,6 +11,7 @@ interface ProductCardProps {
 export default function ProductCard({ product, onEnquire }: ProductCardProps) {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
+  const [showShareFeedback, setShowShareFeedback] = useState(false);
 
   useEffect(() => {
     if (product.images.length <= 1 || isHovered) return;
@@ -176,13 +177,63 @@ export default function ProductCard({ product, onEnquire }: ProductCardProps) {
         </div>
 
         {/* Buttons Action Bar */}
-        <div className="mt-auto pt-4 border-t border-slate-100">
+        <div className="mt-auto pt-4 border-t border-slate-100 flex items-center gap-3">
           <button
             onClick={() => onEnquire(product.name)}
-            className="w-full flex items-center justify-center gap-2 py-3.5 px-4 rounded-full bg-gradient-to-r from-orange-600 to-amber-500 hover:from-orange-700 hover:to-amber-600 text-white font-extrabold text-sm transition-all duration-200 shadow-md hover:scale-[1.01] active:scale-[0.98] cursor-pointer"
+            className="flex-1 flex items-center justify-center gap-2 py-3.5 px-4 rounded-full bg-gradient-to-r from-orange-600 to-amber-500 hover:from-orange-700 hover:to-amber-600 text-white font-extrabold text-sm transition-all duration-200 shadow-md hover:scale-[1.01] active:scale-[0.98] cursor-pointer"
           >
             <span>Enquire / Get Quote</span>
             <ArrowRight className="w-4 h-4" />
+          </button>
+
+          <button
+            onClick={async (e) => {
+              e.stopPropagation();
+              const shareText = `Check out *${product.name}* at *Om Shringar Tirpal Store*!\n\n${product.description}`;
+              const shareUrl = window.location.href;
+              const shareData = {
+                title: product.name,
+                text: `${product.name} at Om Shringar Tirpal Store.`,
+                url: shareUrl,
+              };
+
+              if (navigator.share) {
+                try {
+                  await navigator.share(shareData);
+                  return;
+                } catch (err) {
+                  console.log("Native share cancelled or failed:", err);
+                }
+              }
+
+              // Fallback: copy link and open WhatsApp
+              try {
+                await navigator.clipboard.writeText(`${shareText}\n\n${shareUrl}`);
+                setShowShareFeedback(true);
+                setTimeout(() => setShowShareFeedback(false), 2500);
+              } catch (clipErr) {
+                console.log("Clipboard failed:", clipErr);
+              }
+
+              const whatsappUrl = `https://api.whatsapp.com/send?text=${encodeURIComponent(`${shareText}\n\n${shareUrl}`)}`;
+              window.open(whatsappUrl, "_blank", "noopener,noreferrer");
+            }}
+            title="Share Product"
+            className="relative p-3.5 rounded-full border border-slate-200 hover:border-orange-500 hover:text-orange-600 text-slate-500 hover:bg-orange-50 transition-all duration-200 cursor-pointer shrink-0"
+          >
+            <Share2 className="w-5 h-5" />
+            <AnimatePresence>
+              {showShareFeedback && (
+                <motion.span
+                  initial={{ opacity: 0, y: 10, scale: 0.9 }}
+                  animate={{ opacity: 1, y: -45, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  className="absolute left-1/2 -translate-x-1/2 bg-slate-900 text-white text-[10px] font-black py-1.5 px-3 rounded-lg shadow-xl whitespace-nowrap z-30 border border-slate-800"
+                >
+                  Link copied! Opened WhatsApp
+                </motion.span>
+              )}
+            </AnimatePresence>
           </button>
         </div>
       </div>

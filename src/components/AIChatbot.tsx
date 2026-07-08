@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { MessageSquare, X, Send, Phone, MapPin, Award, Check, Sparkles, Languages } from "lucide-react";
+import { MessageSquare, X, Send, Phone, MapPin, Award, Check, Sparkles, Languages, Bot } from "lucide-react";
 import { BUSINESS_INFO, PRODUCTS, FAQS } from "../data";
 import { TRANSLATIONS } from "../translations";
 
@@ -115,6 +115,12 @@ export default function AIChatbot({ currentLanguage = "en", onLanguageChange }: 
         : `👤 The proprietor is Mr. Vinod Kumar Varnawal. The store was established in 2000 (previously widely known as Goyal Traders). He has been serving the farming and construction sectors for 24+ successful years.`;
     }
 
+    if (q.includes("time") || q.includes("hour") || q.includes("open") || q.includes("close") || q.includes("sunday") || q.includes("schedule") || q.includes("समय") || q.includes("खुलने") || q.includes("कब") || q.includes("छुट्टी") || q.includes("रविवार")) {
+      return lang === "hi" || isHindiUser
+        ? `🕒 स्टोर का समय:\n\n• सोमवार से शनिवार: सुबह 6:00 बजे से रात 9:00 बजे तक।\n• रविवार: बंद रहता है (लेकिन पहले से बुक किए गए भारी थोक आर्डर्स की डिलीवरी के लिए विशेष व्यवस्था की जा सकती है, कृपया श्री विनोद वर्णवाल जी से संपर्क करें)।`
+        : `🕒 Store Timings:\n\n• Monday to Saturday: 6:00 AM to 9:00 PM\n• Sunday: Closed (However, urgent wholesale bulk dispatches can be arranged on special request by calling Mr. Vinod Varnawal directly).`;
+    }
+
     // Default fallback based on language
     return lang === "hi" || isHindiUser
       ? `🙏 क्षमा करें, मैं पूरी तरह समझ नहीं पाया। कृपया नीचे दिए गए विकल्पों में से किसी एक पर क्लिक करें, या सीधे +91 9852076197 पर कॉल करें।\n\nविकल्प:\n1. स्टोर का पता (Location)\n2. उपलब्ध साइज़ (Sizes)\n3. थोक दाम (Prices)\n4. ब्रांड सूची (Brands)`
@@ -132,19 +138,21 @@ export default function AIChatbot({ currentLanguage = "en", onLanguageChange }: 
     <>
       {/* FLOATING ACTION BUTTON - ALIGNED TO LEFT */}
       <div className="fixed left-6 bottom-6 z-50 flex flex-col items-start gap-3">
-        {/* Chat Toggle Button */}
+        {/* Chat Toggle Button with Bot Icon & Pulse Rings */}
         <button
           onClick={() => setIsOpen(!isOpen)}
-          className="bg-orange-600 hover:bg-orange-700 text-white w-14 h-14 rounded-full flex items-center justify-center shadow-2xl hover:scale-110 active:scale-95 transition-all duration-300 border border-orange-500/20 cursor-pointer relative"
+          className="bg-gradient-to-tr from-orange-500 to-amber-600 hover:from-orange-600 hover:to-amber-700 text-white w-14 h-14 rounded-full flex items-center justify-center shadow-2xl hover:scale-110 active:scale-95 transition-all duration-300 border border-white/20 cursor-pointer relative group"
           aria-label="Toggle AI Assistant"
         >
           {isOpen ? (
             <X className="w-6 h-6 text-white" />
           ) : (
             <>
-              <MessageSquare className="w-6 h-6 text-white" />
-              <span className="absolute -top-1.5 -right-1.5 bg-green-500 text-[10px] font-black px-1.5 py-0.5 rounded-full border border-white uppercase tracking-widest text-white animate-bounce">
-                AI
+              {/* Dynamic pulse background ring */}
+              <span className="absolute inset-0 rounded-full bg-orange-500/30 animate-pulse scale-105 pointer-events-none group-hover:scale-110 transition-transform" />
+              <Bot className="w-7 h-7 text-white animate-pulse" />
+              <span className="absolute -top-1.5 -right-1.5 bg-green-500 text-[9px] font-black px-1.5 py-0.5 rounded-full border border-white uppercase tracking-widest text-white">
+                ASSISTANT
               </span>
             </>
           )}

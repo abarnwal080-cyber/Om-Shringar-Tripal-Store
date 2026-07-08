@@ -34,7 +34,11 @@ export default function BrandCarousel() {
                 alt={`${brand.name} official logo`}
                 loading="lazy"
                 referrerPolicy="no-referrer"
-                className="max-h-14 max-w-full object-contain filter contrast-125 hover:brightness-105 transition-all duration-300"
+                className={`max-w-full object-contain filter contrast-125 hover:brightness-105 transition-all duration-300 ${
+                  brand.name === "Capstone Cheetah"
+                    ? "max-h-24 scale-[2.1] object-cover rounded-xl"
+                    : "max-h-14"
+                }`}
               />
               
               {/* Brand tooltip */}
