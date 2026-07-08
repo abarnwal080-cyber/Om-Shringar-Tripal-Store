@@ -1,16 +1,33 @@
-import { useState, useEffect, ChangeEvent, FormEvent } from "react";
+import { useState, useEffect, useRef, FormEvent } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { Send, CheckCircle, MapPin, Sparkles, Database, LogOut } from "lucide-react";
+import { 
+  Send, 
+  CheckCircle, 
+  Sparkles, 
+  ArrowRight, 
+  ArrowLeft, 
+  User, 
+  Phone, 
+  Layers, 
+  Maximize2, 
+  MessageSquare,
+  HelpCircle,
+  FileText,
+  MessageCircle,
+  Package
+} from "lucide-react";
 import { PRODUCTS } from "../data";
-import { initAuth, googleSignIn, logout, logEnquiryToSheet, EnquiryData } from "../lib/googleSheets";
-import { User } from "firebase/auth";
 
 interface InquiryFormProps {
   prefilledProduct: string;
   onClearPrefill: () => void;
+  currentLanguage?: "en" | "hi";
 }
 
-export default function InquiryForm({ prefilledProduct, onClearPrefill }: InquiryFormProps) {
+export default function InquiryForm({ prefilledProduct, onClearPrefill, currentLanguage = "en" }: InquiryFormProps) {
+  const [step, setStep] = useState(1);
+  const [direction, setDirection] = useState(1); // 1 for next, -1 for previous
+  
   const [formData, setFormData] = useState({
     name: "",
     phone: "",
@@ -21,13 +38,9 @@ export default function InquiryForm({ prefilledProduct, onClearPrefill }: Inquir
   });
 
   const [isSubmitted, setIsSubmitted] = useState(false);
-  
-  // Auth state
-  const [user, setUser] = useState<User | null>(null);
-  const [token, setToken] = useState<string | null>(null);
-  const [isLoggingIn, setIsLoggingIn] = useState(false);
-  const [isSubmittingSheet, setIsSubmittingSheet] = useState(false);
-  const [spreadsheetUrl, setSpreadsheetUrl] = useState<string | null>(null);
+
+  // Focus input automatically on step changes
+  const inputRef = useRef<HTMLInputElement | HTMLTextAreaElement>(null);
 
   useEffect(() => {
     if (prefilledProduct) {
@@ -35,79 +48,29 @@ export default function InquiryForm({ prefilledProduct, onClearPrefill }: Inquir
     }
   }, [prefilledProduct]);
 
-  // Handle Firebase Auth listening
   useEffect(() => {
-    const unsubscribe = initAuth(
-      (u, t) => {
-        setUser(u);
-        setToken(t);
-      },
-      () => {
-        setUser(null);
-        setToken(null);
+    // Small timeout to let step slide in before focusing
+    const timer = setTimeout(() => {
+      if (inputRef.current) {
+        inputRef.current.focus();
       }
-    );
-    return () => {
-      if (unsubscribe) unsubscribe();
-    };
-  }, []);
+    }, 300);
+    return () => clearTimeout(timer);
+  }, [step]);
 
-  const handleChange = (e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setFormData((prev) => ({ ...prev, [name]: value }));
+  const handleNext = () => {
+    // Validation before going to next step
+    if (step === 1 && !formData.name.trim()) return;
+    if (step === 2 && !formData.phone.trim()) return;
+    if (step === 3 && !formData.product) return;
+
+    setDirection(1);
+    setStep((prev) => prev + 1);
   };
 
-  const handleLogin = async () => {
-    setIsLoggingIn(true);
-    try {
-      const res = await googleSignIn();
-      if (res) {
-        setUser(res.user);
-        setToken(res.accessToken);
-      }
-    } catch (error) {
-      console.error("Sign in failed:", error);
-    } finally {
-      setIsLoggingIn(false);
-    }
-  };
-
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
-    if (!formData.name || !formData.phone) {
-      alert("Please fill in your Name and Phone Number.");
-      return;
-    }
-
-    if (!token) {
-      alert("Please sign in with Google first to authorize logging to Google Sheets.");
-      return;
-    }
-
-    setIsSubmittingSheet(true);
-    try {
-      const submissionData: EnquiryData = {
-        name: formData.name,
-        phone: formData.phone,
-        product: formData.product,
-        size: formData.size,
-        type: formData.type,
-        message: formData.message,
-      };
-
-      const result = await logEnquiryToSheet(submissionData, token);
-      if (result.success) {
-        setSpreadsheetUrl(result.spreadsheetUrl || null);
-        setIsSubmitted(true);
-      } else {
-        alert("Could not save to Google Sheet. Please check your authorization or internet connection.");
-      }
-    } catch (error) {
-      console.error("Sheet writing error:", error);
-      alert("An error occurred while logging your inquiry. Please try again.");
-    } finally {
-      setIsSubmittingSheet(false);
-    }
+  const handlePrev = () => {
+    setDirection(-1);
+    setStep((prev) => Math.max(1, prev - 1));
   };
 
   const handleReset = () => {
@@ -119,286 +82,508 @@ export default function InquiryForm({ prefilledProduct, onClearPrefill }: Inquir
       type: "Wholesale",
       message: "",
     });
+    setStep(1);
     setIsSubmitted(false);
     onClearPrefill();
   };
 
+  // WhatsApp formatted text generation
+  const getWhatsAppLink = () => {
+    const text = currentLanguage === "en" 
+      ? `*New Tirpal/Sheet Inquiry* 📦\n\n*Name:* ${formData.name}\n*Phone:* ${formData.phone}\n*Product:* ${formData.product}\n*Size/GSM:* ${formData.size || "Standard"}\n*Inquiry Type:* ${formData.type}\n*Message/Location:* ${formData.message || "Not provided"}`
+      : `*नया तिरपाल/शीट पूछताछ* 📦\n\n*नाम:* ${formData.name}\n*फ़ोन:* ${formData.phone}\n*उत्पाद:* ${formData.product}\n*साइज़/GSM:* ${formData.size || "स्टैंडर्ड"}\n*पूछताछ टाइप:* ${formData.type === "Wholesale" ? "थोक (Wholesale)" : "खुदरा (Retail)"}\n*मैसेज/लोकेशन:* ${formData.message || "उपलब्ध नहीं"}`;
+
+    return `https://wa.me/919852076197?text=${encodeURIComponent(text)}`;
+  };
+
+  const handleWhatsAppRedirect = () => {
+    // Open the WhatsApp URL in a new tab
+    window.open(getWhatsAppLink(), "_blank");
+    // Show success view
+    setIsSubmitted(true);
+  };
+
+  // Text translations
+  const t = {
+    title: currentLanguage === "en" ? "Conversational Quote Assistant" : "इंटरेक्टिव रेट पूछताछ सहायक",
+    subtitle: currentLanguage === "en" 
+      ? "Answer simple questions to get your direct factory rates on WhatsApp." 
+      : "व्हाट्सएप पर सीधे फैक्ट्री थोक रेट जानने के लिए आसान सवालों के जवाब दें।",
+    step: currentLanguage === "en" ? "Question" : "सवाल",
+    of: currentLanguage === "en" ? "of" : "का",
+    next: currentLanguage === "en" ? "Next" : "आगे बढ़ें",
+    prev: currentLanguage === "en" ? "Back" : "पीछे",
+    submitWhatsApp: currentLanguage === "en" ? "Send Inquiry via WhatsApp" : "व्हाट्सएप पर पूछताछ भेजें",
+    
+    // Step 1: Name
+    q1Title: currentLanguage === "en" ? "What is your full name?" : "आपका शुभ नाम क्या है?",
+    q1Sub: currentLanguage === "en" ? "We will address you with this name." : "हम इसी नाम से आपसे बात करेंगे।",
+    q1Placeholder: currentLanguage === "en" ? "Type your name here..." : "यहाँ अपना नाम लिखें...",
+
+    // Step 2: Phone
+    q2Title: currentLanguage === "en" ? "What is your mobile/phone number?" : "आपका मोबाइल नंबर क्या है?",
+    q2Sub: currentLanguage === "en" ? "To share price sheets and delivery confirmation." : "रेट लिस्ट और डिलीवरी की जानकारी भेजने के लिए।",
+    q2Placeholder: currentLanguage === "en" ? "Type 10-digit mobile number..." : "१० अंकों का मोबाइल नंबर लिखें...",
+
+    // Step 3: Product
+    q3Title: currentLanguage === "en" ? "Which product do you need?" : "आपको किस उत्पाद की आवश्यकता है?",
+    q3Sub: currentLanguage === "en" ? "Select the closest category of plastic/tarpaulin sheet." : "प्लास्टिक/तिरपाल शीट की श्रेणी चुनें।",
+
+    // Step 4: Size & GSM
+    q4Title: currentLanguage === "en" ? "What size or thickness (GSM) do you need?" : "आपको किस साइज़ या मोटाई (GSM) की जरूरत है?",
+    q4Sub: currentLanguage === "en" ? "e.g., 15×12 ft, 30-yard black roll, or 250 GSM" : "उदा. १५×१२ फीट, ३० मीटर का काला रोल, या २५० GSM",
+    q4Placeholder: currentLanguage === "en" ? "Enter dimensions or thickness specifications..." : "साइज़ या मोटाई का विवरण लिखें...",
+
+    // Step 5: Type
+    q5Title: currentLanguage === "en" ? "Choose your order requirement type" : "अपनी आवश्यकता का प्रकार चुनें",
+    q5Sub: currentLanguage === "en" ? "Wholesale orders enjoy direct factory warehouse pricing." : "थोक आर्डरों पर सीधे फैक्ट्री गोदाम के रेट मिलते हैं।",
+
+    // Step 6: Message / Location
+    q6Title: currentLanguage === "en" ? "Any special requests or delivery location?" : "कोई विशेष निर्देश या डिलीवरी का स्थान?",
+    q6Sub: currentLanguage === "en" ? "Tell us where you want delivery (e.g. Maharajganj, Siwan, Gopalganj)" : "सीवान और आसपास के क्षेत्रों में जहां भी आपको डिलीवरी चाहिए, लिखें।",
+    q6Placeholder: currentLanguage === "en" ? "Type location, landmark or specific questions here..." : "डिलीवरी का पता या अपना सवाल यहाँ लिखें...",
+
+    // Summary Step 7
+    summaryTitle: currentLanguage === "en" ? "Review Your Enquiry" : "अपनी पूछताछ की समीक्षा करें",
+    summarySub: currentLanguage === "en" ? "Everything looks perfect! Click below to send directly to our WhatsApp." : "सब कुछ सही है! हमारे व्हाट्सएप पर सीधे भेजने के लिए नीचे क्लिक करें।",
+  };
+
+  const stepsCount = 7;
+
+  // Slide transition animation variants
+  const slideVariants = {
+    enter: (dir: number) => ({
+      x: dir > 0 ? 80 : -80,
+      opacity: 0,
+    }),
+    center: {
+      x: 0,
+      opacity: 1,
+      transition: {
+        x: { type: "spring", stiffness: 350, damping: 30 },
+        opacity: { duration: 0.2 }
+      }
+    },
+    exit: (dir: number) => ({
+      x: dir > 0 ? -80 : 80,
+      opacity: 0,
+      transition: {
+        x: { type: "spring", stiffness: 350, damping: 30 },
+        opacity: { duration: 0.2 }
+      }
+    })
+  };
+
   return (
-    <div id="enquire-section" className="w-full">
-      <AnimatePresence mode="wait">
+    <div id="enquire-section" className="w-full max-w-2xl mx-auto">
+      {/* Dynamic Header progress indicator */}
+      <div className="mb-6">
+        <div className="flex justify-between items-center text-xs font-mono font-bold text-slate-400 mb-2">
+          <span className="flex items-center gap-1.5 text-orange-600 uppercase">
+            <Sparkles className="w-3.5 h-3.5 animate-pulse" />
+            {t.title}
+          </span>
+          <span>
+            {isSubmitted ? "Completed" : `${t.step} ${step} ${t.of} ${stepsCount}`}
+          </span>
+        </div>
+        
+        {/* Animated Progress Bar */}
+        <div className="w-full h-1.5 bg-slate-100 rounded-full overflow-hidden">
+          <motion.div 
+            className="h-full bg-gradient-to-r from-orange-500 to-amber-500 rounded-full"
+            initial={{ width: "0%" }}
+            animate={{ width: isSubmitted ? "100%" : `${(step / stepsCount) * 100}%` }}
+            transition={{ duration: 0.3 }}
+          />
+        </div>
+      </div>
+
+      <AnimatePresence mode="wait" custom={direction}>
         {!isSubmitted ? (
-          <motion.form
-            onSubmit={handleSubmit}
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -20 }}
-            transition={{ duration: 0.5 }}
-            className="glass-panel p-6 sm:p-10 rounded-3xl border border-slate-100/50 shadow-xl relative overflow-hidden"
+          <motion.div
+            key={step}
+            custom={direction}
+            variants={slideVariants}
+            initial="enter"
+            animate="center"
+            exit="exit"
+            className="bg-white border border-slate-100/80 shadow-2xl rounded-3xl p-6 sm:p-10 relative overflow-hidden min-h-[380px] flex flex-col justify-between"
           >
-            {/* Top decorative gradient pill */}
-            <div className="absolute top-0 left-1/2 -translate-x-1/2 w-48 h-1 bg-gradient-to-r from-brand-orange to-brand-blue-royal rounded-b-full" />
+            {/* Ambient subtle back glow decorative element */}
+            <div className="absolute -right-24 -top-24 w-48 h-48 rounded-full bg-gradient-to-br from-orange-500/5 to-transparent pointer-events-none" />
 
-            <div className="flex items-center gap-2 bg-orange-50 text-brand-orange text-xs font-bold font-mono px-3.5 py-1.5 rounded-full w-fit mb-5">
-              <Sparkles className="w-3.5 h-3.5" />
-              <span>REQUEST WHOLESALE / BULK QUOTE</span>
-            </div>
-
-            <h3 className="text-2xl sm:text-3xl font-bold font-display text-brand-blue-dark tracking-tight mb-2">
-              Send an Enquiry
-            </h3>
-            <p className="text-slate-600 text-sm sm:text-base leading-relaxed mb-8">
-              Fill in the details below. All enquiries are automatically logged into your Google Sheets spreadsheet database in real-time.
-            </p>
-
-            <div className="space-y-6">
-              {/* Name & Phone */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                <div>
-                  <label htmlFor="name-input" className="block text-xs font-bold font-mono uppercase text-slate-500 mb-2">
-                    Your Full Name <span className="text-brand-orange">*</span>
-                  </label>
+            <div>
+              {/* STEP 1: NAME */}
+              {step === 1 && (
+                <div className="space-y-6">
+                  <div className="w-10 h-10 bg-orange-50 text-orange-600 rounded-xl flex items-center justify-center">
+                    <User className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight mb-2">
+                      {t.q1Title}
+                    </h3>
+                    <p className="text-slate-500 text-xs sm:text-sm font-semibold">
+                      {t.q1Sub}
+                    </p>
+                  </div>
                   <input
-                    id="name-input"
+                    ref={inputRef as any}
                     type="text"
-                    name="name"
-                    required
                     value={formData.name}
-                    onChange={handleChange}
-                    placeholder="Enter your name"
-                    className="w-full bg-slate-50/50 border border-slate-200 focus:border-brand-orange focus:ring-1 focus:ring-brand-orange rounded-xl px-4 py-3 text-sm font-medium transition-all duration-200 outline-none"
+                    onChange={(e) => setFormData((prev) => ({ ...prev, name: e.target.value }))}
+                    placeholder={t.q1Placeholder}
+                    className="w-full bg-slate-50 border border-slate-200 focus:border-orange-500 focus:ring-1 focus:ring-orange-500 rounded-xl px-4 py-3.5 text-base font-semibold outline-none transition-all"
+                    onKeyDown={(e) => e.key === "Enter" && formData.name.trim() && handleNext()}
                   />
-                </div>
-                <div>
-                  <label htmlFor="phone-input" className="block text-xs font-bold font-mono uppercase text-slate-500 mb-2">
-                    Phone Number <span className="text-brand-orange">*</span>
-                  </label>
-                  <input
-                    id="phone-input"
-                    type="tel"
-                    name="phone"
-                    required
-                    value={formData.phone}
-                    onChange={handleChange}
-                    placeholder="e.g. +91 9876543210"
-                    className="w-full bg-slate-50/50 border border-slate-200 focus:border-brand-orange focus:ring-1 focus:ring-brand-orange rounded-xl px-4 py-3 text-sm font-medium transition-all duration-200 outline-none"
-                  />
-                </div>
-              </div>
-
-              {/* Product Selection & Approximate Sizes */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
-                <div>
-                  <label htmlFor="product-select" className="block text-xs font-bold font-mono uppercase text-slate-500 mb-2">
-                    Select Product Category
-                  </label>
-                  <select
-                    id="product-select"
-                    name="product"
-                    value={formData.product}
-                    onChange={handleChange}
-                    className="w-full bg-slate-50/50 border border-slate-200 focus:border-brand-orange focus:ring-1 focus:ring-brand-orange rounded-xl px-4 py-3 text-sm font-medium transition-all duration-200 outline-none appearance-none"
-                  >
-                    <option value="">-- Choose Product --</option>
-                    {PRODUCTS.map((p) => (
-                      <option key={p.id} value={p.name}>
-                        {p.name}
-                      </option>
-                    ))}
-                    <option value="Custom Size Sheet">Other / Custom Plastic Sheet</option>
-                  </select>
-                </div>
-                <div>
-                  <label htmlFor="size-input" className="block text-xs font-bold font-mono uppercase text-slate-500 mb-2">
-                    Required Size (e.g. 15×10, 30 ft roll)
-                  </label>
-                  <input
-                    id="size-input"
-                    type="text"
-                    name="size"
-                    value={formData.size}
-                    onChange={handleChange}
-                    placeholder="Describe sizing needed"
-                    className="w-full bg-slate-50/50 border border-slate-200 focus:border-brand-orange focus:ring-1 focus:ring-brand-orange rounded-xl px-4 py-3 text-sm font-medium transition-all duration-200 outline-none"
-                  />
-                </div>
-              </div>
-
-              {/* Inquiry Type / Order Volume */}
-              <div>
-                <span className="block text-xs font-bold font-mono uppercase text-slate-500 mb-3">
-                  Inquiry Type & Order Volume
-                </span>
-                <div className="grid grid-cols-3 gap-3">
-                  {["Wholesale", "Retail", "Custom Spec"].map((opt) => (
-                    <button
-                      key={opt}
-                      type="button"
-                      onClick={() => setFormData((prev) => ({ ...prev, type: opt }))}
-                      className={`py-2.5 px-3 rounded-full border font-semibold text-xs md:text-sm text-center transition-all duration-200 cursor-pointer ${
-                        formData.type === opt
-                          ? "bg-brand-blue-dark text-white border-transparent shadow-sm"
-                          : "bg-white text-slate-600 border-slate-200 hover:bg-slate-50"
-                      }`}
-                    >
-                      {opt === "Wholesale" ? "📦 Wholesale" : opt === "Retail" ? "🛍️ Retail" : "🛠️ Custom"}
-                    </button>
-                  ))}
-                </div>
-              </div>
-
-              {/* Message */}
-              <div>
-                <label htmlFor="message-input" className="block text-xs font-bold font-mono uppercase text-slate-500 mb-2">
-                  Special Requirements / Delivery Destination Address
-                </label>
-                <textarea
-                  id="message-input"
-                  name="message"
-                  rows={4}
-                  value={formData.message}
-                  onChange={handleChange}
-                  placeholder="Tell us about your requirements (e.g. required thickness, delivery location in Siwan or surrounding regions)..."
-                  className="w-full bg-slate-50/50 border border-slate-200 focus:border-brand-orange focus:ring-1 focus:ring-brand-orange rounded-xl px-4 py-3 text-sm font-medium transition-all duration-200 outline-none resize-none"
-                />
-              </div>
-
-              {/* Google Sheets Status/Login Indicator */}
-              {!user ? (
-                <div className="bg-slate-50 border border-slate-200/60 p-5 rounded-2xl flex flex-col items-center text-center gap-3">
-                  <div className="text-xs font-bold font-mono text-slate-500 uppercase tracking-wide flex items-center gap-1.5">
-                    <Database className="w-4 h-4 text-slate-400" />
-                    Spreadsheet Authorization Required
-                  </div>
-                  <p className="text-xs text-slate-500 max-w-sm">
-                    Please sign in with Google to authorize recording enquiries to Google Sheets in your Google Drive.
-                  </p>
-                  <button
-                    type="button"
-                    onClick={handleLogin}
-                    disabled={isLoggingIn}
-                    className="w-full max-w-xs cursor-pointer flex items-center justify-center"
-                  >
-                    <div className="bg-white border border-slate-200 hover:border-slate-300 active:bg-slate-50 rounded-full px-5 py-2.5 flex items-center justify-center gap-3 transition-colors shadow-sm w-full">
-                      <div className="w-5 h-5 flex items-center justify-center flex-shrink-0">
-                        <svg version="1.1" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48" style={{ display: 'block' }}>
-                          <path fill="#EA4335" d="M24 9.5c3.54 0 6.71 1.22 9.21 3.6l6.85-6.85C35.9 2.38 30.47 0 24 0 14.62 0 6.51 5.38 2.56 13.22l7.98 6.19C12.43 13.72 17.74 9.5 24 9.5z"></path>
-                          <path fill="#4285F4" d="M46.98 24.55c0-1.57-.15-3.09-.38-4.55H24v9.02h12.94c-.58 2.96-2.26 5.48-4.78 7.18l7.73 6c4.51-4.18 7.09-10.36 7.09-17.65z"></path>
-                          <path fill="#FBBC05" d="M10.53 28.59c-.48-1.45-.76-2.99-.76-4.59s.27-3.14.76-4.59l-7.98-6.19C.92 16.46 0 20.12 0 24c0 3.88.92 7.54 2.56 10.78l7.97-6.19z"></path>
-                          <path fill="#34A853" d="M24 48c6.48 0 11.93-2.13 15.89-5.81l-7.73-6c-2.15 1.45-4.92 2.3-8.16 2.3-6.26 0-11.57-4.22-13.47-9.91l-7.98 6.19C6.51 42.62 14.62 48 24 48z"></path>
-                          <path fill="none" d="M0 0h48v48H0z"></path>
-                        </svg>
-                      </div>
-                      <span className="text-slate-700 font-semibold text-sm">
-                        {isLoggingIn ? "Connecting Google..." : "Connect with Google Sheets"}
-                      </span>
-                    </div>
-                  </button>
-                </div>
-              ) : (
-                <div className="bg-emerald-50/60 border border-emerald-100 p-4 rounded-2xl flex items-center justify-between">
-                  <div className="flex items-center gap-3">
-                    {user.photoURL ? (
-                      <img src={user.photoURL} alt={user.displayName || "User"} className="w-10 h-10 rounded-full border border-emerald-200" referrerPolicy="no-referrer" />
-                    ) : (
-                      <div className="w-10 h-10 rounded-full bg-emerald-100 flex items-center justify-center text-emerald-700 font-bold">
-                        {user.displayName?.[0] || "U"}
-                      </div>
-                    )}
-                    <div>
-                      <div className="text-[11px] text-slate-500 font-medium">Logged in via Google Sheet connector as</div>
-                      <div className="text-sm font-bold text-slate-800">{user.displayName || user.email}</div>
-                    </div>
-                  </div>
-                  <button
-                    type="button"
-                    onClick={() => logout()}
-                    className="text-xs font-bold font-mono text-rose-600 bg-rose-50 hover:bg-rose-100 border border-rose-100 px-3 py-1.5 rounded-full transition-colors cursor-pointer flex items-center gap-1"
-                  >
-                    <LogOut className="w-3.5 h-3.5" />
-                    Sign Out
-                  </button>
                 </div>
               )}
 
-              {/* Submit CTA */}
-              <button
-                type="submit"
-                disabled={!user || isSubmittingSheet}
-                className={`w-full flex items-center justify-center gap-2 py-4 px-6 rounded-full font-bold text-sm sm:text-base transition-all duration-200 shadow-md cursor-pointer ${
-                  !user 
-                    ? "bg-slate-200 text-slate-400 border border-slate-300 shadow-none cursor-not-allowed" 
-                    : "bg-orange-600 hover:bg-orange-700 text-white hover:shadow-lg active:scale-[0.99]"
-                }`}
-              >
-                {isSubmittingSheet ? (
-                  <>
-                    <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin mr-2" />
-                    Logging to Google Sheet...
-                  </>
-                ) : (
-                  <>
-                    <Send className="w-4 h-4" />
-                    Submit Enquiry to Google Sheet
-                  </>
-                )}
-              </button>
+              {/* STEP 2: MOBILE */}
+              {step === 2 && (
+                <div className="space-y-6">
+                  <div className="w-10 h-10 bg-orange-50 text-orange-600 rounded-xl flex items-center justify-center">
+                    <Phone className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight mb-2">
+                      {t.q2Title}
+                    </h3>
+                    <p className="text-slate-500 text-xs sm:text-sm font-semibold">
+                      {t.q2Sub}
+                    </p>
+                  </div>
+                  <input
+                    ref={inputRef as any}
+                    type="tel"
+                    value={formData.phone}
+                    onChange={(e) => setFormData((prev) => ({ ...prev, phone: e.target.value }))}
+                    placeholder={t.q2Placeholder}
+                    className="w-full bg-slate-50 border border-slate-200 focus:border-orange-500 focus:ring-1 focus:ring-orange-500 rounded-xl px-4 py-3.5 text-base font-semibold outline-none transition-all"
+                    onKeyDown={(e) => e.key === "Enter" && formData.phone.trim() && handleNext()}
+                  />
+                </div>
+              )}
+
+              {/* STEP 3: PRODUCT CHOICE */}
+              {step === 3 && (
+                <div className="space-y-6">
+                  <div className="w-10 h-10 bg-orange-50 text-orange-600 rounded-xl flex items-center justify-center">
+                    <Layers className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight mb-2">
+                      {t.q3Title}
+                    </h3>
+                    <p className="text-slate-500 text-xs sm:text-sm font-semibold">
+                      {t.q3Sub}
+                    </p>
+                  </div>
+                  
+                  {/* Grid of Interactive Options */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-[220px] overflow-y-auto pr-1">
+                    {PRODUCTS.map((prod) => (
+                      <button
+                        key={prod.id}
+                        type="button"
+                        onClick={() => {
+                          setFormData((prev) => ({ ...prev, product: prod.name }));
+                          setTimeout(handleNext, 180);
+                        }}
+                        className={`p-3 rounded-2xl border text-left flex items-center gap-3 transition-all duration-200 cursor-pointer ${
+                          formData.product === prod.name
+                            ? "bg-slate-900 border-transparent text-white shadow-md"
+                            : "bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100/80"
+                        }`}
+                      >
+                        <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm shrink-0 ${
+                          formData.product === prod.name ? "bg-white/10" : "bg-white border border-slate-200"
+                        }`}>
+                          📦
+                        </div>
+                        <div className="truncate">
+                          <span className="block text-xs sm:text-sm font-bold truncate">{prod.name}</span>
+                          <span className="block text-[10px] text-slate-400 font-mono truncate">
+                            {currentLanguage === "en" ? prod.category : "गैलेक्सी रेंज"}
+                          </span>
+                        </div>
+                      </button>
+                    ))}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        setFormData((prev) => ({ ...prev, product: "Custom / Special Sheet" }));
+                        setTimeout(handleNext, 180);
+                      }}
+                      className={`p-3 rounded-2xl border text-left flex items-center gap-3 transition-all duration-200 cursor-pointer ${
+                        formData.product === "Custom / Special Sheet"
+                          ? "bg-slate-900 border-transparent text-white shadow-md"
+                          : "bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100/80"
+                      }`}
+                    >
+                      <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm shrink-0 ${
+                        formData.product === "Custom / Special Sheet" ? "bg-white/10" : "bg-white border border-slate-200"
+                      }`}>
+                        ⚙️
+                      </div>
+                      <div>
+                        <span className="block text-xs sm:text-sm font-bold">Custom Size & Type</span>
+                        <span className="block text-[10px] text-slate-400 font-mono">Special request</span>
+                      </div>
+                    </button>
+                  </div>
+                </div>
+              )}
+
+              {/* STEP 4: SIZING */}
+              {step === 4 && (
+                <div className="space-y-6">
+                  <div className="w-10 h-10 bg-orange-50 text-orange-600 rounded-xl flex items-center justify-center">
+                    <Maximize2 className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight mb-2">
+                      {t.q4Title}
+                    </h3>
+                    <p className="text-slate-500 text-xs sm:text-sm font-semibold">
+                      {t.q4Sub}
+                    </p>
+                  </div>
+                  <input
+                    ref={inputRef as any}
+                    type="text"
+                    value={formData.size}
+                    onChange={(e) => setFormData((prev) => ({ ...prev, size: e.target.value }))}
+                    placeholder={t.q4Placeholder}
+                    className="w-full bg-slate-50 border border-slate-200 focus:border-orange-500 focus:ring-1 focus:ring-orange-500 rounded-xl px-4 py-3.5 text-base font-semibold outline-none transition-all"
+                    onKeyDown={(e) => e.key === "Enter" && handleNext()}
+                  />
+                  {/* Quick Sizing suggestion tags */}
+                  <div className="flex flex-wrap gap-2 pt-2">
+                    {["15×12 ft", "30×24 ft", "120 GSM", "250 GSM (Heavy)", "300 GSM (Ultra)"].map((tag) => (
+                      <button
+                        key={tag}
+                        type="button"
+                        onClick={() => setFormData((prev) => ({ ...prev, size: tag }))}
+                        className="text-xs bg-slate-50 hover:bg-slate-100 border border-slate-200 font-bold px-3 py-1.5 rounded-full text-slate-600 cursor-pointer transition-all"
+                      >
+                        {tag}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* STEP 5: WHOLESALE VS RETAIL */}
+              {step === 5 && (
+                <div className="space-y-6">
+                  <div className="w-10 h-10 bg-orange-50 text-orange-600 rounded-xl flex items-center justify-center">
+                    <Package className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight mb-2">
+                      {t.q5Title}
+                    </h3>
+                    <p className="text-slate-500 text-xs sm:text-sm font-semibold">
+                      {t.q5Sub}
+                    </p>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
+                    {[
+                      { id: "Wholesale", title: "📦 Wholesale", desc: "Best direct pricing" },
+                      { id: "Retail", title: "🛍️ Retail Shop", desc: "Single/few sheets" },
+                      { id: "Custom Spec", title: "🛠️ Custom Order", desc: "Tailored specs" }
+                    ].map((opt) => (
+                      <button
+                        key={opt.id}
+                        type="button"
+                        onClick={() => {
+                          setFormData((prev) => ({ ...prev, type: opt.id }));
+                          setTimeout(handleNext, 180);
+                        }}
+                        className={`p-4 rounded-2xl border text-left transition-all duration-200 cursor-pointer ${
+                          formData.type === opt.id
+                            ? "bg-slate-900 border-transparent text-white shadow-md"
+                            : "bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100/80"
+                        }`}
+                      >
+                        <span className="block text-xs sm:text-sm font-extrabold mb-1">{opt.title}</span>
+                        <span className="block text-[10px] text-slate-400 font-mono">{opt.desc}</span>
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* STEP 6: MESSAGE / LOCATION */}
+              {step === 6 && (
+                <div className="space-y-6">
+                  <div className="w-10 h-10 bg-orange-50 text-orange-600 rounded-xl flex items-center justify-center">
+                    <MessageSquare className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight mb-2">
+                      {t.q6Title}
+                    </h3>
+                    <p className="text-slate-500 text-xs sm:text-sm font-semibold">
+                      {t.q6Sub}
+                    </p>
+                  </div>
+                  <textarea
+                    ref={inputRef as any}
+                    rows={4}
+                    value={formData.message}
+                    onChange={(e) => setFormData((prev) => ({ ...prev, message: e.target.value }))}
+                    placeholder={t.q6Placeholder}
+                    className="w-full bg-slate-50 border border-slate-200 focus:border-orange-500 focus:ring-1 focus:ring-orange-500 rounded-xl px-4 py-3.5 text-base font-semibold outline-none transition-all resize-none"
+                  />
+                </div>
+              )}
+
+              {/* STEP 7: REVIEW SUMMARY */}
+              {step === 7 && (
+                <div className="space-y-5">
+                  <div className="w-10 h-10 bg-orange-50 text-orange-600 rounded-xl flex items-center justify-center">
+                    <HelpCircle className="w-5 h-5" />
+                  </div>
+                  <div>
+                    <h3 className="text-xl sm:text-2xl font-extrabold text-slate-900 tracking-tight mb-2">
+                      {t.summaryTitle}
+                    </h3>
+                    <p className="text-slate-500 text-xs sm:text-sm font-semibold">
+                      {t.summarySub}
+                    </p>
+                  </div>
+
+                  {/* Summary grid detail */}
+                  <div className="grid grid-cols-2 gap-3 bg-slate-50 border border-slate-100 p-4 rounded-2xl text-xs sm:text-sm max-h-[180px] overflow-y-auto">
+                    <div>
+                      <span className="block text-[10px] text-slate-400 uppercase font-mono font-bold">Your Name:</span>
+                      <strong className="text-slate-800">{formData.name}</strong>
+                    </div>
+                    <div>
+                      <span className="block text-[10px] text-slate-400 uppercase font-mono font-bold">Mobile Number:</span>
+                      <strong className="text-slate-800">{formData.phone}</strong>
+                    </div>
+                    <div>
+                      <span className="block text-[10px] text-slate-400 uppercase font-mono font-bold">Requested Product:</span>
+                      <strong className="text-slate-800">{formData.product}</strong>
+                    </div>
+                    <div>
+                      <span className="block text-[10px] text-slate-400 uppercase font-mono font-bold">Specs / Size:</span>
+                      <strong className="text-slate-800">{formData.size || "Not specified"}</strong>
+                    </div>
+                    <div className="col-span-2">
+                      <span className="block text-[10px] text-slate-400 uppercase font-mono font-bold">Inquiry Mode:</span>
+                      <strong className="text-slate-800">{formData.type}</strong>
+                    </div>
+                    {formData.message && (
+                      <div className="col-span-2 border-t border-slate-200/60 pt-2 mt-1">
+                        <span className="block text-[10px] text-slate-400 uppercase font-mono font-bold">Destination & notes:</span>
+                        <p className="text-slate-700 italic mt-0.5 font-medium">"{formData.message}"</p>
+                      </div>
+                    )}
+                  </div>
+                </div>
+              )}
             </div>
-          </motion.form>
+
+            {/* Back / Next action bar footer */}
+            <div className="flex items-center justify-between gap-4 mt-8 pt-6 border-t border-slate-100">
+              {/* Back trigger button */}
+              {step > 1 ? (
+                <button
+                  type="button"
+                  onClick={handlePrev}
+                  className="flex items-center gap-1.5 text-slate-500 hover:text-slate-900 font-bold text-xs sm:text-sm transition-all cursor-pointer py-2 px-1"
+                >
+                  <ArrowLeft className="w-4 h-4" />
+                  {t.prev}
+                </button>
+              ) : (
+                <div />
+              )}
+
+              {/* Progress Next trigger or Submit button */}
+              {step < stepsCount ? (
+                <button
+                  type="button"
+                  onClick={handleNext}
+                  className="bg-slate-900 hover:bg-slate-800 text-white font-bold text-xs sm:text-sm px-6 py-3 rounded-full flex items-center gap-1.5 transition-all shadow-md cursor-pointer ml-auto"
+                >
+                  <span>{t.next}</span>
+                  <ArrowRight className="w-4 h-4" />
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  onClick={handleWhatsAppRedirect}
+                  className="w-full sm:w-auto bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs sm:text-sm px-6 py-3.5 rounded-full flex items-center justify-center gap-1.5 transition-all shadow-md hover:shadow-lg cursor-pointer ml-auto"
+                >
+                  <MessageCircle className="w-5 h-5" />
+                  <span>{t.submitWhatsApp}</span>
+                </button>
+              )}
+            </div>
+
+          </motion.div>
         ) : (
+          /* SUCCESS STATE */
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
             exit={{ opacity: 0, scale: 0.95 }}
             transition={{ duration: 0.4 }}
-            className="bg-brand-blue-dark text-white p-8 sm:p-12 rounded-3xl shadow-xl border border-white/10 text-center relative overflow-hidden"
+            className="bg-slate-950 text-white p-8 sm:p-12 rounded-3xl shadow-xl border border-slate-800 text-center relative overflow-hidden"
           >
-            {/* Ambient Background Glow */}
-            <div className="absolute -right-16 -top-16 w-48 h-48 bg-brand-orange/10 rounded-full blur-2xl" />
-            <div className="absolute -left-16 -bottom-16 w-48 h-48 bg-brand-blue-royal/20 rounded-full blur-2xl" />
+            {/* Ambient Background Glow colors */}
+            <div className="absolute -right-16 -top-16 w-48 h-48 bg-orange-500/15 rounded-full blur-2xl pointer-events-none" />
+            <div className="absolute -left-16 -bottom-16 w-48 h-48 bg-emerald-500/10 rounded-full blur-2xl pointer-events-none" />
 
             <div className="w-16 h-16 bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 rounded-full flex items-center justify-center mx-auto mb-6">
-              <CheckCircle className="w-9 h-9" />
+              <CheckCircle className="w-8 h-8" />
             </div>
 
             <h3 className="text-2xl sm:text-3xl font-bold font-display tracking-tight mb-3">
-              Recorded in Google Sheets!
+              {currentLanguage === "en" ? "Thank You, Redirected to WhatsApp!" : "धन्यवाद, व्हाट्सएप पर रीडायरेक्ट कर दिया गया है!"}
             </h3>
-            <p className="text-slate-300 text-sm sm:text-base leading-relaxed max-w-xl mx-auto mb-8">
-              Thank you for choosing <strong className="text-white">Om Shringar Tirpal Store</strong>. Your enquiry details have been successfully saved to your Google Sheets database in your Google Drive.
+            <p className="text-slate-400 text-sm sm:text-base leading-relaxed max-w-xl mx-auto mb-8">
+              {currentLanguage === "en" 
+                ? "Your enquiry has been formatted and redirected to WhatsApp. Check your chat window to send the pre-filled message! Vinod Kumar will assist you right away."
+                : "आपकी पूछताछ व्हाट्सएप संदेश के रूप में तैयार की गई है। चैट में जाकर संदेश भेजें! विनोद कुमार जी तुरंत आपकी सहायता करेंगे।"}
             </p>
 
-            <div className="bg-slate-900/60 p-5 rounded-2xl border border-white/5 text-left max-w-md mx-auto mb-8 text-xs sm:text-sm space-y-2">
-              <div className="text-brand-orange font-mono font-bold uppercase tracking-wide border-b border-white/5 pb-2 mb-2 flex items-center gap-1.5">
-                <Database className="w-4 h-4 text-brand-orange" />
-                Logged Data Record
+            <div className="bg-slate-900/80 p-5 rounded-2xl border border-slate-800 text-left max-w-md mx-auto mb-8 text-xs sm:text-sm space-y-2">
+              <div className="text-orange-400 font-mono font-bold uppercase tracking-wide border-b border-slate-800 pb-2 mb-2 flex items-center gap-1.5">
+                <FileText className="w-4 h-4 text-orange-400" />
+                {currentLanguage === "en" ? "Formatted Record Details" : "तैयार की गई जानकारी"}
               </div>
-              <p><strong className="text-slate-400">Name:</strong> {formData.name}</p>
-              <p><strong className="text-slate-400">Phone:</strong> {formData.phone}</p>
-              <p><strong className="text-slate-400">Product:</strong> {formData.product || "General Inquiry"}</p>
-              <p><strong className="text-slate-400">Required Size:</strong> {formData.size || "Not specified"}</p>
-              <p><strong className="text-slate-400">Order Volume:</strong> {formData.type}</p>
+              <p><strong className="text-slate-500">{currentLanguage === "en" ? "Name:" : "नाम:"}</strong> {formData.name}</p>
+              <p><strong className="text-slate-500">{currentLanguage === "en" ? "Mobile:" : "मोबाइल:"}</strong> {formData.phone}</p>
+              <p><strong className="text-slate-500">{currentLanguage === "en" ? "Product:" : "उत्पाद:"}</strong> {formData.product}</p>
+              <p><strong className="text-slate-500">{currentLanguage === "en" ? "Specs / Size:" : "साइज़ / GSM:"}</strong> {formData.size || "Standard"}</p>
+              <p><strong className="text-slate-500">{currentLanguage === "en" ? "Type:" : "टाइप:"}</strong> {formData.type}</p>
             </div>
 
             <div className="flex flex-col sm:flex-row gap-3 justify-center items-center">
-              {/* Direct Google Sheets Link */}
-              {spreadsheetUrl && (
-                <a
-                  href={spreadsheetUrl}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="w-full sm:w-auto flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white py-3.5 px-6 rounded-full font-bold text-sm sm:text-base transition-all duration-200 shadow-md"
-                >
-                  <Database className="w-5 h-5" />
-                  View Spreadsheet in Drive
-                </a>
-              )}
-
-              {/* Start new Quote */}
-              <button
-                onClick={handleReset}
-                className="w-full sm:w-auto flex items-center justify-center gap-1 bg-white/10 hover:bg-white/15 text-white py-3.5 px-6 rounded-full font-semibold text-sm transition-all duration-200 border border-white/10 cursor-pointer"
+              <a
+                href={getWhatsAppLink()}
+                target="_blank"
+                rel="noreferrer"
+                className="w-full sm:w-auto flex items-center justify-center gap-1.5 bg-emerald-600 hover:bg-emerald-700 text-white py-3.5 px-6 rounded-full font-bold text-sm transition-all cursor-pointer hover:shadow-lg"
               >
-                Send Another Enquiry
+                <MessageCircle className="w-4 h-4" />
+                {currentLanguage === "en" ? "Re-open WhatsApp Chat" : "व्हाट्सएप चैट दोबारा खोलें"}
+              </a>
+              <button
+                type="button"
+                onClick={handleReset}
+                className="w-full sm:w-auto flex items-center justify-center gap-1.5 bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white py-3.5 px-6 rounded-full font-bold text-sm transition-all cursor-pointer"
+              >
+                {currentLanguage === "en" ? "New Enquiry" : "नई पूछताछ"}
+                <ArrowRight className="w-4 h-4" />
               </button>
             </div>
           </motion.div>
