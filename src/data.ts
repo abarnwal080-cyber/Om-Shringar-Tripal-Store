@@ -8,6 +8,11 @@ export interface Product {
   availableSizes?: string;
   commonSizes?: string[];
   isBestSeller?: boolean;
+  detailedDescription?: string;
+  benefits?: string[];
+  specs?: Record<string, string>;
+  applications?: string[];
+  faqs?: FAQItem[];
 }
 
 export interface FAQItem {
@@ -74,7 +79,7 @@ export const PRODUCTS: Product[] = [
     id: "stretch-film",
     name: "Transparent Stretch Film Roll",
     category: "Industrial Packaging",
-    description: "High-stretchability transparent wrap roll designed for secure pallet wrapping, product bundling, and temporary surface shielding during transit and storage.",
+    description: "High-stretchability clear wrap designed for secure packing, product bundling, and temporary moisture protection.",
     images: [
       "https://cpimg.tistatic.com/09389722/b/4/Transparent-Plastic-Films.jpg",
       "https://tiimg.tistatic.com/fp/1/010/266/transparent-stretch-wrap-film-411.jpg",
@@ -83,17 +88,40 @@ export const PRODUCTS: Product[] = [
       "https://img.magnific.com/premium-vector/big-roll-transparent-stretch-film-packaging_98402-214967.jpg?semt=ais_hybrid&w=740&q=80"
     ],
     features: [
-      "Excellent cling strength for secure, adhesive-free wrapping",
-      "Superior puncture and tear resistance for sharp corners",
-      "Dust, water, and moisture protection for stored goods",
-      "Uniform thickness and high clarity for label scanning"
+      "Excellent Cling",
+      "Puncture Resistant",
+      "Dust Protection",
+      "High Clarity"
+    ],
+    detailedDescription: "Our premium industrial-grade Transparent Stretch Film Roll is designed with exceptional cling strength and puncture resistance. Ideal for pallet wrapping, secure packaging of machinery, boxes, and high-value transport bundles, it keeps items moisture-proof and dust-free during transit.",
+    benefits: [
+      "Outstanding stretch capacity of up to 300% to save material cost.",
+      "High-cling formulation ensures layers lock securely without adhesive.",
+      "Protects surfaces against direct moisture, scratches, dust, and rain.",
+      "Ultra-clear quality allows easy reading and scanning of barcodes."
+    ],
+    specs: {
+      "Material": "Linear Low-Density Polyethylene (LLDPE)",
+      "Thickness/GSM": "23 Microns",
+      "Color Options": "Crystal Clear / Transparent",
+      "Brand": "Vision / Goldpaulin",
+      "Roll Width": "18 inches / 24 inches",
+      "Roll Length": "100 meters to 500 meters",
+      "Puncture Resistance": "Excellent (High Tensile)",
+      "Cling Rate": "Self-adhering (No Glue Residue)"
+    },
+    applications: ["Industrial Use", "Transport", "Warehouses"],
+    faqs: [
+      { question: "Is this film sticky on both sides?", answer: "It is a self-clinging film, meaning it binds perfectly to itself without leaving any sticky adhesive residue on your wrapped products." },
+      { question: "What is the primary thickness of this stretch roll?", answer: "Our standard industrial stretch film is 23 microns thick, offering the ultimate balance of stretchability and tear resistance." },
+      { question: "Can it be used for shipping pallet stabilization?", answer: "Yes, this is the exact industry-standard material used by shipping companies and warehouses for securing heavy cargo pallets." }
     ]
   },
   {
     id: "blue-polythene",
     name: "Construction Blue Polythene Roll",
     category: "Construction & Curing",
-    description: "Premium heavy-duty blue polythene rolls engineered specifically for highway roads, concrete curing, roofing underlayment, and robust weather shields.",
+    description: "Heavy-duty blue polythene sheets engineered for highway concrete curing, moisture insulation, and temporary roofs.",
     images: [
       "https://plain-apac-prod-public.komododecks.com/202607/03/qab82eSfCIUQZ1Se0koa/image.png",
       "https://m.media-amazon.com/images/I/61E7AvKTMtL.jpg",
@@ -104,35 +132,80 @@ export const PRODUCTS: Product[] = [
     availableSizes: "8 ft to 36 ft",
     commonSizes: ["12 feet", "15 feet", "18 feet", "24 feet", "30 feet", "36 feet"],
     features: [
-      "Waterproof and moisture locking for pristine cement hydration",
-      "Highly resilient to thermal expansion and abrasion",
-      "UV-treated to withstand prolonged direct sunlight exposure",
-      "Available in continuous roll form for large-scale surface laying"
+      "Moisture Locking",
+      "High Strength",
+      "UV Stabilized",
+      "Continuous Rolls"
+    ],
+    detailedDescription: "Engineered specifically for heavy civil engineering, road construction, and structural moisture barriers, our Blue Polythene Roll is a highly trusted product in Bihar. It functions as a superior curing sheet by locking water hydration inside concrete slates, drastically enhancing road and slab durability.",
+    benefits: [
+      "Drastically improves cement hydration and curing speed.",
+      "Extremely resistant to tearing from gravel, rebars, and boots.",
+      "Highly resilient to thermal expansion and prolonged exposure to sun.",
+      "Continuous rolls ensure fewer joints and overlapping errors."
+    ],
+    specs: {
+      "Material": "Virgin/Semi-Virgin High-Density Polyethylene (HDPE)",
+      "Thickness/GSM": "100 to 250 Microns (Heavy Duty)",
+      "Color Options": "Royal Blue",
+      "Brand": "Shalimar / Greatpaulin",
+      "Roll Width": "8 ft to 36 ft",
+      "Roll Length": "30 meters to 100 meters (Continuous)",
+      "UV Protection": "Yes (UV Stabilized)",
+      "Waterproof Rate": "100% Leak Proof"
+    },
+    applications: ["Construction", "Agriculture", "Industrial Use"],
+    faqs: [
+      { question: "Why is blue polythene preferred for road construction?", answer: "Blue polythene prevents water evaporation during the cement-setting phase, ensuring a highly durable curing process with fewer cracks." },
+      { question: "Which sizes are most popular in Bihar?", answer: "The most popular widths are 12 feet, 18 feet, and 24 feet, which are readily in stock for instant dispatch." },
+      { question: "Can this withstand high summer temperatures?", answer: "Absolutely. Our blue rolls are custom UV-stabilized to prevent melting or weakening in high-heat outdoor environments." }
     ]
   },
   {
     id: "black-polythene",
     name: "Construction Black Polythene Roll",
     category: "Moisture & Damp Proofing",
-    description: "Multi-layered high-density black polythene sheet rolls serving as a robust foundation moisture barrier, agricultural cover, and heavy-duty dust shield.",
+    description: "Multi-layered black foundation sheets acting as a powerful damp barrier, silage shield, and protective ground cover.",
     images: [
       "https://plain-apac-prod-public.komododecks.com/202607/03/eckT9KEMGbavrebTJwPJ/image.png",
       "https://cpimg.tistatic.com/07558039/b/4/Road-Construction-Polyethylene-Sheet.jpg",
-      "https://cpimg.tistatic.com/07558039/b/4/Road-Construction-Polyethylene-Sheet.jpg", // Note: duplicated in prompt, keeping it exactly as requested!
       "https://5.imimg.com/data5/SELLER/Default/2025/3/497555378/HO/NI/NS/8078121/ldpe-black-plastic-roll-500x500.jpg"
     ],
     features: [
-      "Zero water permeability for effective damp proof course (DPC)",
-      "High chemical resistance against acidic or alkaline soil",
-      "Total opacity, perfect for silage, silage-baling, and solar weed-killing",
-      "Resistant to degradation under heavy concrete loads"
+      "Zero Permeability",
+      "Chemical Resistant",
+      "100% Opaque",
+      "Durable Polymer"
+    ],
+    detailedDescription: "Our Black Polythene Roll is built from robust multi-layered high-density polymers. Designed primarily for underground damp proofing (DPC) in buildings, it blocks rising ground water. It is also exceptionally popular in agriculture for solar soil mulching, silage creation, and waterproofing underlayments.",
+    benefits: [
+      "Complete light blockage prevents weed growth when used as a mulch cover.",
+      "Acts as a lifelong barrier against moisture, radon, and soil acids.",
+      "Extremely economical option for large-scale warehouse floor lining.",
+      "Tear-proof formulation supports concrete pouring directly on top."
+    ],
+    specs: {
+      "Material": "Heavy-Duty Low-Density Polyethylene (LDPE) / HDPE",
+      "Thickness/GSM": "150 to 300 Microns",
+      "Color Options": "Deep Black (Opaque)",
+      "Brand": "Silpaulin / Shalimar",
+      "Roll Width": "8 ft to 36 ft",
+      "Roll Length": "Continuous roll format",
+      "Permeability": "0% Water Penetration",
+      "Acid Resistance": "High (Protects from soil minerals)"
+    },
+    applications: ["Construction", "Agriculture", "Warehouses"],
+    faqs: [
+      { question: "Can I use black polythene under concrete house foundation?", answer: "Yes, it is widely used as a Damp Proof Course (DPC) sheet to prevent ground moisture from leaking into walls and ceilings." },
+      { question: "Is this black sheet completely opaque?", answer: "Yes, it is 100% black and opaque, which makes it perfect for solar weed-killing and silage storage." },
+      { question: "Is it reusable?", answer: "Yes, due to its heavy-duty thickness, it can be reused multiple times for grain drying, covering construction materials, or soil protection." }
     ]
   },
   {
     id: "transparent-shisha",
     name: "Transparent Shisha Roll",
     category: "Clear Covering",
-    description: "Glass-like transparent flexible LDPE rolls widely used for table covers, custom temporary window panelings, clean partitions, and retail product wrapping.",
+    description: "Flexible, glass-like clear LDPE sheets popular for premium counter shielding, window coverings, and table protectors.",
     images: [
       "https://5.imimg.com/data5/ANDROID/Default/2024/9/449619383/UL/CG/RW/25980061/product-jpeg-500x500.jpg",
       "https://d91ztqmtx7u1k.cloudfront.net/ClientContent/Images/ExtraLarge/ldpe-transparent-polythene-she-20260408102254913.webp",
@@ -141,17 +214,40 @@ export const PRODUCTS: Product[] = [
       "https://www.singhalmart.com/cdn/shop/files/10_18b97978-aa7d-414d-9250-46cb1a1fc668.jpg?v=1740376713&width=1214"
     ],
     features: [
-      "Crystal clear transparent material with excellent light transmission",
-      "Flexible and easy to trim into specific shapes or dimensions",
-      "Stain-resistant and highly washable with standard soap and water",
-      "Soft texture that drapes smoothly over furniture and counters"
+      "Crystal Clear",
+      "Flexible Design",
+      "Stain Proof",
+      "Smooth Layout"
+    ],
+    detailedDescription: "The Transparent Shisha Roll is a premium-grade glass-like flexible sheet. Widely used across Bihar for high-end dining table covers, retail counter shields, cleanroom partitions, and temporary window panes, it provides reliable protection from water and dust while retaining 100% visual clarity.",
+    benefits: [
+      "Crystal clear high-transparency sheet replicates glass perfectly.",
+      "Soft flexible texture ensures it drapes smoothly over furniture corners.",
+      "Wipes clean in seconds with a damp cloth or mild soap water.",
+      "Safe for direct contact with food items and table wares."
+    ],
+    specs: {
+      "Material": "Premium Grade Transparent LDPE",
+      "Thickness/GSM": "0.15mm to 1.0mm (Thick & Durable)",
+      "Color Options": "Super Clear / Transparent",
+      "Brand": "Vision / Premium Quality",
+      "Roll Width": "3 ft to 6 ft",
+      "Roll Length": "25 meters to 50 meters",
+      "Stain Resistance": "100% Stain-proof",
+      "Texture": "Smooth Glass-finish"
+    },
+    applications: ["Gardening", "Industrial Use", "Warehouses"],
+    faqs: [
+      { question: "Is this material heat resistant for hot food plates?", answer: "It can withstand warm tea cups and regular food plates, but placing burning hot pans directly on it is not recommended." },
+      { question: "How do I clean dust or oil stains from the shisha sheet?", answer: "Just wipe it down with standard glass-cleaner spray or mild soapy water. It gets clean instantly." },
+      { question: "Can I cut this sheet at home?", answer: "Yes! It is extremely flexible and can be customized with standard kitchen scissors or a utility cutter." }
     ]
   },
   {
     id: "tarpaulins",
     name: "Waterproof Premium Tarpaulins",
     category: "All-Weather Protection",
-    description: "Multilayered, cross-laminated, super heavy-duty waterproof tarpaulins (Tirpal) for high-performance vehicle covering, grain shielding, and temporary structural tents.",
+    description: "Cross-laminated multi-layer waterproof tarpaulins (Tirpal) for cargo trucks, grain stockpiles, and monsoon tents.",
     images: [
       "https://5.imimg.com/data5/SELLER/Default/2023/4/301281309/FL/MC/FC/123837/waterproof-tarpaulins.webp",
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTMnKRYsLO4-_dEvoXIbHeNHj318r5xTIn_NU6K6kP-qg&s=10",
@@ -161,26 +257,162 @@ export const PRODUCTS: Product[] = [
     ],
     availableSizes: "6×6 ft up to 60×100 ft",
     features: [
-      "100% waterproof and double-sided heat-sealed joints",
-      "Reinforced corner grommets and robust eyelets at every 3 feet",
-      "Mildew-proof, wind-proof, and exceptionally tear-resistant",
-      "Highly durable multi-layer construction for multi-season usage"
+      "100% Waterproof",
+      "Rust-Proof Eyelets",
+      "Tear Resistant",
+      "Multi-Layer Strength"
+    ],
+    detailedDescription: "Om Shringar Tirpal Store's signature product: Waterproof Premium Tarpaulins (Tirpal) represent the absolute gold standard of heavy-duty protection in Siwan and Maharajganj. Built with cross-laminated technology, heat-sealed double joints, and rust-proof aluminum eyelets, these tirpals safeguard crops, cargo trucks, and shelters in extreme monsoons.",
+    benefits: [
+      "100% waterproof protection even under heavy standing water.",
+      "Reinforced ropes sealed into the borders to survive severe windstorms.",
+      "Rust-proof heavy grommets let you secure the tirpal easily anywhere.",
+      "UV coatings prevent sun cracking and material hardening over years."
+    ],
+    specs: {
+      "Material": "Cross-Laminated Multi-Layer Tarpaulin",
+      "Thickness/GSM": "70 GSM to 450 GSM",
+      "Color Options": "Yellow, Blue, Green, White, Silver, Black",
+      "Brand": "Shalimar / Silpaulin / Goldpaulin",
+      "Sizing Range": "6×6 feet up to 60×100 feet",
+      "Eyelets": "Aluminum rust-proof every 3 feet",
+      "Tear Strength": "Extremely High (Patented Cross-lamination)",
+      "Lifespan": "Built to last multiple seasons"
+    },
+    applications: ["Agriculture", "Transport", "Construction", "Warehouses"],
+    faqs: [
+      { question: "What does 'GSM' mean, and which GSM should I choose?", answer: "GSM stands for Grams per Square Meter. Higher GSM (like 250+ GSM) represents thicker, heavier tarpaulin for long-term truck covering, while lower GSM (like 120 GSM) is ideal for grain drying and light cover." },
+      { question: "Are the eyelets rust-proof?", answer: "Yes, our premium tarpaulins are equipped with anodized rust-resistant aluminum eyelets placed every 3 feet for secure tying." },
+      { question: "Do you supply customized sizes for large trucks?", answer: "Absolutely. We keep extra large sizes like 30x40 ft, 40x50 ft, and up to 60x100 ft in stock, perfect for wholesale or custom requirements." }
+    ]
+  },
+  {
+    id: "capstone-cheetah",
+    name: "HDPE Capstone Cheetah",
+    category: "All-Weather Protection",
+    description: "Official premium heavy-duty Capstone Cheetah branded tarpaulin offering 100% waterproof and UV-stabilized elite coverage.",
+    images: [
+      "https://plain-apac-prod-public.komododecks.com/202607/09/ZxQAks2XzqOFYBcyVBu4/image.png",
+      "https://plain-apac-prod-public.komododecks.com/202607/09/XZIjVVBxoKiATRHNKDXZ/image.jpg",
+      "https://plain-apac-prod-public.komododecks.com/202607/09/IC8EGq4OoMQUyfg7wIj8/image.png",
+      "https://plain-apac-prod-public.komododecks.com/202607/09/0YM1Z46abjzC6qEhFcNu/image.png",
+      "https://plain-apac-prod-public.komododecks.com/202607/09/gGKNRgvofNlcUcvYnF9j/image.png"
+    ],
+    availableSizes: "Available Sizes: 8 ft – 36 ft",
+    commonSizes: ["8 ft", "10 ft", "12 ft", "15 ft", "18 ft", "20 ft", "24 ft", "30 ft", "36 ft"],
+    features: [
+      "Capstone Quality",
+      "All-Weather Proof",
+      "Cheetah Strength",
+      "Double-heat Welded"
+    ],
+    detailedDescription: "The HDPE Capstone Cheetah is an elite, high-performance branded tarpaulin recognized for its iconic cheetah-strength durability. Constructed using heavy-duty High-Density Polyethylene and reinforced with premium UV protection, it is widely used by contractors and commercial farmhouses for shielding high-value assets.",
+    benefits: [
+      "Premium branded quality with genuine Cheetah emblem trust.",
+      "Superior tear-strength and stretch resistance under heavy tension.",
+      "Ultra-thick heat-welded seams prevent any water seepage or leaks.",
+      "Highly flexible and easy to fold/store despite its thickness."
+    ],
+    specs: {
+      "Material": "Heavy-Duty High-Density Polyethylene (HDPE)",
+      "Thickness/GSM": "200 GSM to 350 GSM",
+      "Color Options": "Dual Tone (Silver-Black / Blue-Orange)",
+      "Brand": "Capstone Cheetah",
+      "Sizing Options": "8 ft up to 36 ft (Wide variants)",
+      "UV Protection": "Premium Multi-coat UV Resistance",
+      "Weather Rate": "All-Weather Performance (-20°C to 65°C)",
+      "Seams": "Double-heat Welded"
+    },
+    applications: ["Agriculture", "Transport", "Construction", "Industrial Use"],
+    faqs: [
+      { question: "Is Capstone Cheetah a certified brand?", answer: "Yes, Capstone Cheetah is one of India's most recognized premium heavy-duty tarpaulin brands, and we are an authorized retail and wholesale dealer." },
+      { question: "Does this tarpaulin peel off in extreme sun?", answer: "No, its advanced UV-stabilized outer coating is chemically bonded to prevent peeling, cracking, or hardening under the harsh Bihar sun." },
+      { question: "Can I use it for constructing a long-term monsoon shelter?", answer: "Yes, it is designed for extreme multi-year outdoor usage, making it ideal for temporary shops, tents, and warehouse extensions." }
     ]
   },
   {
     id: "fencing-net",
-    name: "Fencing Resham Net",
+    name: "Resham Fencing Net",
     category: "Security & Fencing",
-    description: "Heavy-gauge woven nylon-composite Resham threads netting, popular for perimeter fencing, farm boundaries, and plant nurseries.",
+    description: "Heavy-gauge woven nylon-composite Resham threads netting. Suitable for fencing and bird protection. Not suitable for fish farming.",
     images: [
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ8otM4gDSej31PTKee3zdt5B88vQWGKmkwAg9GpDdUv8OPxBkiqVGsJ5B8&s=10"
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ8otM4gDSej31PTKee3zdt5B88vQWGKmkwAg9GpDdUv8OPxBkiqVGsJ5B8&s=10",
+      "https://plain-apac-prod-public.komododecks.com/202607/09/wb70mUn6SRRtxoRETFla/image.png",
+      "https://5.imimg.com/data5/SELLER/Default/2022/5/UO/IB/PP/147117331/nylon-bird-netting-250x250.jpg",
+      "https://2.wlimg.com/product_images/bc-full/2021/1/748468/farm-fencing-net-1611398761-5700049.jpeg"
     ],
     isBestSeller: true,
     features: [
-      "Ultra-tough resilient Resham threads that resist weathering",
-      "Optimized mesh design for standard light transmission and high airflow",
-      "Perfect boundary shield for poultry cages, fisheries, and nurseries",
-      "Rust-proof alternative to traditional metal barbed wire fences"
+      "Resham Nylon",
+      "Wind Resilient",
+      "Rust Free",
+      "No Fish Farming"
+    ],
+    detailedDescription: "Woven using ultra-strong, weather-hardened nylon-composite Resham threads, our Resham Fencing Net is Siwan's favorite boundary protector. Perfect for farm fencing, garden boundaries, and poultry yards, it allows clear airflow and sunlight while keeping birds and small animals safely contained.",
+    benefits: [
+      "Resham nylon weave has exceptional flexibility and tensile strength.",
+      "Highly breathable mesh design prevents heat buildup for plants.",
+      "Will never rust or rot unlike traditional steel wire fencing.",
+      "Lightweight and highly economical to install over vast areas."
+    ],
+    specs: {
+      "Material": "Nylon-Composite Resham Threads",
+      "Mesh Size": "1 inch / 1.5 inches / 2 inches",
+      "Color Options": "Forest Green / Ocean Blue",
+      "Brand": "Premium Local Weaver Partner",
+      "Height Options": "4 ft, 6 ft, 8 ft",
+      "Roll Length": "100 ft to 300 ft",
+      "Rust Resistance": "100% Rust-proof",
+      "Important Note": "Strictly NOT suitable for fish farming"
+    },
+    applications: ["Poultry", "Gardening", "Agriculture"],
+    faqs: [
+      { question: "Can I use this net for fish farming (matsya palan)?", answer: "No. This net is made of woven Resham nylon thread which is highly recommended for farm boundaries and bird protection, but is NOT suitable for fish farming ponds." },
+      { question: "How do I secure this net to the ground?", answer: "You can tie it easily to bamboo poles, wooden stakes, or iron pillars using metal wire or heavy nylon strings." },
+      { question: "Does it rot when rained on?", answer: "Not at all. Resham nylon does not absorb moisture, meaning it will never rot or weaken during the monsoon season." }
+    ]
+  },
+  {
+    id: "fencing-net-jali",
+    name: "Fencing Net (Jali)",
+    category: "Security & Fencing",
+    description: "High durability plastic fencing net (Jali) designed for boundary walls, farms, gardens, poultry protection, and agriculture.",
+    images: [
+      "https://5.imimg.com/data5/SELLER/Default/2025/11/558470631/QJ/IJ/SO/253883783/garden-fencing-net-1000x1000.jpg",
+      "https://static-01.daraz.com.bd/p/mdc/2fc6ed62f2ce6db8e2f917f70c9e4bb3.jpg",
+      "https://agroholicbd.com/uploads/media-manager//2023%2F12%2F202312132149596-Fit-High-Fencing-Net-scaled-1732660145.jpg",
+      "https://5.imimg.com/data5/SELLER/Default/2025/7/532122957/XX/ZI/PB/104304307/nylon-blue-fencing-net-500x500.jpg"
+    ],
+    availableSizes: "5 ft Height",
+    commonSizes: ["100 ft Roll", "100 Meter Roll", "Custom Cut Lengths"],
+    features: [
+      "5 ft Tall Jali",
+      "Continuous Rolls",
+      "Custom Cuts",
+      "Sun Resistant"
+    ],
+    detailedDescription: "Our Fencing Net (Jali) is a thick, extruded polymer mesh designed to act as a robust alternative to metal chicken wire. Standing exactly 5 feet high, it is perfect for agricultural farms, poultry enclosures, gardens, and boundary shields. It can be easily rolled out and custom cut for smaller requirements.",
+    benefits: [
+      "Strictly extruded rigid polymer structure resists sagging.",
+      "Smooth, non-sharp plastic edges protect animals and poultry from cuts.",
+      "Comes in easy-to-handle 100 ft or 100 meter rolls for fast setups.",
+      "Extremely budget-friendly compared to chain-link steel fencing."
+    ],
+    specs: {
+      "Material": "High-Density Polyethylene Plastic Extrusion",
+      "Height": "5 feet fixed",
+      "Roll Lengths": "100 ft Roll / 100 Meter Roll",
+      "Custom Cut Options": "Available in custom cut meters upon request",
+      "Color Options": "Bright Green / Blue",
+      "Brand": "Shalimar / Greatpaulin",
+      "Mesh Type": "Rigid Hexagonal / Square Jali",
+      "Sun Exposure": "UV Stabilized outdoor grade"
+    },
+    applications: ["Poultry", "Gardening", "Agriculture"],
+    faqs: [
+      { question: "Is the height customizable?", answer: "The roll has a fixed height of 5 feet, but we can cut the length (meters) to perfectly match your garden or poultry boundary." },
+      { question: "Does it sag in high winds?", answer: "If properly tensioned and secured on strong bamboo or metal stakes every 5-6 feet, it retains its straight, rigid structure." },
+      { question: "Is it safe for chicken poultry farms?", answer: "Yes, it is widely used in Bihar for poultry setups because it has no sharp metal wires that can injure chickens." }
     ]
   }
 ];

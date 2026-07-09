@@ -1,7 +1,9 @@
 import { useState, useEffect, MouseEvent } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { ChevronLeft, ChevronRight, Phone, MessageSquare, CheckCircle2, ArrowRight, Share2 } from "lucide-react";
+import { ChevronLeft, ChevronRight, CheckCircle2, ArrowRight, Share2 } from "lucide-react";
 import { Product, BUSINESS_INFO } from "../data";
+import ProductDetailsModal from "./ProductDetailsModal";
+import LazyImage from "./LazyImage";
 
 interface ProductCardProps {
   product: Product;
@@ -12,6 +14,8 @@ export default function ProductCard({ product, onEnquire }: ProductCardProps) {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
   const [showShareFeedback, setShowShareFeedback] = useState(false);
+
+  const [isDetailsOpen, setIsDetailsOpen] = useState(false);
 
   useEffect(() => {
     if (product.images.length <= 1 || isHovered) return;
@@ -31,11 +35,6 @@ export default function ProductCard({ product, onEnquire }: ProductCardProps) {
   const prevSlide = (e: MouseEvent) => {
     e.stopPropagation();
     setCurrentSlide((prev) => (prev - 1 + product.images.length) % product.images.length);
-  };
-
-  const getWhatsAppLink = (pName: string) => {
-    const text = `Hi, I am interested in purchasing ${pName} from Om Shringar Tirpal Store. Please share details and pricing.`;
-    return `${BUSINESS_INFO.whatsappLink}?text=${encodeURIComponent(text)}`;
   };
 
   return (
@@ -63,18 +62,21 @@ export default function ProductCard({ product, onEnquire }: ProductCardProps) {
         {/* Carousel Images */}
         <div className="absolute inset-0 w-full h-full">
           <AnimatePresence mode="wait">
-            <motion.img
+            <motion.div
               key={currentSlide}
-              src={product.images[currentSlide]}
-              alt={`${product.name} - View ${currentSlide + 1}`}
-              loading="lazy"
-              referrerPolicy="no-referrer"
               initial={{ opacity: 0, scale: 1.05 }}
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.4 }}
-              className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
-            />
+              className="w-full h-full"
+            >
+              <LazyImage
+                src={product.images[currentSlide]}
+                alt={`${product.name} - View ${currentSlide + 1}`}
+                referrerPolicy="no-referrer"
+                className="group-hover:scale-105 transition-transform duration-700"
+              />
+            </motion.div>
           </AnimatePresence>
         </div>
 
@@ -122,67 +124,43 @@ export default function ProductCard({ product, onEnquire }: ProductCardProps) {
       {/* Product Information Body */}
       <div className="p-6 md:p-8 flex-grow flex flex-col justify-between">
         <div>
-          <h3 className="text-xl md:text-2xl font-bold font-display text-brand-blue-dark tracking-tight mb-2.5 hover:text-orange-600 transition-colors">
+          <h3 className="text-xl md:text-2xl font-bold font-display text-brand-blue-dark tracking-tight mb-3 hover:text-orange-600 transition-colors">
             {product.name}
           </h3>
-          <p className="text-slate-600 text-sm md:text-base leading-relaxed mb-6">
-            {product.description}
-          </p>
 
-          {/* Sizing Details if they exist */}
-          {(product.availableSizes || product.commonSizes) && (
-            <div className="mb-6 p-4 bg-brand-blue-dark/[0.03] rounded-2xl border border-slate-200/50">
-              {product.availableSizes && (
-                <div className="text-xs text-slate-500 font-mono mb-1">
-                  AVAILABLE WIDTH RANGE
-                </div>
-              )}
-              {product.availableSizes && (
-                <div className="text-base font-bold text-blue-600 font-display">
-                  {product.availableSizes}
-                </div>
-              )}
-              {product.commonSizes && (
-                <div className="mt-3">
-                  <div className="text-xs text-slate-500 font-mono mb-1.5 uppercase">
-                    Common Demand Sizes
-                  </div>
-                  <div className="flex flex-wrap gap-1.5">
-                    {product.commonSizes.map((size, index) => (
-                      <span
-                        key={index}
-                        className="text-xs font-bold bg-blue-50 text-blue-600 px-2.5 py-1 rounded-lg border border-blue-100"
-                      >
-                        {size}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              )}
-            </div>
-          )}
-
-          {/* Feature Bullets */}
-          <div className="space-y-2.5 mb-8">
-            <div className="text-xs font-bold text-slate-500 font-mono uppercase tracking-wider mb-2">
-              Product Advantages & Specs
-            </div>
-            {product.features.map((feat, index) => (
-              <div key={index} className="flex items-start gap-2.5 text-sm text-slate-700">
-                <CheckCircle2 className="w-4 h-4 text-green-600 shrink-0 mt-0.5" />
-                <span>{feat}</span>
-              </div>
+          {/* 2-4 Feature Badges */}
+          <div className="flex flex-wrap gap-2 mb-4">
+            {product.features.slice(0, 4).map((feat, index) => (
+              <span
+                key={index}
+                className="inline-flex items-center gap-1.5 text-[11px] font-bold bg-slate-50 text-slate-700 px-3 py-1.5 rounded-xl border border-slate-200/50 shadow-sm"
+              >
+                <CheckCircle2 className="w-3.5 h-3.5 text-green-600" />
+                {feat}
+              </span>
             ))}
           </div>
+
+          {/* Starting size / availability if applicable */}
+          {product.availableSizes && (
+            <div className="mb-5 p-3.5 bg-blue-50/50 rounded-2xl border border-blue-100/50 flex items-center justify-between">
+              <span className="text-[10px] text-blue-600 font-bold tracking-wider font-mono uppercase">
+                Starting Size Range
+              </span>
+              <span className="text-xs sm:text-sm font-extrabold text-blue-800 font-display">
+                {product.availableSizes}
+              </span>
+            </div>
+          )}
         </div>
 
         {/* Buttons Action Bar */}
         <div className="mt-auto pt-4 border-t border-slate-100 flex items-center gap-3">
           <button
-            onClick={() => onEnquire(product.name)}
+            onClick={() => setIsDetailsOpen(true)}
             className="flex-1 flex items-center justify-center gap-2 py-3.5 px-4 rounded-full bg-gradient-to-r from-orange-600 to-amber-500 hover:from-orange-700 hover:to-amber-600 text-white font-extrabold text-sm transition-all duration-200 shadow-md hover:scale-[1.01] active:scale-[0.98] cursor-pointer"
           >
-            <span>Enquire / Get Quote</span>
+            <span>View Details</span>
             <ArrowRight className="w-4 h-4" />
           </button>
 
@@ -219,7 +197,7 @@ export default function ProductCard({ product, onEnquire }: ProductCardProps) {
               window.open(whatsappUrl, "_blank", "noopener,noreferrer");
             }}
             title="Share Product"
-            className="relative p-3.5 rounded-full border border-slate-200 hover:border-orange-500 hover:text-orange-600 text-slate-500 hover:bg-orange-50 transition-all duration-200 cursor-pointer shrink-0"
+            className="relative p-3.5 rounded-full border border-slate-200 hover:border-orange-500 hover:text-orange-600 text-slate-500 hover:bg-orange-50 transition-all duration-200 cursor-pointer shrink-0 animate-none"
           >
             <Share2 className="w-5 h-5" />
             <AnimatePresence>
@@ -237,6 +215,14 @@ export default function ProductCard({ product, onEnquire }: ProductCardProps) {
           </button>
         </div>
       </div>
+
+      {/* Details Popup Modal */}
+      <ProductDetailsModal
+        product={product}
+        isOpen={isDetailsOpen}
+        onClose={() => setIsDetailsOpen(false)}
+        onEnquire={onEnquire}
+      />
     </motion.div>
   );
 }
