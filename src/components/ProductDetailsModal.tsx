@@ -27,7 +27,7 @@ import { Product, BUSINESS_INFO } from "../data";
 import LazyImage from "./LazyImage";
 
 interface ProductDetailsModalProps {
-  product: Product;
+  product: Product | null;
   isOpen: boolean;
   onClose: () => void;
   onEnquire: (productName: string) => void;
@@ -44,6 +44,7 @@ export default function ProductDetailsModal({
   const [activeTab, setActiveTab] = useState<TabType>("description");
   const [selectedImageIdx, setSelectedImageIdx] = useState(0);
   const [openFaqIdx, setOpenFaqIdx] = useState<number | null>(0);
+  const [loadRemainingImages, setLoadRemainingImages] = useState(false);
   const modalRef = useRef<HTMLDivElement>(null);
 
   // Keyboard accessibility: ESC key to close
@@ -61,7 +62,28 @@ export default function ProductDetailsModal({
     };
   }, [isOpen, onClose]);
 
-  if (!isOpen) return null;
+  // Reset tab and image selectors when product changes
+  useEffect(() => {
+    if (product) {
+      setActiveTab("description");
+      setSelectedImageIdx(0);
+      setOpenFaqIdx(0);
+    }
+  }, [product?.id]);
+
+  // Load remaining images after modal opens
+  useEffect(() => {
+    if (isOpen) {
+      const timer = setTimeout(() => {
+        setLoadRemainingImages(true);
+      }, 250);
+      return () => clearTimeout(timer);
+    } else {
+      setLoadRemainingImages(false);
+    }
+  }, [isOpen, product?.id]);
+
+  if (!isOpen || !product) return null;
 
   // Pre-fill WhatsApp URL
   const getWhatsAppLink = (pName: string) => {
@@ -176,23 +198,30 @@ export default function ProductDetailsModal({
                 {/* Thumbnails list */}
                 {product.images.length > 1 && (
                   <div className="flex gap-2.5 overflow-x-auto py-1 scrollbar-thin scrollbar-thumb-slate-200">
-                    {product.images.map((img, idx) => (
-                      <button
-                        key={idx}
-                        onClick={() => setSelectedImageIdx(idx)}
-                        className={`relative w-16 h-16 rounded-xl overflow-hidden border-2 transition-all duration-200 shrink-0 cursor-pointer ${
-                          idx === selectedImageIdx
-                            ? "border-orange-500 ring-2 ring-orange-500/20 scale-95"
-                            : "border-slate-200 hover:border-slate-400"
-                        }`}
-                      >
-                        <LazyImage
-                          src={img}
-                          alt={`${product.name} Thumbnail ${idx + 1}`}
-                          referrerPolicy="no-referrer"
-                        />
-                      </button>
-                    ))}
+                    {product.images.map((img, idx) => {
+                      const shouldLoad = idx === 0 || loadRemainingImages;
+                      return (
+                        <button
+                          key={idx}
+                          onClick={() => setSelectedImageIdx(idx)}
+                          className={`relative w-16 h-16 rounded-xl overflow-hidden border-2 transition-all duration-200 shrink-0 cursor-pointer ${
+                            idx === selectedImageIdx
+                              ? "border-orange-500 ring-2 ring-orange-500/20 scale-95"
+                              : "border-slate-200 hover:border-slate-400"
+                          }`}
+                        >
+                          {shouldLoad ? (
+                            <LazyImage
+                              src={img}
+                              alt={`${product.name} Thumbnail ${idx + 1}`}
+                              referrerPolicy="no-referrer"
+                            />
+                          ) : (
+                            <div className="w-full h-full bg-slate-100 animate-pulse" />
+                          )}
+                        </button>
+                      );
+                    })}
                   </div>
                 )}
               </div>

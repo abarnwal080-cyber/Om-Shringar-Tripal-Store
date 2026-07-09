@@ -2,20 +2,18 @@ import { useState, useEffect, MouseEvent } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { ChevronLeft, ChevronRight, CheckCircle2, ArrowRight, Share2 } from "lucide-react";
 import { Product, BUSINESS_INFO } from "../data";
-import ProductDetailsModal from "./ProductDetailsModal";
 import LazyImage from "./LazyImage";
 
 interface ProductCardProps {
   product: Product;
   onEnquire: (productName: string) => void;
+  onViewDetails: (product: Product) => void;
 }
 
-export default function ProductCard({ product, onEnquire }: ProductCardProps) {
+export default function ProductCard({ product, onEnquire, onViewDetails }: ProductCardProps) {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
   const [showShareFeedback, setShowShareFeedback] = useState(false);
-
-  const [isDetailsOpen, setIsDetailsOpen] = useState(false);
 
   useEffect(() => {
     if (product.images.length <= 1 || isHovered) return;
@@ -145,7 +143,7 @@ export default function ProductCard({ product, onEnquire }: ProductCardProps) {
         {/* Buttons Action Bar */}
         <div className="mt-auto pt-4 border-t border-slate-100 flex items-center gap-3">
           <button
-            onClick={() => setIsDetailsOpen(true)}
+            onClick={() => onViewDetails(product)}
             className="flex-1 flex items-center justify-center gap-2 py-3.5 px-4 rounded-full bg-gradient-to-r from-orange-600 to-amber-500 hover:from-orange-700 hover:to-amber-600 text-white font-extrabold text-sm transition-all duration-200 shadow-md hover:scale-[1.01] active:scale-[0.98] cursor-pointer"
           >
             <span>View Details</span>
@@ -203,14 +201,6 @@ export default function ProductCard({ product, onEnquire }: ProductCardProps) {
           </button>
         </div>
       </div>
-
-      {/* Details Popup Modal */}
-      <ProductDetailsModal
-        product={product}
-        isOpen={isDetailsOpen}
-        onClose={() => setIsDetailsOpen(false)}
-        onEnquire={onEnquire}
-      />
     </motion.div>
   );
 }

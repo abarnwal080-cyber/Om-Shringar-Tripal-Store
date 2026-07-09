@@ -31,10 +31,12 @@ import {
   SPECIAL_PURPOSE_SHEETS,
   SIZE_MATRIX,
   WHY_CHOOSE_US,
-  FAQS
+  FAQS,
+  Product
 } from "./data";
 
 import ProductCard from "./components/ProductCard";
+import ProductDetailsModal from "./components/ProductDetailsModal";
 import BrandCarousel from "./components/BrandCarousel";
 import InquiryForm from "./components/InquiryForm";
 import InquiryModal from "./components/InquiryModal";
@@ -70,28 +72,39 @@ export default function App() {
   const [activeSection, setActiveSection] = useState("");
   const lastScrollY = useRef(0);
 
+  const [selectedProductForModal, setSelectedProductForModal] = useState<Product | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
   // Scroll handler for auto-hide navbar & scroll-to-top button
   useEffect(() => {
+    let ticking = false;
+
     const handleScroll = () => {
-      const currentScrollY = window.scrollY;
-      
-      // Auto-hide navbar
-      if (currentScrollY <= 80) {
-        setNavbarVisible(true);
-      } else if (currentScrollY > lastScrollY.current) {
-        setNavbarVisible(false); // scrolling down
-      } else {
-        setNavbarVisible(true); // scrolling up
+      if (!ticking) {
+        window.requestAnimationFrame(() => {
+          const currentScrollY = window.scrollY;
+          
+          // Auto-hide navbar
+          if (currentScrollY <= 80) {
+            setNavbarVisible(true);
+          } else if (currentScrollY > lastScrollY.current) {
+            setNavbarVisible(false); // scrolling down
+          } else {
+            setNavbarVisible(true); // scrolling up
+          }
+          
+          // Scroll-to-top button visibility
+          if (currentScrollY > 500) {
+            setShowScrollTop(true);
+          } else {
+            setShowScrollTop(false);
+          }
+          
+          lastScrollY.current = currentScrollY;
+          ticking = false;
+        });
+        ticking = true;
       }
-      
-      // Scroll-to-top button visibility
-      if (currentScrollY > 500) {
-        setShowScrollTop(true);
-      } else {
-        setShowScrollTop(false);
-      }
-      
-      lastScrollY.current = currentScrollY;
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -790,6 +803,10 @@ export default function App() {
                 <ProductCard
                   product={product}
                   onEnquire={handleEnquire}
+                  onViewDetails={(prod) => {
+                    setSelectedProductForModal(prod);
+                    setIsModalOpen(true);
+                  }}
                 />
               </div>
             ))}
@@ -1337,6 +1354,14 @@ export default function App() {
 
       {/* AI Assistant Chatbot (Floating Left Aligned) */}
       <AIChatbot currentLanguage={lang} />
+
+      {/* Single Product Details Modal */}
+      <ProductDetailsModal
+        product={selectedProductForModal}
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        onEnquire={handleEnquire}
+      />
 
       {/* Supplier Popup Modal */}
       <SupplierPopup isOpen={supplierOpen} onClose={() => setSupplierOpen(false)} />
