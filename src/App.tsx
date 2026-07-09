@@ -50,6 +50,7 @@ import StoreStatusCard from "./components/StoreStatusCard";
 import CustomerSuccessCarousel from "./components/CustomerSuccessCarousel";
 import CustomerReviews from "./components/CustomerReviews";
 import { TRANSLATIONS } from "./translations";
+import NotificationsPage from "./components/NotificationsPage";
 
 // Safe dynamic icon loader to keep code modular and readable
 function DynamicIcon({ name, className }: { name: string; className?: string }) {
@@ -75,6 +76,26 @@ export default function App() {
 
   const [selectedProductForModal, setSelectedProductForModal] = useState<Product | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const [currentView, setCurrentView] = useState<"home" | "notifications">("home");
+
+  // Hash state URL observer
+  useEffect(() => {
+    const handleHashChange = () => {
+      const hash = window.location.hash;
+      if (hash === "#notifications") {
+        setCurrentView("notifications");
+        setActiveSection("notifications");
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      } else {
+        setCurrentView("home");
+      }
+    };
+
+    handleHashChange();
+    window.addEventListener("hashchange", handleHashChange);
+    return () => window.removeEventListener("hashchange", handleHashChange);
+  }, []);
 
   // Scroll handler for auto-hide navbar & scroll-to-top button
   useEffect(() => {
@@ -114,6 +135,10 @@ export default function App() {
 
   // Intersection Observer for Active Navigation Highlight
   useEffect(() => {
+    if (currentView === "notifications") {
+      setActiveSection("notifications");
+      return;
+    }
     const sections = ["about", "products", "special-uses", "size-matrix", "why-choose", "enquire", "contact"];
     const observerOptions = {
       root: null,
@@ -141,7 +166,7 @@ export default function App() {
         if (element) observer.unobserve(element);
       });
     };
-  }, []);
+  }, [currentView]);
 
   const inquiryRef = useRef<HTMLDivElement>(null);
   const t = TRANSLATIONS[lang];
@@ -155,8 +180,20 @@ export default function App() {
     e.preventDefault();
     setMobileMenuOpen(false);
     
+    if (targetId === "notifications") {
+      window.location.hash = "#notifications";
+      setCurrentView("notifications");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+      return;
+    }
+
+    if (currentView === "notifications") {
+      setCurrentView("home");
+    }
+    
     // Smooth scroll with offset for sticky header
     setTimeout(() => {
+      window.location.hash = `#${targetId}`;
       const element = document.getElementById(targetId);
       if (element) {
         const headerOffset = 100; // adjust offset for sticky header
@@ -258,11 +295,34 @@ export default function App() {
               { href: "#size-matrix", label: t.navSizeChart, id: "size-matrix" },
               { href: "#why-choose", label: t.navWhyUs, id: "why-choose" },
               { href: "#enquire", label: t.navInquiry, id: "enquire" },
+              { href: "#notifications", label: "🔔 Notifications", id: "notifications" },
               { href: "#contact", label: t.navFindStore, id: "contact" }
             ].map((link) => (
               <a 
                 key={link.href}
                 href={link.href} 
+                onClick={(e) => {
+                  e.preventDefault();
+                  if (link.id === "notifications") {
+                    window.location.hash = "#notifications";
+                    setCurrentView("notifications");
+                    window.scrollTo({ top: 0, behavior: "smooth" });
+                  } else {
+                    if (currentView === "notifications") {
+                      setCurrentView("home");
+                    }
+                    window.location.hash = link.href;
+                    setTimeout(() => {
+                      const element = document.getElementById(link.id);
+                      if (element) {
+                        const headerOffset = 100;
+                        const elementPosition = element.getBoundingClientRect().top;
+                        const offsetPosition = elementPosition + window.scrollY - headerOffset;
+                        window.scrollTo({ top: offsetPosition, behavior: "smooth" });
+                      }
+                    }, 150);
+                  }
+                }}
                 className={`hover:text-orange-400 transition-colors relative py-2 ${
                   activeSection === link.id ? "text-orange-400 font-extrabold" : "text-blue-100"
                 }`}
@@ -359,6 +419,13 @@ export default function App() {
                   {t.navInquiry}
                 </a>
                 <a 
+                  href="#notifications" 
+                  onClick={(e) => handleMobileNavClick(e, "notifications")}
+                  className="text-base font-semibold text-slate-700 hover:text-orange-600 py-1"
+                >
+                  🔔 Notifications
+                </a>
+                <a 
                   href="#contact" 
                   onClick={(e) => handleMobileNavClick(e, "contact")}
                   className="text-base font-semibold text-slate-700 hover:text-orange-600 py-1"
@@ -398,8 +465,10 @@ export default function App() {
         </AnimatePresence>
       </header>
 
-      {/* 3. HERO SECTION */}
-      <section className="relative bg-gradient-to-b from-white via-slate-50 to-white text-slate-900 border-b border-slate-200/80 overflow-hidden py-16 lg:py-28">
+      {currentView === "home" ? (
+        <>
+          {/* 3. HERO SECTION */}
+          <section className="relative bg-gradient-to-b from-white via-slate-50 to-white text-slate-900 border-b border-slate-200/80 overflow-hidden py-16 lg:py-28">
         
         {/* Soft elegant warm ambient glow */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none select-none z-0">
@@ -742,64 +811,6 @@ export default function App() {
       <section id="products" className="py-20 bg-slate-50 relative border-y border-slate-100/50 scroll-mt-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           
-          {/* 5. Product Section Hero Collage Banner */}
-          <div className="mb-14 rounded-3xl overflow-hidden border border-slate-200 shadow-2xl relative bg-slate-950 text-white">
-            {/* Background elements / Grid / Subtle dark overlay */}
-            <div className="absolute inset-0 bg-grid-slate-100/[0.03] z-0 pointer-events-none" />
-            <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-900/90 to-transparent z-10" />
-
-            {/* Collage images side-by-side or overlapping with soft mask */}
-            <div className="absolute inset-y-0 right-0 w-full lg:w-1/2 opacity-35 lg:opacity-50 z-0">
-              <div className="grid grid-cols-2 h-full gap-2 p-2">
-                <div 
-                  className="rounded-2xl bg-cover bg-center h-full min-h-[250px]"
-                  style={{ backgroundImage: `url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2GVpUvyXn-qcO7oW-U29n4WJT1VjoSyWjnrzSjYOJRg&s=10')` }}
-                />
-                <div 
-                  className="rounded-2xl bg-cover bg-center h-full min-h-[250px]"
-                  style={{ backgroundImage: `url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTY5B0jJBtTus2aLr-VFYiZ4L7Ec3FCIkCVfkmLDimogA&s=10')` }}
-                />
-              </div>
-            </div>
-
-            {/* Content area */}
-            <div className="relative z-20 px-8 py-12 lg:px-14 lg:py-16 max-w-2xl flex flex-col justify-center h-full">
-              <span className="inline-flex items-center gap-1.5 bg-orange-600/20 border border-orange-500/30 text-orange-400 text-xs font-bold font-mono px-3.5 py-1.5 rounded-full w-fit mb-6 uppercase tracking-wider">
-                🌟 Multi-Category Wholesaler
-              </span>
-              
-              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black font-display tracking-tight leading-tight mb-4 text-white">
-                Wholesale Products
-              </h2>
-              
-              <p className="text-slate-200 text-base sm:text-lg lg:text-xl font-medium mb-6 leading-relaxed">
-                Premium Tarpaulin, Construction Materials, Plastic Products, Household Essentials, Cosmetics & More — All Under One Roof.
-              </p>
-
-              {/* Showcase badges/collage of items */}
-              <div className="flex flex-wrap gap-2.5 max-w-xl">
-                {[
-                  "Tarpaulin",
-                  "Construction Materials",
-                  "Plastic Products",
-                  "Fencing Nets",
-                  "Thermocol",
-                  "Plastic Mats",
-                  "Table Covers",
-                  "Household Products",
-                  "Wholesale Merchandise"
-                ].map((item, idx) => (
-                  <span 
-                    key={idx}
-                    className="text-xs font-bold bg-white/10 border border-white/15 hover:border-orange-500/40 text-slate-100 hover:text-orange-400 px-3.5 py-2 rounded-xl transition-all duration-200 shadow-sm"
-                  >
-                    ✦ {item}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </div>
-
           {/* Filtering Tabs */}
           <div className="flex flex-wrap gap-2 justify-center mb-10 overflow-x-auto pb-2 no-scrollbar">
             {categories.map((tab) => (
@@ -1225,6 +1236,11 @@ export default function App() {
           </div>
         </div>
       </section>
+
+        </>
+      ) : (
+        <NotificationsPage />
+      )}
 
       {/* 12. FOOTER */}
       <footer className="bg-brand-blue-dark text-slate-400 py-16 border-t border-white/5 mt-auto">

@@ -24,7 +24,7 @@ export default function BrandCarousel() {
               viewport={{ once: true }}
               transition={{ duration: 0.5, delay: index * 0.08 }}
               whileHover={{ y: -5, scale: 1.03 }}
-              className="w-full h-24 bg-white rounded-2xl p-4 flex items-center justify-center border border-slate-100/80 shadow-sm hover:shadow-md transition-all duration-300 relative group overflow-hidden"
+              className="w-full h-28 bg-white rounded-2xl p-3 flex items-center justify-center border border-slate-100/80 shadow-sm hover:shadow-md transition-all duration-300 relative group overflow-hidden"
             >
               {/* Subtle orange accent bar on hover */}
               <div className="absolute top-0 inset-x-0 h-1 bg-brand-orange scale-x-0 group-hover:scale-x-100 transition-transform duration-300 origin-left" />
@@ -36,8 +36,8 @@ export default function BrandCarousel() {
                 referrerPolicy="no-referrer"
                 className={`max-w-full object-contain filter contrast-125 hover:brightness-105 transition-all duration-300 ${
                   brand.name === "Capstone Cheetah"
-                    ? "max-h-24 scale-[2.1] object-cover rounded-xl"
-                    : "max-h-14"
+                    ? "max-h-28 scale-[2.1] object-cover rounded-xl"
+                    : "max-h-18"
                 }`}
               />
               
