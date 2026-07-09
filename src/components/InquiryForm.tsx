@@ -10,36 +10,7 @@ interface InquiryFormProps {
 
 export default function InquiryForm({ prefilledProduct = "", onClearPrefill = () => {}, currentLanguage = "en" }: InquiryFormProps) {
   const t = TRANSLATIONS[currentLanguage];
-  const containerRef = useRef<HTMLDivElement>(null);
   const [isLoading, setIsLoading] = useState(true);
-
-  useEffect(() => {
-    if (!containerRef.current) return;
-    
-    // Clear any previous script elements to avoid duplicates on rerenders
-    containerRef.current.innerHTML = "";
-    setIsLoading(true);
-
-    const script = document.createElement("script");
-    script.src = "https://form.jotform.com/jsform/261895002819058";
-    script.type = "text/javascript";
-    script.async = true;
-    
-    script.onload = () => {
-      setIsLoading(false);
-    };
-
-    // Fallback for loader
-    const timer = setTimeout(() => {
-      setIsLoading(false);
-    }, 2500);
-
-    containerRef.current.appendChild(script);
-
-    return () => {
-      clearTimeout(timer);
-    };
-  }, []);
 
   return (
     <div id="premium-enquiry-system" className="w-full space-y-5">
@@ -60,9 +31,9 @@ export default function InquiryForm({ prefilledProduct = "", onClearPrefill = ()
       </div>
 
       {/* Jotform Embed Container */}
-      <div className="w-full relative">
+      <div className="w-full relative bg-white dark:bg-slate-900 rounded-2xl overflow-hidden shadow-sm border border-slate-100 dark:border-slate-800/40 min-h-[650px]">
         {isLoading && (
-          <div className="flex flex-col items-center justify-center py-16 space-y-3">
+          <div className="absolute inset-0 flex flex-col items-center justify-center bg-white dark:bg-slate-900 z-10 space-y-3">
             <Loader2 className="w-8 h-8 text-orange-500 animate-spin" />
             <p className="text-xs font-semibold text-slate-500 animate-pulse">
               {currentLanguage === "en" ? "Loading Secure Form..." : "सुरक्षित फॉर्म लोड हो रहा है..."}
@@ -70,9 +41,13 @@ export default function InquiryForm({ prefilledProduct = "", onClearPrefill = ()
           </div>
         )}
         
-        <div 
-          ref={containerRef} 
-          className="w-full bg-white dark:bg-slate-900 rounded-2xl p-1 overflow-x-hidden min-h-[550px] shadow-sm border border-slate-100 dark:border-slate-800/40" 
+        <iframe
+          src="https://form.jotform.com/261895002819058"
+          title="Om Shringar Tirpal Store Enquiry Form"
+          className="w-full h-[650px] border-0"
+          onLoad={() => setIsLoading(false)}
+          allow="geolocation; microphone; camera"
+          sandbox="allow-top-navigation-by-user-activation allow-forms allow-scripts allow-same-origin allow-popups"
         />
       </div>
 
