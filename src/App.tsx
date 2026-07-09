@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import * as Icons from "lucide-react";
 import {
@@ -37,6 +37,7 @@ import {
 
 import ProductCard from "./components/ProductCard";
 import ProductDetailsModal from "./components/ProductDetailsModal";
+import GoogleReviewPopup from "./components/GoogleReviewPopup";
 import BrandCarousel from "./components/BrandCarousel";
 import InquiryForm from "./components/InquiryForm";
 import InquiryModal from "./components/InquiryModal";
@@ -148,6 +149,26 @@ export default function App() {
   const handleEnquire = (productName: string) => {
     setPrefilledProduct(productName);
     setInquiryOpen(true);
+  };
+
+  const handleMobileNavClick = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
+    e.preventDefault();
+    setMobileMenuOpen(false);
+    
+    // Smooth scroll with offset for sticky header
+    setTimeout(() => {
+      const element = document.getElementById(targetId);
+      if (element) {
+        const headerOffset = 100; // adjust offset for sticky header
+        const elementPosition = element.getBoundingClientRect().top;
+        const offsetPosition = elementPosition + window.scrollY - headerOffset;
+        
+        window.scrollTo({
+          top: offsetPosition,
+          behavior: "smooth"
+        });
+      }
+    }, 150); // slight delay to let menu start collapsing or let state settle
   };
 
   const clearPrefill = () => {
@@ -297,49 +318,49 @@ export default function App() {
               <div className="px-4 py-6 space-y-4 flex flex-col">
                 <a 
                   href="#about" 
-                  onClick={() => setMobileMenuOpen(false)}
+                  onClick={(e) => handleMobileNavClick(e, "about")}
                   className="text-base font-semibold text-slate-700 hover:text-orange-600 py-1"
                 >
                   {t.navAbout}
                 </a>
                 <a 
                   href="#products" 
-                  onClick={() => setMobileMenuOpen(false)}
+                  onClick={(e) => handleMobileNavClick(e, "products")}
                   className="text-base font-semibold text-slate-700 hover:text-orange-600 py-1"
                 >
                   {t.navProducts}
                 </a>
                 <a 
                   href="#special-uses" 
-                  onClick={() => setMobileMenuOpen(false)}
+                  onClick={(e) => handleMobileNavClick(e, "special-uses")}
                   className="text-base font-semibold text-slate-700 hover:text-orange-600 py-1"
                 >
                   {t.navApplications}
                 </a>
                 <a 
                   href="#size-matrix" 
-                  onClick={() => setMobileMenuOpen(false)}
+                  onClick={(e) => handleMobileNavClick(e, "size-matrix")}
                   className="text-base font-semibold text-slate-700 hover:text-orange-600 py-1"
                 >
                   {t.navSizeChart}
                 </a>
                 <a 
                   href="#why-choose" 
-                  onClick={() => setMobileMenuOpen(false)}
+                  onClick={(e) => handleMobileNavClick(e, "why-choose")}
                   className="text-base font-semibold text-slate-700 hover:text-orange-600 py-1"
                 >
                   {t.navWhyUs}
                 </a>
                 <a 
                   href="#enquire" 
-                  onClick={() => setMobileMenuOpen(false)}
+                  onClick={(e) => handleMobileNavClick(e, "enquire")}
                   className="text-base font-semibold text-slate-700 hover:text-orange-600 py-1"
                 >
                   {t.navInquiry}
                 </a>
                 <a 
                   href="#contact" 
-                  onClick={() => setMobileMenuOpen(false)}
+                  onClick={(e) => handleMobileNavClick(e, "contact")}
                   className="text-base font-semibold text-slate-700 hover:text-orange-600 py-1"
                 >
                   {t.navFindStore}
@@ -1377,6 +1398,9 @@ export default function App() {
         onClearPrefill={clearPrefill}
         currentLanguage={lang}
       />
+
+      {/* Google Review Prompt Popup */}
+      <GoogleReviewPopup />
 
     </div>
   );
