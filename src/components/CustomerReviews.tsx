@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { motion, useMotionValue } from "motion/react";
+import { motion, AnimatePresence } from "motion/react";
 import { Star, ChevronLeft, ChevronRight } from "lucide-react";
 
 interface Review {
@@ -119,9 +119,7 @@ const REVIEWS: Review[] = [
 export default function CustomerReviews() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
-  const trackRef = useRef<HTMLDivElement>(null);
 
-  // Duplicating reviews list to enable infinite visual loop
   const totalReviews = REVIEWS.length;
 
   useEffect(() => {
@@ -141,6 +139,8 @@ export default function CustomerReviews() {
   const handleNext = () => {
     setCurrentIndex((prevIndex) => (prevIndex + 1) % totalReviews);
   };
+
+  const activeReview = REVIEWS[currentIndex];
 
   return (
     <section className="py-20 bg-white border-t border-b border-slate-100 relative z-10 overflow-hidden">
@@ -170,86 +170,64 @@ export default function CustomerReviews() {
 
         {/* Carousel Visual Frame with Left & Right Arrows */}
         <div 
-          className="relative px-0 md:px-12"
+          className="relative max-w-2xl mx-auto px-4 md:px-14"
           onMouseEnter={() => setIsPaused(true)}
           onMouseLeave={() => setIsPaused(false)}
         >
           {/* Main Viewport Container */}
-          <div className="overflow-hidden py-4 px-2">
-            <motion.div
-              ref={trackRef}
-              className="flex gap-6 sm:gap-8"
-              animate={{
-                x: `calc(-${currentIndex * 100}% - ${currentIndex * 24}px)`
-              }}
-              style={{
-                // Ensure proper display responsive width sizes for flex items
-                display: "flex",
-              }}
-              transition={{
-                type: "spring",
-                stiffness: 80,
-                damping: 17,
-                mass: 0.8
-              }}
-            >
-              {REVIEWS.map((review) => (
-                <div
-                  key={review.id}
-                  className="w-full md:w-[calc(50%-12px)] lg:w-[calc(33.333%-16px)] shrink-0 bg-white border border-slate-100 rounded-3xl p-6 sm:p-7 shadow-sm hover:shadow-md hover:border-slate-200 transition-all duration-300 flex flex-col justify-between min-h-[250px]"
-                >
-                  <div className="space-y-4">
-                    {/* Star rating row */}
-                    <div className="flex gap-1 text-amber-400">
-                      <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
-                      <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
-                      <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
-                      <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
-                      <Star className="w-4 h-4 fill-amber-400 text-amber-400" />
-                    </div>
-
-                    {/* Review Text */}
-                    <p className="text-slate-700 text-sm sm:text-base leading-relaxed font-semibold">
-                      "{review.text}"
-                    </p>
+          <div className="py-4">
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={currentIndex}
+                initial={{ opacity: 0, scale: 0.98, y: 5 }}
+                animate={{ opacity: 1, scale: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.98, y: -5 }}
+                transition={{ duration: 0.25, ease: "easeInOut" }}
+                className="w-full bg-slate-50/40 border border-slate-100/90 rounded-3xl p-6 sm:p-8 shadow-sm hover:shadow-md hover:border-slate-200 transition-all duration-300 flex flex-col justify-between min-h-[260px] sm:min-h-[210px]"
+              >
+                <div className="space-y-4">
+                  {/* Star rating row */}
+                  <div className="flex gap-1 text-amber-400">
+                    <Star className="w-4.5 h-4.5 fill-amber-400 text-amber-400" />
+                    <Star className="w-4.5 h-4.5 fill-amber-400 text-amber-400" />
+                    <Star className="w-4.5 h-4.5 fill-amber-400 text-amber-400" />
+                    <Star className="w-4.5 h-4.5 fill-amber-400 text-amber-400" />
+                    <Star className="w-4.5 h-4.5 fill-amber-400 text-amber-400" />
                   </div>
 
-                  {/* Author Row with Custom SVG Avatar */}
-                  <div className="flex items-center gap-4 mt-6 pt-5 border-t border-slate-50">
-                    <div className={`w-11 h-11 ${review.bgColor} rounded-full flex items-center justify-center shrink-0 border border-slate-100 relative group`}>
-                      {/* Custom Minimal SVG Avatar silhouette */}
-                      <svg
-                        viewBox="0 0 32 32"
-                        className="absolute inset-0 w-full h-full p-1 opacity-15"
-                        fill="currentColor"
-                      >
-                        <path d="M16 4a6 6 0 100 12 6 6 0 000-12zm-8 16c-1.1 0-2 .9-2 2v2c0 2.2 1.8 4 4 4h12c2.2 0 4-1.8 4-4v-2c0-1.1-.9-2-2-2H8z" />
-                      </svg>
-                      {/* Dynamic bold initials */}
-                      <span className={`font-black text-sm tracking-wider ${review.textColor} relative z-10`}>
-                        {review.initials}
-                      </span>
-                    </div>
-                    
-                    <div className="text-left">
-                      <strong className="block text-sm font-black text-slate-900 font-display">
-                        {review.name}
-                      </strong>
-                      <span className="block text-xs font-bold text-slate-400">
-                        {review.role} • {review.location}
-                      </span>
-                    </div>
+                  {/* Review Text */}
+                  <p className="text-slate-700 text-base sm:text-lg leading-relaxed font-semibold italic">
+                    "{activeReview.text}"
+                  </p>
+                </div>
+
+                {/* Author Row with Custom Google Profile Avatar */}
+                <div className="flex items-center gap-4 mt-6 pt-5 border-t border-slate-100">
+                  <img
+                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcREPpWOOuKWq_gmqd2Je6FH6XynPuZY9SnNlYdO_CEdLA&s=10"
+                    alt={activeReview.name}
+                    referrerPolicy="no-referrer"
+                    className="w-11 h-11 rounded-full object-cover border border-slate-100 shadow-sm shrink-0"
+                  />
+                  
+                  <div className="text-left">
+                    <strong className="block text-sm sm:text-base font-black text-slate-900 font-display">
+                      {activeReview.name}
+                    </strong>
+                    <span className="block text-xs font-bold text-slate-400">
+                      {activeReview.role} • {activeReview.location}
+                    </span>
                   </div>
                 </div>
-              ))}
-            </motion.div>
+              </motion.div>
+            </AnimatePresence>
           </div>
 
           {/* Left Arrow Button */}
           <button
             onClick={handlePrev}
-            className="absolute left-0 top-1/2 -translate-y-1/2 -translate-x-1/2 md:translate-x-0 w-12 h-12 rounded-full bg-white border border-slate-100 shadow-md flex items-center justify-center hover:bg-slate-50 transition-colors z-20 cursor-pointer text-slate-600 hover:text-slate-950 focus:outline-none"
-            aria-label="Previous Reviews"
+            className="absolute left-0 md:left-2 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white border border-slate-100 shadow-md flex items-center justify-center hover:bg-slate-50 transition-colors z-20 cursor-pointer text-slate-600 hover:text-slate-950 focus:outline-none"
+            aria-label="Previous Review"
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
@@ -257,8 +235,8 @@ export default function CustomerReviews() {
           {/* Right Arrow Button */}
           <button
             onClick={handleNext}
-            className="absolute right-0 top-1/2 -translate-y-1/2 translate-x-1/2 md:translate-x-0 w-12 h-12 rounded-full bg-white border border-slate-100 shadow-md flex items-center justify-center hover:bg-slate-50 transition-colors z-20 cursor-pointer text-slate-600 hover:text-slate-950 focus:outline-none"
-            aria-label="Next Reviews"
+            className="absolute right-0 md:right-2 top-1/2 -translate-y-1/2 w-11 h-11 rounded-full bg-white border border-slate-100 shadow-md flex items-center justify-center hover:bg-slate-50 transition-colors z-20 cursor-pointer text-slate-600 hover:text-slate-950 focus:outline-none"
+            aria-label="Next Review"
           >
             <ChevronRight className="w-5 h-5" />
           </button>
