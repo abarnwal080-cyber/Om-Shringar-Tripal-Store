@@ -414,6 +414,194 @@ export const PRODUCTS: Product[] = [
       { question: "Does it sag in high winds?", answer: "If properly tensioned and secured on strong bamboo or metal stakes every 5-6 feet, it retains its straight, rigid structure." },
       { question: "Is it safe for chicken poultry farms?", answer: "Yes, it is widely used in Bihar for poultry setups because it has no sharp metal wires that can injure chickens." }
     ]
+  },
+  {
+    id: "thermocol-sheets",
+    name: "Construction Thermocol Sheets (EPS Blocks & Sheets)",
+    category: "Construction & Curing",
+    description: "High-quality EPS Thermocol sheets suitable for construction, insulation, packaging, false ceilings, and industrial applications. Durable, lightweight, and easy to install.",
+    images: [
+      "https://tiimg.tistatic.com/fp/1/003/087/thermocol-blocks-870.jpg",
+      "https://www.epackindia.com/wp-content/uploads/2023/07/Largest-Thermocol-Sheets-Manufacturer-in-India-e1688211124714.jpg"
+    ],
+    features: [
+      "Lightweight",
+      "Thermal Insulation",
+      "Moisture Resistant",
+      "Easy to Cut"
+    ],
+    detailedDescription: "Our high-grade Expanded Polystyrene (EPS) Thermocol sheets provide outstanding structural insulation and load-bearing performance. From false ceilings to under-slab roof insulation, cold storage, and heavy-duty product packaging, these sheets offer superior moisture resistance, thermal damping, and are incredibly simple to cut and position.",
+    benefits: [
+      "Highly effective thermal barrier reduces indoor temperatures naturally.",
+      "Extremely lightweight structure decreases structural loads in ceilings.",
+      "Moisture-proof and water-resistant chemistry prevents dampness or rotting.",
+      "Easy to shape and cut with standard hot-wire or manual cutters."
+    ],
+    specs: {
+      "Thickness Available": "0.5 inch, 1 inch, 1.5 inch, 2 inch",
+      "Material": "EPS (Expanded Polystyrene)",
+      "Density": "Standard High-Density Grade",
+      "Thermal Conductivity": "Low (Superior Insulation)",
+      "Moisture Resistance": "High",
+      "Sizes Available": "Multiple sizes and blocks customizable upon request"
+    },
+    applications: [
+      "Roof insulation",
+      "Wall insulation",
+      "Construction",
+      "Cold storage",
+      "Packaging",
+      "False ceiling"
+    ],
+    faqs: [
+      { question: "What sizes and thicknesses of Thermocol sheets are available?", answer: "We keep standard thicknesses of 0.5 inch, 1 inch, 1.5 inch, and 2 inch in stock. Custom block sizes can also be ordered for large-scale insulation requirements." },
+      { question: "Are EPS Thermocol sheets effective for soundproofing?", answer: "Yes, they provide sound dampening and are frequently used in home theaters, studio walls, and partition barriers to lower ambient sound transmission." },
+      { question: "Does this material degrade under high humidity?", answer: "Not at all. Expanded Polystyrene is highly moisture-resistant and does not promote mold, rot, or mildew, making it ideal for ceiling and underground insulation." },
+      { question: "Can these sheets be used for heavy cargo packaging?", answer: "Absolutely. Due to their high shock-absorption properties, these EPS sheets are highly preferred for industrial packaging and safeguarding fragile appliances during transport." },
+      { question: "How do I install these sheets on a ceiling or roof?", answer: "They can be fixed easily using specialized non-solvent adhesives, screws with washers, or slotted into standard false-ceiling metal grids." }
+    ]
+  },
+  {
+    id: "plastic-mat-chatai",
+    name: "Premium Plastic Mat (Chatai)",
+    category: "Household & Outdoor",
+    description: "Premium-quality plastic mats suitable for home, travel, picnics, sleeping, prayer, outdoor use, and everyday household purposes.",
+    images: [
+      "https://m.media-amazon.com/images/I/A1AtzXGSRiL._SL1500_.jpg",
+      "https://m.media-amazon.com/images/I/914EanHR8-L._AC_UF350,350_QL80_.jpg",
+      "https://m.media-amazon.com/images/I/A1LZHQRsvvL.jpg",
+      "https://m.media-amazon.com/images/I/81LDq2IS-pL._SL1169_.jpg"
+    ],
+    features: [
+      "Foldable",
+      "Waterproof",
+      "Washable",
+      "Durable"
+    ],
+    detailedDescription: "Our Premium Plastic Chatai (Mats) are woven using high-quality virgin polymers for unmatched strength, flexibility, and vibrant designs. Designed for multipurpose use across Bihar homes, these mats are perfect for household sitting, sleeping, religious prayers, gardens, travel, and picnic getaways. Fully waterproof, washable, and easy to fold, they are built to last.",
+    benefits: [
+      "Folds into a highly compact size for easy storage and travel portability.",
+      "100% waterproof woven plastic wipes clean of mud, dust, or food instantly.",
+      "Tightly woven structure avoids unraveling and supports heavy everyday usage.",
+      "Vibrant patterns and double-sided patterns fit both indoor and outdoor settings."
+    ],
+    specs: {
+      "Available Sizes": "Single Bed, Double Bed, Large Family Size",
+      "Material": "Premium woven virgin plastic / Polypropylene",
+      "Properties": "Waterproof, Foldable, Washable, Lightweight",
+      "Edges": "Reinforced heat-sealed border bindings",
+      "Texture": "Soft, comfortable, and skin-friendly weave",
+      "Cleaning": "Wipe with damp cloth or wash with water hose"
+    },
+    applications: [
+      "Sleeping",
+      "Picnic",
+      "Prayer",
+      "Home",
+      "Garden",
+      "Travel",
+      "Camping",
+      "Floor sitting"
+    ],
+    faqs: [
+      { question: "Is this plastic mat fully washable?", answer: "Yes! You can wash it directly with running water from a pipe or wipe it down with a damp cloth and mild soap. It dries very quickly in the air." },
+      { question: "What sizes are available in your Maharajganj store?", answer: "We supply three main sizes: Single Bed mat, Double Bed mat, and Extra-Large Family size mat. All are available in various colorful patterns." },
+      { question: "Is the material safe for kids to sit and play on?", answer: "Absolutely. Our premium mats are woven from non-toxic, virgin polypropylene threads that are soft, smooth, and fully safe for children and family use." },
+      { question: "Can I use this Chatai for outdoor camping and picnics?", answer: "Yes, it is extremely lightweight, easy to fold, and acts as a barrier against damp soil or grass, making it the perfect outdoor companion." },
+      { question: "Will the colors fade under direct sunlight?", answer: "Our mats are made using UV-resistant plastic dyes, which helps them maintain their vibrant colors and patterns even during regular outdoor use." }
+    ]
+  },
+  {
+    id: "waterproof-table-cover",
+    name: "Waterproof Table Cover (6 Seater)",
+    category: "Household & Outdoor",
+    description: "Premium waterproof table covers that protect dining tables from spills, stains, scratches, and heat while enhancing home décor. Easy to clean and suitable for everyday use.",
+    images: [
+      "https://rukmini1.flixcart.com/image/1500/1500/xif0q/table-cover/6/9/z/pink-green-flower-jaal-pattern-digital-print-polyester-stitched-original-imah7gnbqszyfbzg.jpeg?q=70",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSra4FykmHGsPqzxxBcZMdRwjff5RkGg0Lhbom4mnHqVg&s=10",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSQGE9of_AcH9nq0463Ut85x9LBHr9gj8c6hRywqb024g&s=10",
+      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQQu10QLVFX0paOsU5nzvrpcVkKyy84M7QmxXMd6PDsqw&s=10"
+    ],
+    features: [
+      "Waterproof",
+      "Easy Clean",
+      "Stylish",
+      "Durable"
+    ],
+    detailedDescription: "Transform your dining experience with our Premium Waterproof Table Cover, designed specifically for standard 6-seater dining tables. Fabricated with a high-durability liquid-proof protective barrier, this cover protects your valuable wood, glass, or marble tables from accidental food spills, coffee stains, cutlery scratches, and warm dishes while elevating your home dining aesthetics.",
+    benefits: [
+      "100% waterproof surface completely repels oils, gravies, and beverages.",
+      "Stain-resistant layer wipes clean with a single stroke of a dry or damp sponge.",
+      "Soft under-layer prevents scratches and reduces the clatter of plates and cups.",
+      "Premium digital prints and elegant edge borders complement any modern home décor."
+    ],
+    specs: {
+      "Size": "6 Seater",
+      "Waterproof": "Yes (100% Liquid Proof)",
+      "Washable": "Yes (Hand-wash or easy wipe clean)",
+      "Reusable": "Highly Durable and Reusable",
+      "Fabric Material": "Heavy-duty premium polyester / PVC composite",
+      "Designs": "Multiple floral, geometric, and digital prints available"
+    },
+    applications: [
+      "Dining table",
+      "Kitchen",
+      "Restaurants",
+      "Hotels",
+      "Cafeteria",
+      "Home décor"
+    ],
+    faqs: [
+      { question: "How do I clean food or grease stains from this table cover?", answer: "You don't need to wash it in a machine. Simply use a damp cloth, sponge, or kitchen tissue with a tiny drop of dish soap to wipe away oil, tea, or gravy instantly." },
+      { question: "Is this table cover heat resistant?", answer: "It easily withstands warm food plates, tea cups, and soup bowls. However, placing hot-off-the-stove pots or sizzling baking trays directly on it is not recommended; always use a trivet." },
+      { question: "Will it fit my 4-seater or 8-seater dining table?", answer: "This specific range is custom-sized for standard 6-seater dining tables. For 4-seater or 8-seater tables, please visit our Maharajganj store or message us on WhatsApp for specialized sizes!" },
+      { question: "Is the print durable, or will it fade after washing?", answer: "We use premium digital printing technology with high-grade pigment binding, ensuring the vibrant floral and geometric prints remain bright and colorful for years of daily use." },
+      { question: "Does the table cover slide off easily?", answer: "No, our table covers are engineered with a slip-resistant matte backing that grips the table surface firmly, preventing accidental slips or shifts during dining." }
+    ]
+  },
+  {
+    id: "cosmetics-shringar",
+    name: "Premium Cosmetics & Shringar Range",
+    category: "Household & Outdoor",
+    description: "Vast collection of wholesale beauty, makeup, bridal shringar accessories, and personal care products at unbeatable dealer prices.",
+    images: [
+      "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=600&auto=format&fit=crop&q=60",
+      "https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=600&auto=format&fit=crop&q=60",
+      "https://images.unsplash.com/photo-1612817288484-6f916006741a?w=600&auto=format&fit=crop&q=60",
+      "https://images.unsplash.com/photo-1512496015851-a90fb38ba796?w=600&auto=format&fit=crop&q=60"
+    ],
+    features: [
+      "Complete Bridal Kits",
+      "Premium Brand Makeup",
+      "Daily Skincare Range",
+      "Wholesale Bulk Deals"
+    ],
+    detailedDescription: "As our business name 'Om Shringar Tirpal Store' proudly represents, we house a dedicated, extensive wholesale section for high-quality Cosmetics and Bridal Shringar products. We supply local retail shops, salons, and wedding planners with authentic products ranging from vermilion (Sindoor), bangles, bindis, and bridal kits to top national beauty and skincare brands.",
+    benefits: [
+      "Direct source wholesale prices with high margins for retail shop owners.",
+      "100% genuine and safe-to-use cosmetics certified by national lab guidelines.",
+      "Complete wedding and festive shringar gift packs curated upon request.",
+      "Regularly updated inventory with the latest trending beauty items and brands."
+    ],
+    specs: {
+      "Products Available": "Sindoor, Bindis, Bangles, Lipstick, Kajal, Foundations, Creams, Hair Oils, & Complete Bridal Shringar Sets",
+      "Brands Offered": "Lakme, L'Oreal, Lotus, Blue Heaven, and Premium Local Traditional Brands",
+      "Quality Standard": "100% Skin-safe, Dermatologically Tested Brands",
+      "Min. Order for Wholesale": "Flexible bulk boxes / wholesale packs available",
+      "Occasion Kits": "Bridal Special, Karwa Chauth, Teej, Chhath Pooja, & Diwali combos"
+    },
+    applications: [
+      "Retail beauty shops",
+      "Salons & Parlors",
+      "Bridal gifts",
+      "Daily personal care",
+      "Festive occasions"
+    ],
+    faqs: [
+      { question: "Do you offer discount rates for cosmetic retail shop owners?", answer: "Yes, since we operate on a heavy wholesale model, we offer lucrative percentage margins and tiered discounts to retail business owners purchasing carton quantities." },
+      { question: "Are your cosmetics genuine and safe?", answer: "Absolutely. We strictly deal in authorized distributor channels for major national brands, guaranteeing 100% genuine products with long expiry dates." },
+      { question: "Can we order custom bridal shringar gift packs?", answer: "Yes! We specialize in custom wedding packs featuring beautiful bangles, premium bindis, traditional sindoor, and branded cosmetics customized to your budget." }
+    ]
   }
 ];
 

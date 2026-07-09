@@ -140,18 +140,6 @@ export default function ProductCard({ product, onEnquire }: ProductCardProps) {
               </span>
             ))}
           </div>
-
-          {/* Starting size / availability if applicable */}
-          {product.availableSizes && (
-            <div className="mb-5 p-3.5 bg-blue-50/50 rounded-2xl border border-blue-100/50 flex items-center justify-between">
-              <span className="text-[10px] text-blue-600 font-bold tracking-wider font-mono uppercase">
-                Starting Size Range
-              </span>
-              <span className="text-xs sm:text-sm font-extrabold text-blue-800 font-display">
-                {product.availableSizes}
-              </span>
-            </div>
-          )}
         </div>
 
         {/* Buttons Action Bar */}

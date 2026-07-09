@@ -14,7 +14,11 @@ import {
   HelpCircle,
   FileText,
   MessageCircle,
-  Package
+  Package,
+  Search,
+  ChevronDown,
+  Check,
+  X
 } from "lucide-react";
 import { PRODUCTS } from "../data";
 
@@ -38,6 +42,23 @@ export default function InquiryForm({ prefilledProduct, onClearPrefill, currentL
   });
 
   const [isSubmitted, setIsSubmitted] = useState(false);
+
+  // States for searchable product dropdown
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
+        setDropdownOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   // Focus input automatically on step changes
   const inputRef = useRef<HTMLInputElement | HTMLTextAreaElement>(null);
@@ -149,6 +170,11 @@ export default function InquiryForm({ prefilledProduct, onClearPrefill, currentL
   };
 
   const stepsCount = 7;
+
+  const filteredProductsList = PRODUCTS.filter((p) =>
+    p.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+    p.category.toLowerCase().includes(searchQuery.toLowerCase())
+  );
 
   // Slide transition animation variants
   const slideVariants = {
@@ -281,57 +307,138 @@ export default function InquiryForm({ prefilledProduct, onClearPrefill, currentL
                     </p>
                   </div>
                   
-                  {/* Grid of Interactive Options */}
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 max-h-[220px] overflow-y-auto pr-1">
-                    {PRODUCTS.map((prod) => (
-                      <button
-                        key={prod.id}
-                        type="button"
-                        onClick={() => {
-                          setFormData((prev) => ({ ...prev, product: prod.name }));
-                          setTimeout(handleNext, 180);
-                        }}
-                        className={`p-3 rounded-2xl border text-left flex items-center gap-3 transition-all duration-200 cursor-pointer ${
-                          formData.product === prod.name
-                            ? "bg-slate-900 border-transparent text-white shadow-md"
-                            : "bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100/80"
-                        }`}
-                      >
-                        <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm shrink-0 ${
-                          formData.product === prod.name ? "bg-white/10" : "bg-white border border-slate-200"
-                        }`}>
-                          📦
-                        </div>
-                        <div className="truncate">
-                          <span className="block text-xs sm:text-sm font-bold truncate">{prod.name}</span>
-                          <span className="block text-[10px] text-slate-400 font-mono truncate">
-                            {currentLanguage === "en" ? prod.category : "गैलेक्सी रेंज"}
-                          </span>
-                        </div>
-                      </button>
-                    ))}
+                  {/* Premium Custom Searchable Dropdown */}
+                  <div className="relative" ref={dropdownRef}>
                     <button
                       type="button"
-                      onClick={() => {
-                        setFormData((prev) => ({ ...prev, product: "Custom / Special Sheet" }));
-                        setTimeout(handleNext, 180);
-                      }}
-                      className={`p-3 rounded-2xl border text-left flex items-center gap-3 transition-all duration-200 cursor-pointer ${
-                        formData.product === "Custom / Special Sheet"
-                          ? "bg-slate-900 border-transparent text-white shadow-md"
-                          : "bg-slate-50 border-slate-200 text-slate-700 hover:bg-slate-100/80"
-                      }`}
+                      onClick={() => setDropdownOpen(!dropdownOpen)}
+                      className="w-full bg-slate-50 border border-slate-200 hover:border-orange-500 focus:outline-none focus:border-orange-500 focus:ring-1 focus:ring-orange-500 rounded-2xl px-5 py-4 text-base font-semibold transition-all flex items-center justify-between text-left cursor-pointer shadow-sm"
                     >
-                      <div className={`w-8 h-8 rounded-lg flex items-center justify-center text-sm shrink-0 ${
-                        formData.product === "Custom / Special Sheet" ? "bg-white/10" : "bg-white border border-slate-200"
-                      }`}>
-                        ⚙️
+                      <div className="flex items-center gap-3 truncate">
+                        <span className="text-xl shrink-0">📦</span>
+                        {formData.product ? (
+                          <div className="truncate">
+                            <span className="block text-sm font-bold text-slate-800">{formData.product}</span>
+                            <span className="block text-[10px] text-slate-400 font-mono">
+                              {PRODUCTS.find(p => p.name === formData.product)?.category || "Selected Product"}
+                            </span>
+                          </div>
+                        ) : (
+                          <span className="text-slate-400 font-medium text-sm">
+                            {currentLanguage === "en" ? "Search or Select Product" : "उत्पाद चुनें या खोजें..."}
+                          </span>
+                        )}
                       </div>
-                      <div>
-                        <span className="block text-xs sm:text-sm font-bold">Custom Size & Type</span>
-                        <span className="block text-[10px] text-slate-400 font-mono">Special request</span>
-                      </div>
+                      <ChevronDown className={`w-5 h-5 text-slate-400 transition-transform duration-250 shrink-0 ml-2 ${dropdownOpen ? "rotate-180 text-orange-500" : ""}`} />
                     </button>
+
+                    <AnimatePresence>
+                      {dropdownOpen && (
+                        <motion.div
+                          initial={{ opacity: 0, y: -10 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -10 }}
+                          transition={{ duration: 0.15 }}
+                          className="absolute left-0 right-0 mt-2 bg-white border border-slate-200 shadow-2xl rounded-2xl z-50 overflow-hidden flex flex-col max-h-[280px]"
+                        >
+                          {/* Search box inside dropdown */}
+                          <div className="p-3 border-b border-slate-100 flex items-center gap-2 bg-slate-50/50">
+                            <Search className="w-4 h-4 text-slate-400 shrink-0 ml-1" />
+                            <input
+                              type="text"
+                              value={searchQuery}
+                              onChange={(e) => setSearchQuery(e.target.value)}
+                              placeholder={currentLanguage === "en" ? "Search product..." : "खोजें..."}
+                              className="w-full bg-transparent border-none text-sm font-semibold outline-none text-slate-800 placeholder-slate-400 py-1"
+                              onClick={(e) => e.stopPropagation()}
+                            />
+                            {searchQuery && (
+                              <button
+                                type="button"
+                                onClick={(e) => {
+                                  e.stopPropagation();
+                                  setSearchQuery("");
+                                }}
+                                className="p-1 hover:bg-slate-200 rounded-full text-slate-400 hover:text-slate-600 transition-colors cursor-pointer"
+                              >
+                                <X className="w-3 h-3" />
+                              </button>
+                            )}
+                          </div>
+
+                          {/* List of filtered products */}
+                          <div className="overflow-y-auto flex-1 py-1 divide-y divide-slate-50/50">
+                            {filteredProductsList.length > 0 ? (
+                              filteredProductsList.map((prod) => (
+                                <button
+                                  key={prod.id}
+                                  type="button"
+                                  onClick={() => {
+                                    setFormData((prev) => ({ ...prev, product: prod.name }));
+                                    setDropdownOpen(false);
+                                    setSearchQuery("");
+                                  }}
+                                  className={`w-full p-3 text-left flex items-center justify-between transition-colors cursor-pointer hover:bg-slate-50 ${
+                                    formData.product === prod.name ? "bg-orange-50/30" : ""
+                                  }`}
+                                >
+                                  <div className="flex items-center gap-3 truncate">
+                                    <div className="w-7 h-7 rounded-lg bg-slate-100 flex items-center justify-center text-sm shrink-0">
+                                      📦
+                                    </div>
+                                    <div className="truncate">
+                                      <span className={`block text-xs sm:text-sm truncate ${formData.product === prod.name ? "font-extrabold text-orange-600" : "font-bold text-slate-700"}`}>
+                                        {prod.name}
+                                      </span>
+                                      <span className="block text-[10px] text-slate-400 font-mono truncate">
+                                        {prod.category}
+                                      </span>
+                                    </div>
+                                  </div>
+                                  {formData.product === prod.name && (
+                                    <Check className="w-4 h-4 text-orange-600 shrink-0 ml-2" />
+                                  )}
+                                </button>
+                              ))
+                            ) : (
+                              <div className="p-4 text-center text-xs text-slate-400 font-semibold">
+                                {currentLanguage === "en" ? "No products found" : "कोई उत्पाद नहीं मिला"}
+                              </div>
+                            )}
+
+                            {/* Standard Custom option */}
+                            <button
+                              type="button"
+                              onClick={() => {
+                                setFormData((prev) => ({ ...prev, product: "Custom / Special Sheet" }));
+                                setDropdownOpen(false);
+                                setSearchQuery("");
+                              }}
+                              className={`w-full p-3 text-left flex items-center justify-between transition-colors cursor-pointer hover:bg-slate-50 ${
+                                formData.product === "Custom / Special Sheet" ? "bg-orange-50/30" : ""
+                              }`}
+                            >
+                              <div className="flex items-center gap-3">
+                                <div className="w-7 h-7 rounded-lg bg-slate-100 flex items-center justify-center text-sm shrink-0">
+                                  ⚙️
+                                </div>
+                                <div>
+                                  <span className={`block text-xs sm:text-sm ${formData.product === "Custom / Special Sheet" ? "font-extrabold text-orange-600" : "font-bold text-slate-700"}`}>
+                                    Custom Size & Type
+                                  </span>
+                                  <span className="block text-[10px] text-slate-400 font-mono">
+                                    Special request
+                                  </span>
+                                </div>
+                              </div>
+                              {formData.product === "Custom / Special Sheet" && (
+                                <Check className="w-4 h-4 text-orange-600 shrink-0 ml-2" />
+                              )}
+                            </button>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   </div>
                 </div>
               )}

@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import * as Icons from "lucide-react";
 import {
@@ -21,7 +21,8 @@ import {
   Truck,
   Sprout,
   Users,
-  ArrowRight
+  ArrowRight,
+  ArrowUp
 } from "lucide-react";
 
 import {
@@ -64,6 +65,70 @@ export default function App() {
   const [heroBgImage, setHeroBgImage] = useState("https://plain-apac-prod-public.komododecks.com/202607/03/eckT9KEMGbavrebTJwPJ/image.png");
   const [inquiryOpen, setInquiryOpen] = useState(false);
 
+  const [navbarVisible, setNavbarVisible] = useState(true);
+  const [showScrollTop, setShowScrollTop] = useState(false);
+  const [activeSection, setActiveSection] = useState("");
+  const lastScrollY = useRef(0);
+
+  // Scroll handler for auto-hide navbar & scroll-to-top button
+  useEffect(() => {
+    const handleScroll = () => {
+      const currentScrollY = window.scrollY;
+      
+      // Auto-hide navbar
+      if (currentScrollY <= 80) {
+        setNavbarVisible(true);
+      } else if (currentScrollY > lastScrollY.current) {
+        setNavbarVisible(false); // scrolling down
+      } else {
+        setNavbarVisible(true); // scrolling up
+      }
+      
+      // Scroll-to-top button visibility
+      if (currentScrollY > 500) {
+        setShowScrollTop(true);
+      } else {
+        setShowScrollTop(false);
+      }
+      
+      lastScrollY.current = currentScrollY;
+    };
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Intersection Observer for Active Navigation Highlight
+  useEffect(() => {
+    const sections = ["about", "products", "special-uses", "size-matrix", "why-choose", "enquire", "contact"];
+    const observerOptions = {
+      root: null,
+      rootMargin: "-25% 0px -55% 0px",
+      threshold: 0.1,
+    };
+
+    const observerCallback = (entries: IntersectionObserverEntry[]) => {
+      entries.forEach((entry) => {
+        if (entry.isIntersecting) {
+          setActiveSection(entry.target.id);
+        }
+      });
+    };
+
+    const observer = new IntersectionObserver(observerCallback, observerOptions);
+    sections.forEach((id) => {
+      const element = document.getElementById(id);
+      if (element) observer.observe(element);
+    });
+
+    return () => {
+      sections.forEach((id) => {
+        const element = document.getElementById(id);
+        if (element) observer.unobserve(element);
+      });
+    };
+  }, []);
+
   const inquiryRef = useRef<HTMLDivElement>(null);
   const t = TRANSLATIONS[lang];
 
@@ -82,7 +147,7 @@ export default function App() {
   };
 
   // Categories for product tab filtering
-  const categories = ["All", "Industrial Packaging", "Construction & Curing", "Clear Covering", "All-Weather Protection", "Security & Fencing"];
+  const categories = ["All", "Industrial Packaging", "Construction & Curing", "Clear Covering", "All-Weather Protection", "Security & Fencing", "Household & Outdoor"];
 
   const filteredProducts = activeTab === "All" 
     ? PRODUCTS 
@@ -124,7 +189,9 @@ export default function App() {
       </div>
  
       {/* 2. GLASSMORPHIC STICKY NAVIGATION BAR */}
-      <header className="w-full bg-brand-blue-dark border-b border-white/10 sticky top-9 sm:top-8 z-40 shadow-md transition-all duration-200">
+      <header className={`w-full bg-brand-blue-dark border-b border-white/10 sticky z-40 shadow-md transition-all duration-300 ease-in-out ${
+        navbarVisible ? "top-9 sm:top-8 translate-y-0 opacity-100" : "-translate-y-full opacity-0 pointer-events-none"
+      }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
           
           {/* Logo Branding */}
@@ -150,13 +217,32 @@ export default function App() {
  
           {/* Desktop Navigation Links */}
           <nav className="hidden lg:flex items-center gap-8 font-semibold text-sm text-blue-100">
-            <a href="#about" className="hover:text-orange-400 transition-colors">{t.navAbout}</a>
-            <a href="#products" className="hover:text-orange-400 transition-colors">{t.navProducts}</a>
-            <a href="#special-uses" className="hover:text-orange-400 transition-colors">{t.navApplications}</a>
-            <a href="#size-matrix" className="hover:text-orange-400 transition-colors">{t.navSizeChart}</a>
-            <a href="#why-choose" className="hover:text-orange-400 transition-colors">{t.navWhyUs}</a>
-            <a href="#enquire" className="hover:text-orange-400 transition-colors">{t.navInquiry}</a>
-            <a href="#contact" className="hover:text-orange-400 transition-colors">{t.navFindStore}</a>
+            {[
+              { href: "#about", label: t.navAbout, id: "about" },
+              { href: "#products", label: t.navProducts, id: "products" },
+              { href: "#special-uses", label: t.navApplications, id: "special-uses" },
+              { href: "#size-matrix", label: t.navSizeChart, id: "size-matrix" },
+              { href: "#why-choose", label: t.navWhyUs, id: "why-choose" },
+              { href: "#enquire", label: t.navInquiry, id: "enquire" },
+              { href: "#contact", label: t.navFindStore, id: "contact" }
+            ].map((link) => (
+              <a 
+                key={link.href}
+                href={link.href} 
+                className={`hover:text-orange-400 transition-colors relative py-2 ${
+                  activeSection === link.id ? "text-orange-400 font-extrabold" : "text-blue-100"
+                }`}
+              >
+                {link.label}
+                {activeSection === link.id && (
+                  <motion.span 
+                    layoutId="activeNavBorder" 
+                    className="absolute bottom-0 left-0 right-0 h-0.5 bg-orange-400 rounded-full" 
+                    transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                  />
+                )}
+              </a>
+            ))}
           </nav>
  
           {/* Nav Right CTA */}
@@ -525,7 +611,7 @@ export default function App() {
       <CustomerReviews />
 
       {/* 5. ABOUT US SECTION */}
-      <section id="about" className="py-20 bg-white relative overflow-hidden">
+      <section id="about" className="py-20 bg-white relative overflow-hidden scroll-mt-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             
@@ -619,21 +705,65 @@ export default function App() {
       </section>
 
       {/* 6. PRODUCTS CATALOG SECTION */}
-      <section id="products" className="py-20 bg-slate-50 relative border-y border-slate-100/50">
+      <section id="products" className="py-20 bg-slate-50 relative border-y border-slate-100/50 scroll-mt-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           
-          {/* Section Header */}
-          <div className="text-center max-w-3xl mx-auto mb-14">
-            <div className="inline-flex items-center gap-2 bg-orange-50 text-brand-orange text-xs font-bold font-mono px-3.5 py-1.5 rounded-full mb-4">
-              <Tag className="w-3.5 h-3.5" />
-              <span>PRODUCTS CATALOG</span>
+          {/* 5. Product Section Hero Collage Banner */}
+          <div className="mb-14 rounded-3xl overflow-hidden border border-slate-200 shadow-2xl relative bg-slate-950 text-white">
+            {/* Background elements / Grid / Subtle dark overlay */}
+            <div className="absolute inset-0 bg-grid-slate-100/[0.03] z-0 pointer-events-none" />
+            <div className="absolute inset-0 bg-gradient-to-r from-slate-950 via-slate-900/90 to-transparent z-10" />
+
+            {/* Collage images side-by-side or overlapping with soft mask */}
+            <div className="absolute inset-y-0 right-0 w-full lg:w-1/2 opacity-35 lg:opacity-50 z-0">
+              <div className="grid grid-cols-2 h-full gap-2 p-2">
+                <div 
+                  className="rounded-2xl bg-cover bg-center h-full min-h-[250px]"
+                  style={{ backgroundImage: `url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcS2GVpUvyXn-qcO7oW-U29n4WJT1VjoSyWjnrzSjYOJRg&s=10')` }}
+                />
+                <div 
+                  className="rounded-2xl bg-cover bg-center h-full min-h-[250px]"
+                  style={{ backgroundImage: `url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTY5B0jJBtTus2aLr-VFYiZ4L7Ec3FCIkCVfkmLDimogA&s=10')` }}
+                />
+              </div>
             </div>
-            <h2 className="text-3xl sm:text-4xl font-extrabold font-display text-brand-blue-dark tracking-tight mb-4">
-              Our High-Performance Industrial & Commercial Plastics
-            </h2>
-            <p className="text-slate-600 text-sm sm:text-base">
-              Explore our complete inventory. Every product has been manufactured to global standard polymer guidelines, ensuring anti-leakage, high UV proofing, and long lifespan.
-            </p>
+
+            {/* Content area */}
+            <div className="relative z-20 px-8 py-12 lg:px-14 lg:py-16 max-w-2xl flex flex-col justify-center h-full">
+              <span className="inline-flex items-center gap-1.5 bg-orange-600/20 border border-orange-500/30 text-orange-400 text-xs font-bold font-mono px-3.5 py-1.5 rounded-full w-fit mb-6 uppercase tracking-wider">
+                🌟 Multi-Category Wholesaler
+              </span>
+              
+              <h2 className="text-3xl sm:text-4xl lg:text-5xl font-black font-display tracking-tight leading-tight mb-4 text-white">
+                Wholesale Products
+              </h2>
+              
+              <p className="text-slate-200 text-base sm:text-lg lg:text-xl font-medium mb-6 leading-relaxed">
+                Premium Tarpaulin, Construction Materials, Plastic Products, Household Essentials, Cosmetics & More — All Under One Roof.
+              </p>
+
+              {/* Showcase badges/collage of items */}
+              <div className="flex flex-wrap gap-2.5 max-w-xl">
+                {[
+                  "Tarpaulin",
+                  "Construction Materials",
+                  "Plastic Products",
+                  "Fencing Nets",
+                  "Thermocol",
+                  "Plastic Mats",
+                  "Table Covers",
+                  "Household Products",
+                  "Wholesale Merchandise"
+                ].map((item, idx) => (
+                  <span 
+                    key={idx}
+                    className="text-xs font-bold bg-white/10 border border-white/15 hover:border-orange-500/40 text-slate-100 hover:text-orange-400 px-3.5 py-2 rounded-xl transition-all duration-200 shadow-sm"
+                  >
+                    ✦ {item}
+                  </span>
+                ))}
+              </div>
+            </div>
           </div>
 
           {/* Filtering Tabs */}
@@ -668,7 +798,7 @@ export default function App() {
       </section>
 
       {/* 7. SPECIAL PURPOSE SHEETS (FEATURES GRID) */}
-      <section id="special-uses" className="py-20 bg-white relative">
+      <section id="special-uses" className="py-20 bg-white relative scroll-mt-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           
           {/* Section Header */}
@@ -712,7 +842,7 @@ export default function App() {
       </section>
 
       {/* 8. AVAILABLE PLASTIC SIZES (SPEC TABLE) */}
-      <section id="size-matrix" className="py-20 bg-slate-50 border-y border-slate-100/50">
+      <section id="size-matrix" className="py-20 bg-slate-50 border-y border-slate-100/50 scroll-mt-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
@@ -792,7 +922,7 @@ export default function App() {
       </section>
 
       {/* 9. WHY CHOOSE US */}
-      <section id="why-choose" className="py-20 bg-white relative">
+      <section id="why-choose" className="py-20 bg-white relative scroll-mt-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           
           {/* Section Header */}
@@ -841,7 +971,7 @@ export default function App() {
 
 
       {/* 10. INTERACTIVE FAQ & INQUIRY FORM */}
-      <section id="enquire" ref={inquiryRef} className="py-20 bg-slate-50 border-t border-slate-100 relative">
+      <section id="enquire" ref={inquiryRef} className="py-20 bg-slate-50 border-t border-slate-100 relative scroll-mt-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-start">
             
@@ -968,7 +1098,7 @@ export default function App() {
       </section>
 
       {/* 11. CONTACT & MAPS SECTION */}
-      <section id="contact" className="py-20 bg-white relative">
+      <section id="contact" className="py-20 bg-white relative scroll-mt-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
@@ -1184,6 +1314,26 @@ export default function App() {
           <span className="uppercase tracking-wider font-black">Get Quote</span>
         </button>
       </div>
+
+      {/* Floating Scroll-to-Top Button (Stacked above the WhatsApp Button) */}
+      <AnimatePresence>
+        {showScrollTop && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8, y: 10 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.8, y: 10 }}
+            className="fixed right-6 bottom-24 z-40"
+          >
+            <button
+              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+              aria-label="Scroll to top"
+              className="w-12 h-12 rounded-full bg-white/85 hover:bg-white text-slate-800 hover:text-orange-600 shadow-2xl border border-slate-200/60 flex items-center justify-center backdrop-blur-md transition-all duration-200 active:scale-90 cursor-pointer group"
+            >
+              <ArrowUp className="w-5 h-5 transition-transform duration-200 group-hover:-translate-y-0.5" />
+            </button>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* AI Assistant Chatbot (Floating Left Aligned) */}
       <AIChatbot currentLanguage={lang} />
