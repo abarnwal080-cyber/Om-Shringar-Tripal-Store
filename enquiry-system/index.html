@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Get Your Best Price Instantly | Om Shringar Tirpal Store</title>
+  
+  <!-- Font Integrations -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+  
+  <!-- Tailwind CSS CDN for helper utility framework layout -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  
+  <!-- Custom Core Stylesheets -->
+  <link rel="stylesheet" href="style.css">
+  
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="https://www.shridantahub.in/favicon.ico" onerror="this.src='https://cdn-icons-png.flaticon.com/512/811/811302.png'">
+</head>
+<body class="bg-slate-950 text-slate-100 min-h-screen flex items-center justify-center overflow-x-hidden font-sans relative antialiased selection:bg-orange-500 selection:text-white">
+
+  <!-- Ambient background glow gradients (Apple/Stripe aesthetic) -->
+  <div class="glow-bg absolute top-[-10%] left-[-20%] w-[60%] h-[60%] rounded-full opacity-20 pointer-events-none blur-[140px]" style="background: radial-gradient(circle, #f97316 0%, transparent 80%);"></div>
+  <div class="glow-bg absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full opacity-15 pointer-events-none blur-[140px]" style="background: radial-gradient(circle, #3b82f6 0%, transparent 80%);"></div>
+
+  <!-- Main Multi-step Form Modal Container (Always centered/fullscreen responsive) -->
+  <main class="w-full max-w-4xl mx-auto px-4 py-6 sm:py-12 relative z-10 flex flex-col justify-center min-h-screen">
+    
+    <!-- Premium Card with Glassmorphism -->
+    <div id="form-card" class="glass-card w-full rounded-3xl overflow-hidden border border-white/10 shadow-2xl flex flex-col transition-all duration-500 relative min-h-[580px] md:min-h-[640px]">
+      
+      <!-- Top Header Navigation & Live Progress Bar -->
+      <header class="p-6 border-b border-white/5 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 relative z-20 bg-black/10 backdrop-blur-md">
+        <!-- Brand Signature -->
+        <div class="flex items-center gap-2.5">
+          <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-orange-500 to-amber-500 flex items-center justify-center text-white font-extrabold text-sm shadow-md shadow-orange-500/20">
+            OS
+          </div>
+          <div>
+            <span class="block font-bold text-xs sm:text-sm text-white tracking-wide">Om Shringar Tirpal Store</span>
+            <span class="block text-[9px] font-bold text-orange-400 uppercase tracking-widest font-mono">Premium Sheets</span>
+          </div>
+        </div>
+        
+        <!-- Live Completion Tracker -->
+        <div class="flex items-center gap-4">
+          <div class="text-right">
+            <span class="block text-[10px] font-extrabold uppercase font-mono text-slate-400 tracking-wider">Progress</span>
+            <span id="step-counter" class="text-xs font-bold text-orange-400 font-mono">0% Completed</span>
+          </div>
+          <!-- Dark/Light Theme Toggle -->
+          <button id="theme-toggle" class="p-2 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300 transition-colors focus:outline-none" aria-label="Toggle visual theme">
+            <svg id="sun-icon" class="w-4 h-4 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 3v1m0 16v1m9-9h-1M4 12H3m15.364-6.364l-.707.707M6.343 17.657l-.707-.707m2.828 9.9a5 5 0 111.59 1.59M19 19H5a2 2 0 01-2-2V5a2 2 0 012-2h14a2 2 0 012 2v12a2 2 0 01-2 2z" /></svg>
+            <svg id="moon-icon" class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20.354 15.354A9 9 0 018.646 3.646 9.003 9.003 0 0012 21a9.003 9.003 0 008.354-5.646z" /></svg>
+          </button>
+        </div>
+        
+        <!-- Progress Bar Indicator -->
+        <div class="absolute bottom-0 left-0 w-full h-[3px] bg-white/5">
+          <div id="progress-indicator" class="h-full bg-gradient-to-r from-orange-500 via-amber-500 to-yellow-400 w-0 transition-all duration-500 rounded-r-full shadow-[0_0_10px_rgba(249,115,22,0.5)]"></div>
+        </div>
+      </header>
+
+      <!-- Multi-step Screens Inner Wrapper -->
+      <form id="enquiry-form" novalidate class="flex-1 flex flex-col relative overflow-hidden">
+        
+        <!-- Spam Protection Honeypot field (hidden from screen, but autocomplete target for bots) -->
+        <div style="opacity: 0; position: absolute; top: 0; left: 0; height: 0; width: 0; z-index: -1; overflow: hidden;">
+          <label for="website_verify">Security Field - Leave Blank</label>
+          <input type="text" name="website_verify" id="website_verify" tabindex="-1" autocomplete="off">
+        </div>
+
+        <!-- 0. WELCOME SCREEN -->
+        <div class="step-screen active-screen flex flex-col justify-center px-6 py-12 sm:px-12 md:px-16 space-y-8 animate-fade-in" data-step="0">
+          <div class="space-y-4">
+            <span class="inline-flex items-center gap-2 bg-orange-500/10 border border-orange-500/20 text-orange-400 text-xs font-bold font-mono px-3.5 py-1.5 rounded-full uppercase tracking-wider">
+              ✨ Direct Factory Pricing
+            </span>
+            <h1 class="text-3xl sm:text-4xl md:text-5xl font-black text-white leading-tight tracking-tight">
+              Get Your Best Price <br><span class="bg-gradient-to-r from-orange-500 to-amber-400 bg-clip-text text-transparent">Instantly</span>
+            </h1>
+            <p class="text-slate-300 text-base sm:text-lg max-w-xl font-medium leading-relaxed">
+              Need Tarpaulin, Plastic Sheets, Silpaulins or related products? Fill this quick enquiry form and our dispatch experts will calculate the best quotation for you.
+            </p>
+          </div>
+          
+          <div class="flex flex-wrap items-center gap-4 pt-4 border-t border-white/5 text-xs sm:text-sm text-slate-400">
+            <div class="flex items-center gap-2">
+              <svg class="w-4 h-4 text-orange-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+              <span>Estimated time: <strong>30–45 seconds</strong></span>
+            </div>
+            <span class="text-slate-600 hidden sm:inline">&bull;</span>
+            <div class="flex items-center gap-2">
+              <svg class="w-4 h-4 text-emerald-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" /></svg>
+              <span>Secure 100% genuine brands</span>
+            </div>
+          </div>
+
+          <div class="pt-6">
+            <button type="button" class="next-step-btn px-8 py-4 bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-bold rounded-2xl shadow-lg shadow-orange-500/20 hover:shadow-orange-500/30 transition-all duration-300 flex items-center gap-2 text-sm sm:text-base group">
+              <span>Start Your Enquiry</span>
+              <svg class="w-5 h-5 transition-transform duration-300 group-hover:translate-x-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+            </button>
+          </div>
+        </div>
+
+        <!-- 1. CUSTOMER NAME SCREEN -->
+        <div class="step-screen hidden flex flex-col justify-center px-6 py-12 sm:px-12 md:px-16 space-y-6" data-step="1">
+          <div class="space-y-1">
+            <div class="text-xs font-mono font-bold text-orange-400">Question 1 of 11</div>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">What is your full name? <span class="text-orange-500">*</span></h2>
+            <p class="text-slate-400 text-xs sm:text-sm">We will use this name to address you in our quotes.</p>
+          </div>
+          
+          <div class="relative pt-4">
+            <input type="text" id="customerName" name="customerName" required placeholder="Type your full name here..." class="form-input w-full bg-white/5 border border-white/10 hover:border-white/20 focus:border-orange-500 rounded-2xl px-5 py-4 text-base sm:text-lg font-semibold outline-none transition-all text-white placeholder-slate-500">
+            <span class="focus-border-line"></span>
+          </div>
+          <div class="error-msg text-red-400 text-xs sm:text-sm font-semibold flex items-center gap-1.5 opacity-0 transition-opacity duration-300">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+            <span>Please enter your name to proceed.</span>
+          </div>
+        </div>
+
+        <!-- 2. MOBILE NUMBER SCREEN -->
+        <div class="step-screen hidden flex flex-col justify-center px-6 py-12 sm:px-12 md:px-16 space-y-6" data-step="2">
+          <div class="space-y-1">
+            <div class="text-xs font-mono font-bold text-orange-400">Question 2 of 11</div>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">What is your mobile number? <span class="text-orange-500">*</span></h2>
+            <p class="text-slate-400 text-xs sm:text-sm">To send quotation price cards and delivery status updates.</p>
+          </div>
+          
+          <div class="relative pt-4">
+            <div class="absolute left-5 top-1/2 -translate-y-1/2 pt-4 flex items-center gap-1 text-slate-400 font-bold text-base sm:text-lg">
+              <span>🇮🇳</span>
+              <span>+91</span>
+            </div>
+            <input type="tel" id="mobileNumber" name="mobileNumber" required maxlength="10" placeholder="10-digit mobile number..." class="form-input w-full bg-white/5 border border-white/10 hover:border-white/20 focus:border-orange-500 rounded-2xl pl-20 pr-5 py-4 text-base sm:text-lg font-semibold outline-none transition-all text-white placeholder-slate-500">
+          </div>
+          <div class="error-msg text-red-400 text-xs sm:text-sm font-semibold flex items-center gap-1.5 opacity-0 transition-opacity duration-300">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+            <span>Please enter a valid 10-digit Indian mobile number (starting with 6, 7, 8, or 9).</span>
+          </div>
+        </div>
+
+        <!-- 3. WHATSAPP NUMBER SCREEN (OPTIONAL) -->
+        <div class="step-screen hidden flex flex-col justify-center px-6 py-12 sm:px-12 md:px-16 space-y-6" data-step="3">
+          <div class="space-y-1">
+            <div class="text-xs font-mono font-bold text-orange-400">Question 3 of 11</div>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">WhatsApp Number <span class="text-slate-500 text-xs sm:text-sm font-medium">(Optional)</span></h2>
+            <p class="text-slate-400 text-xs sm:text-sm">Leave blank if it's the same as your mobile number.</p>
+          </div>
+          
+          <div class="relative pt-4">
+            <div class="absolute left-5 top-1/2 -translate-y-1/2 pt-4 flex items-center gap-1 text-slate-400 font-bold text-base sm:text-lg">
+              <span>🇮🇳</span>
+              <span>+91</span>
+            </div>
+            <input type="tel" id="whatsAppNumber" name="whatsAppNumber" maxlength="10" placeholder="WhatsApp number..." class="form-input w-full bg-white/5 border border-white/10 hover:border-white/20 focus:border-orange-500 rounded-2xl pl-20 pr-5 py-4 text-base sm:text-lg font-semibold outline-none transition-all text-white placeholder-slate-500">
+          </div>
+          
+          <!-- Sync Checkbox -->
+          <div class="pt-2 flex items-center gap-2">
+            <input type="checkbox" id="sync-numbers" class="rounded bg-white/5 border-white/10 text-orange-500 focus:ring-orange-500 cursor-pointer">
+            <label for="sync-numbers" class="text-xs font-bold text-slate-400 hover:text-slate-200 cursor-pointer transition-colors">Same as mobile number entered previously</label>
+          </div>
+          <div class="error-msg text-red-400 text-xs sm:text-sm font-semibold flex items-center gap-1.5 opacity-0 transition-opacity duration-300">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+            <span>Please enter a valid 10-digit WhatsApp number or leave it empty.</span>
+          </div>
+        </div>
+
+        <!-- 4. PRODUCT INTERESTED IN SCREEN -->
+        <div class="step-screen hidden flex flex-col justify-center px-6 py-12 sm:px-12 md:px-16 space-y-6" data-step="4">
+          <div class="space-y-1">
+            <div class="text-xs font-mono font-bold text-orange-400">Question 4 of 11</div>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Product Interested In <span class="text-orange-500">*</span></h2>
+            <p class="text-slate-400 text-xs sm:text-sm">Select the best product category that matches your requirement.</p>
+          </div>
+          
+          <!-- Interactive Choice Grid -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2 max-h-[220px] overflow-y-auto no-scrollbar">
+            <label class="choice-box relative border border-white/10 rounded-2xl p-4 flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-300 hover:bg-white/5 bg-white/[0.02] group">
+              <input type="radio" name="productInterested" value="Tarpaulin" required class="sr-only">
+              <span class="text-2xl mb-2 filter grayscale group-hover:grayscale-0 transition-all">🎪</span>
+              <span class="text-xs sm:text-sm font-bold text-slate-200">Tarpaulin</span>
+            </label>
+            <label class="choice-box relative border border-white/10 rounded-2xl p-4 flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-300 hover:bg-white/5 bg-white/[0.02] group">
+              <input type="radio" name="productInterested" value="Plastic Sheet" class="sr-only">
+              <span class="text-2xl mb-2 filter grayscale group-hover:grayscale-0 transition-all">🛡️</span>
+              <span class="text-xs sm:text-sm font-bold text-slate-200">Plastic Sheet</span>
+            </label>
+            <label class="choice-box relative border border-white/10 rounded-2xl p-4 flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-300 hover:bg-white/5 bg-white/[0.02] group">
+              <input type="radio" name="productInterested" value="Silpaulin" class="sr-only">
+              <span class="text-2xl mb-2 filter grayscale group-hover:grayscale-0 transition-all">💎</span>
+              <span class="text-xs sm:text-sm font-bold text-slate-200">Silpaulin</span>
+            </label>
+            <label class="choice-box relative border border-white/10 rounded-2xl p-4 flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-300 hover:bg-white/5 bg-white/[0.02] group">
+              <input type="radio" name="productInterested" value="HDPE Tarpaulin" class="sr-only">
+              <span class="text-2xl mb-2 filter grayscale group-hover:grayscale-0 transition-all">🏗️</span>
+              <span class="text-xs sm:text-sm font-bold text-slate-200">HDPE Tarpaulin</span>
+            </label>
+            <label class="choice-box relative border border-white/10 rounded-2xl p-4 flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-300 hover:bg-white/5 bg-white/[0.02] group">
+              <input type="radio" name="productInterested" value="Agricultural Cover" class="sr-only">
+              <span class="text-2xl mb-2 filter grayscale group-hover:grayscale-0 transition-all">🌾</span>
+              <span class="text-xs sm:text-sm font-bold text-slate-200">Agricultural Cover</span>
+            </label>
+            <label class="choice-box relative border border-white/10 rounded-2xl p-4 flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-300 hover:bg-white/5 bg-white/[0.02] group">
+              <input type="radio" name="productInterested" value="Waterproof Sheet" class="sr-only">
+              <span class="text-2xl mb-2 filter grayscale group-hover:grayscale-0 transition-all">🌧️</span>
+              <span class="text-xs sm:text-sm font-bold text-slate-200">Waterproof Sheet</span>
+            </label>
+            <label class="choice-box relative border border-white/10 rounded-2xl p-4 flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-300 hover:bg-white/5 bg-white/[0.02] group">
+              <input type="radio" name="productInterested" value="Construction Sheet" class="sr-only">
+              <span class="text-2xl mb-2 filter grayscale group-hover:grayscale-0 transition-all">🧱</span>
+              <span class="text-xs sm:text-sm font-bold text-slate-200">Construction Sheet</span>
+            </label>
+            <label class="choice-box relative border border-white/10 rounded-2xl p-4 flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-300 hover:bg-white/5 bg-white/[0.02] group">
+              <input type="radio" name="productInterested" value="Other" class="sr-only">
+              <span class="text-2xl mb-2 filter grayscale group-hover:grayscale-0 transition-all">⚙️</span>
+              <span class="text-xs sm:text-sm font-bold text-slate-200">Other</span>
+            </label>
+          </div>
+          <div class="error-msg text-red-400 text-xs sm:text-sm font-semibold flex items-center gap-1.5 opacity-0 transition-opacity duration-300">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+            <span>Please select a product category.</span>
+          </div>
+        </div>
+
+        <!-- 5. REQUIRED SIZE SCREEN -->
+        <div class="step-screen hidden flex flex-col justify-center px-6 py-12 sm:px-12 md:px-16 space-y-6" data-step="5">
+          <div class="space-y-1">
+            <div class="text-xs font-mono font-bold text-orange-400">Question 5 of 11</div>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Required Size <span class="text-slate-500 text-xs sm:text-sm font-medium">(Optional)</span></h2>
+            <p class="text-slate-400 text-xs sm:text-sm">Example sizes: <strong>18 × 24 ft</strong>, <strong>15 × 12 ft</strong> or custom width/length details.</p>
+          </div>
+          
+          <div class="relative pt-4">
+            <input type="text" id="requiredSize" name="requiredSize" placeholder="Enter size (e.g. 18 x 24 ft)..." class="form-input w-full bg-white/5 border border-white/10 hover:border-white/20 focus:border-orange-500 rounded-2xl px-5 py-4 text-base sm:text-lg font-semibold outline-none transition-all text-white placeholder-slate-500">
+          </div>
+          
+          <!-- Suggestion Quick Buttons -->
+          <div class="flex flex-wrap gap-2 pt-2">
+            <button type="button" class="size-preset-btn px-3.5 py-1.5 rounded-xl bg-white/5 border border-white/10 hover:border-orange-500 text-xs font-semibold text-slate-300 hover:text-white transition-all cursor-pointer">15 × 12 ft</button>
+            <button type="button" class="size-preset-btn px-3.5 py-1.5 rounded-xl bg-white/5 border border-white/10 hover:border-orange-500 text-xs font-semibold text-slate-300 hover:text-white transition-all cursor-pointer">18 × 24 ft</button>
+            <button type="button" class="size-preset-btn px-3.5 py-1.5 rounded-xl bg-white/5 border border-white/10 hover:border-orange-500 text-xs font-semibold text-slate-300 hover:text-white transition-all cursor-pointer">30 × 36 ft</button>
+            <button type="button" class="size-preset-btn px-3.5 py-1.5 rounded-xl bg-white/5 border border-white/10 hover:border-orange-500 text-xs font-semibold text-slate-300 hover:text-white transition-all cursor-pointer">60 × 100 ft</button>
+            <button type="button" class="size-preset-btn px-3.5 py-1.5 rounded-xl bg-white/5 border border-white/10 hover:border-orange-500 text-xs font-semibold text-slate-300 hover:text-white transition-all cursor-pointer">Custom Roll</button>
+          </div>
+        </div>
+
+        <!-- 6. QUANTITY SCREEN -->
+        <div class="step-screen hidden flex flex-col justify-center px-6 py-12 sm:px-12 md:px-16 space-y-6" data-step="6">
+          <div class="space-y-1">
+            <div class="text-xs font-mono font-bold text-orange-400">Question 6 of 11</div>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Quantity needed? <span class="text-slate-500 text-xs sm:text-sm font-medium">(Optional)</span></h2>
+            <p class="text-slate-400 text-xs sm:text-sm">We offer higher discounts on bulk and retail wholesale sheets.</p>
+          </div>
+          
+          <div class="relative pt-4 flex items-center gap-4">
+            <!-- Fancy Number Counter Input -->
+            <button type="button" id="qty-dec" class="w-14 h-14 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 text-white font-extrabold text-xl flex items-center justify-center transition-all cursor-pointer">-</button>
+            <input type="number" id="quantity" name="quantity" min="1" value="1" class="form-input text-center w-32 bg-white/5 border border-white/10 rounded-2xl py-4 text-base sm:text-lg font-bold outline-none transition-all text-white">
+            <button type="button" id="qty-inc" class="w-14 h-14 rounded-2xl bg-white/5 hover:bg-white/10 border border-white/10 text-white font-extrabold text-xl flex items-center justify-center transition-all cursor-pointer">+</button>
+          </div>
+        </div>
+
+        <!-- 7. PURPOSE SCREEN -->
+        <div class="step-screen hidden flex flex-col justify-center px-6 py-12 sm:px-12 md:px-16 space-y-6" data-step="7">
+          <div class="space-y-1">
+            <div class="text-xs font-mono font-bold text-orange-400">Question 7 of 11</div>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Purpose of Use <span class="text-orange-500">*</span></h2>
+            <p class="text-slate-400 text-xs sm:text-sm">Helps us recommend the best matching thickness / GSM durability.</p>
+          </div>
+          
+          <!-- Grid of Purpose Buttons -->
+          <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 pt-2 max-h-[220px] overflow-y-auto no-scrollbar">
+            <label class="choice-box relative border border-white/10 rounded-2xl p-4 flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-300 hover:bg-white/5 bg-white/[0.02] group">
+              <input type="radio" name="purpose" value="Farm" required class="sr-only">
+              <span class="text-2xl mb-1 filter grayscale group-hover:grayscale-0 transition-all">🌾</span>
+              <span class="text-xs font-bold text-slate-200">Farm</span>
+            </label>
+            <label class="choice-box relative border border-white/10 rounded-2xl p-4 flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-300 hover:bg-white/5 bg-white/[0.02] group">
+              <input type="radio" name="purpose" value="House" class="sr-only">
+              <span class="text-2xl mb-1 filter grayscale group-hover:grayscale-0 transition-all">🏠</span>
+              <span class="text-xs font-bold text-slate-200">House</span>
+            </label>
+            <label class="choice-box relative border border-white/10 rounded-2xl p-4 flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-300 hover:bg-white/5 bg-white/[0.02] group">
+              <input type="radio" name="purpose" value="Construction" class="sr-only">
+              <span class="text-2xl mb-1 filter grayscale group-hover:grayscale-0 transition-all">🏗️</span>
+              <span class="text-xs font-bold text-slate-200">Construction</span>
+            </label>
+            <label class="choice-box relative border border-white/10 rounded-2xl p-4 flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-300 hover:bg-white/5 bg-white/[0.02] group">
+              <input type="radio" name="purpose" value="Shop" class="sr-only">
+              <span class="text-2xl mb-1 filter grayscale group-hover:grayscale-0 transition-all">🏪</span>
+              <span class="text-xs font-bold text-slate-200">Shop</span>
+            </label>
+            <label class="choice-box relative border border-white/10 rounded-2xl p-4 flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-300 hover:bg-white/5 bg-white/[0.02] group">
+              <input type="radio" name="purpose" value="Warehouse" class="sr-only">
+              <span class="text-2xl mb-1 filter grayscale group-hover:grayscale-0 transition-all">🏭</span>
+              <span class="text-xs font-bold text-slate-200">Warehouse</span>
+            </label>
+            <label class="choice-box relative border border-white/10 rounded-2xl p-4 flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-300 hover:bg-white/5 bg-white/[0.02] group">
+              <input type="radio" name="purpose" value="Transport" class="sr-only">
+              <span class="text-2xl mb-1 filter grayscale group-hover:grayscale-0 transition-all">🚚</span>
+              <span class="text-xs font-bold text-slate-200">Transport</span>
+            </label>
+            <label class="choice-box relative border border-white/10 rounded-2xl p-4 flex flex-col items-center justify-center text-center cursor-pointer transition-all duration-300 hover:bg-white/5 bg-white/[0.02] group">
+              <input type="radio" name="purpose" value="Other" class="sr-only">
+              <span class="text-2xl mb-1 filter grayscale group-hover:grayscale-0 transition-all">❓</span>
+              <span class="text-xs font-bold text-slate-200">Other</span>
+            </label>
+          </div>
+          <div class="error-msg text-red-400 text-xs sm:text-sm font-semibold flex items-center gap-1.5 opacity-0 transition-opacity duration-300">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+            <span>Please select a purpose for your sheet usage.</span>
+          </div>
+        </div>
+
+        <!-- 8. VILLAGE / CITY SCREEN -->
+        <div class="step-screen hidden flex flex-col justify-center px-6 py-12 sm:px-12 md:px-16 space-y-6" data-step="8">
+          <div class="space-y-1">
+            <div class="text-xs font-mono font-bold text-orange-400">Question 8 of 11</div>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Village / City Name <span class="text-orange-500">*</span></h2>
+            <p class="text-slate-400 text-xs sm:text-sm">Where do you live or need delivery? (Maharajganj, Siwan, Gopalganj, etc.)</p>
+          </div>
+          
+          <div class="relative pt-4">
+            <input type="text" id="villageCity" name="villageCity" required placeholder="Enter city or village name..." class="form-input w-full bg-white/5 border border-white/10 hover:border-white/20 focus:border-orange-500 rounded-2xl px-5 py-4 text-base sm:text-lg font-semibold outline-none transition-all text-white placeholder-slate-500">
+          </div>
+          <div class="error-msg text-red-400 text-xs sm:text-sm font-semibold flex items-center gap-1.5 opacity-0 transition-opacity duration-300">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+            <span>Please enter your village or city.</span>
+          </div>
+        </div>
+
+        <!-- 9. PIN CODE SCREEN -->
+        <div class="step-screen hidden flex flex-col justify-center px-6 py-12 sm:px-12 md:px-16 space-y-6" data-step="9">
+          <div class="space-y-1">
+            <div class="text-xs font-mono font-bold text-orange-400">Question 9 of 11</div>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Postal PIN Code <span class="text-orange-500">*</span></h2>
+            <p class="text-slate-400 text-xs sm:text-sm">Strictly 6-digit PIN code to check regional delivery courier routes.</p>
+          </div>
+          
+          <div class="relative pt-4">
+            <input type="text" id="pinCode" name="pinCode" required maxlength="6" placeholder="Enter 6-digit pin code..." class="form-input w-full bg-white/5 border border-white/10 hover:border-white/20 focus:border-orange-500 rounded-2xl px-5 py-4 text-base sm:text-lg font-semibold outline-none transition-all text-white placeholder-slate-500">
+          </div>
+          <div class="error-msg text-red-400 text-xs sm:text-sm font-semibold flex items-center gap-1.5 opacity-0 transition-opacity duration-300">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+            <span>Please enter a valid 6-digit postal PIN code.</span>
+          </div>
+        </div>
+
+        <!-- 10. FULL ADDRESS SCREEN -->
+        <div class="step-screen hidden flex flex-col justify-center px-6 py-12 sm:px-12 md:px-16 space-y-6" data-step="10">
+          <div class="space-y-1">
+            <div class="text-xs font-mono font-bold text-orange-400">Question 10 of 11</div>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Full Address <span class="text-orange-500">*</span></h2>
+            <p class="text-slate-400 text-xs sm:text-sm">Provide your street name, landmark, and house/shop details.</p>
+          </div>
+          
+          <div class="relative pt-4">
+            <textarea id="fullAddress" name="fullAddress" required rows="3" placeholder="Type your complete postal or billing address..." class="form-input w-full bg-white/5 border border-white/10 hover:border-white/20 focus:border-orange-500 rounded-2xl px-5 py-4 text-base sm:text-md font-semibold outline-none transition-all text-white placeholder-slate-500 resize-none"></textarea>
+          </div>
+          
+          <!-- Optional Email helper embedded in screen -->
+          <div class="relative pt-1">
+            <label for="customerEmail" class="block text-xs text-slate-400 font-bold mb-1.5">Your Email Address (Optional - For digital quotation receipt)</label>
+            <input type="email" id="customerEmail" name="customerEmail" placeholder="your-email@gmail.com..." class="w-full bg-white/5 border border-white/10 focus:border-orange-500 rounded-xl px-4 py-2 text-sm text-white placeholder-slate-600 outline-none transition-all">
+          </div>
+          
+          <div class="error-msg text-red-400 text-xs sm:text-sm font-semibold flex items-center gap-1.5 opacity-0 transition-opacity duration-300">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" /></svg>
+            <span>Please enter your full detailed address.</span>
+          </div>
+        </div>
+
+        <!-- 11. ADDITIONAL REQUIREMENT SCREEN (OPTIONAL) -->
+        <div class="step-screen hidden flex flex-col justify-center px-6 py-12 sm:px-12 md:px-16 space-y-6" data-step="11">
+          <div class="space-y-1">
+            <div class="text-xs font-mono font-bold text-orange-400">Question 11 of 11</div>
+            <h2 class="text-2xl sm:text-3xl font-extrabold text-white tracking-tight">Additional Requirements <span class="text-slate-500 text-xs sm:text-sm font-medium">(Optional)</span></h2>
+            <p class="text-slate-400 text-xs sm:text-sm">Any specific GSM thickness, custom eyelet holes, or brand requests (Shalimar, Silpaulin, etc)?</p>
+          </div>
+          
+          <div class="relative pt-4">
+            <textarea id="additionalRequirement" name="additionalRequirement" rows="4" placeholder="Mention any customized demands or timing requirements..." class="form-input w-full bg-white/5 border border-white/10 hover:border-white/20 focus:border-orange-500 rounded-2xl px-5 py-4 text-base sm:text-md font-semibold outline-none transition-all text-white placeholder-slate-500 resize-none"></textarea>
+          </div>
+        </div>
+
+        <!-- Action / Navigation Buttons Footer -->
+        <footer id="action-footer" class="p-6 border-t border-white/5 flex items-center justify-between bg-black/5 relative z-20">
+          <!-- Back Button -->
+          <button type="button" id="back-btn" class="hidden px-5 py-3 rounded-xl bg-white/5 hover:bg-white/10 border border-white/10 hover:border-white/20 text-slate-300 font-bold text-xs sm:text-sm transition-all flex items-center gap-1.5 cursor-pointer">
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" /></svg>
+            <span>Back</span>
+          </button>
+          
+          <div class="flex-1"></div>
+
+          <!-- Next / Submit Button -->
+          <button type="button" id="next-btn" class="px-6 py-3.5 bg-gradient-to-r from-orange-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white font-bold rounded-xl shadow-md transition-all duration-300 flex items-center gap-2 text-xs sm:text-sm group focus:outline-none focus:ring-2 focus:ring-orange-500/50 cursor-pointer">
+            <span id="next-btn-text">Ok</span>
+            <svg id="next-arrow" class="w-4 h-4 transition-transform duration-300 group-hover:translate-x-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" /></svg>
+            
+            <!-- Loading Spinner (Hidden by default) -->
+            <svg id="loading-spinner" class="w-4 h-4 animate-spin text-white hidden" fill="none" viewBox="0 0 24 24">
+              <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+              <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+            </svg>
+          </button>
+        </footer>
+
+      </form>
+
+      <!-- 12. SKELETON LOADER (Overlay during loading) -->
+      <div id="skeleton-loader" class="absolute inset-0 bg-slate-950/85 backdrop-blur-md z-40 hidden items-center justify-center flex-col space-y-6">
+        <div class="w-full max-w-md px-6 space-y-6">
+          <div class="h-8 bg-slate-800 rounded-md w-3/4 animate-pulse"></div>
+          <div class="h-4 bg-slate-800 rounded-md w-1/2 animate-pulse"></div>
+          <div class="space-y-3 pt-4">
+            <div class="h-12 bg-slate-800 rounded-xl w-full animate-pulse"></div>
+            <div class="h-12 bg-slate-800 rounded-xl w-full animate-pulse"></div>
+            <div class="h-12 bg-slate-800 rounded-xl w-full animate-pulse"></div>
+          </div>
+          <p class="text-xs text-orange-400 font-mono font-bold animate-pulse text-center">Encrypting and sending your secure enquiry request...</p>
+        </div>
+      </div>
+
+      <!-- 13. SUCCESS SCREEN OVERLAY -->
+      <div id="success-screen" class="absolute inset-0 bg-slate-950/95 backdrop-blur-lg z-50 hidden flex-col items-center justify-center p-6 text-center select-none animate-scale-up">
+        <div class="glow-bg absolute top-[-10%] w-[50%] h-[50%] rounded-full opacity-20 pointer-events-none blur-[100px]" style="background: radial-gradient(circle, #22c55e 0%, transparent 80%);"></div>
+        
+        <!-- Large animated checkmark -->
+        <div class="w-20 h-20 rounded-full bg-emerald-500/10 border-2 border-emerald-500/50 flex items-center justify-center text-emerald-400 mb-6 shadow-lg shadow-emerald-500/20 success-checkmark">
+          <svg class="w-10 h-10" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="3" d="M5 13l4 4L19 7" /></svg>
+        </div>
+        
+        <h2 class="text-3xl sm:text-4xl font-extrabold text-white tracking-tight mb-3">Enquiry Submitted Successfully</h2>
+        <p class="text-slate-300 max-w-lg text-sm sm:text-base leading-relaxed mb-8">
+          Thank you for contacting <strong>Om Shringar Tirpal Store</strong>. We have securely saved your request. Vinod Kumar will evaluate your requirements and contact you shortly with the best pricing.
+        </p>
+        
+        <!-- Quick contact card -->
+        <div class="bg-white/5 border border-white/10 rounded-2xl p-5 w-full max-w-sm mb-8 text-xs sm:text-sm text-slate-300 space-y-1">
+          <p class="text-orange-400 font-bold uppercase tracking-wider font-mono text-[10px] mb-2">📞 Direct Hotline Help</p>
+          <p>Phone: <strong>+91 98520 76197</strong></p>
+          <p>Website: <strong>www.shridantahub.in</strong></p>
+        </div>
+
+        <!-- Redirect Countdown -->
+        <div class="text-xs font-semibold text-slate-500">
+          Redirecting back to shridantahub.in in <span id="redirect-countdown" class="text-orange-500 font-bold font-mono text-sm">3</span> seconds...
+        </div>
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Confetti library implementation -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+  
+  <!-- Vanilla JS Engine -->
+  <script src="script.js"></script>
+</body>
+</html>

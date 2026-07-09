@@ -1,0 +1,219 @@
+/* ==============================================================================
+ * Om Shringar Tirpal Store - Premium Glassmorphic Typeform Stylesheet
+ * ==============================================================================
+ * File: style.css
+ * Description: Premium styling (glassmorphism, interactive states, keyframes,
+ * dark/light compatible states, and responsive spacing controls).
+ * ==============================================================================
+ */
+
+:root {
+  /* Core brand color pallet */
+  --brand-orange: #ea580c;
+  --brand-orange-hover: #c2410c;
+  --brand-amber: #f59e0b;
+  --bg-glow-1: rgba(234, 88, 12, 0.15);
+  --bg-glow-2: rgba(59, 130, 246, 0.1);
+  
+  /* Glass card styling (Default Dark Mode) */
+  --card-bg: rgba(15, 23, 42, 0.45);
+  --card-border: rgba(255, 255, 255, 0.08);
+  --card-shadow: 0 20px 50px rgba(0, 0, 0, 0.3);
+  --input-bg: rgba(255, 255, 255, 0.04);
+  --input-border: rgba(255, 255, 255, 0.08);
+  --input-focus-border: #ea580c;
+  --text-primary: #f8fafc;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --choice-bg-active: rgba(234, 88, 12, 0.08);
+  --choice-border-active: #ea580c;
+}
+
+/* Light Mode presets */
+body.light-mode {
+  --card-bg: rgba(255, 255, 255, 0.75);
+  --card-border: rgba(0, 0, 0, 0.06);
+  --card-shadow: 0 20px 45px rgba(15, 23, 42, 0.08);
+  --input-bg: rgba(15, 23, 42, 0.02);
+  --input-border: rgba(0, 0, 0, 0.08);
+  --input-focus-border: #ea580c;
+  --text-primary: #0f172a;
+  --text-secondary: #475569;
+  --text-muted: #64748b;
+  --choice-bg-active: rgba(234, 88, 12, 0.05);
+  --choice-border-active: #ea580c;
+  background-color: #f8fafc;
+  color: #0f172a;
+}
+
+body.light-mode .glow-bg {
+  opacity: 0.12 !important;
+}
+
+/* Global resets and typography adjustments */
+body {
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  transition: background-color 0.4s ease, color 0.4s ease;
+}
+
+/* Glassmorphic elements styling */
+.glass-card {
+  background: var(--card-bg);
+  backdrop-filter: blur(20px) saturate(160%);
+  -webkit-backdrop-filter: blur(20px) saturate(160%);
+  border: 1px solid var(--card-border);
+  box-shadow: var(--card-shadow);
+  transition: background 0.4s ease, border 0.4s ease, box-shadow 0.4s ease;
+}
+
+/* Choice Option Boxes (Stripe/Typeform interactive style) */
+.choice-box {
+  background-color: var(--input-bg);
+  border-color: var(--input-border);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.choice-box:hover {
+  border-color: rgba(249, 115, 22, 0.4);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(234, 88, 12, 0.05);
+}
+
+/* Active choice option box styling */
+.choice-box.selected {
+  border-color: var(--choice-border-active) !important;
+  background-color: var(--choice-bg-active) !important;
+  box-shadow: 0 0 15px rgba(234, 88, 12, 0.1) !important;
+}
+
+.choice-box.selected span {
+  color: var(--brand-orange) !important;
+}
+
+.choice-box.selected .filter {
+  filter: grayscale(0) !important;
+}
+
+/* Premium Form Input field states */
+.form-input {
+  background-color: var(--input-bg);
+  border-color: var(--input-border);
+  color: var(--text-primary);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.form-input:focus {
+  border-color: var(--input-focus-border);
+  background-color: rgba(255, 255, 255, 0.02);
+  box-shadow: 0 0 0 1px var(--input-focus-border), 0 0 16px rgba(234, 88, 12, 0.15);
+}
+
+body.light-mode .form-input:focus {
+  background-color: #ffffff;
+}
+
+/* Custom Text colors depending on active theme variable */
+h1, h2, h3, h4, th, td, strong {
+  color: var(--text-primary);
+}
+
+p, span, label {
+  color: var(--text-secondary);
+}
+
+/* Interactive transitions between question slides */
+.step-screen {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+  pointer-events: none;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.step-screen.active-screen {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: auto;
+  position: relative;
+}
+
+/* Moving animation classes for slide action triggers */
+.slide-out-left {
+  opacity: 0 !important;
+  transform: translateX(-40px) !important;
+}
+
+.slide-in-right {
+  opacity: 0;
+  transform: translateX(40px);
+}
+
+.slide-out-right {
+  opacity: 0 !important;
+  transform: translateX(40px) !important;
+}
+
+.slide-in-left {
+  opacity: 0;
+  transform: translateX(-40px);
+}
+
+/* Keyframe animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(15px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes scaleUp {
+  from { opacity: 0; transform: scale(0.96); }
+  to { opacity: 1; transform: scale(1); }
+}
+
+@keyframes successCircle {
+  0% { transform: scale(0.8); opacity: 0; }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+.animate-scale-up {
+  animation: scaleUp 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+.success-checkmark {
+  animation: successCircle 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+}
+
+/* Hide native arrows on number inputs */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+input[type=number] {
+  -moz-appearance: textfield;
+}
+
+/* Custom hide scrollbar */
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.no-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Quantity input micro-focus effect */
+#quantity:focus {
+  border-color: var(--brand-orange) !important;
+  box-shadow: 0 0 10px rgba(234, 88, 12, 0.1) !important;
+}

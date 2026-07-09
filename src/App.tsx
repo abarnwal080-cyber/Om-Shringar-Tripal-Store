@@ -9,6 +9,7 @@ import {
   ChevronDown,
   Menu,
   X,
+  Bell,
   ShieldCheck,
   CalendarDays,
   Award,
@@ -77,18 +78,17 @@ export default function App() {
   const [selectedProductForModal, setSelectedProductForModal] = useState<Product | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
 
-  const [currentView, setCurrentView] = useState<"home" | "notifications">("home");
+  const [notificationsOpen, setNotificationsOpen] = useState(false);
 
   // Hash state URL observer
   useEffect(() => {
     const handleHashChange = () => {
       const hash = window.location.hash;
       if (hash === "#notifications") {
-        setCurrentView("notifications");
+        setNotificationsOpen(true);
         setActiveSection("notifications");
-        window.scrollTo({ top: 0, behavior: "smooth" });
       } else {
-        setCurrentView("home");
+        setNotificationsOpen(false);
       }
     };
 
@@ -135,7 +135,7 @@ export default function App() {
 
   // Intersection Observer for Active Navigation Highlight
   useEffect(() => {
-    if (currentView === "notifications") {
+    if (notificationsOpen) {
       setActiveSection("notifications");
       return;
     }
@@ -166,7 +166,7 @@ export default function App() {
         if (element) observer.unobserve(element);
       });
     };
-  }, [currentView]);
+  }, [notificationsOpen]);
 
   const inquiryRef = useRef<HTMLDivElement>(null);
   const t = TRANSLATIONS[lang];
@@ -176,20 +176,17 @@ export default function App() {
     setInquiryOpen(true);
   };
 
-  const handleMobileNavClick = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
+   const handleMobileNavClick = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
     e.preventDefault();
     setMobileMenuOpen(false);
     
     if (targetId === "notifications") {
       window.location.hash = "#notifications";
-      setCurrentView("notifications");
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      setNotificationsOpen(true);
       return;
     }
 
-    if (currentView === "notifications") {
-      setCurrentView("home");
-    }
+    setNotificationsOpen(false);
     
     // Smooth scroll with offset for sticky header
     setTimeout(() => {
@@ -305,12 +302,9 @@ export default function App() {
                   e.preventDefault();
                   if (link.id === "notifications") {
                     window.location.hash = "#notifications";
-                    setCurrentView("notifications");
-                    window.scrollTo({ top: 0, behavior: "smooth" });
+                    setNotificationsOpen(true);
                   } else {
-                    if (currentView === "notifications") {
-                      setCurrentView("home");
-                    }
+                    setNotificationsOpen(false);
                     window.location.hash = link.href;
                     setTimeout(() => {
                       const element = document.getElementById(link.id);
@@ -465,9 +459,8 @@ export default function App() {
         </AnimatePresence>
       </header>
 
-      {currentView === "home" ? (
-        <>
-          {/* 3. HERO SECTION */}
+      <>
+        {/* 3. HERO SECTION */}
           <section className="relative bg-gradient-to-b from-white via-slate-50 to-white text-slate-900 border-b border-slate-200/80 overflow-hidden py-16 lg:py-28">
         
         {/* Soft elegant warm ambient glow */}
@@ -1237,10 +1230,7 @@ export default function App() {
         </div>
       </section>
 
-        </>
-      ) : (
-        <NotificationsPage />
-      )}
+      </>
 
       {/* 12. FOOTER */}
       <footer className="bg-brand-blue-dark text-slate-400 py-16 border-t border-white/5 mt-auto">
@@ -1417,6 +1407,67 @@ export default function App() {
 
       {/* Google Review Prompt Popup */}
       <GoogleReviewPopup />
+
+      {/* 14. FLOATING NOTIFICATIONS BELL BUTTON (Persistent on screen) */}
+      <div className="fixed left-24 bottom-6 z-40">
+        <button
+          onClick={() => {
+            setNotificationsOpen(true);
+            window.location.hash = "#notifications";
+          }}
+          aria-label="View Store Updates & Offers"
+          className="bg-gradient-to-tr from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 text-white w-14 h-14 rounded-full shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all duration-300 border border-white/20 cursor-pointer relative group"
+        >
+          {/* Shimmer/Ping effect for notifications */}
+          <span className="absolute -top-1 -right-1 flex h-3.5 w-3.5">
+            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
+            <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-orange-500 border border-white"></span>
+          </span>
+
+          {/* Glowing ring */}
+          <span className="absolute inset-0 rounded-full bg-blue-500/20 animate-pulse scale-105 pointer-events-none" />
+          
+          <Bell className="w-6 h-6 text-white group-hover:rotate-12 transition-transform shrink-0" />
+        </button>
+      </div>
+
+      {/* 15. FLOATING NOTIFICATIONS MODAL OVERLAY */}
+      <AnimatePresence>
+        {notificationsOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 overflow-y-auto bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 sm:p-6"
+          >
+            <motion.div
+              initial={{ opacity: 0, scale: 0.95, y: 30 }}
+              animate={{ opacity: 1, scale: 1, y: 0 }}
+              exit={{ opacity: 0, scale: 0.95, y: 30 }}
+              transition={{ type: "spring", damping: 25, stiffness: 350 }}
+              className="relative bg-slate-950 w-full max-w-6xl h-[85vh] rounded-3xl border border-white/10 shadow-2xl flex flex-col overflow-hidden"
+            >
+              {/* Floating/Sticky Close Button */}
+              <div className="absolute top-4 right-4 z-50">
+                <button
+                  onClick={() => {
+                    setNotificationsOpen(false);
+                    window.location.hash = "";
+                  }}
+                  className="p-3 bg-white/10 hover:bg-white/20 text-white rounded-full transition-all duration-200 shadow-lg border border-white/10 hover:scale-110 active:scale-90 cursor-pointer"
+                  aria-label="Close Updates"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+              </div>
+
+              <div className="flex-1 overflow-y-auto">
+                <NotificationsPage />
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
     </div>
   );
