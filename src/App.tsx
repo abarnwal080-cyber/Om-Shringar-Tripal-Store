@@ -23,7 +23,8 @@ import {
   Sprout,
   Users,
   ArrowRight,
-  ArrowUp
+  ArrowUp,
+  Check
 } from "lucide-react";
 
 import {
@@ -44,14 +45,11 @@ import InquiryForm from "./components/InquiryForm";
 import InquiryModal from "./components/InquiryModal";
 import AIChatbot from "./components/AIChatbot";
 import SupplierPopup from "./components/SupplierPopup";
-import RetailPriceModal from "./components/RetailPriceModal";
-import RetailPriceSection from "./components/RetailPriceSection";
 import HeroCarousel from "./components/HeroCarousel";
 import StoreStatusCard from "./components/StoreStatusCard";
 import CustomerSuccessCarousel from "./components/CustomerSuccessCarousel";
 import CustomerReviews from "./components/CustomerReviews";
 import { TRANSLATIONS } from "./translations";
-import NotificationsPage from "./components/NotificationsPage";
 
 // Safe dynamic icon loader to keep code modular and readable
 function DynamicIcon({ name, className }: { name: string; className?: string }) {
@@ -66,7 +64,6 @@ export default function App() {
   const [activeTab, setActiveTab] = useState("All");
   const [expandedFAQ, setExpandedFAQ] = useState<number | null>(null);
   const [supplierOpen, setSupplierOpen] = useState(false);
-  const [retailOpen, setRetailOpen] = useState(false);
   const [heroBgImage, setHeroBgImage] = useState("https://plain-apac-prod-public.komododecks.com/202607/03/eckT9KEMGbavrebTJwPJ/image.png");
   const [inquiryOpen, setInquiryOpen] = useState(false);
 
@@ -77,18 +74,17 @@ export default function App() {
 
   const [selectedProductForModal, setSelectedProductForModal] = useState<Product | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-
-  const [notificationsOpen, setNotificationsOpen] = useState(false);
+  const [isCatalogOpen, setIsCatalogOpen] = useState(false);
 
   // Hash state URL observer
   useEffect(() => {
     const handleHashChange = () => {
       const hash = window.location.hash;
-      if (hash === "#notifications") {
-        setNotificationsOpen(true);
-        setActiveSection("notifications");
-      } else {
-        setNotificationsOpen(false);
+      if (hash && hash !== "#notifications") {
+        setActiveSection(hash.substring(1));
+        if (hash === "#products") {
+          setIsCatalogOpen(true);
+        }
       }
     };
 
@@ -135,10 +131,6 @@ export default function App() {
 
   // Intersection Observer for Active Navigation Highlight
   useEffect(() => {
-    if (notificationsOpen) {
-      setActiveSection("notifications");
-      return;
-    }
     const sections = ["about", "products", "special-uses", "size-matrix", "why-choose", "enquire", "contact"];
     const observerOptions = {
       root: null,
@@ -166,7 +158,7 @@ export default function App() {
         if (element) observer.unobserve(element);
       });
     };
-  }, [notificationsOpen]);
+  }, []);
 
   const inquiryRef = useRef<HTMLDivElement>(null);
   const t = TRANSLATIONS[lang];
@@ -180,13 +172,9 @@ export default function App() {
     e.preventDefault();
     setMobileMenuOpen(false);
     
-    if (targetId === "notifications") {
-      window.location.hash = "#notifications";
-      setNotificationsOpen(true);
-      return;
+    if (targetId === "products") {
+      setIsCatalogOpen(true);
     }
-
-    setNotificationsOpen(false);
     
     // Smooth scroll with offset for sticky header
     setTimeout(() => {
@@ -214,8 +202,16 @@ export default function App() {
     return `${BUSINESS_INFO.whatsappLink}?text=${encodeURIComponent(text)}`;
   };
 
-  // Categories for product tab filtering
-  const categories = ["All", "Industrial Packaging", "Construction & Curing", "Clear Covering", "All-Weather Protection", "Security & Fencing", "Household & Outdoor"];
+  // Premium category tabs with emojis and dynamic count
+  const categoryTabs = [
+    { id: "All", label: "All", emoji: "🏭" },
+    { id: "Industrial Packaging", label: "Industrial Packaging", emoji: "📦" },
+    { id: "Construction & Curing", label: "Construction & Curing", emoji: "🏗" },
+    { id: "Clear Covering", label: "Clear Covering", emoji: "🪟" },
+    { id: "All-Weather Protection", label: "All-Weather Protection", emoji: "🌧" },
+    { id: "Security & Fencing", label: "Security & Fencing", emoji: "🛡" },
+    { id: "Household & Outdoor", label: "Household & Outdoor", emoji: "🏡" },
+  ];
 
   const filteredProducts = activeTab === "All" 
     ? PRODUCTS 
@@ -224,41 +220,9 @@ export default function App() {
   return (
     <div className="min-h-screen text-slate-800 bg-slate-50/50 flex flex-col relative antialiased selection:bg-brand-orange selection:text-white">
       
-      {/* 1. TOP ANNOUNCEMENT BAR */}
-      <div className="w-full bg-brand-blue-dark text-white text-xs py-2.5 px-4 sticky top-0 z-50 shadow-md border-b border-white/5">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row justify-between items-center gap-2">
-          {/* Support Badge */}
-          <div className="flex items-center gap-2">
-            <span className="flex h-2 w-2 relative">
-              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
-              <span className="relative inline-flex rounded-full h-2 w-2 bg-emerald-500"></span>
-            </span>
-            <span className="font-bold font-mono tracking-wider text-[10px] uppercase bg-white/10 px-2 py-0.5 rounded text-emerald-300">
-              {BUSINESS_INFO.supportBadge}
-            </span>
-            <span className="text-slate-300 hidden md:inline">|</span>
-            <span className="text-slate-300 text-[11px] font-medium font-mono">
-              Owner: {BUSINESS_INFO.owner} (Formerly Goyal Traders)
-            </span>
-          </div>
- 
-          {/* Scrolling CTA message / Contact */}
-          <div className="flex items-center gap-3">
-            <span className="font-bold text-brand-orange animate-pulse flex items-center gap-1">
-              <Sparkles className="w-3.5 h-3.5" />
-              {BUSINESS_INFO.ctaText}
-            </span>
-            <span className="text-slate-400 hidden sm:inline">•</span>
-            <span className="text-[11px] sm:text-xs font-semibold font-mono flex items-center gap-1.5 text-blue-200">
-              🕒 {BUSINESS_INFO.hours}
-            </span>
-          </div>
-        </div>
-      </div>
- 
       {/* 2. GLASSMORPHIC STICKY NAVIGATION BAR */}
       <header className={`w-full bg-brand-blue-dark border-b border-white/10 sticky z-40 shadow-md transition-all duration-300 ease-in-out ${
-        navbarVisible ? "top-9 sm:top-8 translate-y-0 opacity-100" : "-translate-y-full opacity-0 pointer-events-none"
+        navbarVisible ? "top-0 translate-y-0 opacity-100" : "-translate-y-full opacity-0 pointer-events-none"
       }`}>
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
           
@@ -272,13 +236,18 @@ export default function App() {
                   <path d="M2 12l10 5 10-5" strokeLinecap="round" strokeLinejoin="round"/>
                 </svg>
               </div>
-              <div>
-                <span className="font-bold text-lg sm:text-xl font-display text-white tracking-tight block">
+              <div className="flex flex-col justify-center">
+                <span className="font-bold text-lg sm:text-xl font-display text-white tracking-tight block leading-tight">
                   OM SHRINGAR <span className="text-orange-400">TIRPAL STORE</span>
                 </span>
-                <span className="text-[10px] font-bold font-mono text-blue-200 uppercase tracking-widest block -mt-1">
-                  Est. 2000 | Formerly Goyal Traders
-                </span>
+                <div className="flex flex-col sm:flex-row sm:items-center gap-1.5 mt-0.5 sm:mt-0">
+                  <span className="text-[9px] sm:text-[10px] font-bold font-mono text-blue-200 uppercase tracking-widest block">
+                    Est. 2000 | Formerly Goyal Traders
+                  </span>
+                  <span className="inline-flex items-center gap-1 px-2 py-0.5 text-[9px] font-extrabold font-mono text-white bg-amber-500 rounded-md animate-pulse border border-amber-400/30 uppercase tracking-wider w-fit">
+                    🌧️ Monsoon Sale is Live!
+                  </span>
+                </div>
               </div>
             </div>
           </a>
@@ -292,7 +261,6 @@ export default function App() {
               { href: "#size-matrix", label: t.navSizeChart, id: "size-matrix" },
               { href: "#why-choose", label: t.navWhyUs, id: "why-choose" },
               { href: "#enquire", label: t.navInquiry, id: "enquire" },
-              { href: "#notifications", label: "🔔 Notifications", id: "notifications" },
               { href: "#contact", label: t.navFindStore, id: "contact" }
             ].map((link) => (
               <a 
@@ -300,22 +268,19 @@ export default function App() {
                 href={link.href} 
                 onClick={(e) => {
                   e.preventDefault();
-                  if (link.id === "notifications") {
-                    window.location.hash = "#notifications";
-                    setNotificationsOpen(true);
-                  } else {
-                    setNotificationsOpen(false);
-                    window.location.hash = link.href;
-                    setTimeout(() => {
-                      const element = document.getElementById(link.id);
-                      if (element) {
-                        const headerOffset = 100;
-                        const elementPosition = element.getBoundingClientRect().top;
-                        const offsetPosition = elementPosition + window.scrollY - headerOffset;
-                        window.scrollTo({ top: offsetPosition, behavior: "smooth" });
-                      }
-                    }, 150);
+                  if (link.id === "products") {
+                    setIsCatalogOpen(true);
                   }
+                  window.location.hash = link.href;
+                  setTimeout(() => {
+                    const element = document.getElementById(link.id);
+                    if (element) {
+                      const headerOffset = 100;
+                      const elementPosition = element.getBoundingClientRect().top;
+                      const offsetPosition = elementPosition + window.scrollY - headerOffset;
+                      window.scrollTo({ top: offsetPosition, behavior: "smooth" });
+                    }
+                  }, 150);
                 }}
                 className={`hover:text-orange-400 transition-colors relative py-2 ${
                   activeSection === link.id ? "text-orange-400 font-extrabold" : "text-blue-100"
@@ -335,13 +300,6 @@ export default function App() {
  
           {/* Nav Right CTA */}
           <div className="hidden lg:flex items-center gap-3">
-            <button
-              onClick={() => setRetailOpen(true)}
-              className="bg-emerald-600 hover:bg-emerald-700 text-white px-5 py-2.5 rounded-full font-bold text-sm transition-all shadow-lg flex items-center gap-1.5 cursor-pointer"
-            >
-              <Tag className="w-4 h-4" />
-              {t.getRetailPrice}
-            </button>
             <button
               onClick={() => handleEnquire("")}
               className="bg-orange-600 hover:bg-orange-700 text-white px-5 py-2.5 rounded-full font-bold text-sm transition-all shadow-lg flex items-center cursor-pointer"
@@ -413,33 +371,12 @@ export default function App() {
                   {t.navInquiry}
                 </a>
                 <a 
-                  href="#notifications" 
-                  onClick={(e) => handleMobileNavClick(e, "notifications")}
-                  className="text-base font-semibold text-slate-700 hover:text-orange-600 py-1"
-                >
-                  🔔 Notifications
-                </a>
-                <a 
                   href="#contact" 
                   onClick={(e) => handleMobileNavClick(e, "contact")}
                   className="text-base font-semibold text-slate-700 hover:text-orange-600 py-1"
                 >
                   {t.navFindStore}
                 </a>
-
-                {/* Mobile Retail Price Button */}
-                <div className="py-2 border-t border-slate-100">
-                  <button
-                    onClick={() => {
-                      setMobileMenuOpen(false);
-                      setRetailOpen(true);
-                    }}
-                    className="w-full flex items-center justify-center gap-2 bg-emerald-600 hover:bg-emerald-700 text-white py-3 rounded-xl font-bold text-sm transition-all shadow-md active:scale-95"
-                  >
-                    <Tag className="w-4 h-4 text-white" />
-                    <span>{t.getRetailPrice}</span>
-                  </button>
-                </div>
 
                 <div className="pt-4 border-t border-slate-100 flex flex-col gap-3">
                   <button
@@ -458,6 +395,32 @@ export default function App() {
           )}
         </AnimatePresence>
       </header>
+
+      {/* MONSOON SALE CARD ON TOP */}
+      <div className="bg-gradient-to-r from-amber-500/10 via-orange-500/10 to-amber-500/10 border-b border-amber-500/20 py-3.5 px-4 relative z-30 shadow-sm">
+        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-3 text-center sm:text-left">
+            <span className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-black font-mono text-white bg-gradient-to-r from-orange-600 to-amber-500 rounded-full animate-pulse border border-orange-400/30 uppercase tracking-wider w-fit mx-auto sm:mx-0 shadow-sm shrink-0">
+              🌧️ MONSOON SALE LIVE NOW!
+            </span>
+            <div className="flex flex-col">
+              <h3 className="text-slate-900 font-extrabold text-sm sm:text-base leading-snug">
+                Heavy-Duty Plastic Sheets & Waterproof Tarpaulins at Wholesale Prices!
+              </h3>
+              <p className="text-xs text-slate-600 font-medium mt-0.5">
+                Special 15% discount for bulk inquiries and direct factory dispatch during this rainy season.
+              </p>
+            </div>
+          </div>
+          <a
+            href="#products"
+            className="text-xs font-extrabold text-white bg-gradient-to-r from-orange-600 to-amber-500 hover:from-orange-700 hover:to-amber-600 shadow-md hover:shadow-orange-500/20 px-5 py-2.5 rounded-xl border border-orange-500/20 transition-all hover:-translate-y-0.5 active:translate-y-0 uppercase tracking-wider shrink-0 cursor-pointer flex items-center gap-1.5"
+          >
+            <span>Explore Offers</span>
+            <span>➔</span>
+          </a>
+        </div>
+      </div>
 
       <>
         {/* 3. HERO SECTION */}
@@ -560,13 +523,6 @@ export default function App() {
                   <MessageSquare className="w-5 h-5" />
                   {t.heroCtaWhatsApp}
                 </a>
-                <button
-                  onClick={() => setRetailOpen(true)}
-                  className="flex items-center justify-center gap-2 bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-700 hover:to-teal-600 text-white px-8 py-4 rounded-full font-extrabold text-base transition-all duration-200 shadow-lg hover:shadow-emerald-500/30 active:scale-95 cursor-pointer"
-                >
-                  <Tag className="w-5 h-5 text-white animate-pulse" />
-                  <span>{t.getRetailPrice}</span>
-                </button>
               </div>
 
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 pt-8 border-t border-slate-200">
@@ -706,6 +662,170 @@ export default function App() {
       {/* CUSTOMER 5-STAR REVIEWS SECTION */}
       <CustomerReviews />
 
+      {/* 6. PRODUCTS CATALOG SECTION */}
+      <section id="products" className="py-20 bg-slate-50 relative border-y border-slate-100/50 scroll-mt-24">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          
+          <div className="text-center max-w-3xl mx-auto mb-8">
+            <h2 className="text-3xl sm:text-4xl font-extrabold font-display text-brand-blue-dark tracking-tight">
+              {isCatalogOpen ? "Our Premium Polymer & Tarpaulin Catalog" : "Shop by Poly Goods Category"}
+            </h2>
+            <p className="text-slate-600 mt-2 font-medium text-sm sm:text-base">
+              {isCatalogOpen 
+                ? "Browse our complete range of certified high-durability plastic sheets and agricultural nets." 
+                : "Select a category below or expand the catalog to view all available wholesale and retail products."}
+            </p>
+          </div>
+
+          <AnimatePresence mode="wait">
+            {!isCatalogOpen ? (
+              /* Amazon-Style Closed Catalog Showcase Banner */
+              <motion.div
+                key="closed-catalog"
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={{ duration: 0.25 }}
+                className="bg-white rounded-3xl border border-slate-200 shadow-xl overflow-hidden max-w-4xl mx-auto"
+              >
+                {/* Visual grid of categories for high engagement */}
+                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 p-6 sm:p-8 bg-gradient-to-b from-slate-50/50 to-white border-b border-slate-100">
+                  {categoryTabs.slice(1).map((tab) => {
+                    const count = PRODUCTS.filter(p => p.category === tab.id).length;
+                    return (
+                      <button
+                        key={tab.id}
+                        onClick={() => {
+                          setActiveTab(tab.id);
+                          setIsCatalogOpen(true);
+                        }}
+                        className="flex flex-col items-center justify-center p-4 bg-slate-50 hover:bg-slate-100/80 rounded-2xl border border-slate-200/60 text-center transition-all duration-300 hover:scale-[1.03] hover:shadow-md cursor-pointer group"
+                      >
+                        <span className="text-2xl mb-2 group-hover:scale-110 transition-transform duration-300">{tab.emoji}</span>
+                        <span className="text-xs font-bold text-slate-800 line-clamp-1">{tab.label}</span>
+                        <span className="text-[10px] text-slate-500 font-bold font-mono mt-1 bg-slate-200/50 px-2 py-0.5 rounded-full">
+                          {count} Products
+                        </span>
+                      </button>
+                    );
+                  })}
+                </div>
+
+                <div className="p-6 sm:p-8 text-center bg-white flex flex-col items-center justify-center">
+                  <p className="text-slate-600 text-sm font-semibold mb-5">
+                    🛍️ Heavy-duty polymer products with standard GSM certificates and verified lifespans.
+                  </p>
+                  
+                  {/* Big Clickable Amazon-Style Button */}
+                  <motion.button
+                    whileHover={{ y: -2, scale: 1.02 }}
+                    whileTap={{ scale: 0.98 }}
+                    onClick={() => setIsCatalogOpen(true)}
+                    className="flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 text-white font-extrabold text-base rounded-2xl shadow-xl shadow-blue-600/10 transition-all cursor-pointer group relative overflow-hidden"
+                  >
+                    {/* Pulsing glow under button */}
+                    <span className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
+                    <span className="text-xl">📦</span>
+                    <span>Browse Full Store Catalog / सारे प्रोडक्ट्स यहाँ देखें</span>
+                    <span className="group-hover:translate-x-1 transition-transform duration-300 font-mono">➔</span>
+                  </motion.button>
+                </div>
+              </motion.div>
+            ) : (
+              /* Expanded Catalog with Tabs and Filters */
+              <motion.div
+                key="expanded-catalog"
+                initial={{ opacity: 0, y: 15 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -15 }}
+                transition={{ duration: 0.3 }}
+              >
+                {/* Filtering Tabs */}
+                <div className="w-full mb-10 overflow-hidden">
+                  <div className="flex overflow-x-auto pb-3 gap-2.5 no-scrollbar scroll-smooth snap-x md:flex-wrap md:justify-center relative">
+                    {categoryTabs.map((tab) => {
+                      const count = tab.id === "All" ? PRODUCTS.length : PRODUCTS.filter(p => p.category === tab.id).length;
+                      const isActive = activeTab === tab.id;
+                      return (
+                        <button
+                          key={tab.id}
+                          onClick={() => setActiveTab(tab.id)}
+                          className={`relative flex items-center gap-2.5 py-2.5 px-5 rounded-2xl font-bold text-xs sm:text-sm whitespace-nowrap transition-all duration-300 ease-out snap-start cursor-pointer hover:-translate-y-[2px] active:scale-95 ${
+                            isActive 
+                              ? "text-white shadow-xl shadow-blue-900/40 ring-4 ring-brand-blue-dark/25 border border-brand-blue-dark bg-brand-blue-dark z-10"
+                              : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 hover:text-slate-800 hover:border-slate-300 hover:shadow-md"
+                          }`}
+                        >
+                          <span className="text-sm shrink-0">{tab.emoji}</span>
+                          <span>{tab.label}</span>
+                          <span className={`inline-flex items-center justify-center text-[10px] px-1.5 py-0.5 rounded-full font-bold font-mono transition-colors ${
+                            isActive 
+                              ? "bg-white/20 text-blue-100" 
+                              : "bg-slate-100 text-slate-500 hover:bg-slate-200"
+                          }`}>
+                            {count}
+                          </span>
+                        </button>
+                      );
+                    })}
+                  </div>
+                </div>
+
+                {/* Product Cards Grid with smooth 250-300ms transition */}
+                <div className="overflow-hidden min-h-[400px]">
+                  <AnimatePresence mode="wait">
+                    <motion.div
+                      key={activeTab}
+                      initial={{ opacity: 0, y: 15 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      exit={{ opacity: 0, y: -15 }}
+                      transition={{ duration: 0.28, ease: "easeInOut" }}
+                      className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+                    >
+                      {filteredProducts.map((product) => (
+                        <div key={product.id} className="h-full">
+                          <ProductCard
+                            product={product}
+                            onEnquire={handleEnquire}
+                            onViewDetails={(prod) => {
+                              setSelectedProductForModal(prod);
+                              setIsModalOpen(true);
+                            }}
+                          />
+                        </div>
+                      ))}
+                    </motion.div>
+                  </AnimatePresence>
+                </div>
+
+                {/* Collapse Button at bottom of expanded catalog */}
+                <div className="flex justify-center mt-12 pt-6 border-t border-slate-200/50">
+                  <motion.button
+                    whileHover={{ y: 2 }}
+                    whileTap={{ scale: 0.95 }}
+                    onClick={() => {
+                      setIsCatalogOpen(false);
+                      // Scroll back to catalog header
+                      const element = document.getElementById("products");
+                      if (element) {
+                        const headerOffset = 100;
+                        const elementPosition = element.getBoundingClientRect().top;
+                        const offsetPosition = elementPosition + window.scrollY - headerOffset;
+                        window.scrollTo({ top: offsetPosition, behavior: "smooth" });
+                      }
+                    }}
+                    className="flex items-center gap-2 px-6 py-3 bg-white hover:bg-slate-100 border border-slate-200 hover:border-slate-300 text-slate-700 font-bold text-sm rounded-xl shadow-sm transition-all cursor-pointer"
+                  >
+                    <span>▲</span>
+                    <span>Collapse Catalog / कैटलॉग बंद करें</span>
+                  </motion.button>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      </section>
+
       {/* 5. ABOUT US SECTION */}
       <section id="about" className="py-20 bg-white relative overflow-hidden scroll-mt-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -800,44 +920,7 @@ export default function App() {
         </div>
       </section>
 
-      {/* 6. PRODUCTS CATALOG SECTION */}
-      <section id="products" className="py-20 bg-slate-50 relative border-y border-slate-100/50 scroll-mt-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          
-          {/* Filtering Tabs */}
-          <div className="flex flex-wrap gap-2 justify-center mb-10 overflow-x-auto pb-2 no-scrollbar">
-            {categories.map((tab) => (
-              <button
-                key={tab}
-                onClick={() => setActiveTab(tab)}
-                className={`py-2 px-4 rounded-full font-bold text-xs sm:text-sm whitespace-nowrap transition-all duration-200 cursor-pointer ${
-                  activeTab === tab 
-                    ? "bg-brand-blue-dark text-white shadow-md"
-                    : "bg-white text-slate-600 border border-slate-200/80 hover:bg-slate-50"
-                }`}
-              >
-                {tab}
-              </button>
-            ))}
-          </div>
 
-          {/* Product Cards Grid */}
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {filteredProducts.map((product) => (
-              <div key={product.id}>
-                <ProductCard
-                  product={product}
-                  onEnquire={handleEnquire}
-                  onViewDetails={(prod) => {
-                    setSelectedProductForModal(prod);
-                    setIsModalOpen(true);
-                  }}
-                />
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
 
       {/* 7. SPECIAL PURPOSE SHEETS (FEATURES GRID) */}
       <section id="special-uses" className="py-20 bg-white relative scroll-mt-24">
@@ -1087,52 +1170,95 @@ export default function App() {
               </div>
             </div>
 
-            {/* Beautiful Interactive Banner Card that triggers the conversational typeform modal */}
-            <div className="lg:col-span-7 w-full bg-gradient-to-br from-[#001f3f] to-[#000c1a] rounded-3xl p-8 sm:p-12 border border-white/10 shadow-2xl relative overflow-hidden flex flex-col justify-between min-h-[380px] text-white">
-              {/* Decorative glows */}
-              <div className="absolute -right-16 -top-16 w-48 h-48 bg-orange-500/20 rounded-full blur-3xl pointer-events-none" />
-              <div className="absolute -left-16 -bottom-16 w-48 h-48 bg-blue-500/10 rounded-full blur-3xl pointer-events-none" />
-              
-              <div className="relative z-10 space-y-6">
-                <div className="inline-flex items-center gap-2 bg-orange-500/10 border border-orange-500/25 text-orange-400 text-xs font-bold font-mono px-3.5 py-1.5 rounded-full">
-                  <Sparkles className="w-3.5 h-3.5 animate-pulse" />
-                  <span>DIRECT FACTORY WHOLESALE RATES</span>
-                </div>
-                
-                <h3 className="text-2xl sm:text-3xl font-extrabold font-display leading-tight tracking-tight">
-                  Get Instant Wholesale Pricing <br />
-                  <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-amber-300">
-                    Direct on Your WhatsApp
-                  </span>
-                </h3>
-                
-                <p className="text-slate-300 text-sm sm:text-base leading-relaxed max-w-lg">
-                  Use our premium conversational assistant to select your sizes and requirements. Get personalized factory quotes in seconds, direct to your WhatsApp!
-                </p>
-              </div>
-              
-              <div className="relative z-10 pt-8 mt-6 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4">
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 bg-emerald-500/20 border border-emerald-500/30 text-emerald-400 rounded-xl flex items-center justify-center font-bold">
-                    💬
+            {/* Beautiful, Modern & Premium Native Product Enquiry Form Section Replacement */}
+            <div className="lg:col-span-7 w-full">
+              <motion.div 
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5 }}
+                className="bg-white/80 backdrop-blur-md rounded-3xl border border-slate-200/60 p-8 sm:p-10 shadow-xl relative overflow-hidden flex flex-col justify-between h-full min-h-[420px]"
+              >
+                {/* Visual Accent Glows */}
+                <div className="absolute -right-12 -top-12 w-48 h-48 bg-brand-orange/10 rounded-full blur-3xl pointer-events-none" />
+                <div className="absolute -left-12 -bottom-12 w-48 h-48 bg-brand-blue-royal/10 rounded-full blur-3xl pointer-events-none" />
+
+                <div className="relative z-10 space-y-6">
+                  <div className="inline-flex items-center gap-2 bg-orange-50 text-brand-orange text-xs font-bold font-mono px-3.5 py-1.5 rounded-full w-fit">
+                    <Sparkles className="w-3.5 h-3.5" />
+                    <span>DIRECT FACTORY DISPATCH</span>
                   </div>
-                  <div className="text-left">
-                    <span className="block text-[10px] text-slate-400 uppercase font-mono font-bold">Integrated With</span>
-                    <strong className="text-xs sm:text-sm text-slate-100">WhatsApp Business API Link</strong>
+
+                  <div className="space-y-3">
+                    <h3 className="text-3xl sm:text-4xl font-extrabold font-display text-brand-blue-dark tracking-tight">
+                      Get a Free Quote
+                    </h3>
+                    <p className="text-slate-600 text-sm sm:text-base leading-relaxed font-medium">
+                      Tell us your requirements and we'll contact you with the best price.
+                    </p>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 pt-2">
+                    <div className="flex items-start gap-3">
+                      <div className="w-8 h-8 rounded-lg bg-orange-50 text-brand-orange flex items-center justify-center shrink-0">
+                        <Check className="w-4 h-4 stroke-[3px]" />
+                      </div>
+                      <div>
+                        <h5 className="font-bold text-sm text-brand-blue-dark">Direct Factory Rates</h5>
+                        <p className="text-xs text-slate-500 font-medium">Bypass middleman commissions entirely.</p>
+                      </div>
+                    </div>
+                    
+                    <div className="flex items-start gap-3">
+                      <div className="w-8 h-8 rounded-lg bg-blue-50 text-brand-blue-royal flex items-center justify-center shrink-0">
+                        <Check className="w-4 h-4 stroke-[3px]" />
+                      </div>
+                      <div>
+                        <h5 className="font-bold text-sm text-brand-blue-dark">WhatsApp Delivery</h5>
+                        <p className="text-xs text-slate-500 font-medium">Receive quotation directly on your phone.</p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-start gap-3">
+                      <div className="w-8 h-8 rounded-lg bg-blue-50 text-brand-blue-royal flex items-center justify-center shrink-0">
+                        <Check className="w-4 h-4 stroke-[3px]" />
+                      </div>
+                      <div>
+                        <h5 className="font-bold text-sm text-brand-blue-dark">Customized Dimensions</h5>
+                        <p className="text-xs text-slate-500 font-medium font-sans">Any GSM, size, or eyelet configurations.</p>
+                      </div>
+                    </div>
+
+                    <div className="flex items-start gap-3">
+                      <div className="w-8 h-8 rounded-lg bg-orange-50 text-brand-orange flex items-center justify-center shrink-0">
+                        <Check className="w-4 h-4 stroke-[3px]" />
+                      </div>
+                      <div>
+                        <h5 className="font-bold text-sm text-brand-blue-dark">Pan-India Logistics</h5>
+                        <p className="text-xs text-slate-500 font-medium">Fast transport direct to your city pin-code.</p>
+                      </div>
+                    </div>
                   </div>
                 </div>
-                
-                <button
-                  onClick={() => {
-                    setPrefilledProduct("");
-                    setInquiryOpen(true);
-                  }}
-                  className="w-full sm:w-auto bg-gradient-to-r from-orange-600 to-amber-500 hover:from-orange-700 hover:to-amber-600 text-white font-extrabold text-sm px-8 py-4 rounded-full flex items-center justify-center gap-2 transition-all shadow-lg shadow-orange-600/10 hover:shadow-orange-600/20 hover:scale-[1.02] active:scale-95 cursor-pointer"
-                >
-                  <span>Enquire Now</span>
-                  <ArrowRight className="w-4 h-4" />
-                </button>
-              </div>
+
+                <div className="relative z-10 pt-8 border-t border-slate-100 mt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+                  <div className="text-xs text-slate-500 flex items-center gap-1.5 font-mono">
+                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
+                    <span>Pricing Desk Online & Active</span>
+                  </div>
+
+                  <button
+                    onClick={() => {
+                      setPrefilledProduct("");
+                      setInquiryOpen(true);
+                    }}
+                    className="w-full sm:w-auto bg-gradient-to-r from-orange-600 to-amber-500 hover:from-orange-700 hover:to-amber-600 text-white font-extrabold text-sm px-8 py-4 rounded-full inline-flex items-center justify-center gap-2 transition shadow-lg shadow-orange-600/10 hover:shadow-orange-600/25 hover:scale-[1.02] cursor-pointer shrink-0"
+                  >
+                    <span>Start Quote Assistant</span>
+                    <ArrowRight className="w-4 h-4" />
+                  </button>
+                </div>
+              </motion.div>
             </div>
 
           </div>
@@ -1262,7 +1388,25 @@ export default function App() {
               </h4>
               <nav className="flex flex-col gap-2.5 text-xs sm:text-sm">
                 <a href="#about" className="hover:text-white transition-colors">About Proprietor</a>
-                <a href="#products" className="hover:text-white transition-colors">Products Catalog</a>
+                <a 
+                  href="#products" 
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setIsCatalogOpen(true);
+                    setTimeout(() => {
+                      const element = document.getElementById("products");
+                      if (element) {
+                        const headerOffset = 100;
+                        const elementPosition = element.getBoundingClientRect().top;
+                        const offsetPosition = elementPosition + window.scrollY - headerOffset;
+                        window.scrollTo({ top: offsetPosition, behavior: "smooth" });
+                      }
+                    }, 50);
+                  }}
+                  className="hover:text-white transition-colors"
+                >
+                  Products Catalog
+                </a>
                 <a href="#special-uses" className="hover:text-white transition-colors">Special Applications</a>
                 <a href="#size-matrix" className="hover:text-white transition-colors">Size Spec Tables</a>
                 <a href="#why-choose" className="hover:text-white transition-colors">Why Choose Us</a>
@@ -1393,9 +1537,6 @@ export default function App() {
       {/* Supplier Popup Modal */}
       <SupplierPopup isOpen={supplierOpen} onClose={() => setSupplierOpen(false)} />
 
-      {/* Retail Price Popup Modal */}
-      <RetailPriceModal isOpen={retailOpen} onClose={() => setRetailOpen(false)} currentLanguage={lang} onOpenInquiry={() => handleEnquire("")} />
-
       {/* Conversational Quote Assistant Typeform Modal */}
       <InquiryModal
         isOpen={inquiryOpen}
@@ -1407,67 +1548,6 @@ export default function App() {
 
       {/* Google Review Prompt Popup */}
       <GoogleReviewPopup />
-
-      {/* 14. FLOATING NOTIFICATIONS BELL BUTTON (Persistent on screen) */}
-      <div className="fixed left-24 bottom-6 z-40">
-        <button
-          onClick={() => {
-            setNotificationsOpen(true);
-            window.location.hash = "#notifications";
-          }}
-          aria-label="View Store Updates & Offers"
-          className="bg-gradient-to-tr from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 text-white w-14 h-14 rounded-full shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all duration-300 border border-white/20 cursor-pointer relative group"
-        >
-          {/* Shimmer/Ping effect for notifications */}
-          <span className="absolute -top-1 -right-1 flex h-3.5 w-3.5">
-            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
-            <span className="relative inline-flex rounded-full h-3.5 w-3.5 bg-orange-500 border border-white"></span>
-          </span>
-
-          {/* Glowing ring */}
-          <span className="absolute inset-0 rounded-full bg-blue-500/20 animate-pulse scale-105 pointer-events-none" />
-          
-          <Bell className="w-6 h-6 text-white group-hover:rotate-12 transition-transform shrink-0" />
-        </button>
-      </div>
-
-      {/* 15. FLOATING NOTIFICATIONS MODAL OVERLAY */}
-      <AnimatePresence>
-        {notificationsOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 overflow-y-auto bg-slate-950/80 backdrop-blur-md flex items-center justify-center p-4 sm:p-6"
-          >
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: 30 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: 30 }}
-              transition={{ type: "spring", damping: 25, stiffness: 350 }}
-              className="relative bg-slate-950 w-full max-w-6xl h-[85vh] rounded-3xl border border-white/10 shadow-2xl flex flex-col overflow-hidden"
-            >
-              {/* Floating/Sticky Close Button */}
-              <div className="absolute top-4 right-4 z-50">
-                <button
-                  onClick={() => {
-                    setNotificationsOpen(false);
-                    window.location.hash = "";
-                  }}
-                  className="p-3 bg-white/10 hover:bg-white/20 text-white rounded-full transition-all duration-200 shadow-lg border border-white/10 hover:scale-110 active:scale-90 cursor-pointer"
-                  aria-label="Close Updates"
-                >
-                  <X className="w-5 h-5" />
-                </button>
-              </div>
-
-              <div className="flex-1 overflow-y-auto">
-                <NotificationsPage />
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
 
     </div>
   );

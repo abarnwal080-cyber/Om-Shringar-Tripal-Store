@@ -1,63 +1,107 @@
-import React, { useState, useEffect, useRef } from "react";
-import { Loader2, Sparkles, MessageSquare } from "lucide-react";
-import { TRANSLATIONS } from "../translations";
+import React, { useEffect, useRef, useState } from "react";
+import { Loader2, Sparkles } from "lucide-react";
 
 interface InquiryFormProps {
   prefilledProduct?: string;
   onClearPrefill?: () => void;
   currentLanguage?: "en" | "hi";
+  onClose?: () => void;
 }
 
-export default function InquiryForm({ prefilledProduct = "", onClearPrefill = () => {}, currentLanguage = "en" }: InquiryFormProps) {
-  const t = TRANSLATIONS[currentLanguage];
+export default function InquiryForm({
+  currentLanguage = "en",
+}: InquiryFormProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
   const [isLoading, setIsLoading] = useState(true);
 
+  useEffect(() => {
+    // Reset state
+    setIsLoading(true);
+
+    // Ensure container is empty
+    if (containerRef.current) {
+      containerRef.current.innerHTML = "";
+    }
+
+    // Create Jotform script element
+    const script = document.createElement("script");
+    script.src = "https://form.jotform.com/jsform/261914670436056";
+    script.type = "text/javascript";
+    script.async = true;
+
+    // Set onload handler to turn off spinner
+    script.onload = () => {
+      setIsLoading(false);
+    };
+
+    // Fallback: If Jotform script takes too long, hide loading indicator anyway after 3 seconds
+    const fallbackTimer = setTimeout(() => {
+      setIsLoading(false);
+    }, 3000);
+
+    // Append script to container
+    if (containerRef.current) {
+      containerRef.current.appendChild(script);
+    }
+
+    return () => {
+      clearTimeout(fallbackTimer);
+      if (containerRef.current) {
+        containerRef.current.innerHTML = "";
+      }
+    };
+  }, []);
+
   return (
-    <div id="premium-enquiry-system" className="w-full space-y-5">
-      {/* Form Header */}
-      <div className="text-center pb-2">
-        <span className="inline-flex items-center gap-1.5 px-3 py-1 bg-orange-50 dark:bg-orange-950/20 text-orange-600 dark:text-orange-400 text-[10px] font-bold font-mono uppercase tracking-wider rounded-full border border-orange-100 dark:border-orange-900/30">
-          <Sparkles className="w-3.5 h-3.5 animate-pulse" />
-          {t.formBadge || "OFFICIAL QUOTE REQUEST"}
-        </span>
-        <h3 className="text-xl sm:text-2xl font-extrabold text-slate-900 dark:text-white mt-2 tracking-tight">
-          {t.formTitle || "Request Wholesale / Retail Price Quote"}
-        </h3>
-        <p className="text-slate-500 dark:text-slate-400 text-xs sm:text-sm mt-1 max-w-lg mx-auto">
-          {currentLanguage === "en" 
-            ? "Submit your detailed specifications via our official form below. Our team will review and contact you." 
-            : "नीचे दिए गए आधिकारिक फॉर्म के माध्यम से अपनी विस्तृत आवश्यकताएं दर्ज करें। हमारी टीम जल्द ही आपसे संपर्क करेगी।"}
-        </p>
-      </div>
-
-      {/* Jotform Embed Container */}
-      <div className="w-full relative bg-white dark:bg-slate-900 rounded-2xl overflow-hidden shadow-sm border border-slate-100 dark:border-slate-800/40 min-h-[650px]">
-        {isLoading && (
-          <div className="absolute inset-0 flex flex-col items-center justify-center bg-white dark:bg-slate-900 z-10 space-y-3">
-            <Loader2 className="w-8 h-8 text-orange-500 animate-spin" />
-            <p className="text-xs font-semibold text-slate-500 animate-pulse">
-              {currentLanguage === "en" ? "Loading Secure Form..." : "सुरक्षित फॉर्म लोड हो रहा है..."}
-            </p>
-          </div>
-        )}
+    <div className="w-full h-full flex flex-col items-center justify-start overflow-y-auto py-10 px-4 md:px-8 bg-transparent">
+      <div className="w-full max-w-4xl mx-auto space-y-6 flex flex-col items-center relative">
         
-        <iframe
-          src="https://form.jotform.com/261895002819058"
-          title="Om Shringar Tirpal Store Enquiry Form"
-          className="w-full h-[650px] border-0"
-          onLoad={() => setIsLoading(false)}
-          allow="geolocation; microphone; camera"
-          sandbox="allow-top-navigation-by-user-activation allow-forms allow-scripts allow-same-origin allow-popups"
-        />
-      </div>
+        {/* Elegant Minimal Header */}
+        <div className="text-center space-y-2 mb-2">
+          <div className="inline-flex items-center gap-2 px-3.5 py-1.5 bg-orange-500/15 border border-orange-500/30 text-orange-400 text-xs font-bold font-mono uppercase tracking-widest rounded-full">
+            <Sparkles className="w-3 h-3 animate-pulse" />
+            <span>
+              {currentLanguage === "hi" ? "त्वरित कोट सहायक" : "Instant Quote Assistant"}
+            </span>
+          </div>
+          <h2 className="text-2xl sm:text-3xl font-extrabold font-display tracking-tight text-white">
+            {currentLanguage === "hi" 
+              ? "थोक पूछताछ प्रपत्र" 
+              : "Wholesale Inquiry Form"}
+          </h2>
+          <p className="text-slate-400 text-xs sm:text-sm max-w-md mx-auto">
+            {currentLanguage === "hi"
+              ? "कृपया नीचे दिए गए प्रपत्र को भरें, हम जल्द ही आपसे संपर्क करेंगे।"
+              : "Please complete the secure form below. Our wholesale desk will contact you shortly."}
+          </p>
+        </div>
 
-      {/* Helpful Info footer */}
-      <div className="p-4 bg-slate-50 dark:bg-slate-800/30 rounded-2xl text-center">
-        <p className="text-xs font-bold text-slate-500 dark:text-slate-400">
-          {currentLanguage === "en" 
-            ? "🔒 Safe & Secure JotForm Submission with SSL encryption." 
-            : "🔒 एसएसएल एन्क्रिप्शन के साथ सुरक्षित जॉटफॉर्म सबमिशन।"}
-        </p>
+        {/* Form Outer Container */}
+        <div className="w-full min-h-[600px] bg-white/5 rounded-3xl border border-white/10 backdrop-blur-md p-2 sm:p-6 shadow-2xl relative overflow-hidden flex flex-col justify-center">
+          
+          {/* Spinner Loader when initializing script */}
+          {isLoading && (
+            <div className="absolute inset-0 z-10 flex flex-col items-center justify-center bg-slate-950/40 backdrop-blur-sm text-center p-6">
+              <Loader2 className="w-10 h-10 text-orange-500 animate-spin" />
+              <p className="text-slate-300 text-xs font-mono font-bold mt-4 tracking-wider uppercase">
+                Loading Secure Quotation Form...
+              </p>
+            </div>
+          )}
+
+          {/* Target container for script injection */}
+          <div 
+            ref={containerRef} 
+            className="w-full h-full transition-opacity duration-300 [&_iframe]:!max-w-full [&_iframe]:!w-full [&_iframe]:!mx-auto" 
+            style={{ opacity: isLoading ? 0.3 : 1 }}
+          />
+        </div>
+
+        {/* Secure Encryption Footer */}
+        <div className="text-[10px] sm:text-xs text-slate-500 font-mono flex items-center gap-1.5">
+          <span className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+          <span>SSL 256-bit Encrypted Connection</span>
+        </div>
       </div>
     </div>
   );

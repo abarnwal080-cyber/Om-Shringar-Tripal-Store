@@ -196,7 +196,7 @@ export default function CustomerReviews() {
                   </div>
 
                   {/* Review Text */}
-                  <p className="text-slate-700 text-base sm:text-lg leading-relaxed font-semibold italic">
+                  <p className="text-slate-800 text-base sm:text-lg leading-relaxed font-bold">
                     "{activeReview.text}"
                   </p>
                 </div>

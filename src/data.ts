@@ -164,7 +164,7 @@ export const PRODUCTS: Product[] = [
   {
     id: "black-polythene",
     name: "Construction Black Polythene Roll",
-    category: "Moisture & Damp Proofing",
+    category: "Construction & Curing",
     description: "Multi-layered black foundation sheets acting as a powerful damp barrier, silage shield, and protective ground cover.",
     images: [
       "https://plain-apac-prod-public.komododecks.com/202607/03/eckT9KEMGbavrebTJwPJ/image.png",
@@ -606,14 +606,10 @@ export const PRODUCTS: Product[] = [
 ];
 
 export const SPECIAL_PURPOSE_SHEETS: SpecialSheet[] = [
-  { title: "For Grain Drying (Sattering)", description: "Safe and hygienic solar drying of harvested grains without soil contamination.", iconName: "Wheat" },
   { title: "Heavy Duty Construction", description: "Waterproof barrier for road layings, cement curing, and ceiling underlays.", iconName: "HardHat" },
   { title: "Truck & Vehicle Covers", description: "Excellent weather shields for transport logistics, trailers, and cargo.", iconName: "Truck" },
-  { title: "Pond Lining", description: "Extremely low-leakage water reservoir and aquaculture pond under-liners.", iconName: "Waves" },
-  { title: "Chinese Grade Economy", description: "Affordable lightweight plastic covers for temporary household and shop sheds.", iconName: "BadgePercent" },
   { title: "Table Cloths & Screens", description: "Beautiful crystal-clear sheets for dust protection on household surfaces.", iconName: "Grid" },
   { title: "Agricultural Covers", description: "Silage wraps, crop drying sheets, and organic farming mulch films.", iconName: "Sprout" },
-  { title: "Warehouse Storage", description: "Extra-large heavy-duty sheets to safeguard stockpiles against rain & dust.", iconName: "Warehouse" },
   { title: "Temporary Sheds", description: "Quick roofing sheets for vendors, shelters, and monsoon shielding.", iconName: "Home" },
   { title: "Roof Waterproofing", description: "Excellent instant fix for leaks on brick, wood, and concrete roof structures.", iconName: "ShieldAlert" }
 ];
