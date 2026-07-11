@@ -43,6 +43,7 @@ import GoogleReviewPopup from "./components/GoogleReviewPopup";
 import BrandCarousel from "./components/BrandCarousel";
 import InquiryForm from "./components/InquiryForm";
 import InquiryModal from "./components/InquiryModal";
+import SingleProductSection from "./components/SingleProductSection";
 import AIChatbot from "./components/AIChatbot";
 import SupplierPopup from "./components/SupplierPopup";
 import HeroCarousel from "./components/HeroCarousel";
@@ -66,6 +67,7 @@ export default function App() {
   const [supplierOpen, setSupplierOpen] = useState(false);
   const [heroBgImage, setHeroBgImage] = useState("https://plain-apac-prod-public.komododecks.com/202607/03/eckT9KEMGbavrebTJwPJ/image.png");
   const [inquiryOpen, setInquiryOpen] = useState(false);
+  const [sizeChartTab, setSizeChartTab] = useState<"plastic" | "tarpaulin">("plastic");
 
   const [navbarVisible, setNavbarVisible] = useState(true);
   const [showScrollTop, setShowScrollTop] = useState(false);
@@ -75,6 +77,42 @@ export default function App() {
   const [selectedProductForModal, setSelectedProductForModal] = useState<Product | null>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isCatalogOpen, setIsCatalogOpen] = useState(false);
+
+  const [currentProductSlug, setCurrentProductSlug] = useState<string | null>(null);
+
+  const slugify = (text: string) => {
+    return text
+      .toString()
+      .toLowerCase()
+      .replace(/\s+/g, '-')           // Replace spaces with -
+      .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
+      .replace(/\-\-+/g, '-')         // Replace multiple - with single -
+      .replace(/^-+/, '')             // Trim - from start
+      .replace(/-+$/, '');            // Trim - from end
+  };
+
+  // Sync state with URL pathname on load & popstate (back/forward navigation)
+  useEffect(() => {
+    const getSlugFromPath = () => {
+      const path = window.location.pathname;
+      if (path && path !== "/") {
+        const slug = path.substring(1);
+        return slug || null;
+      }
+      return null;
+    };
+
+    setCurrentProductSlug(getSlugFromPath());
+
+    const handlePopState = () => {
+      setCurrentProductSlug(getSlugFromPath());
+    };
+
+    window.addEventListener("popstate", handlePopState);
+    return () => {
+      window.removeEventListener("popstate", handlePopState);
+    };
+  }, []);
 
   // Hash state URL observer
   useEffect(() => {
@@ -216,6 +254,8 @@ export default function App() {
   const filteredProducts = activeTab === "All" 
     ? PRODUCTS 
     : PRODUCTS.filter(p => p.category === activeTab);
+
+  const matchedProduct = PRODUCTS.find(p => slugify(p.name) === currentProductSlug);
 
   return (
     <div className="min-h-screen text-slate-800 bg-slate-50/50 flex flex-col relative antialiased selection:bg-brand-orange selection:text-white">
@@ -422,7 +462,19 @@ export default function App() {
         </div>
       </div>
 
-      <>
+      {matchedProduct ? (
+        <SingleProductSection
+          product={matchedProduct}
+          onBack={() => {
+            window.history.pushState({}, "", "/");
+            setCurrentProductSlug(null);
+            window.scrollTo({ top: 0 });
+          }}
+          currentLanguage={lang}
+          onEnquire={handleEnquire}
+        />
+      ) : (
+        <>
         {/* 3. HERO SECTION */}
           <section className="relative bg-gradient-to-b from-white via-slate-50 to-white text-slate-900 border-b border-slate-200/80 overflow-hidden py-16 lg:py-28">
         
@@ -787,9 +839,12 @@ export default function App() {
                           <ProductCard
                             product={product}
                             onEnquire={handleEnquire}
+                            currentLanguage={lang}
                             onViewDetails={(prod) => {
-                              setSelectedProductForModal(prod);
-                              setIsModalOpen(true);
+                              const slug = slugify(prod.name);
+                              window.history.pushState({}, "", `/${slug}`);
+                              setCurrentProductSlug(slug);
+                              window.scrollTo({ top: 0 });
                             }}
                           />
                         </div>
@@ -1009,36 +1064,172 @@ export default function App() {
             {/* Right Table Column */}
             <div className="lg:col-span-7">
               <div className="bg-white rounded-3xl border border-slate-100 shadow-xl overflow-hidden">
-                <div className="bg-brand-blue-dark p-5 sm:p-6 text-white flex justify-between items-center">
+                <div className="bg-brand-blue-dark p-5 sm:p-6 text-white flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
                   <div>
-                    <h3 className="font-bold text-lg font-display">Plastic Sizing Matrix</h3>
-                    <p className="text-xs text-slate-400 mt-1">Width in Feet × Thickness Gauge Categories</p>
+                    <h3 className="font-bold text-lg font-display">
+                      {sizeChartTab === "plastic" ? "Plastic Sizing Matrix" : "Tarpaulin Size Chart"}
+                    </h3>
+                    <p className="text-xs text-slate-400 mt-1">
+                      {sizeChartTab === "plastic" ? "Width in Feet × Thickness Gauge Categories" : "Standard Feet Dimensions (Standard Gauges)"}
+                    </p>
                   </div>
-                  <span className="bg-brand-orange text-white text-[10px] font-bold font-mono px-3 py-1 rounded-full uppercase">
-                    Wholesale Stocks
-                  </span>
+                  
+                  {/* Tab Selector Buttons */}
+                  <div className="flex bg-white/10 p-1 rounded-xl self-stretch sm:self-auto shrink-0">
+                    <button
+                      onClick={() => setSizeChartTab("plastic")}
+                      className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                        sizeChartTab === "plastic" ? "bg-orange-500 text-white" : "text-slate-300 hover:text-white"
+                      }`}
+                    >
+                      Plastic Roll
+                    </button>
+                    <button
+                      onClick={() => setSizeChartTab("tarpaulin")}
+                      className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                        sizeChartTab === "tarpaulin" ? "bg-orange-500 text-white" : "text-slate-300 hover:text-white"
+                      }`}
+                    >
+                      Tarpaulin Chart
+                    </button>
+                  </div>
                 </div>
-                <div className="divide-y divide-slate-100">
-                  {SIZE_MATRIX.map((row, idx) => (
-                    <div key={idx} className="p-5 sm:p-6 flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 hover:bg-slate-50/50 transition-colors">
-                      <div className="sm:w-1/3 shrink-0">
-                        <span className="font-bold text-sm text-brand-blue-dark font-mono block">
-                          {row.category}
-                        </span>
-                      </div>
-                      <div className="flex flex-wrap gap-2">
-                        {row.sizes.map((sz, sIdx) => (
-                          <span
-                            key={sIdx}
-                            className="bg-slate-100 text-slate-700 font-bold text-xs px-2.5 py-1 rounded-lg border border-slate-200/50 font-mono"
-                          >
-                            {sz}
+
+                {sizeChartTab === "plastic" ? (
+                  <div className="divide-y divide-slate-100 transition-all duration-300">
+                    {SIZE_MATRIX.map((row, idx) => (
+                      <div key={idx} className="p-5 sm:p-6 flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 hover:bg-slate-50/50 transition-colors">
+                        <div className="sm:w-1/3 shrink-0">
+                          <span className="font-bold text-sm text-brand-blue-dark font-mono block">
+                            {row.category}
                           </span>
-                        ))}
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                          {row.sizes.map((sz, sIdx) => (
+                            <span
+                              key={sIdx}
+                              className="bg-slate-100 text-slate-700 font-bold text-xs px-2.5 py-1 rounded-lg border border-slate-200/50 font-mono"
+                            >
+                              {sz}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ) : (
+                  /* Tarpaulin Size Chart in a Cute Frame */
+                  <div className="p-5 sm:p-6 bg-gradient-to-br from-orange-500/5 via-amber-500/5 to-orange-500/5 border-2 border-dashed border-orange-300 rounded-2xl m-4 sm:m-6 shadow-inner relative overflow-hidden transition-all duration-300">
+                    {/* Cute floating decorations */}
+                    <div className="absolute -top-10 -right-10 w-24 h-24 bg-orange-200/20 rounded-full blur-xl pointer-events-none" />
+                    <div className="absolute -bottom-10 -left-10 w-24 h-24 bg-amber-200/20 rounded-full blur-xl pointer-events-none" />
+
+                    <div className="flex items-center gap-3 mb-6 relative z-10">
+                      <div className="w-10 h-10 rounded-full bg-orange-100 border border-orange-200 flex items-center justify-center text-orange-600 shrink-0 text-lg">
+                        📐
+                      </div>
+                      <div>
+                        <h4 className="font-black text-slate-800 text-sm sm:text-base font-display flex flex-wrap items-center gap-2">
+                          <span>Standard Tarpaulin Sizing Matrix</span>
+                          <span className="text-[9px] font-black bg-orange-500 text-white px-2 py-0.5 rounded-md uppercase tracking-wider">
+                            Cute Frame
+                          </span>
+                        </h4>
+                        <p className="text-xs text-slate-500">Premium Double-Reinforced All-Weather Guards</p>
                       </div>
                     </div>
-                  ))}
-                </div>
+
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 relative z-10">
+                      {/* Category 1: Standard & Utility */}
+                      <div className="bg-white/90 p-4 rounded-xl border border-orange-200/40 backdrop-blur-sm shadow-sm hover:border-orange-300/60 transition-colors">
+                        <div className="flex items-center gap-1.5 mb-2.5 border-b border-orange-100/60 pb-1.5">
+                          <span className="text-sm">🏡</span>
+                          <span className="font-extrabold text-xs text-slate-800 uppercase tracking-wider font-display">
+                            Small & Utility Sizes
+                          </span>
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                          {["6 × 6 ft", "9 × 12 ft", "12 × 12 ft", "12 × 15 ft"].map((sz) => (
+                            <span
+                              key={sz}
+                              className="bg-orange-50 text-orange-700 font-extrabold text-xs px-2.5 py-1.5 rounded-lg border border-orange-100/60 font-mono shadow-sm hover:scale-105 transition-transform"
+                            >
+                              {sz}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Category 2: Medium & Standard */}
+                      <div className="bg-white/90 p-4 rounded-xl border border-orange-200/40 backdrop-blur-sm shadow-sm hover:border-orange-300/60 transition-colors">
+                        <div className="flex items-center gap-1.5 mb-2.5 border-b border-orange-100/60 pb-1.5">
+                          <span className="text-sm">🚚</span>
+                          <span className="font-extrabold text-xs text-slate-800 uppercase tracking-wider font-display">
+                            Medium & Standard Sizes
+                          </span>
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                          {["12 × 18 ft", "15 × 18 ft", "18 × 24 ft", "24 × 24 ft"].map((sz) => (
+                            <span
+                              key={sz}
+                              className="bg-amber-50 text-amber-700 font-extrabold text-xs px-2.5 py-1.5 rounded-lg border border-amber-100/60 font-mono shadow-sm hover:scale-105 transition-transform"
+                            >
+                              {sz}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Category 3: Large & Commercial */}
+                      <div className="bg-white/90 p-4 rounded-xl border border-orange-200/40 backdrop-blur-sm shadow-sm hover:border-orange-300/60 transition-colors">
+                        <div className="flex items-center gap-1.5 mb-2.5 border-b border-orange-100/60 pb-1.5">
+                          <span className="text-sm">🏗️</span>
+                          <span className="font-extrabold text-xs text-slate-800 uppercase tracking-wider font-display">
+                            Large & Heavy-Duty Sizes
+                          </span>
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                          {["24 × 30 ft", "30 × 30 ft", "30 × 40 ft"].map((sz) => (
+                            <span
+                              key={sz}
+                              className="bg-rose-50 text-rose-700 font-extrabold text-xs px-2.5 py-1.5 rounded-lg border border-rose-100/60 font-mono shadow-sm hover:scale-105 transition-transform"
+                            >
+                              {sz}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+
+                      {/* Category 4: Super Large & Industrial */}
+                      <div className="bg-white/90 p-4 rounded-xl border border-orange-200/40 backdrop-blur-sm shadow-sm hover:border-orange-300/60 transition-colors">
+                        <div className="flex items-center gap-1.5 mb-2.5 border-b border-orange-100/60 pb-1.5">
+                          <span className="text-sm">⛈️</span>
+                          <span className="font-extrabold text-xs text-slate-800 uppercase tracking-wider font-display">
+                            Industrial & Bulk Covering
+                          </span>
+                        </div>
+                        <div className="flex flex-wrap gap-2">
+                          {["40 × 50 ft", "40 × 60 ft", "60 × 100 ft"].map((sz) => (
+                            <span
+                              key={sz}
+                              className="bg-blue-50 text-blue-700 font-extrabold text-xs px-2.5 py-1.5 rounded-lg border border-blue-100/60 font-mono shadow-sm hover:scale-105 transition-transform"
+                            >
+                              {sz}
+                            </span>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Cute Helper Footnote */}
+                    <div className="mt-5 p-3.5 bg-orange-500/10 border border-orange-500/20 rounded-xl flex items-start gap-2.5 text-[11px] text-orange-800 leading-relaxed font-medium">
+                      <span className="text-base shrink-0 select-none">🔔</span>
+                      <span>
+                        Aluminum Rust-Resistant Grommets are pre-installed at every 3 feet intervals for reliable heavy-duty anchoring and tying. Custom length configurations can be ordered at short notice!
+                      </span>
+                    </div>
+                  </div>
+                )}
               </div>
             </div>
 
@@ -1357,6 +1548,7 @@ export default function App() {
       </section>
 
       </>
+      )}
 
       {/* 12. FOOTER */}
       <footer className="bg-brand-blue-dark text-slate-400 py-16 border-t border-white/5 mt-auto">

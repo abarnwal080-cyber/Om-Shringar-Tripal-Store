@@ -563,7 +563,7 @@ export const PRODUCTS: Product[] = [
     id: "cosmetics-shringar",
     name: "Premium Cosmetics & Shringar Range",
     category: "Household & Outdoor",
-    description: "Vast collection of wholesale beauty, makeup, bridal shringar accessories, and personal care products at unbeatable dealer prices.",
+    description: "A premium retail collection of beauty products, makeup, bridal shringar accessories, and personal care items directly available at our Maharajganj store.",
     images: [
       "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=600&auto=format&fit=crop&q=60",
       "https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=600&auto=format&fit=crop&q=60",
@@ -574,33 +574,32 @@ export const PRODUCTS: Product[] = [
       "Complete Bridal Kits",
       "Premium Brand Makeup",
       "Daily Skincare Range",
-      "Wholesale Bulk Deals"
+      "Exclusive Retail Selection"
     ],
-    detailedDescription: "As our business name 'Om Shringar Tirpal Store' proudly represents, we house a dedicated, extensive wholesale section for high-quality Cosmetics and Bridal Shringar products. We supply local retail shops, salons, and wedding planners with authentic products ranging from vermilion (Sindoor), bangles, bindis, and bridal kits to top national beauty and skincare brands.",
+    detailedDescription: "As our business name 'Om Shringar Tirpal Store' proudly represents, we house a dedicated, beautifully curated retail section for high-quality Cosmetics and Bridal Shringar products. Please note: For our cosmetics and beauty range, we operate exclusively as a retail store (not a wholesaler). We welcome individual walk-ins, brides-to-be, and families to visit our Maharajganj store to explore genuine products ranging from vermilion (Sindoor), bangles, bindis, and bridal kits to top national beauty and skincare brands.",
     benefits: [
-      "Direct source wholesale prices with high margins for retail shop owners.",
-      "100% genuine and safe-to-use cosmetics certified by national lab guidelines.",
-      "Complete wedding and festive shringar gift packs curated upon request.",
-      "Regularly updated inventory with the latest trending beauty items and brands."
+      "Genuine, branded cosmetics with complete quality assurance at the best retail prices.",
+      "100% skin-safe, authentic products sourced directly from authorized brand distributors.",
+      "Personalized assistance in-store to find your perfect shades and complete bridal requirements.",
+      "Regularly updated stock featuring the latest beauty trends and festive collections."
     ],
     specs: {
+      "Services Offered": "Retail Sale Only (Direct Store Walk-ins)",
       "Products Available": "Sindoor, Bindis, Bangles, Lipstick, Kajal, Foundations, Creams, Hair Oils, & Complete Bridal Shringar Sets",
       "Brands Offered": "Lakme, L'Oreal, Lotus, Blue Heaven, and Premium Local Traditional Brands",
-      "Quality Standard": "100% Skin-safe, Dermatologically Tested Brands",
-      "Min. Order for Wholesale": "Flexible bulk boxes / wholesale packs available",
+      "Quality Standard": "100% Skin-safe, Authentic and Fresh Stocks",
       "Occasion Kits": "Bridal Special, Karwa Chauth, Teej, Chhath Pooja, & Diwali combos"
     },
     applications: [
-      "Retail beauty shops",
-      "Salons & Parlors",
-      "Bridal gifts",
-      "Daily personal care",
-      "Festive occasions"
+      "Personal everyday use",
+      "Bridal and wedding makeup",
+      "Festive occasions & pooja gifting",
+      "Local parlor walk-ins"
     ],
     faqs: [
-      { question: "Do you offer discount rates for cosmetic retail shop owners?", answer: "Yes, since we operate on a heavy wholesale model, we offer lucrative percentage margins and tiered discounts to retail business owners purchasing carton quantities." },
-      { question: "Are your cosmetics genuine and safe?", answer: "Absolutely. We strictly deal in authorized distributor channels for major national brands, guaranteeing 100% genuine products with long expiry dates." },
-      { question: "Can we order custom bridal shringar gift packs?", answer: "Yes! We specialize in custom wedding packs featuring beautiful bangles, premium bindis, traditional sindoor, and branded cosmetics customized to your budget." }
+      { question: "Do you supply cosmetics in wholesale or bulk?", answer: "No, for our Cosmetics and Shringar range, we operate strictly as a premium retailer. We offer highly attractive retail prices for single items and personal kits, but we do not supply bulk wholesale cartons to other shops." },
+      { question: "Are your cosmetics genuine and fresh?", answer: "Absolutely. We strictly source from official and authorized distributor channels for major national brands, guaranteeing 100% authentic products with long expiry dates." },
+      { question: "Can we get customized bridal shringar sets in-store?", answer: "Yes! Walk into our Maharajganj store, and our staff will happily help you curate a custom wedding set featuring bangles, bindis, premium sindoor, and branded cosmetics matched to your choice and budget." }
     ]
   }
 ];

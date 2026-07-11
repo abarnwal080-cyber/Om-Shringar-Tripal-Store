@@ -8,9 +8,10 @@ interface ProductCardProps {
   product: Product;
   onEnquire: (productName: string) => void;
   onViewDetails: (product: Product) => void;
+  currentLanguage?: "en" | "hi";
 }
 
-export default function ProductCard({ product, onEnquire, onViewDetails }: ProductCardProps) {
+export default function ProductCard({ product, onEnquire, onViewDetails, currentLanguage = "en" }: ProductCardProps) {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
   const [showShareFeedback, setShowShareFeedback] = useState(false);
@@ -146,7 +147,7 @@ export default function ProductCard({ product, onEnquire, onViewDetails }: Produ
             onClick={() => onViewDetails(product)}
             className="flex-1 flex items-center justify-center gap-2 py-3.5 px-4 rounded-full bg-gradient-to-r from-orange-600 to-amber-500 hover:from-orange-700 hover:to-amber-600 text-white font-extrabold text-sm transition-all duration-200 shadow-md hover:scale-[1.01] active:scale-[0.98] cursor-pointer"
           >
-            <span>View Details</span>
+            <span>{currentLanguage === "hi" ? "अधिक जानें" : "Know More"}</span>
             <ArrowRight className="w-4 h-4" />
           </button>
 
