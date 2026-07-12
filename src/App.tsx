@@ -24,7 +24,8 @@ import {
   Users,
   ArrowRight,
   ArrowUp,
-  Check
+  Check,
+  Star
 } from "lucide-react";
 
 import {
@@ -49,7 +50,6 @@ import SupplierPopup from "./components/SupplierPopup";
 import HeroCarousel from "./components/HeroCarousel";
 import StoreStatusCard from "./components/StoreStatusCard";
 import CustomerSuccessCarousel from "./components/CustomerSuccessCarousel";
-import CustomerReviews from "./components/CustomerReviews";
 import { TRANSLATIONS } from "./translations";
 
 // Safe dynamic icon loader to keep code modular and readable
@@ -711,9 +711,6 @@ export default function App() {
         </motion.button>
       </div>
 
-      {/* CUSTOMER 5-STAR REVIEWS SECTION */}
-      <CustomerReviews />
-
       {/* 6. PRODUCTS CATALOG SECTION */}
       <section id="products" className="py-20 bg-slate-50 relative border-y border-slate-100/50 scroll-mt-24">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -878,6 +875,34 @@ export default function App() {
               </motion.div>
             )}
           </AnimatePresence>
+        </div>
+      </section>
+
+      {/* GOOGLE REVIEWS SECTION */}
+      <section id="google-reviews" className="py-20 bg-gradient-to-b from-slate-50 to-white relative scroll-mt-24 border-t border-slate-100">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          
+          {/* Section Header */}
+          <div className="text-center max-w-3xl mx-auto mb-12">
+            <div className="inline-flex items-center gap-2 bg-orange-50 text-brand-orange text-xs font-bold font-mono px-3.5 py-1.5 rounded-full mb-4 border border-orange-100/50">
+              <Star className="w-3.5 h-3.5 fill-brand-orange text-brand-orange" />
+              <span>GOOGLE CUSTOMER REVIEWS</span>
+            </div>
+            <h2 className="text-3xl sm:text-4xl font-extrabold font-display text-brand-blue-dark tracking-tight mb-4">
+              What Our Customers Say On Google
+            </h2>
+            <p className="text-slate-600 text-sm sm:text-base">
+              Explore authentic, live feedback and verified 5-star ratings left on Google by builders, farmers, and store visitors in Bihar.
+            </p>
+          </div>
+
+          {/* Elfsight Widget Container */}
+          <div className="w-full bg-white rounded-3xl border border-slate-100 p-4 sm:p-8 shadow-sm hover:shadow-md transition-shadow duration-300 min-h-[300px] flex items-center justify-center">
+            <div className="w-full">
+              <div className="elfsight-app-a79ce307-0e45-4c96-a6f7-5ae162ca490f" data-elfsight-app-lazy></div>
+            </div>
+          </div>
+
         </div>
       </section>
 
