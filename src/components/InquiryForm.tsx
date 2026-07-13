@@ -23,9 +23,14 @@ export default function InquiryForm({
       containerRef.current.innerHTML = "";
     }
 
-    // Create Jotform script element
+    // Create Spiceform container div
+    const sfDiv = document.createElement("div");
+    sfDiv.setAttribute("data-sf-live", "ae995f83-2ef6-4948-9b30-2d9be689e8f7");
+    sfDiv.setAttribute("data-sf-mode", "embed");
+
+    // Create Spiceform script element
     const script = document.createElement("script");
-    script.src = "https://form.jotform.com/jsform/261914670436056";
+    script.src = "https://www.spiceform.com/embed.js";
     script.type = "text/javascript";
     script.async = true;
 
@@ -34,13 +39,14 @@ export default function InquiryForm({
       setIsLoading(false);
     };
 
-    // Fallback: If Jotform script takes too long, hide loading indicator anyway after 3 seconds
+    // Fallback: If script takes too long, hide loading indicator anyway after 3 seconds
     const fallbackTimer = setTimeout(() => {
       setIsLoading(false);
     }, 3000);
 
-    // Append script to container
+    // Append elements to container
     if (containerRef.current) {
+      containerRef.current.appendChild(sfDiv);
       containerRef.current.appendChild(script);
     }
 
