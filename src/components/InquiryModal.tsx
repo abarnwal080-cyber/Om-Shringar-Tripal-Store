@@ -20,16 +20,23 @@ export default function InquiryModal({
   return (
     <AnimatePresence>
       {isOpen && (
-        <div id="full-screen-typeform-container" className="fixed inset-0 z-50 flex flex-col w-full h-full bg-gradient-to-br from-slate-950 via-slate-900 to-slate-950 overflow-hidden">
+        <div
+          id="full-screen-typeform-container"
+          className="fixed inset-0 z-50 flex flex-col w-full h-full overflow-hidden"
+          style={{
+            background: `
+              radial-gradient(circle at top left, rgba(255, 123, 184, 0.18), transparent 25%),
+              radial-gradient(circle at top right, rgba(139, 92, 246, 0.16), transparent 26%),
+              radial-gradient(circle at bottom left, rgba(52, 211, 153, 0.14), transparent 28%),
+              linear-gradient(180deg, #fff7fb, #f4fbff)
+            `
+          }}
+        >
           
-          {/* Subtle Ambient Decorative Glows */}
-          <div className="absolute top-1/4 left-1/4 w-[35rem] h-[35rem] rounded-full bg-orange-600/10 blur-[120px] pointer-events-none" />
-          <div className="absolute bottom-1/4 right-1/4 w-[35rem] h-[35rem] rounded-full bg-blue-600/5 blur-[120px] pointer-events-none" />
-
           {/* Elegant Translucent Close Button */}
           <button
             onClick={onClose}
-            className="absolute top-6 right-6 p-3 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 text-slate-300 hover:text-white hover:scale-105 hover:rotate-90 transition-all duration-300 z-50 cursor-pointer flex items-center justify-center shadow-lg backdrop-blur-md"
+            className="absolute top-6 right-6 p-3 rounded-full bg-slate-900/10 hover:bg-slate-900/20 border border-slate-200/50 text-slate-700 hover:text-slate-900 hover:scale-105 hover:rotate-90 transition-all duration-300 z-50 cursor-pointer flex items-center justify-center shadow-lg backdrop-blur-md"
             aria-label="Close Inquiry Overlay"
           >
             <X className="w-5 h-5" />

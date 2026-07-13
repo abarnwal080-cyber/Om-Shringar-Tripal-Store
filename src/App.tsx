@@ -215,12 +215,8 @@ export default function App() {
   const t = TRANSLATIONS[lang];
 
   const handleEnquire = (productName: string) => {
-    const trigger = document.getElementById("spiceform-popup-trigger-button") || document.querySelector('[data-sf-live="ae995f83-2ef6-4948-9b30-2d9be689e8f7"]');
-    if (trigger) {
-      (trigger as HTMLElement).click();
-    } else {
-      window.open("https://www.spiceform.com/forms/ae995f83-2ef6-4948-9b30-2d9be689e8f7", "_blank");
-    }
+    setPrefilledProduct(productName || "");
+    setInquiryOpen(true);
   };
 
    const handleMobileNavClick = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
@@ -319,18 +315,12 @@ export default function App() {
               { href: "#special-uses", label: t.navApplications, id: "special-uses" },
               { href: "#size-matrix", label: t.navSizeChart, id: "size-matrix" },
               { href: "#why-choose", label: t.navWhyUs, id: "why-choose" },
-              { href: "https://www.spiceform.com/forms/ae995f83-2ef6-4948-9b30-2d9be689e8f7", label: t.navInquiry, id: "enquire", external: true },
               { href: "#contact", label: t.navFindStore, id: "contact" }
             ].map((link) => (
               <a 
                 key={link.href}
                 href={link.href} 
-                target={link.external ? "_blank" : undefined}
-                rel={link.external ? "noopener noreferrer" : undefined}
                 onClick={(e) => {
-                  if (link.external) {
-                    return;
-                  }
                   e.preventDefault();
                   if (link.id === "products") {
                     setIsCatalogOpen(true);
@@ -418,15 +408,6 @@ export default function App() {
                   {t.navWhyUs}
                 </a>
                 <a 
-                  href="https://www.spiceform.com/forms/ae995f83-2ef6-4948-9b30-2d9be689e8f7" 
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={() => setMobileMenuOpen(false)}
-                  className="text-base font-semibold text-slate-700 hover:text-orange-600 py-1"
-                >
-                  {t.navInquiry}
-                </a>
-                <a 
                   href="#contact" 
                   onClick={(e) => handleMobileNavClick(e, "contact")}
                   className="text-base font-semibold text-slate-700 hover:text-orange-600 py-1"
@@ -435,16 +416,16 @@ export default function App() {
                 </a>
 
                 <div className="pt-4 border-t border-slate-100 flex flex-col gap-3">
-                  <a
-                    href="https://www.spiceform.com/forms/ae995f83-2ef6-4948-9b30-2d9be689e8f7"
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    onClick={() => setMobileMenuOpen(false)}
-                    className="flex items-center justify-center gap-2 py-3.5 px-4 rounded-xl bg-gradient-to-r from-orange-600 to-amber-500 text-white font-extrabold text-sm shadow-md cursor-pointer hover:from-orange-700 hover:to-amber-600 transition-colors uppercase tracking-wider active:scale-95 text-center"
+                  <button
+                    onClick={() => {
+                      setMobileMenuOpen(false);
+                      handleEnquire("");
+                    }}
+                    className="flex items-center justify-center gap-2 py-3.5 px-4 rounded-xl bg-gradient-to-r from-orange-600 to-amber-500 text-white font-extrabold text-sm shadow-md cursor-pointer hover:from-orange-700 hover:to-amber-600 transition-colors uppercase tracking-wider active:scale-95 text-center w-full"
                   >
-                    <Sparkles className="w-4 h-4 text-white" />
-                    <span>Get Free Quote Now</span>
-                  </a>
+                    <Sparkles className="w-4 h-4 text-white animate-pulse" />
+                    <span>{(lang as string) === "hi" ? "दर प्राप्त करें" : "Get Free Quote Now"}</span>
+                  </button>
                 </div>
               </div>
             </motion.div>
@@ -1603,34 +1584,31 @@ export default function App() {
       
       {/* Floating Vertical "Enquire Now" Tab: Desktop Only */}
       <div className="hidden md:flex fixed left-0 top-[40%] z-40 transform -translate-y-1/2">
-        <div
-          data-sf-live="ae995f83-2ef6-4948-9b30-2d9be689e8f7"
-          data-sf-mode="popover"
-          role="button"
-          tabIndex={0}
+        <button
+          onClick={() => handleEnquire("")}
           className="bg-gradient-to-r from-orange-600 to-amber-500 hover:from-orange-700 hover:to-amber-600 text-white font-extrabold text-xs tracking-wider uppercase py-4 px-3 rounded-r-2xl shadow-2xl flex items-center gap-2 [writing-mode:vertical-lr] rotate-180 transition-all duration-300 hover:translate-x-1 cursor-pointer select-none border-t border-r border-b border-white/20 relative group"
         >
           <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity rounded-r-2xl pointer-events-none" />
-          <span className="animate-pulse">✨ Enquire Now</span>
-        </div>
+          <span className="animate-pulse">✨ {(lang as string) === "hi" ? "पूछताछ करें" : "Enquire Now"}</span>
+        </button>
       </div>
 
-      {/* Unified Floating Get Quote Button: Mobile & Desktop (Aligned Bottom Right) */}
-      <div className="fixed right-6 bottom-6 z-40">
-        <div
-          data-sf-live="ae995f83-2ef6-4948-9b30-2d9be689e8f7"
-          data-sf-mode="popover"
-          role="button"
-          tabIndex={0}
-          aria-label="Get Quote Inquiry"
-          className="bg-gradient-to-r from-orange-600 to-amber-500 hover:from-orange-700 hover:to-amber-600 text-white font-extrabold text-xs sm:text-sm px-5 py-3.5 rounded-full shadow-2xl flex items-center gap-2.5 hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer relative group border border-orange-400/20"
+      {/* Unified Floating Get Quote Button: Mobile & Desktop (Aligned Bottom Right as custom enquiry-fab) */}
+      <div className="fixed right-[22px] bottom-[22px] z-[9999]">
+        <button
+          id="enquiry-fab"
+          onClick={() => handleEnquire("")}
+          className="flex items-center gap-[10px] border-none rounded-full cursor-pointer text-white font-extrabold tracking-[0.2px] transition-all duration-200 select-none shadow-[0_16px_34px_rgba(139,92,246,0.28),0_10px_24px_rgba(255,123,184,0.25)] hover:-translate-y-[2px] hover:scale-[1.03] hover:saturate-[1.05] active:translate-y-0 active:scale-[0.99]"
+          style={{
+            background: "linear-gradient(135deg, #ff7bb8, #ff9f6e 45%, #8b5cf6)",
+            padding: "14px 18px",
+          }}
         >
-          {/* Pulsating Ring Indicator */}
-          <span className="absolute inset-0 rounded-full border-2 border-orange-500/40 animate-ping pointer-events-none" />
-          
-          <Sparkles className="w-5 h-5 text-amber-200 group-hover:rotate-12 transition-transform shrink-0" />
-          <span className="uppercase tracking-wider font-black">{(lang as string) === "hi" ? "दर प्राप्त करें" : "Get Quote"}</span>
-        </div>
+          <svg className="w-[22px] h-[22px] fill-white shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
+            <path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-7 12h-2v-2h2v2zm0-4h-2V6h2v4z" />
+          </svg>
+          <span className="uppercase tracking-wider font-extrabold">{(lang as string) === "hi" ? "पूछताछ करें" : "Enquire Now"}</span>
+        </button>
       </div>
 
       {/* Unified Floating WhatsApp Button: Mobile & Desktop (Aligned Bottom Left) */}
@@ -1684,9 +1662,6 @@ export default function App() {
         onClearPrefill={clearPrefill}
         currentLanguage={lang}
       />
-
-      {/* Spiceform Popup Embed Element */}
-      <div data-sf-live="ae995f83-2ef6-4948-9b30-2d9be689e8f7" data-sf-mode="popover" className="hidden"></div>
 
       {/* Google Review Prompt Popup */}
       <GoogleReviewPopup />
