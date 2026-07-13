@@ -656,3 +656,41 @@ export const FAQS: FAQItem[] = [
     answer: "We are official and highly trusted dealers for premium brands including Shalimar, Silpaulin, Greatpaulin, Capstone Cheetah, Vision, and Goldpaulin."
   }
 ];
+
+// Product slug mappings for clean, SEO-friendly URLs
+export const PRODUCT_SLUG_MAP: Record<string, { slug: string; aliases: string[] }> = {
+  "stretch-film": { slug: "transparent-plastic-sheet", aliases: ["transparent-stretch-film-roll"] },
+  "blue-polythene": { slug: "blue-polythene-roll", aliases: ["construction-blue-polythene-roll"] },
+  "black-polythene": { slug: "pond-liner", aliases: ["construction-black-polythene-roll"] },
+  "transparent-shisha": { slug: "transparent-shisha-roll", aliases: [] },
+  "tarpaulins": { slug: "blue-tarpaulin", aliases: ["waterproof-premium-tarpaulins"] },
+  "capstone-cheetah": { slug: "hdpe-tarpaulin", aliases: ["hdpe-capstone-cheetah"] },
+  "fencing-net": { slug: "shade-net", aliases: ["resham-fencing-net"] },
+  "fencing-net-jali": { slug: "fencing-net-jali", aliases: [] },
+  "thermocol-sheets": { slug: "construction-thermocol-sheets", aliases: ["construction-thermocol-sheets-eps-blocks-sheets"] },
+  "plastic-mat-chatai": { slug: "premium-plastic-mat-chatai", aliases: [] },
+  "waterproof-table-cover": { slug: "waterproof-table-cover", aliases: ["waterproof-table-cover-6-seater"] },
+  "cosmetics-shringar": { slug: "premium-cosmetics-shringar", aliases: ["premium-cosmetics-shringar-range"] },
+};
+
+// Helper to get slug for a product
+export function getProductSlug(productId: string): string {
+  return PRODUCT_SLUG_MAP[productId]?.slug || productId;
+}
+
+// Helper to find a product by slug or alias
+export function findProductBySlug(slug: string): Product | undefined {
+  if (!slug) return undefined;
+  
+  // Normalize slug
+  const normalized = slug.toLowerCase().trim();
+  
+  // Find in mapping
+  const foundEntry = Object.entries(PRODUCT_SLUG_MAP).find(([prodId, mapData]) => {
+    return mapData.slug === normalized || mapData.aliases.includes(normalized) || prodId === normalized;
+  });
+  
+  const targetId = foundEntry ? foundEntry[0] : normalized;
+  return PRODUCTS.find(p => p.id === targetId || p.id === normalized || getProductSlug(p.id) === normalized);
+}
+

@@ -22,7 +22,7 @@ import {
   Waves,
   Bird
 } from "lucide-react";
-import { Product, BUSINESS_INFO } from "../data";
+import { Product, BUSINESS_INFO, PRODUCTS, getProductSlug } from "../data";
 import LazyImage from "./LazyImage";
 import InquiryForm from "./InquiryForm";
 
@@ -44,6 +44,130 @@ export default function SingleProductSection({
   const [activeTab, setActiveTab] = useState<TabType>("description");
   const [selectedImageIdx, setSelectedImageIdx] = useState(0);
   const [openFaqIdx, setOpenFaqIdx] = useState<number | null>(0);
+  const [showStickyBar, setShowStickyBar] = useState(false);
+
+  // Dynamic SEO Tags and Product Schema (JSON-LD)
+  useEffect(() => {
+    const originalTitle = document.title;
+    const isHi = currentLanguage === "hi";
+    const titleSuffix = isHi ? " - ओम श्रृंगार तिरपाल स्टोर महाराजगंज" : " - Om Shringar Tirpal Store Maharajganj";
+    document.title = `${product.name}${titleSuffix}`;
+
+    // Helper to set or update meta tag
+    const setMetaTag = (propertyOrName: string, content: string, isProperty = false) => {
+      const attribute = isProperty ? "property" : "name";
+      let element = document.querySelector(`meta[${attribute}="${propertyOrName}"]`);
+      if (!element) {
+        element = document.createElement("meta");
+        element.setAttribute(attribute, propertyOrName);
+        document.head.appendChild(element);
+      }
+      element.setAttribute("content", content);
+    };
+
+    // Helper to remove meta tag
+    const removeMetaTag = (propertyOrName: string, isProperty = false) => {
+      const attribute = isProperty ? "property" : "name";
+      const element = document.querySelector(`meta[${attribute}="${propertyOrName}"]`);
+      if (element) {
+        element.remove();
+      }
+    };
+
+    // 2. Meta description
+    const desc = product.description;
+    setMetaTag("description", desc);
+
+    // 3. Open Graph Tags
+    const pageUrl = `${window.location.origin}/products/${getProductSlug(product.id)}`;
+    setMetaTag("og:title", `${product.name}${titleSuffix}`, true);
+    setMetaTag("og:description", desc, true);
+    setMetaTag("og:url", pageUrl, true);
+    setMetaTag("og:type", "product", true);
+    if (product.images && product.images[0]) {
+      setMetaTag("og:image", product.images[0], true);
+    }
+
+    // 4. Canonical URL
+    let canonical = document.querySelector('link[rel="canonical"]');
+    if (!canonical) {
+      canonical = document.createElement("link");
+      canonical.setAttribute("rel", "canonical");
+      document.head.appendChild(canonical);
+    }
+    canonical.setAttribute("href", pageUrl);
+
+    // 5. Product Schema (JSON-LD)
+    const schemaId = "product-jsonld-schema";
+    let schemaScript = document.getElementById(schemaId) as HTMLScriptElement;
+    if (!schemaScript) {
+      schemaScript = document.createElement("script");
+      schemaScript.id = schemaId;
+      schemaScript.type = "application/ld+json";
+      document.head.appendChild(schemaScript);
+    }
+
+    const productSchema = {
+      "@context": "https://schema.org/",
+      "@type": "Product",
+      "name": product.name,
+      "image": product.images,
+      "description": product.description,
+      "brand": {
+        "@type": "Brand",
+        "name": product.specs?.["Brand"] || "Om Shringar"
+      },
+      "offers": {
+        "@type": "AggregateOffer",
+        "priceCurrency": "INR",
+        "lowPrice": "Wholesale Dealer Price Available",
+        "offerCount": "1",
+        "price": "Call for Wholesale Prices",
+        "url": pageUrl,
+        "availability": "https://schema.org/InStock"
+      }
+    };
+    schemaScript.text = JSON.stringify(productSchema);
+
+    // Cleanup
+    return () => {
+      document.title = originalTitle;
+      removeMetaTag("description");
+      removeMetaTag("og:title", true);
+      removeMetaTag("og:description", true);
+      removeMetaTag("og:url", true);
+      removeMetaTag("og:type", true);
+      removeMetaTag("og:image", true);
+      if (canonical) {
+        canonical.removeAttribute("href");
+      }
+      const existingSchema = document.getElementById(schemaId);
+      if (existingSchema) {
+        existingSchema.remove();
+      }
+    };
+  }, [product, currentLanguage]);
+
+  // Handle scroll to show sticky conversion bar
+  useEffect(() => {
+    const handleScroll = () => {
+      if (window.scrollY > 400) {
+        setShowStickyBar(true);
+      } else {
+        setShowStickyBar(false);
+      }
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Related Products logic
+  const relatedProducts = PRODUCTS.filter((p) => p.id !== product.id && p.category === product.category).slice(0, 3);
+  if (relatedProducts.length < 3) {
+    const extra = PRODUCTS.filter((p) => p.id !== product.id && !relatedProducts.some((rp) => rp.id === p.id)).slice(0, 3 - relatedProducts.length);
+    relatedProducts.push(...extra);
+  }
+
 
   // Scroll to top when product changes
   useEffect(() => {
@@ -83,6 +207,28 @@ export default function SingleProductSection({
     <div className="w-full bg-slate-50 min-h-screen py-10 relative">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         
+        {/* Breadcrumbs */}
+        <nav className="mb-4 flex items-center gap-2 text-xs font-semibold text-slate-500">
+          <a
+            href="/"
+            onClick={(e) => {
+              e.preventDefault();
+              onBack();
+            }}
+            className="hover:text-orange-600 transition-colors"
+          >
+            {currentLanguage === "hi" ? "होम" : "Home"}
+          </a>
+          <span className="text-slate-300">/</span>
+          <span className="text-slate-400">
+            {currentLanguage === "hi" ? "उत्पाद" : "Products"}
+          </span>
+          <span className="text-slate-300">/</span>
+          <span className="text-slate-800 truncate max-w-[200px] sm:max-w-none">
+            {product.name}
+          </span>
+        </nav>
+
         {/* Navigation / Back Header Bar */}
         <div className="mb-8 flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-white p-4 rounded-2xl border border-slate-200/80 shadow-sm">
           <button
@@ -90,11 +236,13 @@ export default function SingleProductSection({
             className="flex items-center gap-2 text-slate-700 hover:text-orange-600 font-bold text-sm transition-colors py-2 px-4 rounded-xl hover:bg-slate-50 w-fit cursor-pointer group"
           >
             <ArrowLeft className="w-5 h-5 transition-transform group-hover:-translate-x-1" />
-            <span>Back to Homepage</span>
+            <span>{currentLanguage === "hi" ? "होमपेज पर वापस जाएं" : "Back to Homepage"}</span>
           </button>
           
           <div className="flex items-center gap-2">
-            <span className="text-xs font-mono font-bold text-slate-500">Currently Viewing:</span>
+            <span className="text-xs font-mono font-bold text-slate-500">
+              {currentLanguage === "hi" ? "वर्तमान श्रेणी:" : "Currently Viewing:"}
+            </span>
             <span className="text-xs font-bold bg-orange-50 text-orange-600 border border-orange-100 px-3 py-1 rounded-full uppercase tracking-wider">
               {product.category}
             </span>
@@ -382,12 +530,142 @@ export default function SingleProductSection({
           </div>
         </div>
 
+        {/* Related Products Section */}
+        <div className="mb-12 mt-16">
+          <div className="flex flex-col mb-8 text-left">
+            <span className="text-xs font-black text-slate-400 uppercase tracking-widest mb-1.5">
+              {currentLanguage === "hi" ? "आपके लिए अनुशंसित" : "RECOMMENDED FOR YOU"}
+            </span>
+            <h3 className="text-2xl sm:text-3xl font-black font-display text-brand-blue-dark tracking-tight">
+              {currentLanguage === "hi" ? "संबंधित उत्पाद" : "Related Products"}
+            </h3>
+          </div>
+          
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {relatedProducts.map((p) => (
+              <div
+                key={p.id}
+                className="bg-white rounded-2xl border border-slate-200/60 overflow-hidden shadow-sm hover:shadow-md transition-all flex flex-col group"
+              >
+                <div className="relative aspect-[4/3] bg-slate-100 overflow-hidden">
+                  <img
+                    src={p.images[0]}
+                    alt={p.name}
+                    referrerPolicy="no-referrer"
+                    className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                  />
+                  {p.isBestSeller && (
+                    <span className="absolute top-3 left-3 bg-orange-500 text-white text-[10px] font-black px-2 py-1 rounded-full uppercase tracking-wider z-10">
+                      🔥 Best Seller
+                    </span>
+                  )}
+                </div>
+                <div className="p-5 flex flex-col flex-1 justify-between">
+                  <div>
+                    <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider block mb-1">
+                      {p.category}
+                    </span>
+                    <h4 className="font-bold text-slate-800 text-sm sm:text-base line-clamp-1 group-hover:text-orange-600 transition-colors">
+                      {p.name}
+                    </h4>
+                    <p className="text-xs text-slate-500 mt-1 line-clamp-2 leading-relaxed">
+                      {p.description}
+                    </p>
+                  </div>
+                  <div className="mt-4 pt-4 border-t border-slate-100 flex items-center justify-between gap-2">
+                    <span className="text-[11px] font-bold text-emerald-600 bg-emerald-50 px-2 py-1 rounded-md">
+                      {currentLanguage === "hi" ? "बेस्ट रेट" : "Best Price"}
+                    </span>
+                    <a
+                      href={`/products/${getProductSlug(p.id)}`}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        window.history.pushState({}, "", `/products/${getProductSlug(p.id)}`);
+                        window.dispatchEvent(new Event("popstate"));
+                        window.scrollTo({ top: 0, behavior: "smooth" });
+                      }}
+                      className="text-xs font-extrabold text-orange-600 hover:text-orange-700 flex items-center gap-1 cursor-pointer"
+                    >
+                      <span>{currentLanguage === "hi" ? "विवरण देखें" : "View Details"}</span>
+                      <span>➔</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
         {/* Embedded Jotform specifically for this product */}
         <div className="bg-slate-900 rounded-3xl overflow-hidden border border-slate-800 shadow-2xl">
           <InquiryForm currentLanguage={currentLanguage} prefilledProduct={product.name} />
         </div>
 
       </div>
+
+      {/* Sticky Bottom Action Bar for Mobile & Desktop Conversion */}
+      <AnimatePresence>
+        {showStickyBar && (
+          <motion.div
+            initial={{ y: 80, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: 80, opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className="fixed bottom-0 inset-x-0 bg-white/95 backdrop-blur-md border-t border-slate-200 z-40 py-3.5 px-4 shadow-2xl md:py-4"
+          >
+            <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
+              
+              {/* Product Info (Visible on Tablet/Desktop) */}
+              <div className="hidden sm:flex items-center gap-3">
+                <img
+                  src={product.images[0]}
+                  alt={product.name}
+                  referrerPolicy="no-referrer"
+                  className="w-10 h-10 rounded-lg object-cover border border-slate-100"
+                />
+                <div className="text-left">
+                  <h4 className="font-bold text-slate-800 text-xs sm:text-sm line-clamp-1 max-w-[200px] lg:max-w-sm">
+                    {product.name}
+                  </h4>
+                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
+                    {product.category}
+                  </span>
+                </div>
+              </div>
+
+              {/* Conversion CTAs */}
+              <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto">
+                <a
+                  href={BUSINESS_INFO.phoneFormatted}
+                  className="flex-1 sm:flex-initial flex items-center justify-center gap-1.5 py-2.5 sm:py-3 px-3.5 sm:px-5 rounded-full border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs sm:text-sm font-bold transition-all text-center"
+                >
+                  <Phone className="w-4 h-4 text-blue-600 shrink-0" />
+                  <span>{currentLanguage === "hi" ? "कॉल करें" : "Call"}</span>
+                </a>
+
+                <button
+                  onClick={() => onEnquire(product.name)}
+                  className="flex-[2] sm:flex-initial flex items-center justify-center gap-1.5 py-2.5 sm:py-3 px-5 sm:px-6 rounded-full bg-brand-blue-dark hover:bg-slate-800 text-white text-xs sm:text-sm font-extrabold transition-all cursor-pointer shadow text-center"
+                >
+                  <Sparkles className="w-3.5 h-3.5 text-amber-400 animate-pulse shrink-0" />
+                  <span>{currentLanguage === "hi" ? "पूछताछ करें" : "Enquire Now"}</span>
+                </button>
+
+                <a
+                  href={getWhatsAppLink(product.name)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex-1 sm:flex-initial flex items-center justify-center gap-1.5 py-2.5 sm:py-3 px-3.5 sm:px-5 rounded-full bg-emerald-500 hover:bg-emerald-600 text-white text-xs sm:text-sm font-black transition-all text-center"
+                >
+                  <MessageSquare className="w-4 h-4 shrink-0" />
+                  <span>WhatsApp</span>
+                </a>
+              </div>
+
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

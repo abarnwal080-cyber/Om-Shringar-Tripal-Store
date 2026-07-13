@@ -1,7 +1,7 @@
 import { useState, useEffect, MouseEvent } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { ChevronLeft, ChevronRight, CheckCircle2, ArrowRight, Share2 } from "lucide-react";
-import { Product, BUSINESS_INFO } from "../data";
+import { Product, BUSINESS_INFO, getProductSlug } from "../data";
 import LazyImage from "./LazyImage";
 
 interface ProductCardProps {
@@ -143,13 +143,17 @@ export default function ProductCard({ product, onEnquire, onViewDetails, current
 
         {/* Buttons Action Bar */}
         <div className="mt-auto pt-4 border-t border-slate-100 flex items-center gap-3">
-          <button
-            onClick={() => onViewDetails(product)}
-            className="flex-1 flex items-center justify-center gap-2 py-3.5 px-4 rounded-full bg-gradient-to-r from-orange-600 to-amber-500 hover:from-orange-700 hover:to-amber-600 text-white font-extrabold text-sm transition-all duration-200 shadow-md hover:scale-[1.01] active:scale-[0.98] cursor-pointer"
+          <a
+            href={`/products/${getProductSlug(product.id)}`}
+            onClick={(e) => {
+              e.preventDefault();
+              onViewDetails(product);
+            }}
+            className="flex-1 flex items-center justify-center gap-2 py-3.5 px-4 rounded-full bg-gradient-to-r from-orange-600 to-amber-500 hover:from-orange-700 hover:to-amber-600 text-white font-extrabold text-sm transition-all duration-200 shadow-md hover:scale-[1.01] active:scale-[0.98] cursor-pointer text-center"
           >
             <span>{currentLanguage === "hi" ? "अधिक जानें" : "Know More"}</span>
             <ArrowRight className="w-4 h-4" />
-          </button>
+          </a>
 
           <button
             onClick={async (e) => {

@@ -35,11 +35,12 @@ import {
   SIZE_MATRIX,
   WHY_CHOOSE_US,
   FAQS,
-  Product
+  Product,
+  getProductSlug,
+  findProductBySlug
 } from "./data";
 
 import ProductCard from "./components/ProductCard";
-import ProductDetailsModal from "./components/ProductDetailsModal";
 import GoogleReviewPopup from "./components/GoogleReviewPopup";
 import BrandCarousel from "./components/BrandCarousel";
 import InquiryForm from "./components/InquiryForm";
@@ -74,8 +75,6 @@ export default function App() {
   const [activeSection, setActiveSection] = useState("");
   const lastScrollY = useRef(0);
 
-  const [selectedProductForModal, setSelectedProductForModal] = useState<Product | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [isCatalogOpen, setIsCatalogOpen] = useState(false);
 
   const [currentProductSlug, setCurrentProductSlug] = useState<string | null>(null);
@@ -95,8 +94,19 @@ export default function App() {
   useEffect(() => {
     const getSlugFromPath = () => {
       const path = window.location.pathname;
+      if (path.startsWith("/products/")) {
+        return path.substring("/products/".length) || null;
+      }
       if (path && path !== "/") {
         const slug = path.substring(1);
+        if (slug) {
+          const matched = findProductBySlug(slug);
+          if (matched) {
+            const canonicalSlug = getProductSlug(matched.id);
+            window.history.replaceState({}, "", `/products/${canonicalSlug}`);
+            return canonicalSlug;
+          }
+        }
         return slug || null;
       }
       return null;
@@ -255,7 +265,7 @@ export default function App() {
     ? PRODUCTS 
     : PRODUCTS.filter(p => p.category === activeTab);
 
-  const matchedProduct = PRODUCTS.find(p => slugify(p.name) === currentProductSlug);
+  const matchedProduct = findProductBySlug(currentProductSlug || "");
 
   return (
     <div className="min-h-screen text-slate-800 bg-slate-50/50 flex flex-col relative antialiased selection:bg-brand-orange selection:text-white">
@@ -838,8 +848,8 @@ export default function App() {
                             onEnquire={handleEnquire}
                             currentLanguage={lang}
                             onViewDetails={(prod) => {
-                              const slug = slugify(prod.name);
-                              window.history.pushState({}, "", `/${slug}`);
+                              const slug = getProductSlug(prod.id);
+                              window.history.pushState({}, "", `/products/${slug}`);
                               setCurrentProductSlug(slug);
                               window.scrollTo({ top: 0 });
                             }}
@@ -1742,14 +1752,6 @@ export default function App() {
 
       {/* AI Assistant Chatbot (Floating Left Aligned) */}
       <AIChatbot currentLanguage={lang} />
-
-      {/* Single Product Details Modal */}
-      <ProductDetailsModal
-        product={selectedProductForModal}
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        onEnquire={handleEnquire}
-      />
 
       {/* Supplier Popup Modal */}
       <SupplierPopup isOpen={supplierOpen} onClose={() => setSupplierOpen(false)} />
