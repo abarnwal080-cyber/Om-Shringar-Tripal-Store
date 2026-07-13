@@ -215,12 +215,11 @@ export default function App() {
   const t = TRANSLATIONS[lang];
 
   const handleEnquire = (productName: string) => {
-    const trigger = document.querySelector('[data-sf-live="ae995f83-2ef6-4948-9b30-2d9be689e8f7"]');
+    const trigger = document.getElementById("spiceform-popup-trigger-button") || document.querySelector('[data-sf-live="ae995f83-2ef6-4948-9b30-2d9be689e8f7"]');
     if (trigger) {
       (trigger as HTMLElement).click();
     } else {
-      setPrefilledProduct(productName);
-      setInquiryOpen(true);
+      window.open("https://www.spiceform.com/forms/ae995f83-2ef6-4948-9b30-2d9be689e8f7", "_blank");
     }
   };
 
@@ -277,8 +276,14 @@ export default function App() {
 
   return (
     <div className="min-h-screen text-slate-800 bg-slate-50/50 flex flex-col relative antialiased selection:bg-brand-orange selection:text-white">
-      
-      {/* 2. GLASSMORPHIC STICKY NAVIGATION BAR */}
+      {/* Hidden button to natively trigger Spiceform Popup */}
+      <button 
+        id="spiceform-popup-trigger-button"
+        data-sf-live="ae995f83-2ef6-4948-9b30-2d9be689e8f7"
+        data-sf-mode="popover"
+        style={{ display: "none" }}
+        aria-hidden="true"
+      />
       <header className={`w-full bg-brand-blue-dark border-b border-white/10 sticky z-40 shadow-md transition-all duration-300 ease-in-out ${
         navbarVisible ? "top-0 translate-y-0 opacity-100" : "-translate-y-full opacity-0 pointer-events-none"
       }`}>
@@ -1598,19 +1603,25 @@ export default function App() {
       
       {/* Floating Vertical "Enquire Now" Tab: Desktop Only */}
       <div className="hidden md:flex fixed left-0 top-[40%] z-40 transform -translate-y-1/2">
-        <button
-          onClick={() => handleEnquire("")}
+        <div
+          data-sf-live="ae995f83-2ef6-4948-9b30-2d9be689e8f7"
+          data-sf-mode="popover"
+          role="button"
+          tabIndex={0}
           className="bg-gradient-to-r from-orange-600 to-amber-500 hover:from-orange-700 hover:to-amber-600 text-white font-extrabold text-xs tracking-wider uppercase py-4 px-3 rounded-r-2xl shadow-2xl flex items-center gap-2 [writing-mode:vertical-lr] rotate-180 transition-all duration-300 hover:translate-x-1 cursor-pointer select-none border-t border-r border-b border-white/20 relative group"
         >
           <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity rounded-r-2xl pointer-events-none" />
           <span className="animate-pulse">✨ Enquire Now</span>
-        </button>
+        </div>
       </div>
 
       {/* Unified Floating Get Quote Button: Mobile & Desktop (Aligned Bottom Right) */}
       <div className="fixed right-6 bottom-6 z-40">
-        <button
-          onClick={() => handleEnquire("")}
+        <div
+          data-sf-live="ae995f83-2ef6-4948-9b30-2d9be689e8f7"
+          data-sf-mode="popover"
+          role="button"
+          tabIndex={0}
           aria-label="Get Quote Inquiry"
           className="bg-gradient-to-r from-orange-600 to-amber-500 hover:from-orange-700 hover:to-amber-600 text-white font-extrabold text-xs sm:text-sm px-5 py-3.5 rounded-full shadow-2xl flex items-center gap-2.5 hover:scale-105 active:scale-95 transition-all duration-300 cursor-pointer relative group border border-orange-400/20"
         >
@@ -1619,7 +1630,7 @@ export default function App() {
           
           <Sparkles className="w-5 h-5 text-amber-200 group-hover:rotate-12 transition-transform shrink-0" />
           <span className="uppercase tracking-wider font-black">{(lang as string) === "hi" ? "दर प्राप्त करें" : "Get Quote"}</span>
-        </button>
+        </div>
       </div>
 
       {/* Unified Floating WhatsApp Button: Mobile & Desktop (Aligned Bottom Left) */}
@@ -1675,7 +1686,7 @@ export default function App() {
       />
 
       {/* Spiceform Popup Embed Element */}
-      <div data-sf-live="ae995f83-2ef6-4948-9b30-2d9be689e8f7" data-sf-mode="popup" className="hidden"></div>
+      <div data-sf-live="ae995f83-2ef6-4948-9b30-2d9be689e8f7" data-sf-mode="popover" className="hidden"></div>
 
       {/* Google Review Prompt Popup */}
       <GoogleReviewPopup />
