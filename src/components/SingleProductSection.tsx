@@ -44,7 +44,6 @@ export default function SingleProductSection({
   const [activeTab, setActiveTab] = useState<TabType>("description");
   const [selectedImageIdx, setSelectedImageIdx] = useState(0);
   const [openFaqIdx, setOpenFaqIdx] = useState<number | null>(0);
-  const [showStickyBar, setShowStickyBar] = useState(false);
 
   // Dynamic SEO Tags and Product Schema (JSON-LD)
   useEffect(() => {
@@ -147,19 +146,6 @@ export default function SingleProductSection({
       }
     };
   }, [product, currentLanguage]);
-
-  // Handle scroll to show sticky conversion bar
-  useEffect(() => {
-    const handleScroll = () => {
-      if (window.scrollY > 400) {
-        setShowStickyBar(true);
-      } else {
-        setShowStickyBar(false);
-      }
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   // Related Products logic
   const relatedProducts = PRODUCTS.filter((p) => p.id !== product.id && p.category === product.category).slice(0, 3);
@@ -498,31 +484,23 @@ export default function SingleProductSection({
               </div>
 
               {/* Action Bar */}
-              <div className="border-t border-slate-100 pt-6 flex flex-col sm:flex-row gap-4 items-center">
-                <a
-                  href={BUSINESS_INFO.phoneFormatted}
-                  className="w-full sm:w-auto flex items-center justify-center gap-2 py-3.5 px-6 rounded-full border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-sm font-bold transition-all hover:border-slate-300"
-                >
-                  <Phone className="w-4 h-4 text-blue-600" />
-                  <span>Call Proprietor</span>
-                </a>
-
+              <div className="border-t border-slate-100 pt-6 flex flex-col sm:flex-row gap-4 items-center w-full">
                 <button
                   onClick={() => onEnquire(product.name)}
-                  className="w-full sm:w-auto flex-1 flex items-center justify-center gap-2 py-3.5 px-6 rounded-full bg-brand-blue-dark text-white text-sm font-extrabold transition-all hover:bg-slate-800 cursor-pointer shadow"
+                  className="w-full sm:flex-1 flex items-center justify-center gap-2.5 py-4 px-8 rounded-full bg-brand-blue-dark hover:bg-slate-800 text-white text-sm font-extrabold shadow transition-all cursor-pointer"
                 >
                   <Sparkles className="w-4 h-4 text-amber-400 animate-pulse" />
-                  <span>Request Factory Pricing</span>
+                  <span>{currentLanguage === "hi" ? "अभी संपर्क करें" : "Get in Touch Now"}</span>
                 </button>
 
                 <a
                   href={getWhatsAppLink(product.name)}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full sm:w-auto flex-1 flex items-center justify-center gap-2 py-3.5 px-6 rounded-full bg-gradient-to-r from-emerald-600 to-green-500 hover:from-emerald-700 hover:to-green-600 text-white text-sm font-black shadow-md hover:scale-[1.01] transition-all"
+                  className="w-full sm:flex-1 flex items-center justify-center gap-2.5 py-4 px-8 rounded-full bg-gradient-to-r from-emerald-600 to-green-500 hover:from-emerald-700 hover:to-green-600 text-white text-sm font-black shadow transition-all"
                 >
                   <MessageSquare className="w-4 h-4" />
-                  <span>WhatsApp Inquiry</span>
+                  <span>{currentLanguage === "hi" ? "व्हाट्सएप पूछताछ" : "WhatsApp Inquiry"}</span>
                 </a>
               </div>
             </div>
@@ -596,76 +574,9 @@ export default function SingleProductSection({
           </div>
         </div>
 
-        {/* Embedded Jotform specifically for this product */}
-        <div className="bg-slate-900 rounded-3xl overflow-hidden border border-slate-800 shadow-2xl">
-          <InquiryForm currentLanguage={currentLanguage} prefilledProduct={product.name} />
-        </div>
+
 
       </div>
-
-      {/* Sticky Bottom Action Bar for Mobile & Desktop Conversion */}
-      <AnimatePresence>
-        {showStickyBar && (
-          <motion.div
-            initial={{ y: 80, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: 80, opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className="fixed bottom-0 inset-x-0 bg-white/95 backdrop-blur-md border-t border-slate-200 z-40 py-3.5 px-4 shadow-2xl md:py-4"
-          >
-            <div className="max-w-7xl mx-auto flex items-center justify-between gap-4">
-              
-              {/* Product Info (Visible on Tablet/Desktop) */}
-              <div className="hidden sm:flex items-center gap-3">
-                <img
-                  src={product.images[0]}
-                  alt={product.name}
-                  referrerPolicy="no-referrer"
-                  className="w-10 h-10 rounded-lg object-cover border border-slate-100"
-                />
-                <div className="text-left">
-                  <h4 className="font-bold text-slate-800 text-xs sm:text-sm line-clamp-1 max-w-[200px] lg:max-w-sm">
-                    {product.name}
-                  </h4>
-                  <span className="text-[10px] font-bold text-slate-400 uppercase tracking-wider">
-                    {product.category}
-                  </span>
-                </div>
-              </div>
-
-              {/* Conversion CTAs */}
-              <div className="flex items-center gap-2 sm:gap-3 w-full sm:w-auto">
-                <a
-                  href={BUSINESS_INFO.phoneFormatted}
-                  className="flex-1 sm:flex-initial flex items-center justify-center gap-1.5 py-2.5 sm:py-3 px-3.5 sm:px-5 rounded-full border border-slate-200 bg-white hover:bg-slate-50 text-slate-700 text-xs sm:text-sm font-bold transition-all text-center"
-                >
-                  <Phone className="w-4 h-4 text-blue-600 shrink-0" />
-                  <span>{currentLanguage === "hi" ? "कॉल करें" : "Call"}</span>
-                </a>
-
-                <button
-                  onClick={() => onEnquire(product.name)}
-                  className="flex-[2] sm:flex-initial flex items-center justify-center gap-1.5 py-2.5 sm:py-3 px-5 sm:px-6 rounded-full bg-brand-blue-dark hover:bg-slate-800 text-white text-xs sm:text-sm font-extrabold transition-all cursor-pointer shadow text-center"
-                >
-                  <Sparkles className="w-3.5 h-3.5 text-amber-400 animate-pulse shrink-0" />
-                  <span>{currentLanguage === "hi" ? "पूछताछ करें" : "Enquire Now"}</span>
-                </button>
-
-                <a
-                  href={getWhatsAppLink(product.name)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex-1 sm:flex-initial flex items-center justify-center gap-1.5 py-2.5 sm:py-3 px-3.5 sm:px-5 rounded-full bg-emerald-500 hover:bg-emerald-600 text-white text-xs sm:text-sm font-black transition-all text-center"
-                >
-                  <MessageSquare className="w-4 h-4 shrink-0" />
-                  <span>WhatsApp</span>
-                </a>
-              </div>
-
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </div>
   );
 }
