@@ -670,7 +670,7 @@ export default function App() {
                 </motion.div>
 
                 {/* Floating banner on right */}
-                <div className="absolute -top-4 -right-4 bg-brand-orange text-white px-3.5 py-2 rounded-xl shadow-lg text-xs font-bold font-mono tracking-widest uppercase rotate-3">
+                <div className="absolute top-2 right-2 sm:-top-4 sm:-right-4 bg-brand-orange text-white px-3.5 py-2 rounded-xl shadow-lg text-xs font-bold font-mono tracking-widest uppercase rotate-3 z-20">
                   ★ WHOLESALER
                 </div>
 

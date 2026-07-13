@@ -269,7 +269,7 @@ export default function CustomerSuccessCarousel({ currentLanguage, onEnquire }: 
           </div>
 
           {/* Navigational Arrows */}
-          <div className="absolute top-1/2 -translate-y-1/2 -left-4 sm:-left-16 z-20">
+          <div className="absolute top-1/2 -translate-y-1/2 left-2 sm:-left-16 z-20">
             <button
               onClick={slidePrev}
               className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-slate-950 border border-white/10 hover:border-orange-500/50 hover:bg-slate-900 text-slate-300 hover:text-white flex items-center justify-center transition-all shadow-lg cursor-pointer active:scale-90"
@@ -278,7 +278,7 @@ export default function CustomerSuccessCarousel({ currentLanguage, onEnquire }: 
               <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6" />
             </button>
           </div>
-          <div className="absolute top-1/2 -translate-y-1/2 -right-4 sm:-right-16 z-20">
+          <div className="absolute top-1/2 -translate-y-1/2 right-2 sm:-right-16 z-20">
             <button
               onClick={slideNext}
               className="w-10 h-10 sm:w-12 sm:h-12 rounded-full bg-slate-950 border border-white/10 hover:border-orange-500/50 hover:bg-slate-900 text-slate-300 hover:text-white flex items-center justify-center transition-all shadow-lg cursor-pointer active:scale-90"
