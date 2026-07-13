@@ -93,7 +93,11 @@ export default function App() {
   // Sync state with URL pathname on load & popstate (back/forward navigation)
   useEffect(() => {
     const getSlugFromPath = () => {
-      const path = window.location.pathname;
+      let path = window.location.pathname;
+      // Remove trailing slash if present, unless it is just "/"
+      if (path.length > 1 && path.endsWith("/")) {
+        path = path.slice(0, -1);
+      }
       if (path.startsWith("/products/")) {
         return path.substring("/products/".length) || null;
       }

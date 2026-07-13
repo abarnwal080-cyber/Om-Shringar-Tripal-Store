@@ -682,8 +682,9 @@ export function getProductSlug(productId: string): string {
 export function findProductBySlug(slug: string): Product | undefined {
   if (!slug) return undefined;
   
-  // Normalize slug
-  const normalized = slug.toLowerCase().trim();
+  // Normalize slug by converting to lowercase, trimming whitespace, and stripping leading/trailing slashes
+  let normalized = slug.toLowerCase().trim();
+  normalized = normalized.replace(/^\/+|\/+$/g, "");
   
   // Find in mapping
   const foundEntry = Object.entries(PRODUCT_SLUG_MAP).find(([prodId, mapData]) => {
