@@ -272,14 +272,6 @@ export default function App() {
 
   return (
     <div className="min-h-screen text-slate-800 bg-slate-50/50 flex flex-col relative antialiased selection:bg-brand-orange selection:text-white">
-      {/* Hidden button to natively trigger Spiceform Popup */}
-      <button 
-        id="spiceform-popup-trigger-button"
-        data-sf-live="ae995f83-2ef6-4948-9b30-2d9be689e8f7"
-        data-sf-mode="popover"
-        style={{ display: "none" }}
-        aria-hidden="true"
-      />
       <header className={`w-full bg-brand-blue-dark border-b border-white/10 sticky z-40 shadow-md transition-all duration-300 ease-in-out ${
         navbarVisible ? "top-0 translate-y-0 opacity-100" : "-translate-y-full opacity-0 pointer-events-none"
       }`}>
