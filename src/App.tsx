@@ -75,8 +75,21 @@ export default function App() {
   const lastScrollY = useRef(0);
 
   const [isCatalogOpen, setIsCatalogOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState("");
 
   const [currentProductSlug, setCurrentProductSlug] = useState<string | null>(null);
+
+  // Lock body scroll when fullscreen overlay catalog is open
+  useEffect(() => {
+    if (isCatalogOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isCatalogOpen]);
 
   const slugify = (text: string) => {
     return text
@@ -264,9 +277,42 @@ export default function App() {
     { id: "Household & Outdoor", label: "Household & Outdoor", emoji: "🏡" },
   ];
 
-  const filteredProducts = activeTab === "All" 
-    ? PRODUCTS 
-    : PRODUCTS.filter(p => p.category === activeTab);
+  // Helper for custom category chips requested by the user: All, Construction, Agriculture, Packaging, Waterproofing, Others
+  const getChipCount = (chipId: string) => {
+    if (chipId === "All") return PRODUCTS.length;
+    if (chipId === "Construction") return PRODUCTS.filter(p => p.category === "Construction & Curing").length;
+    if (chipId === "Agriculture") return PRODUCTS.filter(p => p.category === "Security & Fencing").length;
+    if (chipId === "Packaging") return PRODUCTS.filter(p => p.category === "Industrial Packaging").length;
+    if (chipId === "Waterproofing") return PRODUCTS.filter(p => p.category === "All-Weather Protection").length;
+    if (chipId === "Others") return PRODUCTS.filter(p => p.category === "Clear Covering" || p.category === "Household & Outdoor").length;
+    return 0;
+  };
+
+  const getFilteredProducts = () => {
+    return PRODUCTS.filter((p) => {
+      // Search filter matching
+      const matchesSearch = searchQuery.trim() === "" || 
+        p.name.toLowerCase().includes(searchQuery.toLowerCase()) || 
+        p.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (p.detailedDescription && p.detailedDescription.toLowerCase().includes(searchQuery.toLowerCase())) ||
+        p.category.toLowerCase().includes(searchQuery.toLowerCase());
+
+      if (!matchesSearch) return false;
+
+      // Category chip filter matching
+      if (activeTab === "All") return true;
+      if (activeTab === "Construction") return p.category === "Construction & Curing";
+      if (activeTab === "Agriculture") return p.category === "Security & Fencing";
+      if (activeTab === "Packaging") return p.category === "Industrial Packaging";
+      if (activeTab === "Waterproofing") return p.category === "All-Weather Protection";
+      if (activeTab === "Others") return p.category === "Clear Covering" || p.category === "Household & Outdoor";
+      
+      // Fallback to original category matching just in case
+      return p.category === activeTab;
+    });
+  };
+
+  const filteredProducts = getFilteredProducts();
 
   const matchedProduct = findProductBySlug(currentProductSlug || "");
 
@@ -700,106 +746,143 @@ export default function App() {
         </motion.button>
       </div>
 
-      {/* 6. PRODUCTS CATALOG SECTION */}
-      <section id="products" className="py-20 bg-slate-50 relative border-y border-slate-100/50 scroll-mt-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          
-          <div className="text-center max-w-3xl mx-auto mb-8">
-            <h2 className="text-3xl sm:text-4xl font-extrabold font-display text-brand-blue-dark tracking-tight">
-              {isCatalogOpen ? "Our Premium Polymer & Tarpaulin Catalog" : "Shop by Poly Goods Category"}
-            </h2>
-            <p className="text-slate-600 mt-2 font-medium text-sm sm:text-base">
-              {isCatalogOpen 
-                ? "Browse our complete range of certified high-durability plastic sheets and agricultural nets." 
-                : "Select a category below or expand the catalog to view all available wholesale and retail products."}
-            </p>
+      {/* 6. PRODUCTS CATALOG PREVIEW SECTION */}
+      <section id="products" className="py-24 bg-slate-50 text-slate-900 relative border-y border-slate-200/60 overflow-hidden scroll-mt-24">
+        {/* Subtle grid texture */}
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#00000003_1px,transparent_1px),linear-gradient(to_bottom,#00000003_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none" />
+        {/* Soft radial glow behind content */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full bg-orange-600/[0.04] blur-[120px] pointer-events-none" />
+
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+          <div className="inline-flex items-center gap-2 bg-orange-50 border border-orange-200 px-4.5 py-1.5 rounded-full mb-6">
+            <span className="w-2 h-2 rounded-full bg-orange-500 animate-pulse" />
+            <span className="text-xs font-black font-mono text-orange-600 uppercase tracking-wider">
+              EXCLUSIVE POLYMER CATALOG
+            </span>
           </div>
 
-          <AnimatePresence mode="wait">
-            {!isCatalogOpen ? (
-              /* Amazon-Style Closed Catalog Showcase Banner */
-              <motion.div
-                key="closed-catalog"
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -10 }}
-                transition={{ duration: 0.25 }}
-                className="bg-white rounded-3xl border border-slate-200 shadow-xl overflow-hidden max-w-4xl mx-auto"
-              >
-                {/* Visual grid of categories for high engagement */}
-                <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4 p-6 sm:p-8 bg-gradient-to-b from-slate-50/50 to-white border-b border-slate-100">
-                  {categoryTabs.slice(1).map((tab) => {
-                    const count = PRODUCTS.filter(p => p.category === tab.id).length;
-                    return (
-                      <button
-                        key={tab.id}
-                        onClick={() => {
-                          setActiveTab(tab.id);
-                          setIsCatalogOpen(true);
-                        }}
-                        className="flex flex-col items-center justify-center p-4 bg-slate-50 hover:bg-slate-100/80 rounded-2xl border border-slate-200/60 text-center transition-all duration-300 hover:scale-[1.03] hover:shadow-md cursor-pointer group"
-                      >
-                        <span className="text-2xl mb-2 group-hover:scale-110 transition-transform duration-300">{tab.emoji}</span>
-                        <span className="text-xs font-bold text-slate-800 line-clamp-1">{tab.label}</span>
-                        <span className="text-[10px] text-slate-500 font-bold font-mono mt-1 bg-slate-200/50 px-2 py-0.5 rounded-full">
-                          {count} Products
-                        </span>
-                      </button>
-                    );
-                  })}
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black font-display tracking-tight leading-tight mb-6 text-[#0B2D5C]">
+            Explore Our Premium Polymer & <br />
+            <span className="bg-gradient-to-r from-orange-600 to-amber-600 bg-clip-text text-transparent font-black">
+              Waterproof Tarpaulin Catalog
+            </span>
+          </h2>
+
+          <p className="text-slate-600 text-sm sm:text-base md:text-lg leading-relaxed max-w-2xl mx-auto mb-10 font-semibold">
+            Discover Maharajganj's premier collection of certified heavy-duty plastic sheets, pond liners, concrete curing polythenes, nylon safety fencing, and waterproof tirpals. High durability, 100% UV stabilized, and designed for builders, agriculturalists, and businesses.
+          </p>
+
+          <div className="flex justify-center">
+            <motion.button
+              whileHover={{ scale: 1.05, y: -2, boxShadow: "0 20px 40px -10px rgba(249, 115, 22, 0.4)" }}
+              whileTap={{ scale: 0.98 }}
+              onClick={() => {
+                setIsCatalogOpen(true);
+              }}
+              className="px-10 py-5 bg-gradient-to-r from-orange-600 to-amber-500 hover:from-orange-700 hover:to-amber-600 text-white font-extrabold text-base rounded-full shadow-lg shadow-orange-500/20 transition-all cursor-pointer flex items-center gap-3 border border-orange-500/20"
+            >
+              <span>View Products / हमारे प्रोडक्ट्स देखें</span>
+              <Icons.ArrowRight className="w-5 h-5 bg-white/20 p-1 rounded-full text-white" />
+            </motion.button>
+          </div>
+        </div>
+      </section>
+
+      {/* FULLSCREEN PRODUCTS CATALOG OVERLAY */}
+      <AnimatePresence>
+        {isCatalogOpen && (
+          <motion.div
+            initial={{ y: "100%", opacity: 0.95 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: "100%", opacity: 0.95 }}
+            transition={{ type: "spring", damping: 30, stiffness: 220 }}
+            className="fixed inset-0 bg-slate-50 z-50 overflow-y-auto flex flex-col antialiased text-slate-900"
+          >
+            {/* STICKY GLASSMORPHIC HEADER */}
+            <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200/80 px-4 py-4 sm:px-6 shadow-sm">
+              <div className="max-w-7xl mx-auto flex flex-col gap-4">
+                
+                {/* Header Row: Back Button & Title & Close */}
+                <div className="flex items-center justify-between gap-4">
+                  <button
+                    onClick={() => {
+                      setIsCatalogOpen(false);
+                    }}
+                    className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-800 font-extrabold text-xs sm:text-sm transition-all active:scale-95 cursor-pointer"
+                  >
+                    <Icons.ArrowLeft className="w-4 h-4 text-orange-600" />
+                    <span>Back / पीछे जाएं</span>
+                  </button>
+
+                  <div className="text-center">
+                    <h3 className="text-sm sm:text-lg font-black font-display text-[#0B2D5C] tracking-tight flex items-center gap-2 justify-center uppercase">
+                      <span className="text-orange-500 text-lg sm:text-xl">📦</span>
+                      <span>OUR PRODUCTS / हमारे प्रोडक्ट्स</span>
+                    </h3>
+                  </div>
+
+                  <button
+                    onClick={() => {
+                      setIsCatalogOpen(false);
+                    }}
+                    className="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-600 hover:text-slate-900 transition-all active:scale-95 cursor-pointer"
+                    aria-label="Close"
+                  >
+                    <Icons.X className="w-5 h-5" />
+                  </button>
                 </div>
 
-                <div className="p-6 sm:p-8 text-center bg-white flex flex-col items-center justify-center">
-                  <p className="text-slate-600 text-sm font-semibold mb-5">
-                    🛍️ Heavy-duty polymer products with standard GSM certificates and verified lifespans.
-                  </p>
-                  
-                  {/* Big Clickable Amazon-Style Button */}
-                  <motion.button
-                    whileHover={{ y: -2, scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                    onClick={() => setIsCatalogOpen(true)}
-                    className="flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-700 hover:to-indigo-800 text-white font-extrabold text-base rounded-2xl shadow-xl shadow-blue-600/10 transition-all cursor-pointer group relative overflow-hidden"
-                  >
-                    {/* Pulsing glow under button */}
-                    <span className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity" />
-                    <span className="text-xl">📦</span>
-                    <span>Browse Full Store Catalog / सारे प्रोडक्ट्स यहाँ देखें</span>
-                    <span className="group-hover:translate-x-1 transition-transform duration-300 font-mono">➔</span>
-                  </motion.button>
+                {/* Search Bar with Glassmorphism */}
+                <div className="relative w-full max-w-2xl mx-auto">
+                  <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none">
+                    <Icons.Search className="w-5 h-5 text-slate-400" />
+                  </div>
+                  <input
+                    type="text"
+                    value={searchQuery}
+                    onChange={(e) => setSearchQuery(e.target.value)}
+                    placeholder="Search products like HDPE Tarpaulin, Pond Liner, Plastic Sheet..."
+                    className="w-full bg-white border border-slate-200 hover:border-orange-500/50 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 text-slate-900 font-bold placeholder-slate-400 text-sm pl-12 pr-10 py-3.5 rounded-2xl shadow-inner focus:outline-none transition-all"
+                  />
+                  {searchQuery && (
+                    <button
+                      onClick={() => setSearchQuery("")}
+                      className="absolute inset-y-0 right-4 flex items-center text-slate-400 hover:text-slate-900 cursor-pointer"
+                    >
+                      <Icons.X className="w-4 h-4" />
+                    </button>
+                  )}
                 </div>
-              </motion.div>
-            ) : (
-              /* Expanded Catalog with Tabs and Filters */
-              <motion.div
-                key="expanded-catalog"
-                initial={{ opacity: 0, y: 15 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -15 }}
-                transition={{ duration: 0.3 }}
-              >
-                {/* Filtering Tabs */}
-                <div className="w-full mb-10 overflow-hidden">
-                  <div className="flex overflow-x-auto pb-3 gap-2.5 no-scrollbar scroll-smooth snap-x md:flex-wrap md:justify-center relative">
-                    {categoryTabs.map((tab) => {
-                      const count = tab.id === "All" ? PRODUCTS.length : PRODUCTS.filter(p => p.category === tab.id).length;
+
+                {/* Category Filter Chips (All, Construction, Agriculture, Packaging, Waterproofing, Others) */}
+                <div className="w-full overflow-hidden border-t border-slate-100 pt-3">
+                  <div className="flex overflow-x-auto pb-2 gap-2 no-scrollbar scroll-smooth snap-x sm:justify-center">
+                    {[
+                      { id: "All", label: "All / सभी", emoji: "🏭" },
+                      { id: "Construction", label: "Construction / भवन निर्माण", emoji: "🏗" },
+                      { id: "Agriculture", label: "Agriculture / कृषि", emoji: "🌱" },
+                      { id: "Packaging", label: "Packaging / पैकिंग", emoji: "📦" },
+                      { id: "Waterproofing", label: "Waterproofing / वॉटरप्रूफ", emoji: "🌧" },
+                      { id: "Others", label: "Others / अन्य", emoji: "🏡" },
+                    ].map((tab) => {
+                      const count = getChipCount(tab.id);
                       const isActive = activeTab === tab.id;
                       return (
                         <button
                           key={tab.id}
                           onClick={() => setActiveTab(tab.id)}
-                          className={`relative flex items-center gap-2.5 py-2.5 px-5 rounded-2xl font-bold text-xs sm:text-sm whitespace-nowrap transition-all duration-300 ease-out snap-start cursor-pointer hover:-translate-y-[2px] active:scale-95 ${
-                            isActive 
-                              ? "text-white shadow-xl shadow-blue-900/40 ring-4 ring-brand-blue-dark/25 border border-brand-blue-dark bg-brand-blue-dark z-10"
-                              : "bg-white text-slate-600 border border-slate-200 hover:bg-slate-50 hover:text-slate-800 hover:border-slate-300 hover:shadow-md"
+                          className={`relative flex items-center gap-2 py-2.5 px-4 rounded-xl font-bold text-xs whitespace-nowrap transition-all duration-300 snap-start cursor-pointer hover:-translate-y-[1px] active:scale-95 ${
+                            isActive
+                              ? "text-white shadow-lg bg-orange-600 border border-orange-500"
+                              : "bg-slate-100 text-slate-700 border border-slate-200 hover:bg-slate-200 hover:text-slate-900"
                           }`}
                         >
                           <span className="text-sm shrink-0">{tab.emoji}</span>
                           <span>{tab.label}</span>
                           <span className={`inline-flex items-center justify-center text-[10px] px-1.5 py-0.5 rounded-full font-bold font-mono transition-colors ${
-                            isActive 
-                              ? "bg-white/20 text-blue-100" 
-                              : "bg-slate-100 text-slate-500 hover:bg-slate-200"
+                            isActive
+                              ? "bg-white/20 text-white"
+                              : "bg-slate-200 text-slate-600"
                           }`}>
                             {count}
                           </span>
@@ -809,63 +892,86 @@ export default function App() {
                   </div>
                 </div>
 
-                {/* Product Cards Grid with smooth 250-300ms transition */}
-                <div className="overflow-hidden min-h-[400px]">
-                  <AnimatePresence mode="wait">
-                    <motion.div
-                      key={activeTab}
-                      initial={{ opacity: 0, y: 15 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -15 }}
-                      transition={{ duration: 0.28, ease: "easeInOut" }}
-                      className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
-                    >
-                      {filteredProducts.map((product) => (
-                        <div key={product.id} className="h-full">
-                          <ProductCard
-                            product={product}
-                            onEnquire={handleEnquire}
-                            currentLanguage={lang}
-                            onViewDetails={(prod) => {
-                              const slug = getProductSlug(prod.id);
-                              window.history.pushState({}, "", `/products/${slug}`);
-                              setCurrentProductSlug(slug);
-                              window.scrollTo({ top: 0 });
-                            }}
-                          />
-                        </div>
-                      ))}
-                    </motion.div>
-                  </AnimatePresence>
-                </div>
+              </div>
+            </header>
 
-                {/* Collapse Button at bottom of expanded catalog */}
-                <div className="flex justify-center mt-12 pt-6 border-t border-slate-200/50">
-                  <motion.button
-                    whileHover={{ y: 2 }}
-                    whileTap={{ scale: 0.95 }}
-                    onClick={() => {
-                      setIsCatalogOpen(false);
-                      // Scroll back to catalog header
-                      const element = document.getElementById("products");
-                      if (element) {
-                        const headerOffset = 100;
-                        const elementPosition = element.getBoundingClientRect().top;
-                        const offsetPosition = elementPosition + window.scrollY - headerOffset;
-                        window.scrollTo({ top: offsetPosition, behavior: "smooth" });
-                      }
-                    }}
-                    className="flex items-center gap-2 px-6 py-3 bg-white hover:bg-slate-100 border border-slate-200 hover:border-slate-300 text-slate-700 font-bold text-sm rounded-xl shadow-sm transition-all cursor-pointer"
+            {/* OVERLAY BODY AREA */}
+            <main className="flex-1 bg-slate-50 py-12 px-4 sm:px-6 lg:px-8 relative">
+              {/* Background ambient glows */}
+              <div className="absolute top-1/4 left-1/4 w-[30%] h-[30%] rounded-full bg-orange-500/[0.03] blur-3xl pointer-events-none" />
+              <div className="absolute bottom-1/4 right-1/4 w-[30%] h-[30%] rounded-full bg-blue-500/[0.02] blur-3xl pointer-events-none" />
+
+              <div className="max-w-7xl mx-auto relative z-10">
+                
+                {/* Search query feedback banner */}
+                {searchQuery.trim() !== "" && (
+                  <div className="flex items-center justify-center gap-3 mb-8 bg-orange-50 border border-orange-100 rounded-2xl px-6 py-3 max-w-xl mx-auto">
+                    <span className="text-xs sm:text-sm font-bold text-slate-700">
+                      Showing results for: <span className="text-orange-600 font-mono">"{searchQuery}"</span>
+                    </span>
+                    <button
+                      onClick={() => setSearchQuery("")}
+                      className="text-[10px] sm:text-xs font-bold text-slate-600 hover:text-slate-900 bg-white border border-slate-200 px-3 py-1.5 rounded-xl shadow-sm transition-all active:scale-95 cursor-pointer"
+                    >
+                      Clear Search
+                    </button>
+                  </div>
+                )}
+
+                {/* Grid layout */}
+                {getFilteredProducts().length === 0 ? (
+                  <div className="text-center py-20 px-4 bg-white border border-slate-200 rounded-3xl shadow-sm max-w-xl mx-auto my-8">
+                    <span className="text-5xl">🔍</span>
+                    <h3 className="text-xl font-extrabold text-[#0B2D5C] mt-4 mb-2">No products match your search</h3>
+                    <p className="text-slate-500 text-sm font-medium mb-6">
+                      We couldn't find any products matching your selection. Try typing a different keyword or resetting your filters.
+                    </p>
+                    <button
+                      onClick={() => {
+                        setSearchQuery("");
+                        setActiveTab("All");
+                      }}
+                      className="px-6 py-3.5 bg-gradient-to-r from-orange-600 to-amber-500 hover:from-orange-700 hover:to-amber-600 text-white font-extrabold text-xs sm:text-sm rounded-xl shadow-md transition-all active:scale-95 cursor-pointer"
+                    >
+                      Reset Search & Filters
+                    </button>
+                  </div>
+                ) : (
+                  <motion.div
+                    layout
+                    className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 sm:gap-8"
                   >
-                    <span>▲</span>
-                    <span>Collapse Catalog / कैटलॉग बंद करें</span>
-                  </motion.button>
-                </div>
-              </motion.div>
-            )}
-          </AnimatePresence>
-        </div>
-      </section>
+                    {getFilteredProducts().map((product) => (
+                      <motion.div
+                        layout
+                        key={product.id}
+                        initial={{ opacity: 0, scale: 0.95 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.95 }}
+                        transition={{ duration: 0.3 }}
+                        className="h-full"
+                      >
+                        <ProductCard
+                          product={product}
+                          onEnquire={handleEnquire}
+                          currentLanguage={lang}
+                          onViewDetails={(prod) => {
+                            setIsCatalogOpen(false);
+                            const slug = getProductSlug(prod.id);
+                            window.history.pushState({}, "", `/products/${slug}`);
+                            setCurrentProductSlug(slug);
+                            window.scrollTo({ top: 0 });
+                          }}
+                        />
+                      </motion.div>
+                    ))}
+                  </motion.div>
+                )}
+              </div>
+            </main>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* GOOGLE REVIEWS SECTION */}
       <section id="google-reviews" className="py-20 bg-gradient-to-b from-slate-50 to-white relative scroll-mt-24 border-t border-slate-100">

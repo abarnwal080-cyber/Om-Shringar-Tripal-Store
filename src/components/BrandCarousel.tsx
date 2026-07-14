@@ -47,7 +47,7 @@ export default function BrandCarousel() {
     if (isHovered) return;
     const interval = setInterval(() => {
       handleNext();
-    }, 2800); // 2.8 seconds
+    }, 1000); // 1 second
     return () => clearInterval(interval);
   }, [isHovered, activeIndex]);
 
