@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Sparkles, Loader2, HeartHandshake } from "lucide-react";
+import { Sparkles, Loader2, HeartHandshake, ArrowLeft } from "lucide-react";
 
 interface InquiryFormProps {
   prefilledProduct?: string;
@@ -422,6 +422,31 @@ export default function InquiryForm({
         .next-btn:hover { transform: translateY(-1px); filter: saturate(1.04); }
         .next-btn:active { transform: translateY(0); }
 
+        .back-btn {
+          border: 1px solid var(--line);
+          border-radius: 16px;
+          padding: 13px 18px;
+          font-weight: 800;
+          font-size: 16px;
+          cursor: pointer;
+          transition: transform 0.16s ease, background-color 0.16s ease, border-color 0.16s ease;
+          margin-top: 18px;
+          width: auto;
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          background: #fff;
+          color: #4b5563;
+        }
+        .back-btn:hover {
+          background: #fbf8ff;
+          border-color: #dfc9ff;
+          transform: translateY(-1px);
+        }
+        .back-btn:active {
+          transform: translateY(0);
+        }
+
         #submit-btn {
           width: 100%;
           background: linear-gradient(135deg, var(--accent3), #22c55e);
@@ -678,129 +703,179 @@ export default function InquiryForm({
                   </label>
                 ))}
               </div>
-              <button
-                type="button"
-                className="next-btn"
-                onClick={() => handleNextStep(2)}
-              >
-                {t.ok}
-              </button>
-            </div>
-
-            {/* Step 3: Mobile */}
-            <div className={`form-step ${step === 3 ? "active-step" : ""}`} data-step="3">
-              <label htmlFor="mobile">{t.step3Label}</label>
-              <div className="row-inline">
-                <span className="country-code">+91</span>
-                <input
-                  type="tel"
-                  id="mobile"
-                  value={formData.mobile}
-                  onChange={handleInputChange}
-                  pattern="[6-9][0-9]{9}"
-                  placeholder="9876543210"
-                  required
-                  maxLength={10}
-                />
+              <div className="flex items-center gap-3">
+                <button
+                  type="button"
+                  className="back-btn"
+                  onClick={() => setStep(1)}
+                >
+                  <ArrowLeft className="w-4 h-4" />
+                  <span>{currentLanguage === "hi" ? "पीछे" : "Back"}</span>
+                </button>
+                <button
+                  type="button"
+                  className="next-btn"
+                  onClick={() => handleNextStep(2)}
+                >
+                  {t.ok}
+                </button>
               </div>
-              <button
-                type="button"
-                className="next-btn"
-                onClick={() => handleNextStep(3)}
-              >
-                {t.ok}
-              </button>
             </div>
+ 
+             {/* Step 3: Mobile */}
+             <div className={`form-step ${step === 3 ? "active-step" : ""}`} data-step="3">
+               <label htmlFor="mobile">{t.step3Label}</label>
+               <div className="row-inline">
+                 <span className="country-code">+91</span>
+                 <input
+                   type="tel"
+                   id="mobile"
+                   value={formData.mobile}
+                   onChange={handleInputChange}
+                   pattern="[6-9][0-9]{9}"
+                   placeholder="9876543210"
+                   required
+                   maxLength={10}
+                 />
+               </div>
+               <div className="flex items-center gap-3">
+                 <button
+                   type="button"
+                   className="back-btn"
+                   onClick={() => setStep(2)}
+                 >
+                   <ArrowLeft className="w-4 h-4" />
+                   <span>{currentLanguage === "hi" ? "पीछे" : "Back"}</span>
+                 </button>
+                 <button
+                   type="button"
+                   className="next-btn"
+                   onClick={() => handleNextStep(3)}
+                 >
+                   {t.ok}
+                 </button>
+               </div>
+             </div>
 
-            {/* Step 4: Email */}
-            <div className={`form-step ${step === 4 ? "active-step" : ""}`} data-step="4">
-              <label htmlFor="email">{t.step4Label}</label>
-              <input
-                type="email"
-                id="email"
-                value={formData.email}
-                onChange={handleInputChange}
-                placeholder={t.step4Placeholder}
-                required
-                autoComplete="off"
-              />
-              <button
-                type="button"
-                className="next-btn"
-                onClick={() => handleNextStep(4)}
-              >
-                {t.ok}
-              </button>
-            </div>
-
-            {/* Step 5: Address */}
-            <div className={`form-step ${step === 5 ? "active-step" : ""}`} data-step="5">
-              <label>{t.step5Label}</label>
-              <div className="space-y-3">
-                <input
-                  type="text"
-                  id="state"
-                  value={formData.state}
-                  onChange={handleInputChange}
-                  placeholder={t.step5State}
-                  required
-                />
-                <input
-                  type="text"
-                  id="district"
-                  value={formData.district}
-                  onChange={handleInputChange}
-                  placeholder={t.step5District}
-                  required
-                />
-                <input
-                  type="text"
-                  id="city"
-                  value={formData.city}
-                  onChange={handleInputChange}
-                  placeholder={t.step5City}
-                  required
-                />
-                <input
-                  type="text"
-                  id="pincode"
-                  value={formData.pincode}
-                  onChange={handleInputChange}
-                  pattern="[0-9]{6}"
-                  placeholder={t.step5Pincode}
-                  required
-                  maxLength={6}
-                />
-              </div>
-              <button
-                type="button"
-                className="next-btn"
-                onClick={() => handleNextStep(5)}
-              >
-                {t.ok}
-              </button>
-            </div>
-
-            {/* Step 6: Product Requirement */}
-            <div className={`form-step ${step === 6 ? "active-step" : ""}`} data-step="6">
-              <label htmlFor="product">{t.step6Label}</label>
-              <input
-                type="text"
-                id="product"
-                value={formData.product}
-                onChange={handleInputChange}
-                placeholder={t.step6Placeholder}
-                required
-                autoComplete="off"
-              />
-              <button
-                type="button"
-                className="next-btn"
-                onClick={() => handleNextStep(6)}
-              >
-                {t.step6Button}
-              </button>
-            </div>
+             {/* Step 4: Email */}
+             <div className={`form-step ${step === 4 ? "active-step" : ""}`} data-step="4">
+               <label htmlFor="email">{t.step4Label}</label>
+               <input
+                 type="email"
+                 id="email"
+                 value={formData.email}
+                 onChange={handleInputChange}
+                 placeholder={t.step4Placeholder}
+                 required
+                 autoComplete="off"
+               />
+               <div className="flex items-center gap-3">
+                 <button
+                   type="button"
+                   className="back-btn"
+                   onClick={() => setStep(3)}
+                 >
+                   <ArrowLeft className="w-4 h-4" />
+                   <span>{currentLanguage === "hi" ? "पीछे" : "Back"}</span>
+                 </button>
+                 <button
+                   type="button"
+                   className="next-btn"
+                   onClick={() => handleNextStep(4)}
+                 >
+                   {t.ok}
+                 </button>
+               </div>
+             </div>
+ 
+             {/* Step 5: Address */}
+             <div className={`form-step ${step === 5 ? "active-step" : ""}`} data-step="5">
+               <label>{t.step5Label}</label>
+               <div className="space-y-3">
+                 <input
+                   type="text"
+                   id="state"
+                   value={formData.state}
+                   onChange={handleInputChange}
+                   placeholder={t.step5State}
+                   required
+                 />
+                 <input
+                   type="text"
+                   id="district"
+                   value={formData.district}
+                   onChange={handleInputChange}
+                   placeholder={t.step5District}
+                   required
+                 />
+                 <input
+                   type="text"
+                   id="city"
+                   value={formData.city}
+                   onChange={handleInputChange}
+                   placeholder={t.step5City}
+                   required
+                 />
+                 <input
+                   type="text"
+                   id="pincode"
+                   value={formData.pincode}
+                   onChange={handleInputChange}
+                   pattern="[0-9]{6}"
+                   placeholder={t.step5Pincode}
+                   required
+                   maxLength={6}
+                 />
+               </div>
+               <div className="flex items-center gap-3">
+                 <button
+                   type="button"
+                   className="back-btn"
+                   onClick={() => setStep(4)}
+                 >
+                   <ArrowLeft className="w-4 h-4" />
+                   <span>{currentLanguage === "hi" ? "पीछे" : "Back"}</span>
+                 </button>
+                 <button
+                   type="button"
+                   className="next-btn"
+                   onClick={() => handleNextStep(5)}
+                 >
+                   {t.ok}
+                 </button>
+               </div>
+             </div>
+ 
+             {/* Step 6: Product Requirement */}
+             <div className={`form-step ${step === 6 ? "active-step" : ""}`} data-step="6">
+               <label htmlFor="product">{t.step6Label}</label>
+               <input
+                 type="text"
+                 id="product"
+                 value={formData.product}
+                 onChange={handleInputChange}
+                 placeholder={t.step6Placeholder}
+                 required
+                 autoComplete="off"
+               />
+               <div className="flex items-center gap-3">
+                 <button
+                   type="button"
+                   className="back-btn"
+                   onClick={() => setStep(5)}
+                 >
+                   <ArrowLeft className="w-4 h-4" />
+                   <span>{currentLanguage === "hi" ? "पीछे" : "Back"}</span>
+                 </button>
+                 <button
+                   type="button"
+                   className="next-btn"
+                   onClick={() => handleNextStep(6)}
+                 >
+                   {t.step6Button}
+                 </button>
+               </div>
+             </div>
 
             {/* Step 7: Summary Page */}
             <div className={`form-step ${step === 7 ? "active-step" : ""}`} data-step="7">
@@ -813,21 +888,31 @@ export default function InquiryForm({
                 <p><strong>{t.summary.address}:</strong> <span>{formData.city}, {formData.district}, {formData.state} - {formData.pincode}</span></p>
                 <p><strong>{t.summary.product}:</strong> <span>{formData.product}</span></p>
               </div>
-              <button
-                type="submit"
-                id="submit-btn"
-                disabled={isSubmitting}
-                className="flex items-center justify-center gap-2 disabled:opacity-75 disabled:cursor-not-allowed"
-              >
-                {isSubmitting ? (
-                  <>
-                    <Loader2 className="w-5 h-5 animate-spin" />
-                    <span>{t.step7Submitting}</span>
-                  </>
-                ) : (
-                  <span>{t.step7Button}</span>
-                )}
-              </button>
+              <div className="flex items-center gap-3 w-full">
+                <button
+                  type="button"
+                  className="back-btn"
+                  onClick={() => setStep(6)}
+                >
+                  <ArrowLeft className="w-4 h-4" />
+                  <span>{currentLanguage === "hi" ? "पीछे" : "Back"}</span>
+                </button>
+                <button
+                  type="submit"
+                  id="submit-btn"
+                  disabled={isSubmitting}
+                  className="flex-1 flex items-center justify-center gap-2 disabled:opacity-75 disabled:cursor-not-allowed"
+                >
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="w-5 h-5 animate-spin" />
+                      <span>{t.step7Submitting}</span>
+                    </>
+                  ) : (
+                    <span>{t.step7Button}</span>
+                  )}
+                </button>
+              </div>
             </div>
 
             {/* Step 8: Thank You Page */}
