@@ -79,6 +79,11 @@ export default function App() {
 
   const [currentProductSlug, setCurrentProductSlug] = useState<string | null>(null);
 
+  // Clear enquiry submission state on page refresh (initial app mount)
+  useEffect(() => {
+    localStorage.removeItem("enquiry_submitted");
+  }, []);
+
   // Lock body scroll when fullscreen overlay catalog is open
   useEffect(() => {
     if (isCatalogOpen) {
@@ -1403,8 +1408,6 @@ export default function App() {
           </div>
         </div>
       </section>
-
-
 
       {/* 10. INTERACTIVE FAQ & INQUIRY FORM */}
       <section id="enquire" ref={inquiryRef} className="py-20 bg-slate-50 border-t border-slate-100 relative scroll-mt-24">

@@ -1,11 +1,12 @@
-import React, { useState, useEffect } from "react";
-import { Sparkles, Loader2, HeartHandshake, ArrowLeft } from "lucide-react";
+import React, { useState, useEffect, useRef } from "react";
+import { Sparkles, Loader2, HeartHandshake, ArrowLeft, Mic, MicOff } from "lucide-react";
 
 interface InquiryFormProps {
   prefilledProduct?: string;
   onClearPrefill?: () => void;
   currentLanguage?: "en" | "hi";
   onClose?: () => void;
+  onSuccess?: () => void;
 }
 
 const FORM_TRANSLATIONS = {
@@ -26,6 +27,12 @@ const FORM_TRANSLATIONS = {
     step5Pincode: "Pin Code (6 Digits)",
     step6Label: "6. Which product do you want to get? *",
     step6Placeholder: "Type product name or details...",
+    additionalRequirementsLabel: "Additional Requirements / Specific Needs (Optional)",
+    additionalRequirementsPlaceholder: "Type your specific requirements here, or click the mic to speak...",
+    micStatusListening: "Listening... Speak now",
+    micStatusError: "Speech error. Click to retry.",
+    micStatusPermission: "Mic permission blocked.",
+    micStatusNoSpeech: "No speech detected. Try speaking again.",
     step6Button: "Review Summary ✓",
     step7Label: "Review your details before submitting",
     step7Button: "Submit Enquiry",
@@ -49,7 +56,8 @@ const FORM_TRANSLATIONS = {
       mobile: "Mobile",
       email: "Email",
       address: "Address",
-      product: "Product Requested"
+      product: "Product Requested",
+      additionalRequirements: "Additional Requirements"
     }
   },
   hi: {
@@ -69,6 +77,12 @@ const FORM_TRANSLATIONS = {
     step5Pincode: "पिन कोड (6 अंक)",
     step6Label: "6. आप कौन सा उत्पाद प्राप्त करना चाहते हैं? *",
     step6Placeholder: "उत्पाद का नाम या विवरण टाइप करें...",
+    additionalRequirementsLabel: "अतिरिक्त आवश्यकताएं / विशेष जरूरतें (वैकल्पिक)",
+    additionalRequirementsPlaceholder: "अपनी विशिष्ट आवश्यकताएं यहां लिखें, या बोलने के लिए माइक दबाएं...",
+    micStatusListening: "सुन रहे हैं... कृपया बोलें",
+    micStatusError: "आवाज त्रुटि। पुनः प्रयास करें।",
+    micStatusPermission: "माइक अनुमति अवरुद्ध है।",
+    micStatusNoSpeech: "कोई आवाज़ नहीं सुनी गई। पुनः प्रयास करें।",
     step6Button: "विवरण की समीक्षा करें ✓",
     step7Label: "सबमिट करने से पहले अपने विवरण की समीक्षा करें",
     step7Button: "पूछताछ सबमिट करें",
@@ -92,7 +106,8 @@ const FORM_TRANSLATIONS = {
       mobile: "मोबाइल",
       email: "ईमेल",
       address: "पता",
-      product: "अनुरोधित उत्पाद"
+      product: "अनुरोधित उत्पाद",
+      additionalRequirements: "अतिरिक्त आवश्यकताएं"
     }
   }
 };
@@ -104,6 +119,7 @@ export default function InquiryForm({
   onClearPrefill,
   currentLanguage = "en",
   onClose,
+  onSuccess,
 }: InquiryFormProps) {
   const [step, setStep] = useState(1);
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -119,7 +135,78 @@ export default function InquiryForm({
     city: "",
     pincode: "",
     product: prefilledProduct,
+    additionalNotes: "",
   });
+
+  const [isListening, setIsListening] = useState(false);
+  const [listeningError, setListeningError] = useState<string | null>(null);
+  const recognitionRef = useRef<any>(null);
+
+  const toggleListening = () => {
+    const SpeechRecognition = (window as any).SpeechRecognition || (window as any).webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      alert("Voice recognition is not supported in this browser. Please use Google Chrome, Edge, or Safari.");
+      return;
+    }
+
+    if (isListening) {
+      if (recognitionRef.current) {
+        try {
+          recognitionRef.current.stop();
+        } catch (e) {
+          console.error("Error stopping recognition:", e);
+        }
+      }
+      setIsListening(false);
+      return;
+    }
+
+    const rec = new SpeechRecognition();
+    rec.continuous = false;
+    rec.interimResults = false;
+    rec.lang = currentLanguage === "hi" ? "hi-IN" : "en-IN";
+    recognitionRef.current = rec;
+
+    rec.onstart = () => {
+      setIsListening(true);
+      setListeningError(null);
+    };
+
+    rec.onerror = (event: any) => {
+      console.error("Speech recognition error", event);
+      if (event.error === "not-allowed") {
+        setListeningError(t.micStatusPermission);
+      } else if (event.error === "no-speech") {
+        setListeningError(t.micStatusNoSpeech);
+      } else {
+        setListeningError(t.micStatusError);
+      }
+      setIsListening(false);
+    };
+
+    rec.onend = () => {
+      setIsListening(false);
+      recognitionRef.current = null;
+    };
+
+    rec.onresult = (event: any) => {
+      const resultText = event.results[0][0].transcript;
+      if (resultText) {
+        setFormData((prev) => ({
+          ...prev,
+          additionalNotes: prev.additionalNotes ? prev.additionalNotes + " " + resultText : resultText
+        }));
+      }
+    };
+
+    try {
+      rec.start();
+    } catch (e) {
+      console.error("Error starting speech recognition:", e);
+      setListeningError(t.micStatusError);
+      setIsListening(false);
+    }
+  };
 
   // Sync prefilled product if it changes
   useEffect(() => {
@@ -128,7 +215,7 @@ export default function InquiryForm({
     }
   }, [prefilledProduct]);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { id, value } = e.target;
     setFormData((prev) => ({ ...prev, [id]: value }));
   };
@@ -184,7 +271,8 @@ export default function InquiryForm({
       district: formData.district,
       city: formData.city,
       pincode: formData.pincode,
-      product: formData.product
+      product: formData.product,
+      additionalNotes: formData.additionalNotes
     };
 
     try {
@@ -195,6 +283,10 @@ export default function InquiryForm({
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload)
       });
+      localStorage.setItem("enquiry_submitted", "true");
+      if (onSuccess) {
+        onSuccess();
+      }
       setStep(8); // Move to thank you page
     } catch (err) {
       alert("Submission failed. Check connection.");
@@ -214,6 +306,7 @@ export default function InquiryForm({
       city: "",
       pincode: "",
       product: "",
+      additionalNotes: "",
     });
     setStep(1);
     if (onClearPrefill) onClearPrefill();
@@ -315,7 +408,8 @@ export default function InquiryForm({
         .soft-input,
         .form-step input[type="text"],
         .form-step input[type="email"],
-        .form-step input[type="tel"] {
+        .form-step input[type="tel"],
+        .form-step textarea {
           width: 100%;
           border: 1px solid var(--line);
           border-radius: 18px;
@@ -329,10 +423,12 @@ export default function InquiryForm({
         }
 
         .soft-input::placeholder,
-        .form-step input::placeholder { color: #9aa3b2; }
+        .form-step input::placeholder,
+        .form-step textarea::placeholder { color: #9aa3b2; }
 
         .soft-input:focus,
-        .form-step input:focus {
+        .form-step input:focus,
+        .form-step textarea:focus {
           border-color: rgba(255, 123, 184, 0.75);
           box-shadow: 0 0 0 4px rgba(255, 123, 184, 0.12), inset 0 1px 0 rgba(255, 255, 255, 0.8);
           transform: translateY(-1px);
@@ -846,19 +942,20 @@ export default function InquiryForm({
                </div>
              </div>
  
-             {/* Step 6: Product Requirement */}
-             <div className={`form-step ${step === 6 ? "active-step" : ""}`} data-step="6">
-               <label htmlFor="product">{t.step6Label}</label>
-               <input
-                 type="text"
-                 id="product"
-                 value={formData.product}
-                 onChange={handleInputChange}
-                 placeholder={t.step6Placeholder}
-                 required
-                 autoComplete="off"
-               />
-               <div className="flex items-center gap-3">
+              {/* Step 6: Product Requirement */}
+              <div className={`form-step ${step === 6 ? "active-step" : ""}`} data-step="6">
+                <label htmlFor="product">{t.step6Label}</label>
+                <input
+                  type="text"
+                  id="product"
+                  value={formData.product}
+                  onChange={handleInputChange}
+                  placeholder={t.step6Placeholder}
+                  required
+                  autoComplete="off"
+                />
+
+                <div className="flex items-center gap-3">
                  <button
                    type="button"
                    className="back-btn"
@@ -887,6 +984,9 @@ export default function InquiryForm({
                 <p><strong>{t.summary.email}:</strong> <span>{formData.email}</span></p>
                 <p><strong>{t.summary.address}:</strong> <span>{formData.city}, {formData.district}, {formData.state} - {formData.pincode}</span></p>
                 <p><strong>{t.summary.product}:</strong> <span>{formData.product}</span></p>
+                {formData.additionalNotes && (
+                  <p><strong>{t.summary.additionalRequirements}:</strong> <span>{formData.additionalNotes}</span></p>
+                )}
               </div>
               <div className="flex items-center gap-3 w-full">
                 <button
