@@ -25,7 +25,8 @@ import {
   ArrowRight,
   ArrowUp,
   Check,
-  Star
+  Star,
+  FileDown
 } from "lucide-react";
 
 import {
@@ -47,6 +48,7 @@ import InquiryForm from "./components/InquiryForm";
 import InquiryModal from "./components/InquiryModal";
 import SingleProductSection from "./components/SingleProductSection";
 import SupplierPopup from "./components/SupplierPopup";
+import ProductCatalogueCTA from "./components/ProductCatalogueCTA";
 import HeroCarousel from "./components/HeroCarousel";
 import StoreStatusCard from "./components/StoreStatusCard";
 import CustomerSuccessCarousel from "./components/CustomerSuccessCarousel";
@@ -615,6 +617,15 @@ export default function App() {
                   <MessageSquare className="w-5 h-5" />
                   {t.heroCtaWhatsApp}
                 </a>
+                <a
+                  href="https://product-catalogue.edgeone.dev/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-2 bg-[#0B2D5C]/5 hover:bg-[#0B2D5C] text-[#0B2D5C] hover:text-white px-8 py-4 rounded-full font-extrabold text-base transition-all duration-300 border border-[#0B2D5C]/20 shadow-md hover:shadow-[#0B2D5C]/20 active:scale-95 group"
+                >
+                  <FileDown className="w-5 h-5 text-orange-600 group-hover:text-white transition-colors" />
+                  <span>📄 Download Product Catalogue</span>
+                </a>
               </div>
 
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 pt-8 border-t border-slate-200">
@@ -749,6 +760,11 @@ export default function App() {
           <span className="text-xl">🤝</span>
           <span>{t.meetSupplier}</span>
         </motion.button>
+      </div>
+
+      {/* Product Catalogue Information Card */}
+      <div className="bg-slate-50 py-12 relative z-10">
+        <ProductCatalogueCTA />
       </div>
 
       {/* 6. PRODUCTS CATALOG PREVIEW SECTION */}
@@ -1616,6 +1632,14 @@ export default function App() {
                 <a href="#special-uses" className="hover:text-white transition-colors">Special Applications</a>
                 <a href="#size-matrix" className="hover:text-white transition-colors">Size Spec Tables</a>
                 <a href="#why-choose" className="hover:text-white transition-colors">Why Choose Us</a>
+                <a 
+                  href="https://product-catalogue.edgeone.dev/"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hover:text-white transition-colors flex items-center gap-1.5"
+                >
+                  📄 Product Catalogue
+                </a>
               </nav>
             </div>
 
@@ -1750,7 +1774,37 @@ export default function App() {
         )}
       </AnimatePresence>
 
-
+      {/* Floating Circular Catalogue Button (Aligned Bottom Right above Scroll-to-Top Button) */}
+      <motion.div
+        className="fixed right-6 bottom-40 z-40 group"
+        initial={{ opacity: 0, scale: 0.8, y: 10 }}
+        animate={{ 
+          opacity: navbarVisible ? 1 : 0.45, 
+          scale: navbarVisible ? 1 : 0.9, 
+          y: 0 
+        }}
+        transition={{ duration: 0.3 }}
+      >
+        <motion.a
+          href="https://product-catalogue.edgeone.dev/"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Latest Price Catalogue"
+          className="w-12 h-12 rounded-full bg-gradient-to-br from-orange-600 to-amber-500 hover:from-[#0B2D5C] hover:to-[#0D3A75] text-white shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all duration-300 cursor-pointer relative border border-orange-500/20 group/btn"
+          animate={{ boxShadow: ["0 0 0 0px rgba(249,115,22,0.4)", "0 0 0 10px rgba(249,115,22,0)", "0 0 0 0px rgba(249,115,22,0)"] }}
+          transition={{ repeat: Infinity, duration: 2.5, ease: "easeInOut" }}
+        >
+          {/* Subtle pulsating ring layer inside the button */}
+          <span className="absolute inset-0 rounded-full border border-white/20 group-hover/btn:border-white/40 transition-colors pointer-events-none" />
+          <FileDown className="w-5 h-5 text-white" />
+          
+          {/* Elegant Left-aligned Tooltip */}
+          <div className="absolute right-14 top-1/2 -translate-y-1/2 bg-[#0B2D5C] text-white text-xs font-bold py-1.5 px-3 rounded-lg shadow-xl opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none border border-blue-900/40">
+            Latest Price Catalogue
+            <div className="absolute right-[-4px] top-1/2 -translate-y-1/2 w-2 h-2 bg-[#0B2D5C] rotate-45" />
+          </div>
+        </motion.a>
+      </motion.div>
 
       {/* Supplier Popup Modal */}
       <SupplierPopup isOpen={supplierOpen} onClose={() => setSupplierOpen(false)} />
