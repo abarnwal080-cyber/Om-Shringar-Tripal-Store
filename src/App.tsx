@@ -49,7 +49,6 @@ import InquiryForm from "./components/InquiryForm";
 import InquiryModal from "./components/InquiryModal";
 import SingleProductSection from "./components/SingleProductSection";
 import SupplierPopup from "./components/SupplierPopup";
-import CatalogueViewerModal from "./components/CatalogueViewerModal";
 import HeroCarousel from "./components/HeroCarousel";
 import StoreStatusCard from "./components/StoreStatusCard";
 import CustomerSuccessCarousel from "./components/CustomerSuccessCarousel";
@@ -81,13 +80,6 @@ export default function App() {
   const [searchQuery, setSearchQuery] = useState("");
 
   const [currentProductSlug, setCurrentProductSlug] = useState<string | null>(null);
-  const [catalogueErrorOpen, setCatalogueErrorOpen] = useState(false);
-  const [catalogueViewerOpen, setCatalogueViewerOpen] = useState(false);
-
-  const handleCatalogueDownload = (e?: React.MouseEvent) => {
-    if (e) e.preventDefault();
-    window.open("https://drive.google.com/file/d/1HNNYZzIWEdItUHHAouTUxhvNj-qy-vJ0/view?usp=drive_link", "_blank");
-  };
 
   // Clear enquiry submission state on page refresh (initial app mount)
   useEffect(() => {
@@ -625,13 +617,6 @@ export default function App() {
                   <MessageSquare className="w-5 h-5" />
                   {t.heroCtaWhatsApp}
                 </a>
-                <button
-                  onClick={() => setCatalogueViewerOpen(true)}
-                  className="flex items-center justify-center gap-2 bg-[#0B2D5C]/5 hover:bg-[#0B2D5C] text-[#0B2D5C] hover:text-white px-8 py-4 rounded-full font-extrabold text-base transition-all duration-300 border border-[#0B2D5C]/20 shadow-md hover:shadow-[#0B2D5C]/20 active:scale-95 group cursor-pointer"
-                >
-                  <FileText className="w-5 h-5 text-orange-600 group-hover:text-white transition-colors animate-pulse" />
-                  <span>📄 View Product Catalogue</span>
-                </button>
               </div>
 
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 pt-8 border-t border-slate-200">
@@ -733,7 +718,7 @@ export default function App() {
                       DIRECT INQUIRY
                     </div>
                     <div className="text-sm font-extrabold text-slate-900 font-display">
-                      Mr. Vinod Varnawal
+                      Store Helpline
                     </div>
                   </div>
                 </div>
@@ -1633,12 +1618,6 @@ export default function App() {
                 <a href="#special-uses" className="hover:text-white transition-colors">Special Applications</a>
                 <a href="#size-matrix" className="hover:text-white transition-colors">Size Spec Tables</a>
                 <a href="#why-choose" className="hover:text-white transition-colors">Why Choose Us</a>
-                <button 
-                  onClick={() => setCatalogueViewerOpen(true)}
-                  className="hover:text-white transition-colors flex items-center gap-1.5 bg-transparent border-none p-0 cursor-pointer text-left font-semibold"
-                >
-                  📄 View Catalogue
-                </button>
               </nav>
             </div>
 
@@ -1773,35 +1752,6 @@ export default function App() {
         )}
       </AnimatePresence>
 
-      {/* Floating Circular Catalogue Button (Aligned Bottom Right above Scroll-to-Top Button) */}
-      <motion.div
-        className="fixed right-6 bottom-40 z-40 group"
-        initial={{ opacity: 0, scale: 0.8, y: 10, x: 0 }}
-        animate={{ 
-          opacity: navbarVisible ? 1 : 0.25, 
-          scale: navbarVisible ? 1 : 0.85, 
-          x: navbarVisible ? 0 : 15,
-          y: 0 
-        }}
-        transition={{ duration: 0.3 }}
-      >
-        <button
-          onClick={handleCatalogueDownload}
-          aria-label="Latest Price Catalogue"
-          className="w-12 h-12 rounded-full bg-gradient-to-br from-orange-600 to-amber-500 hover:from-[#0B2D5C] hover:to-[#0D3A75] text-white shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all duration-300 cursor-pointer relative border border-orange-500/20 group/btn"
-        >
-          {/* Subtle pulsating ring layer inside the button */}
-          <span className="absolute inset-0 rounded-full border border-white/20 group-hover/btn:border-white/40 transition-colors pointer-events-none" />
-          <FileDown className="w-5 h-5 text-white" />
-          
-          {/* Elegant Left-aligned Tooltip */}
-          <div className="absolute right-14 top-1/2 -translate-y-1/2 bg-[#0B2D5C] text-white text-xs font-bold py-1.5 px-3 rounded-lg shadow-xl opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none border border-blue-900/40 md:block hidden">
-            Latest Price Catalogue
-            <div className="absolute right-[-4px] top-1/2 -translate-y-1/2 w-2 h-2 bg-[#0B2D5C] rotate-45" />
-          </div>
-        </button>
-      </motion.div>
-
       {/* Supplier Popup Modal */}
       <SupplierPopup isOpen={supplierOpen} onClose={() => setSupplierOpen(false)} />
 
@@ -1812,79 +1762,6 @@ export default function App() {
         prefilledProduct={prefilledProduct}
         onClearPrefill={clearPrefill}
         currentLanguage={lang}
-      />
-
-      {/* Friendly Catalogue Error Modal */}
-      <AnimatePresence>
-        {catalogueErrorOpen && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[10000] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm"
-          >
-            <motion.div
-              initial={{ scale: 0.95, y: 15 }}
-              animate={{ scale: 1, y: 0 }}
-              exit={{ scale: 0.95, y: 15 }}
-              className="bg-white max-w-md w-full p-6 sm:p-8 rounded-3xl shadow-2xl border border-slate-100 text-center relative overflow-hidden"
-            >
-              {/* Top orange accent strip */}
-              <div className="absolute top-0 inset-x-0 h-2 bg-gradient-to-r from-orange-500 to-amber-500" />
-              
-              <div className="w-16 h-16 bg-orange-50 text-orange-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-inner border border-orange-100">
-                <FileDown className="w-8 h-8 animate-pulse" />
-              </div>
-
-              <h3 className="text-xl sm:text-2xl font-black font-display text-slate-900 mb-3">
-                Catalogue Updating
-              </h3>
-              
-              <p className="text-slate-600 text-sm font-semibold leading-relaxed mb-6">
-                We are currently compiling the latest 2026 monsoon wholesale prices, size dimensions, and new brand products into our master catalogue.
-                <br /><br />
-                To get the draft catalogue sheet instantly or ask for current wholesale rates, click below to chat with Mr. Vinod Kumar on WhatsApp or send a quick inquiry.
-              </p>
-
-              <div className="flex flex-col gap-3">
-                <a
-                  href={getWhatsAppGeneralLink() + encodeURIComponent(" (Catalogue request)")}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-[#25D366] hover:bg-[#20ba5a] text-white font-extrabold text-sm shadow-md cursor-pointer transition-colors uppercase tracking-wider text-center"
-                >
-                  <MessageSquare className="w-4 h-4" />
-                  <span>Get on WhatsApp</span>
-                </a>
-                
-                <button
-                  onClick={() => {
-                    setCatalogueErrorOpen(false);
-                    handleEnquire("Full Product Catalogue & Wholesale Price List");
-                  }}
-                  className="flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-gradient-to-r from-orange-600 to-amber-500 text-white font-extrabold text-sm shadow-md cursor-pointer hover:from-orange-700 hover:to-amber-600 transition-colors uppercase tracking-wider text-center"
-                >
-                  <Sparkles className="w-4 h-4 text-white animate-pulse" />
-                  <span>Request Instant PDF Quote</span>
-                </button>
-
-                <button
-                  onClick={() => setCatalogueErrorOpen(false)}
-                  className="mt-2 text-xs font-bold text-slate-400 hover:text-slate-600 transition-colors"
-                >
-                  Close & Continue Browsing
-                </button>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Catalogue PDF Viewer Modal */}
-      <CatalogueViewerModal
-        isOpen={catalogueViewerOpen}
-        onClose={() => setCatalogueViewerOpen(false)}
-        onDownload={handleCatalogueDownload}
       />
 
       {/* Google Review Prompt Popup */}

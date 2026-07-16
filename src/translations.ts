@@ -84,7 +84,7 @@ export const TRANSLATIONS: Record<"en" | "hi", TranslationSet> = {
     heroTitle1: "Trusted Tarpaulin &",
     heroTitle2: "Plastic Sheet Dealer Since 2000",
     heroSubtitle: "Serving Siwan, Maharajganj, and nearby districts with premium quality Tarpaulins, Construction Sheets, Multilayered Film, and Farming Nets at unbeatable wholesale rates.",
-    heroCtaCall: "Call Mr. Vinod Kumar Now",
+    heroCtaCall: "Call Store Now",
     heroCtaWhatsApp: "WhatsApp Price List",
     
     aboutBadge: "OUR HERITAGE",
@@ -155,7 +155,7 @@ export const TRANSLATIONS: Record<"en" | "hi", TranslationSet> = {
     heroTitle1: "भरोसेमंद तिरपाल और",
     heroTitle2: "प्लास्टिक शीट डीलर (सन 2000 से)",
     heroSubtitle: "सिवान, महाराजगंज और आसपास के जिलों में प्रीमियम गुणवत्ता के तिरपाल, कंस्ट्रक्शन शीट, मल्टीलेयर फिल्म और कृषि नेट सबसे कम थोक दरों पर उपलब्ध हैं।",
-    heroCtaCall: "श्री विनोद कुमार को अभी कॉल करें",
+    heroCtaCall: "स्टोर को अभी कॉल करें",
     heroCtaWhatsApp: "व्हाट्सएप पर रेट लिस्ट पाएं",
     
     aboutBadge: "हमारी विरासत",

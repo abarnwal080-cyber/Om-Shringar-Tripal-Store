@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion } from "motion/react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const BRANDS = [
   {
@@ -26,6 +25,38 @@ const BRANDS = [
   {
     name: "KNS",
     logo: "https://plain-apac-prod-public.komododecks.com/202607/03/m7zkbhNPvoPwDA32B9BY/image.jpg",
+  },
+  {
+    name: "Black Bull",
+    logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSPjWOzy_wJ_BmDWWcyXAj3vAIhq-4Dbdj129c1auNaHA&s=10",
+  },
+  {
+    name: "Double Bull",
+    logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVowJ2c1FfQeCQR_Jc32h9YCj6YL5jljWfWOppnMKRmw&s=10",
+  },
+  {
+    name: "Tuffpaulin",
+    logo: "https://www.tuffpaulin.com/wp-content/uploads/2021/09/Tuff-logo-with-IS-Mark-e1629102662998.png",
+  },
+  {
+    name: "Mipatex",
+    logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTx12lnc13eV1UzLcfMfjctY3t6ZzPaNfySie4uS1eGAA&s=10",
+  },
+  {
+    name: "Jumbo",
+    logo: "https://plain-apac-prod-public.komododecks.com/202607/16/fqOq0hB8ZA982pAThU7G/image.jpg",
+  },
+  {
+    name: "Himalaya",
+    logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiEr-VxegD2eLYFiBrrsbcYjH4ZxR1FbEbgxfpNP4JUg&s=10",
+  },
+  {
+    name: "Fortune",
+    logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTG-uVnYN4I820w2J4ZgUanUXZK81heB3UXJE87SN2MsPDdIN1IMPrJGA&s",
+  },
+  {
+    name: "Vinex",
+    logo: "https://plain-apac-prod-public.komododecks.com/202607/16/hDQT1Xo8iGIRV1LacJtu/image.jpg",
   },
 ];
 
@@ -212,30 +243,6 @@ export default function BrandCarousel() {
         {/* Navigation & Controls Wrapper */}
         <div className="flex flex-col items-center justify-center space-y-6">
           
-          {/* Circular Navigation Arrows & Current Counter */}
-          <div className="flex items-center justify-center gap-6">
-            <button
-              onClick={handlePrev}
-              className="w-12 h-12 rounded-full border border-slate-200 bg-white/80 hover:bg-white hover:border-slate-300 text-slate-600 hover:text-[#FF6B00] shadow-sm hover:shadow-md transition-all duration-300 flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-[#FF6B00]/40 group"
-              aria-label="Previous Brand"
-            >
-              <ChevronLeft className="w-5 h-5 group-hover:-translate-x-0.5 transition-transform" />
-            </button>
-
-            {/* Current Slide Counter */}
-            <span className="font-mono text-sm md:text-base font-bold text-slate-500 tracking-wider">
-              {String(activeIndex + 1).padStart(2, "0")} <span className="text-slate-300 mx-1">/</span> {String(BRANDS.length).padStart(2, "0")}
-            </span>
-
-            <button
-              onClick={handleNext}
-              className="w-12 h-12 rounded-full border border-slate-200 bg-white/80 hover:bg-white hover:border-slate-300 text-slate-600 hover:text-[#FF6B00] shadow-sm hover:shadow-md transition-all duration-300 flex items-center justify-center focus:outline-none focus:ring-2 focus:ring-[#FF6B00]/40 group"
-              aria-label="Next Brand"
-            >
-              <ChevronRight className="w-5 h-5 group-hover:translate-x-0.5 transition-transform" />
-            </button>
-          </div>
-
           {/* Bottom Pagination Dots */}
           <div className="flex items-center justify-center gap-3">
             {BRANDS.map((_, index) => (
