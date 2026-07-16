@@ -27,8 +27,12 @@ import {
   Check,
   Star,
   FileDown,
-  FileText
+  FileText,
+  Store,
+  Sparkle
 } from "lucide-react";
+
+const shopFrontImage = "https://plain-apac-prod-public.komododecks.com/202607/16/nQxsNGnevCaNtHrwY1OI/image.jpg";
 
 import {
   BUSINESS_INFO,
@@ -731,6 +735,107 @@ export default function App() {
                   <span className="font-mono font-bold">+91 8002194427</span>
                 </a>
               </motion.div>
+            </div>
+
+          </div>
+        </div>
+      </section>
+
+      {/* SHOP FRONT SHOWCASE SECTION */}
+      <section className="py-16 bg-gradient-to-b from-white to-slate-50 relative overflow-hidden border-b border-slate-200/50">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+            
+            {/* Left side: Text describing the physical shop */}
+            <div className="lg:col-span-6 flex flex-col text-left">
+              <div className="flex items-center gap-2 bg-orange-50 text-orange-600 text-xs font-bold font-mono px-3.5 py-1.5 rounded-full w-fit mb-5">
+                <Store className="w-3.5 h-3.5 animate-pulse" />
+                <span>{lang === "en" ? "OUR PHYSICAL STORE" : "हमारा भौतिक स्टोर"}</span>
+              </div>
+              
+              <h2 className="text-3xl sm:text-4xl font-extrabold font-display text-slate-900 tracking-tight mb-6">
+                {lang === "en" ? (
+                  <>
+                    Step Into <span className="text-brand-orange">Om Shringar Tirpal Store</span> Maharajganj
+                  </>
+                ) : (
+                  <>
+                    पधारें <span className="text-brand-orange">ओम श्रृंगार तिरपाल स्टोर</span> महाराजगंज में
+                  </>
+                )}
+              </h2>
+              
+              <p className="text-slate-600 text-base sm:text-lg leading-relaxed mb-6 font-medium">
+                {lang === "en" ? (
+                  "Located at the bustling heart of Maharajganj, Siwan, our physical flagship outlet is stocked with the largest range of waterproof tarpaulins, construction plastic rolls, farming nets, and premium quality polymers. Experience raw materials, inspect thicknesses (GSM), and purchase directly at wholesale rates."
+                ) : (
+                  "महाराजगंज, सिवान के मुख्य बाजार में स्थित हमारे भव्य स्टोर पर आपको सभी प्रकार के वाटरप्रूफ तिरपाल, कंस्ट्रक्शन प्लास्टिक रोल, मल्चिंग फिल्म और कृषि नेट की सबसे बड़ी श्रृंखला थोक भाव पर मिलेगी। यहाँ आकर आप स्वयं क्वालिटी जांच सकते हैं।"
+                )}
+              </p>
+
+              {/* Action Buttons */}
+              <div className="flex flex-wrap gap-4 mt-2">
+                <a 
+                  href="https://www.google.com/maps/dir/?api=1&destination=Om+Shringar+Tirpal+Store,+Meetha+Hatti,+Maharajganj,+Siwan"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 bg-[#0B2D5C] hover:bg-[#0D3A75] text-white px-6 py-3 rounded-xl font-bold text-sm shadow-md transition-all active:scale-95 cursor-pointer"
+                >
+                  <MapPin className="w-4 h-4 text-orange-500 animate-bounce" />
+                  <span>{lang === "en" ? "Get Store Directions" : "दुकान का रास्ता खोजें"}</span>
+                </a>
+                <a 
+                  href="tel:+918002194427"
+                  className="inline-flex items-center gap-2 bg-white hover:bg-slate-50 text-slate-800 border border-slate-200 px-6 py-3 rounded-xl font-bold text-sm shadow-sm transition-all active:scale-95 cursor-pointer"
+                >
+                  <Phone className="w-4 h-4 text-brand-orange" />
+                  <span>{lang === "en" ? "Call Store Directly" : "स्टोर को सीधे कॉल करें"}</span>
+                </a>
+              </div>
+            </div>
+
+            {/* Right side: The shop front image in a cute animated neon frame */}
+            <div className="lg:col-span-6 flex justify-center items-center relative">
+              
+              {/* Cute glowing neon floating particle elements */}
+              <div className="absolute top-[-20px] left-[-20px] w-12 h-12 text-pink-500 animate-pulse pointer-events-none opacity-80 select-none">
+                <Sparkles className="w-8 h-8 animate-spin-slow" />
+              </div>
+              <div className="absolute bottom-[-20px] right-[-10px] w-12 h-12 text-yellow-400 animate-pulse pointer-events-none opacity-80 select-none">
+                <Sparkles className="w-6 h-6 animate-pulse" />
+              </div>
+              <div className="absolute top-[40%] right-[-30px] w-12 h-12 text-cyan-400 animate-pulse pointer-events-none opacity-80 select-none">
+                <Sparkle className="w-5 h-5 animate-spin-slow" />
+              </div>
+
+              {/* Neon Ambient Shadow Layer behind the frame */}
+              <div className="absolute inset-4 bg-gradient-to-tr from-orange-500 via-pink-500 to-yellow-500 rounded-[2.5rem] blur-2xl opacity-20 animate-pulse-slow" />
+
+              {/* The Cute Animated Neon Frame */}
+              <motion.div 
+                whileHover={{ scale: 1.03, rotate: 1 }}
+                transition={{ duration: 0.4 }}
+                className="relative p-2.5 rounded-[2.2rem] bg-slate-900 border-4 animate-cute-neon-glow shadow-2xl overflow-hidden max-w-lg w-full"
+              >
+                {/* Glowing neon shine effect overlay on the glass */}
+                <div className="absolute inset-0 bg-gradient-to-tr from-white/0 via-white/5 to-white/0 pointer-events-none z-10" />
+
+                <div className="relative rounded-[1.6rem] overflow-hidden bg-slate-950 aspect-[4/3] group/shop">
+                  <img 
+                    src={shopFrontImage} 
+                    alt="Om Shringar Tirpal Store physical storefront in Maharajganj, Siwan" 
+                    className="w-full h-full object-cover group-hover/shop:scale-105 transition-transform duration-700 ease-in-out"
+                    loading="lazy"
+                  />
+                  
+                  {/* Floating badge inside the image */}
+                  <div className="absolute bottom-4 left-4 bg-slate-950/80 backdrop-blur-md border border-white/10 text-white font-mono text-[10px] sm:text-xs font-bold px-3 py-1.5 rounded-full flex items-center gap-1.5 z-20 shadow-lg">
+                    <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-ping" />
+                    <span>{lang === "en" ? "Visit Us Today!" : "आज ही पधारें!"}</span>
+                  </div>
+                </div>
+              </motion.div>
+
             </div>
 
           </div>
