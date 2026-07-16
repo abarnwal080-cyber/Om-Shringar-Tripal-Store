@@ -26,7 +26,8 @@ import {
   ArrowUp,
   Check,
   Star,
-  FileDown
+  FileDown,
+  FileText
 } from "lucide-react";
 
 import {
@@ -48,7 +49,7 @@ import InquiryForm from "./components/InquiryForm";
 import InquiryModal from "./components/InquiryModal";
 import SingleProductSection from "./components/SingleProductSection";
 import SupplierPopup from "./components/SupplierPopup";
-import ProductCatalogueCTA from "./components/ProductCatalogueCTA";
+import CatalogueViewerModal from "./components/CatalogueViewerModal";
 import HeroCarousel from "./components/HeroCarousel";
 import StoreStatusCard from "./components/StoreStatusCard";
 import CustomerSuccessCarousel from "./components/CustomerSuccessCarousel";
@@ -80,6 +81,13 @@ export default function App() {
   const [searchQuery, setSearchQuery] = useState("");
 
   const [currentProductSlug, setCurrentProductSlug] = useState<string | null>(null);
+  const [catalogueErrorOpen, setCatalogueErrorOpen] = useState(false);
+  const [catalogueViewerOpen, setCatalogueViewerOpen] = useState(false);
+
+  const handleCatalogueDownload = (e?: React.MouseEvent) => {
+    if (e) e.preventDefault();
+    window.open("https://drive.google.com/file/d/1HNNYZzIWEdItUHHAouTUxhvNj-qy-vJ0/view?usp=drive_link", "_blank");
+  };
 
   // Clear enquiry submission state on page refresh (initial app mount)
   useEffect(() => {
@@ -617,15 +625,13 @@ export default function App() {
                   <MessageSquare className="w-5 h-5" />
                   {t.heroCtaWhatsApp}
                 </a>
-                <a
-                  href="https://product-catalogue.edgeone.dev/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-center gap-2 bg-[#0B2D5C]/5 hover:bg-[#0B2D5C] text-[#0B2D5C] hover:text-white px-8 py-4 rounded-full font-extrabold text-base transition-all duration-300 border border-[#0B2D5C]/20 shadow-md hover:shadow-[#0B2D5C]/20 active:scale-95 group"
+                <button
+                  onClick={() => setCatalogueViewerOpen(true)}
+                  className="flex items-center justify-center gap-2 bg-[#0B2D5C]/5 hover:bg-[#0B2D5C] text-[#0B2D5C] hover:text-white px-8 py-4 rounded-full font-extrabold text-base transition-all duration-300 border border-[#0B2D5C]/20 shadow-md hover:shadow-[#0B2D5C]/20 active:scale-95 group cursor-pointer"
                 >
-                  <FileDown className="w-5 h-5 text-orange-600 group-hover:text-white transition-colors" />
-                  <span>📄 Download Product Catalogue</span>
-                </a>
+                  <FileText className="w-5 h-5 text-orange-600 group-hover:text-white transition-colors animate-pulse" />
+                  <span>📄 View Product Catalogue</span>
+                </button>
               </div>
 
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 pt-8 border-t border-slate-200">
@@ -733,11 +739,11 @@ export default function App() {
                 </div>
                 
                 <a
-                  href="tel:+919852076197"
+                  href="tel:+918002194427"
                   className="bg-orange-600 hover:bg-orange-700 text-white text-xs font-black px-4 py-2.5 rounded-full transition-colors font-mono tracking-wider flex items-center gap-1.5 shadow-md shadow-orange-600/10 cursor-pointer"
                 >
                   <span>📞 Call Store</span>
-                  <span className="font-mono font-bold">+91 9852076197</span>
+                  <span className="font-mono font-bold">+91 8002194427</span>
                 </a>
               </motion.div>
             </div>
@@ -760,11 +766,6 @@ export default function App() {
           <span className="text-xl">🤝</span>
           <span>{t.meetSupplier}</span>
         </motion.button>
-      </div>
-
-      {/* Product Catalogue Information Card */}
-      <div className="bg-slate-50 py-12 relative z-10">
-        <ProductCatalogueCTA />
       </div>
 
       {/* 6. PRODUCTS CATALOG PREVIEW SECTION */}
@@ -995,7 +996,7 @@ export default function App() {
       </AnimatePresence>
 
       {/* GOOGLE REVIEWS SECTION */}
-      <section id="google-reviews" className="py-20 bg-gradient-to-b from-slate-50 to-white relative scroll-mt-24 border-t border-slate-100">
+      <section id="google-reviews" className="py-20 bg-gradient-to-b from-slate-50 to-white relative scroll-mt-24 border-t border-slate-100 overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           
           {/* Section Header */}
@@ -1119,7 +1120,7 @@ export default function App() {
 
 
       {/* 7. SPECIAL PURPOSE SHEETS (FEATURES GRID) */}
-      <section id="special-uses" className="py-20 bg-white relative scroll-mt-24">
+      <section id="special-uses" className="py-20 bg-white relative scroll-mt-24 overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           
           {/* Section Header */}
@@ -1163,7 +1164,7 @@ export default function App() {
       </section>
 
       {/* 8. AVAILABLE PLASTIC SIZES (SPEC TABLE) */}
-      <section id="size-matrix" className="py-20 bg-slate-50 border-y border-slate-100/50 scroll-mt-24">
+      <section id="size-matrix" className="py-20 bg-slate-50 border-y border-slate-100/50 scroll-mt-24 overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
@@ -1379,7 +1380,7 @@ export default function App() {
       </section>
 
       {/* 9. WHY CHOOSE US */}
-      <section id="why-choose" className="py-20 bg-white relative scroll-mt-24">
+      <section id="why-choose" className="py-20 bg-white relative scroll-mt-24 overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           
           {/* Section Header */}
@@ -1426,7 +1427,7 @@ export default function App() {
       </section>
 
       {/* 10. INTERACTIVE FAQ & INQUIRY FORM */}
-      <section id="enquire" ref={inquiryRef} className="py-20 bg-slate-50 border-t border-slate-100 relative scroll-mt-24">
+      <section id="enquire" ref={inquiryRef} className="py-20 bg-slate-50 border-t border-slate-100 relative scroll-mt-24 overflow-hidden">
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="flex flex-col items-center text-center">
             
@@ -1487,7 +1488,7 @@ export default function App() {
       </section>
 
       {/* 11. CONTACT & MAPS SECTION */}
-      <section id="contact" className="py-20 bg-white relative scroll-mt-24">
+      <section id="contact" className="py-20 bg-white relative scroll-mt-24 overflow-hidden">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
@@ -1538,7 +1539,7 @@ export default function App() {
                       href={BUSINESS_INFO.phoneFormatted}
                       className="text-sm font-extrabold text-brand-blue-royal font-mono hover:text-brand-orange transition-colors block mt-0.5"
                     >
-                      +91 9852076197
+                      +91 8002194427
                     </a>
                   </div>
                 </div>
@@ -1632,14 +1633,12 @@ export default function App() {
                 <a href="#special-uses" className="hover:text-white transition-colors">Special Applications</a>
                 <a href="#size-matrix" className="hover:text-white transition-colors">Size Spec Tables</a>
                 <a href="#why-choose" className="hover:text-white transition-colors">Why Choose Us</a>
-                <a 
-                  href="https://product-catalogue.edgeone.dev/"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hover:text-white transition-colors flex items-center gap-1.5"
+                <button 
+                  onClick={() => setCatalogueViewerOpen(true)}
+                  className="hover:text-white transition-colors flex items-center gap-1.5 bg-transparent border-none p-0 cursor-pointer text-left font-semibold"
                 >
-                  📄 Product Catalogue
-                </a>
+                  📄 View Catalogue
+                </button>
               </nav>
             </div>
 
@@ -1739,7 +1738,7 @@ export default function App() {
       {/* Unified Floating WhatsApp Button: Mobile & Desktop (Aligned Bottom Left) */}
       <div className="fixed left-6 bottom-6 z-40">
         <a
-          href="https://wa.me/919852076197?text=Hi!%20I%20visited%20your%20website%20and%20wanted%20to%20inquire%20about%20your%20products."
+          href="https://wa.me/918002194427?text=Hi!%20I%20visited%20your%20website%20and%20wanted%20to%20inquire%20about%20your%20products."
           target="_blank"
           rel="noopener noreferrer"
           aria-label="WhatsApp Integrated Inquiry"
@@ -1777,33 +1776,30 @@ export default function App() {
       {/* Floating Circular Catalogue Button (Aligned Bottom Right above Scroll-to-Top Button) */}
       <motion.div
         className="fixed right-6 bottom-40 z-40 group"
-        initial={{ opacity: 0, scale: 0.8, y: 10 }}
+        initial={{ opacity: 0, scale: 0.8, y: 10, x: 0 }}
         animate={{ 
-          opacity: navbarVisible ? 1 : 0.45, 
-          scale: navbarVisible ? 1 : 0.9, 
+          opacity: navbarVisible ? 1 : 0.25, 
+          scale: navbarVisible ? 1 : 0.85, 
+          x: navbarVisible ? 0 : 15,
           y: 0 
         }}
         transition={{ duration: 0.3 }}
       >
-        <motion.a
-          href="https://product-catalogue.edgeone.dev/"
-          target="_blank"
-          rel="noopener noreferrer"
+        <button
+          onClick={handleCatalogueDownload}
           aria-label="Latest Price Catalogue"
           className="w-12 h-12 rounded-full bg-gradient-to-br from-orange-600 to-amber-500 hover:from-[#0B2D5C] hover:to-[#0D3A75] text-white shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all duration-300 cursor-pointer relative border border-orange-500/20 group/btn"
-          animate={{ boxShadow: ["0 0 0 0px rgba(249,115,22,0.4)", "0 0 0 10px rgba(249,115,22,0)", "0 0 0 0px rgba(249,115,22,0)"] }}
-          transition={{ repeat: Infinity, duration: 2.5, ease: "easeInOut" }}
         >
           {/* Subtle pulsating ring layer inside the button */}
           <span className="absolute inset-0 rounded-full border border-white/20 group-hover/btn:border-white/40 transition-colors pointer-events-none" />
           <FileDown className="w-5 h-5 text-white" />
           
           {/* Elegant Left-aligned Tooltip */}
-          <div className="absolute right-14 top-1/2 -translate-y-1/2 bg-[#0B2D5C] text-white text-xs font-bold py-1.5 px-3 rounded-lg shadow-xl opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none border border-blue-900/40">
+          <div className="absolute right-14 top-1/2 -translate-y-1/2 bg-[#0B2D5C] text-white text-xs font-bold py-1.5 px-3 rounded-lg shadow-xl opacity-0 group-hover:opacity-100 transition-opacity duration-200 whitespace-nowrap pointer-events-none border border-blue-900/40 md:block hidden">
             Latest Price Catalogue
             <div className="absolute right-[-4px] top-1/2 -translate-y-1/2 w-2 h-2 bg-[#0B2D5C] rotate-45" />
           </div>
-        </motion.a>
+        </button>
       </motion.div>
 
       {/* Supplier Popup Modal */}
@@ -1816,6 +1812,79 @@ export default function App() {
         prefilledProduct={prefilledProduct}
         onClearPrefill={clearPrefill}
         currentLanguage={lang}
+      />
+
+      {/* Friendly Catalogue Error Modal */}
+      <AnimatePresence>
+        {catalogueErrorOpen && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[10000] flex items-center justify-center p-4 bg-slate-900/60 backdrop-blur-sm"
+          >
+            <motion.div
+              initial={{ scale: 0.95, y: 15 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.95, y: 15 }}
+              className="bg-white max-w-md w-full p-6 sm:p-8 rounded-3xl shadow-2xl border border-slate-100 text-center relative overflow-hidden"
+            >
+              {/* Top orange accent strip */}
+              <div className="absolute top-0 inset-x-0 h-2 bg-gradient-to-r from-orange-500 to-amber-500" />
+              
+              <div className="w-16 h-16 bg-orange-50 text-orange-600 rounded-full flex items-center justify-center mx-auto mb-6 shadow-inner border border-orange-100">
+                <FileDown className="w-8 h-8 animate-pulse" />
+              </div>
+
+              <h3 className="text-xl sm:text-2xl font-black font-display text-slate-900 mb-3">
+                Catalogue Updating
+              </h3>
+              
+              <p className="text-slate-600 text-sm font-semibold leading-relaxed mb-6">
+                We are currently compiling the latest 2026 monsoon wholesale prices, size dimensions, and new brand products into our master catalogue.
+                <br /><br />
+                To get the draft catalogue sheet instantly or ask for current wholesale rates, click below to chat with Mr. Vinod Kumar on WhatsApp or send a quick inquiry.
+              </p>
+
+              <div className="flex flex-col gap-3">
+                <a
+                  href={getWhatsAppGeneralLink() + encodeURIComponent(" (Catalogue request)")}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-[#25D366] hover:bg-[#20ba5a] text-white font-extrabold text-sm shadow-md cursor-pointer transition-colors uppercase tracking-wider text-center"
+                >
+                  <MessageSquare className="w-4 h-4" />
+                  <span>Get on WhatsApp</span>
+                </a>
+                
+                <button
+                  onClick={() => {
+                    setCatalogueErrorOpen(false);
+                    handleEnquire("Full Product Catalogue & Wholesale Price List");
+                  }}
+                  className="flex items-center justify-center gap-2 py-3 px-4 rounded-xl bg-gradient-to-r from-orange-600 to-amber-500 text-white font-extrabold text-sm shadow-md cursor-pointer hover:from-orange-700 hover:to-amber-600 transition-colors uppercase tracking-wider text-center"
+                >
+                  <Sparkles className="w-4 h-4 text-white animate-pulse" />
+                  <span>Request Instant PDF Quote</span>
+                </button>
+
+                <button
+                  onClick={() => setCatalogueErrorOpen(false)}
+                  className="mt-2 text-xs font-bold text-slate-400 hover:text-slate-600 transition-colors"
+                >
+                  Close & Continue Browsing
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Catalogue PDF Viewer Modal */}
+      <CatalogueViewerModal
+        isOpen={catalogueViewerOpen}
+        onClose={() => setCatalogueViewerOpen(false)}
+        onDownload={handleCatalogueDownload}
       />
 
       {/* Google Review Prompt Popup */}

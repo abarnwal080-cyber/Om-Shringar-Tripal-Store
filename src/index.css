@@ -13,14 +13,34 @@
 }
 
 @layer base {
+  *, ::before, ::after {
+    box-sizing: border-box !important;
+  }
+
   html {
     scroll-behavior: smooth;
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+    margin: 0 !important;
+    padding: 0 !important;
   }
   
   body {
     font-family: var(--font-sans);
     background-color: #f0f4f8;
     color: #1e293b;
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  #root {
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: hidden !important;
   }
 }
 

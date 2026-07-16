@@ -313,7 +313,7 @@ const SUPPLIER_HTML = `<!DOCTYPE html>
         </div>
 
         <div class="actions">
-          <a class="btn btn-primary" href="tel:+919852076197">Call Now</a>
+          <a class="btn btn-primary" href="tel:+918002194427">Call Now</a>
           <button class="btn btn-secondary" id="changeTextBtn" type="button">View Owner Message</button>
         </div>
 
