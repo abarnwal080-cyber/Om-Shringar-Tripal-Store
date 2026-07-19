@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion } from "motion/react";
+import { Award, ShieldCheck, Users, Clock, Layers } from "lucide-react";
 
 const BRANDS = [
   {
@@ -60,7 +61,11 @@ const BRANDS = [
   },
 ];
 
-export default function BrandCarousel() {
+interface BrandCarouselProps {
+  lang?: "en" | "hi";
+}
+
+export default function BrandCarousel({ lang = "en" }: BrandCarouselProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
   const touchStartX = useRef<number | null>(null);
@@ -120,15 +125,99 @@ export default function BrandCarousel() {
       onMouseLeave={() => setIsHovered(false)}
     >
       <div className="max-w-7xl mx-auto px-4 md:px-8">
-        {/* Premium Headings */}
-        <div className="text-center mb-12 md:mb-16 space-y-3">
-          <p className="text-xs md:text-sm font-bold font-mono text-[#FF6B00] uppercase tracking-[0.2em]">
+        {/* Premium Shop Name Headings */}
+        <div className="text-center mb-12 md:mb-16 space-y-4">
+          <div className="inline-flex items-center gap-2 bg-orange-50 border border-orange-200 text-[#FF6B00] font-mono text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-widest">
+            <span>Shop Name</span>
+          </div>
+          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black font-display text-[#0B2D5C] tracking-tight max-w-4xl mx-auto leading-tight">
+            Om Shringar Tirpal Store
+          </h2>
+          <p className="text-base sm:text-lg font-extrabold text-slate-500 font-mono tracking-wide">
+            Maharajganj, Siwan, Bihar
+          </p>
+          <p className="text-xs md:text-sm font-bold font-mono text-[#FF6B00] uppercase tracking-[0.2em] pt-2">
             AUTHORIZED DISTRIBUTOR & TRADING PARTNER
           </p>
-          <h4 className="text-2xl md:text-4xl font-extrabold font-display text-[#0B2D5C] tracking-tight max-w-3xl mx-auto leading-tight">
-            Supplying India's Leading Tarpaulin & Polymer Brands
-          </h4>
-          <div className="w-16 h-1 bg-[#FF6B00] mx-auto rounded-full mt-4" />
+          <div className="w-20 h-1 bg-gradient-to-r from-[#FF6B00] to-orange-500 mx-auto rounded-full mt-4" />
+        </div>
+
+        {/* 5 Store Highlights Stats Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-16 relative z-10">
+          {/* Stat 1: 26+ Years of Trust (Est. 2000) */}
+          <div className="flex items-center gap-4 p-4 rounded-2xl bg-gradient-to-r from-orange-50 to-white border border-orange-100 hover:border-orange-300 hover:shadow-md transition-all duration-300 text-left shadow-sm">
+            <div className="w-12 h-12 rounded-xl bg-orange-100 flex items-center justify-center text-orange-600 shrink-0 shadow-inner">
+              <Award className="w-6 h-6 stroke-[2.5]" />
+            </div>
+            <div>
+              <h3 className="text-xl font-black font-display text-[#0B2D5C] leading-none mb-1">
+                26+
+              </h3>
+              <p className="text-slate-600 text-xs font-semibold">
+                {lang === "en" ? "Years of Trust (Est. 2000)" : "वर्षों का अटूट विश्वास (स्थापना 2000)"}
+              </p>
+            </div>
+          </div>
+
+          {/* Stat 2: 50+ Size Configurations */}
+          <div className="flex items-center gap-4 p-4 rounded-2xl bg-gradient-to-r from-blue-50 to-white border border-blue-100 hover:border-blue-300 hover:shadow-md transition-all duration-300 text-left shadow-sm">
+            <div className="w-12 h-12 rounded-xl bg-blue-100 flex items-center justify-center text-blue-600 shrink-0 shadow-inner">
+              <Layers className="w-6 h-6 stroke-[2.5]" />
+            </div>
+            <div>
+              <h3 className="text-xl font-black font-display text-[#0B2D5C] leading-none mb-1">
+                50+
+              </h3>
+              <p className="text-slate-600 text-xs font-semibold">
+                {lang === "en" ? "Size Configurations" : "विभिन्न साइज़ कॉम्बिनेशन्स उपलब्ध"}
+              </p>
+            </div>
+          </div>
+
+          {/* Stat 3: 100% Waterproof & UV Tested */}
+          <div className="flex items-center gap-4 p-4 rounded-2xl bg-gradient-to-r from-emerald-50 to-white border border-emerald-100 hover:border-emerald-300 hover:shadow-md transition-all duration-300 text-left shadow-sm">
+            <div className="w-12 h-12 rounded-xl bg-emerald-100 flex items-center justify-center text-emerald-600 shrink-0 shadow-inner">
+              <ShieldCheck className="w-6 h-6 stroke-[2.5]" />
+            </div>
+            <div>
+              <h3 className="text-xl font-black font-display text-[#0B2D5C] leading-none mb-1">
+                100%
+              </h3>
+              <p className="text-slate-600 text-xs font-semibold">
+                {lang === "en" ? "Waterproof & UV Tested" : "100% वॉटरप्रूफ और यूवी प्रोटेक्टेड"}
+              </p>
+            </div>
+          </div>
+
+          {/* Stat 4: 10k+ Happy Customers */}
+          <div className="flex items-center gap-4 p-4 rounded-2xl bg-gradient-to-r from-purple-50 to-white border border-purple-100 hover:border-purple-300 hover:shadow-md transition-all duration-300 text-left shadow-sm">
+            <div className="w-12 h-12 rounded-xl bg-purple-100 flex items-center justify-center text-purple-600 shrink-0 shadow-inner">
+              <Users className="w-6 h-6 stroke-[2.5]" />
+            </div>
+            <div>
+              <h3 className="text-xl font-black font-display text-[#0B2D5C] leading-none mb-1">
+                10k+
+              </h3>
+              <p className="text-slate-600 text-xs font-semibold">
+                {lang === "en" ? "Happy Customers" : "10,000+ संतुष्ट ग्राहक"}
+              </p>
+            </div>
+          </div>
+
+          {/* Stat 5: Store Timings: 6:00 AM – 9:00 PM */}
+          <div className="flex items-center gap-4 p-4 rounded-2xl bg-gradient-to-r from-amber-50 to-white border border-amber-100 hover:border-amber-300 hover:shadow-md transition-all duration-300 text-left shadow-sm">
+            <div className="w-12 h-12 rounded-xl bg-amber-100 flex items-center justify-center text-amber-600 shrink-0 shadow-inner">
+              <Clock className="w-6 h-6 stroke-[2.5]" />
+            </div>
+            <div>
+              <h3 className="text-xl font-black font-display text-[#0B2D5C] leading-none mb-1">
+                Store Timings
+              </h3>
+              <p className="text-slate-600 text-xs font-semibold">
+                {lang === "en" ? "6:00 AM – 9:00 PM" : "प्रातः 6:00 से रात्रि 9:00 बजे तक"}
+              </p>
+            </div>
+          </div>
         </div>
 
         {/* 3D Carousel Stage */}

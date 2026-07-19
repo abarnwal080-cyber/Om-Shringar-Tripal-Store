@@ -465,18 +465,18 @@ export const ProductVideosSection: React.FC<ProductVideosSectionProps> = ({ lang
             {/* Left & Right Navigation Arrows with Glassmorphism */}
             <button
               onClick={handlePrev}
-              className="absolute left-[-20px] top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-slate-900/60 backdrop-blur-md hover:bg-slate-900/90 text-white flex items-center justify-center border border-white/10 shadow-2xl transition-all hover:scale-110 active:scale-95 cursor-pointer z-20 opacity-0 group-hover/carousel:opacity-100 focus:opacity-100 hidden md:flex"
+              className="absolute left-1 sm:left-[-25px] top-1/2 -translate-y-1/2 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-slate-950/80 backdrop-blur-md hover:bg-slate-950 text-white flex items-center justify-center border border-white/15 shadow-2xl transition-all hover:scale-110 active:scale-95 cursor-pointer z-20"
               aria-label="Previous Slide"
             >
-              <ChevronLeft className="w-6 h-6 text-[#FF7A00]" />
+              <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6 text-[#FF7A00]" />
             </button>
 
             <button
               onClick={handleNext}
-              className="absolute right-[-20px] top-1/2 -translate-y-1/2 w-12 h-12 rounded-full bg-slate-900/60 backdrop-blur-md hover:bg-slate-900/90 text-white flex items-center justify-center border border-white/10 shadow-2xl transition-all hover:scale-110 active:scale-95 cursor-pointer z-20 opacity-0 group-hover/carousel:opacity-100 focus:opacity-100 hidden md:flex"
+              className="absolute right-1 sm:right-[-25px] top-1/2 -translate-y-1/2 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-slate-950/80 backdrop-blur-md hover:bg-slate-950 text-white flex items-center justify-center border border-white/15 shadow-2xl transition-all hover:scale-110 active:scale-95 cursor-pointer z-20"
               aria-label="Next Slide"
             >
-              <ChevronRight className="w-6 h-6 text-[#FF7A00]" />
+              <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6 text-[#FF7A00]" />
             </button>
 
             {/* Mobile swipe dots indicator */}
@@ -494,52 +494,6 @@ export const ProductVideosSection: React.FC<ProductVideosSectionProps> = ({ lang
             </div>
           </div>
 
-          {/* Bottom Premium CTA Card */}
-          <div className="relative bg-gradient-to-br from-[#0B2D5C] to-slate-900 border border-slate-800 rounded-[24px] p-8 sm:p-12 text-center max-w-4xl mx-auto overflow-hidden shadow-2xl">
-            {/* Ambient orange glow behind CTA */}
-            <div className="absolute inset-x-0 bottom-0 h-1/2 bg-[#FF7A00]/15 blur-3xl pointer-events-none" />
-            
-            <h3 className="text-2xl sm:text-3xl font-extrabold font-display text-white mb-4">
-              {lang === "en" ? "Need Bulk Orders?" : "थोक आर्डर की आवश्यकता है?"}
-            </h3>
-            
-            <p className="text-slate-200 text-sm sm:text-base font-semibold max-w-2xl mx-auto mb-8">
-              {lang === "en"
-                ? "Contact OM SHRINGAR TIRPAL STORE today for highly competitive wholesale quotes, custom thicknesses (GSM), custom sizes, and fast delivery across Bihar."
-                : "बेहद प्रतिस्पर्धी थोक दरों, कस्टम मोटाई (GSM), मनपसंद साइज और पूरे बिहार में तेजी से डिलीवरी के लिए आज ही ओम श्रृंगार तिरपाल स्टोर से संपर्क करें।"}
-            </p>
-
-            <div className="flex flex-wrap justify-center gap-4">
-              {/* Call Now */}
-              <a
-                href="tel:+918002194427"
-                className="flex items-center gap-2 bg-[#FF7A00] hover:bg-[#ff8c1a] text-white px-6 py-3 rounded-xl font-extrabold text-sm uppercase tracking-wider transition-all duration-300 active:scale-95 shadow-md hover:shadow-[#FF7A00]/20"
-              >
-                <Phone className="w-4 h-4 fill-white" />
-                <span>{lang === "en" ? "Call Now" : "कॉल करें"}</span>
-              </a>
-
-              {/* WhatsApp Price List */}
-              <a
-                href="https://wa.me/918002194427?text=Hi%20Store%2C%20I%20visited%20your%20website%20and%20want%20to%20get%20bulk%20wholesale%20rates."
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center gap-2 bg-[#25D366] hover:bg-[#20ba5a] text-white px-6 py-3 rounded-xl font-extrabold text-sm uppercase tracking-wider transition-all duration-300 active:scale-95 shadow-md hover:shadow-[#25D366]/20"
-              >
-                <MessageSquare className="w-4 h-4 fill-white" />
-                <span>{lang === "en" ? "WhatsApp" : "व्हाट्सएप"}</span>
-              </a>
-
-              {/* Get Best Price (Inquiry Form Trigger) */}
-              <button
-                onClick={() => onEnquire("Bulk Order Price Request from Video Section")}
-                className="flex items-center gap-2 bg-white/10 hover:bg-white/20 text-white border border-white/20 px-6 py-3 rounded-xl font-extrabold text-sm uppercase tracking-wider transition-all duration-300 active:scale-95"
-              >
-                <Sparkles className="w-4 h-4 text-[#FF7A00] animate-pulse" />
-                <span>{lang === "en" ? "Get Best Price" : "सर्वश्रेष्ठ रेट पाएं"}</span>
-              </button>
-            </div>
-          </div>
 
         </div>
       </section>

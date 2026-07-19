@@ -524,230 +524,172 @@ export default function App() {
       ) : (
         <>
           {/* 4. BRAND PARTNERS BAR (CAROUSEL) - MOVED TO TOP */}
-          <BrandCarousel />
+          <BrandCarousel lang={lang} />
 
           {/* 3. HERO SECTION */}
-          <section className="relative bg-gradient-to-b from-white via-slate-50 to-white text-slate-900 border-b border-slate-200/80 overflow-hidden py-16 lg:py-28">
-        
-        {/* Soft elegant warm ambient glow */}
-        <div className="absolute inset-0 overflow-hidden pointer-events-none select-none z-0">
-          <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-[radial-gradient(circle,rgba(234,88,12,0.04)_0%,transparent_70%)] blur-3xl" />
-          <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-[radial-gradient(circle,rgba(16,185,129,0.04)_0%,transparent_70%)] blur-3xl" />
-        </div>
-
-        {/* Backdrop Grid Pattern Overlay */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#e2e8f080_1px,transparent_1px),linear-gradient(to_bottom,#e2e8f080_1px,transparent_1px)] bg-[size:36px_36px] pointer-events-none z-0" />
-
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-8 items-center">
+          <section className="relative bg-gradient-to-b from-white via-slate-50 to-white text-slate-900 border-b border-slate-200/80 overflow-hidden py-16 lg:py-24">
             
-            {/* Hero Text Column with Premium Glassmorphism Backdrop */}
-            <div className="lg:col-span-7 flex flex-col text-left p-6 sm:p-10 rounded-3xl bg-white/90 border border-slate-200/60 backdrop-blur-md shadow-xl relative">
+            {/* Soft elegant warm ambient glow */}
+            <div className="absolute inset-0 overflow-hidden pointer-events-none select-none z-0">
+              <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] rounded-full bg-[radial-gradient(circle,rgba(234,88,12,0.04)_0%,transparent_70%)] blur-3xl" />
+              <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] rounded-full bg-[radial-gradient(circle,rgba(16,185,129,0.04)_0%,transparent_70%)] blur-3xl" />
+            </div>
+
+            {/* Backdrop Grid Pattern Overlay */}
+            <div className="absolute inset-0 bg-[linear-gradient(to_right,#e2e8f080_1px,transparent_1px),linear-gradient(to_bottom,#e2e8f080_1px,transparent_1px)] bg-[size:36px_36px] pointer-events-none z-0" />
+
+            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center flex flex-col items-center">
               
-              {/* Best Rate Dealer Highlight Badge (Highly Optimized for Search Ranking & Google Indexing) */}
-              <div className="mb-6 flex flex-col gap-1.5 p-4 rounded-2xl bg-orange-500/5 border border-orange-500/20 max-w-xl">
-                <div className="flex items-center gap-2 text-orange-600 text-xs sm:text-sm font-black uppercase tracking-wider">
-                  <span className="text-base animate-bounce">🏆</span>
-                  <span>BIHAR'S #1 TRUSTED PLASTIC DEALER</span>
-                </div>
-                <h2 className="text-slate-800 text-sm sm:text-base md:text-lg font-extrabold leading-snug">
-                  {lang === "en" 
-                    ? "Best Rate Provider Dealer of Bihar for All Plastic Sheets & Waterproof Tarpaulins" 
-                    : "बिहार में सभी प्लास्टिक शीट्स और वाटरप्रूफ तिरपाल के सर्वश्रेष्ठ एवं सबसे कम रेट वाले डीलर"}
-                </h2>
-                <p className="text-[10px] sm:text-xs text-slate-600 font-mono">
-                  {lang === "en" 
-                    ? "Browse best dealer of plastic sheet or tarpaulin at Bihar — Wholesale rates guaranteed" 
-                    : "बिहार में सबसे विश्वसनीय प्लास्टिक शीट और तिरपाल सप्लायर — डायरेक्ट थोक दाम"}
-                </p>
-              </div>
+              {/* Hero Premium Stack Collage */}
+              <div className="relative w-full flex flex-col items-center gap-6">
+                <div className="relative w-full max-w-sm sm:max-w-md aspect-[3/4]">
+                  
+                  {/* Decorative border frame */}
+                  <div className="absolute inset-0 border border-slate-200 rounded-3xl -rotate-3 scale-[1.02] bg-gradient-to-tr from-orange-500/5 to-amber-500/5 pointer-events-none" />
 
-              {/* Trust Badges Bar */}
-              <div className="flex flex-wrap gap-2.5 mb-6">
-                {(lang === "en" 
-                  ? ["✓ Since 2000", "✓ Wholesale & Retail", "✓ Genuine Brands", "✓ Bulk Orders Accepted", "✓ Fast Delivery"]
-                  : ["✓ सन 2000 से", "✓ थोक एवं खुदरा भाव", "✓ असली ब्रांड्स", "✓ बल्क आर्डर स्वीकार", "✓ तीव्र डिलीवरी"]
-                ).map((badge, idx) => (
-                  <span 
-                    key={idx}
-                    className="text-[11px] md:text-xs font-bold font-mono tracking-wide bg-orange-500/5 border border-orange-500/10 text-orange-600 px-3 py-1.5 rounded-full shadow-sm"
+                  {/* Main Hero Bento Card */}
+                  <motion.div 
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.8 }}
+                    className="w-full h-full bg-white rounded-3xl p-6 border border-slate-200/80 shadow-2xl relative overflow-hidden flex flex-col justify-between"
                   >
-                    {badge}
-                  </span>
-                ))}
-              </div>
+                    {/* Background overlay image */}
+                    <div 
+                      className="absolute inset-0 opacity-10 bg-cover bg-center pointer-events-none transition-all duration-700 ease-in-out"
+                      style={{ backgroundImage: `url('${heroBgImage}')` }}
+                    />
 
-              {/* Title Header */}
-              <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black font-display tracking-tight leading-[1.1] mb-6 text-slate-900">
-                {lang === "en" ? (
-                  <>
-                    Trusted Tarpaulin & <br />
-                    <span className="bg-gradient-to-r from-orange-600 to-amber-500 bg-clip-text text-transparent font-black">
-                      Plastic Sheet Dealer
-                    </span> <br className="hidden sm:inline" />
-                    Since 2000
-                  </>
-                ) : (
-                  <>
-                    भरोसेमंद तिरपाल और <br />
-                    <span className="bg-gradient-to-r from-orange-600 to-amber-500 bg-clip-text text-transparent font-black">
-                      प्लास्टिक शीट डीलर
-                    </span> <br className="hidden sm:inline" />
-                    सन 2000 से
-                  </>
-                )}
-              </h1>
+                    {/* Top card header */}
+                    <div className="flex justify-between items-start relative z-10">
+                      <div>
+                        <span className="text-xs font-bold text-brand-orange font-mono uppercase tracking-widest">
+                          PREMIUM QUALITY
+                        </span>
+                        <h3 className="text-xl sm:text-2xl font-extrabold font-display mt-1 text-slate-900 text-left">
+                          Om Shringar Tirpal
+                        </h3>
+                      </div>
+                      <div className="bg-emerald-50 border border-emerald-500/30 text-emerald-700 text-[10px] font-bold font-mono px-2 py-1 rounded">
+                        STOCK IN HAND
+                      </div>
+                    </div>
 
-              {/* Subheading */}
-              <p className="text-slate-600 text-base sm:text-lg md:text-xl leading-relaxed max-w-2xl mb-6 font-medium">
-                {t.heroSubtitle}
-              </p>
+                    {/* Mid illustrative autoplay image carousel */}
+                    <HeroCarousel currentLanguage={lang} onImageChange={setHeroBgImage} />
 
-              {/* Dynamic Live Store Status Card */}
-              <div className="max-w-md mb-8">
-                <StoreStatusCard currentLanguage={lang} />
-              </div>
+                    {/* Bottom details / badges list */}
+                    <div className="space-y-3 relative z-10 border-t border-slate-100 pt-4 text-xs text-left">
+                      <div className="flex justify-between text-slate-500">
+                        <span>Store Head Office:</span>
+                        <strong className="text-slate-900">Maharajganj, Siwan</strong>
+                      </div>
+                      <div className="flex justify-between text-slate-500">
+                        <span>Brand Quality Assurance:</span>
+                        <strong className="text-orange-600">ISO 9001:2015 Approved</strong>
+                      </div>
+                      <div className="flex justify-between text-slate-500">
+                        <span>Serving Districts:</span>
+                        <strong className="text-slate-900">Siwan, Gopalganj, Saran</strong>
+                      </div>
+                    </div>
+                  </motion.div>
 
-              {/* CTA Buttons */}
-              <div className="flex flex-col sm:flex-row flex-wrap gap-3.5 mb-12">
-                <a
-                  href={BUSINESS_INFO.phoneFormatted}
-                  className="flex items-center justify-center gap-2 bg-orange-600 hover:bg-orange-700 text-white px-8 py-4 rounded-full font-extrabold text-base transition-all duration-200 shadow-lg hover:shadow-orange-600/30 active:scale-95 animate-pulse"
-                >
-                  <Phone className="w-5 h-5" />
-                  {t.heroCtaCall}
-                </a>
-                <a
-                  href={getWhatsAppGeneralLink()}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#20ba5a] text-white px-8 py-4 rounded-full font-extrabold text-base transition-all duration-200 shadow-lg hover:shadow-emerald-500/20 active:scale-95"
-                >
-                  <MessageSquare className="w-5 h-5" />
-                  {t.heroCtaWhatsApp}
-                </a>
-              </div>
+                  {/* Floating banner on right */}
+                  <div className="absolute top-2 right-2 sm:-top-4 sm:-right-4 bg-brand-orange text-white px-3.5 py-2 rounded-xl shadow-lg text-xs font-bold font-mono tracking-widest uppercase rotate-3 z-20">
+                    ★ WHOLESALER
+                  </div>
 
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-6 pt-8 border-t border-slate-200">
-                <div>
-                  <div className="text-3xl font-extrabold text-orange-600 font-display">26+</div>
-                  <div className="text-xs text-slate-500 mt-1 font-semibold">{lang === "en" ? "Years of Trust (Est. 2000)" : "वर्षों का अटूट विश्वास"}</div>
                 </div>
-                <div>
-                  <div className="text-3xl font-extrabold text-orange-600 font-display">50+</div>
-                  <div className="text-xs text-slate-500 mt-1 font-semibold">{lang === "en" ? "Size Configurations" : "साइज़ कॉम्बिनेशन"}</div>
-                </div>
-                <div>
-                  <div className="text-3xl font-extrabold text-orange-600 font-display">100%</div>
-                  <div className="text-xs text-slate-500 mt-1 font-semibold">{lang === "en" ? "Waterproof & UV Tested" : "वाटरप्रूफ एवं टिकाऊ"}</div>
-                </div>
-                <div>
-                  <div className="text-3xl font-extrabold text-orange-600 font-display">10k+</div>
-                  <div className="text-xs text-slate-500 mt-1 font-semibold">{lang === "en" ? "Happy Customers" : "खुशहाल ग्राहक"}</div>
-                </div>
-              </div>
 
-            </div>
-
-            {/* Hero Premium Stack Collage */}
-            <div className="lg:col-span-5 relative w-full flex flex-col items-center gap-6">
-              <div className="relative w-full max-w-sm sm:max-w-md aspect-[3/4]">
-                
-                {/* Decorative border frame */}
-                <div className="absolute inset-0 border border-slate-200 rounded-3xl -rotate-3 scale-[1.02] bg-gradient-to-tr from-orange-500/5 to-amber-500/5 pointer-events-none" />
-
-                {/* Main Hero Bento Card */}
+                {/* Direct Inquiry Owner details positioned perfectly underneath the frame */}
                 <motion.div 
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  transition={{ duration: 0.8 }}
-                  className="w-full h-full bg-white rounded-3xl p-6 border border-slate-200/80 shadow-2xl relative overflow-hidden flex flex-col justify-between"
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ delay: 0.3 }}
+                  className="w-full max-w-sm sm:max-w-md bg-white text-slate-900 p-4 rounded-2xl shadow-lg flex items-center justify-between border border-slate-100 hover:shadow-xl transition-shadow relative z-10"
                 >
-                  {/* Background overlay image */}
-                  <div 
-                    className="absolute inset-0 opacity-10 bg-cover bg-center pointer-events-none transition-all duration-700 ease-in-out"
-                    style={{ backgroundImage: `url('${heroBgImage}')` }}
-                  />
-
-                  {/* Top card header */}
-                  <div className="flex justify-between items-start relative z-10">
-                    <div>
-                      <span className="text-xs font-bold text-brand-orange font-mono uppercase tracking-widest">
-                        PREMIUM QUALITY
-                      </span>
-                      <h3 className="text-xl sm:text-2xl font-extrabold font-display mt-1 text-slate-900">
-                        Om Shringar Tirpal
-                      </h3>
+                  <div className="flex items-center gap-3">
+                    <div className="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center text-orange-600 shrink-0">
+                      <PhoneCall className="w-5 h-5" />
                     </div>
-                    <div className="bg-emerald-50 border border-emerald-500/30 text-emerald-700 text-[10px] font-bold font-mono px-2 py-1 rounded">
-                      STOCK IN HAND
+                    <div className="text-left">
+                      <div className="text-[9px] font-extrabold font-mono text-slate-400 uppercase tracking-widest">
+                        DIRECT INQUIRY
+                      </div>
+                      <div className="text-sm font-extrabold text-slate-900 font-display">
+                        Store Helpline
+                      </div>
                     </div>
                   </div>
-
-                  {/* Mid illustrative autoplay image carousel */}
-                  <HeroCarousel currentLanguage={lang} onImageChange={setHeroBgImage} />
-
-                  {/* Bottom details / badges list */}
-                  <div className="space-y-3 relative z-10 border-t border-slate-100 pt-4 text-xs">
-                    <div className="flex justify-between text-slate-500">
-                      <span>Store Head Office:</span>
-                      <strong className="text-slate-900">Maharajganj, Siwan</strong>
-                    </div>
-                    <div className="flex justify-between text-slate-500">
-                      <span>Brand Quality Assurance:</span>
-                      <strong className="text-orange-600">ISO 9001:2015 Approved</strong>
-                    </div>
-                    <div className="flex justify-between text-slate-500">
-                      <span>Serving Districts:</span>
-                      <strong className="text-slate-900">Siwan, Gopalganj, Saran</strong>
-                    </div>
-                  </div>
+                  
+                  <a
+                    href="tel:+918002194427"
+                    className="bg-orange-600 hover:bg-orange-700 text-white text-xs font-black px-4 py-2.5 rounded-full transition-colors font-mono tracking-wider flex items-center gap-1.5 shadow-md shadow-orange-600/10 cursor-pointer"
+                  >
+                    <span>📞 Call Store</span>
+                    <span className="font-mono font-bold">+91 8002194427</span>
+                  </a>
                 </motion.div>
-
-                {/* Floating banner on right */}
-                <div className="absolute top-2 right-2 sm:-top-4 sm:-right-4 bg-brand-orange text-white px-3.5 py-2 rounded-xl shadow-lg text-xs font-bold font-mono tracking-widest uppercase rotate-3 z-20">
-                  ★ WHOLESALER
-                </div>
-
               </div>
-
-              {/* Direct Inquiry Owner details positioned perfectly underneath the frame */}
-              <motion.div 
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3 }}
-                className="w-full max-w-sm sm:max-w-md bg-white text-slate-900 p-4 rounded-2xl shadow-lg flex items-center justify-between border border-slate-100 hover:shadow-xl transition-shadow relative z-10"
-              >
-                <div className="flex items-center gap-3">
-                  <div className="w-10 h-10 rounded-full bg-orange-100 flex items-center justify-center text-orange-600 shrink-0">
-                    <PhoneCall className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <div className="text-[9px] font-extrabold font-mono text-slate-400 uppercase tracking-widest">
-                      DIRECT INQUIRY
-                    </div>
-                    <div className="text-sm font-extrabold text-slate-900 font-display">
-                      Store Helpline
-                    </div>
-                  </div>
-                </div>
-                
-                <a
-                  href="tel:+918002194427"
-                  className="bg-orange-600 hover:bg-orange-700 text-white text-xs font-black px-4 py-2.5 rounded-full transition-colors font-mono tracking-wider flex items-center gap-1.5 shadow-md shadow-orange-600/10 cursor-pointer"
-                >
-                  <span>📞 Call Store</span>
-                  <span className="font-mono font-bold">+91 8002194427</span>
-                </a>
-              </motion.div>
             </div>
-
-          </div>
-        </div>
-      </section>
+          </section>
 
       {/* PRODUCT VIDEOS SHOWCASE SECTION */}
       <ProductVideosSection lang={lang} onEnquire={handleEnquire} />
+
+      {/* 6. PRODUCTS CATALOG PREVIEW SECTION */}
+      <section id="products" className="py-24 bg-slate-50 text-slate-900 relative border-y border-slate-200/60 overflow-hidden scroll-mt-24">
+        {/* Subtle grid texture */}
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#00000003_1px,transparent_1px),linear-gradient(to_bottom,#00000003_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none" />
+        {/* Soft radial glow behind content */}
+        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full bg-orange-600/[0.04] blur-[120px] pointer-events-none" />
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+          <div className="flex justify-center mb-8">
+            <motion.button
+              whileHover={{ y: -4, scale: 1.01 }}
+              whileTap={{ scale: 0.97 }}
+              onClick={() => {
+                setIsCatalogOpen(true);
+              }}
+              className="group relative flex items-center justify-between gap-5 px-6 sm:px-8 h-[60px] sm:h-[68px] min-w-[280px] sm:min-w-[340px] rounded-full bg-gradient-to-r from-[#FF6A00] via-[#FF8C00] to-[#FF5E00] hover:from-[#FF8C00] hover:via-[#FF5E00] hover:to-[#FF6A00] border border-white/20 text-white font-sans transition-all duration-300 ease-in-out cursor-pointer select-none overflow-hidden animate-cta-pulse focus:outline-none focus:ring-4 focus:ring-orange-500/40 focus:ring-offset-2"
+              aria-label="View Products Catalog"
+            >
+              {/* Subtle top glossy highlight layer */}
+              <div className="absolute inset-0 rounded-full border-t border-white/35 bg-gradient-to-b from-white/12 to-transparent pointer-events-none" />
+
+              {/* Shimmer/light sweep element (repeating every 5s) */}
+              <div className="absolute inset-0 w-1/3 h-full bg-gradient-to-r from-transparent via-white/20 to-transparent animate-cta-shimmer pointer-events-none" />
+
+              {/* Text Area (English slightly larger, stacked cleanly) */}
+              <div className="flex flex-col text-left relative z-10 leading-tight">
+                <span className="text-sm sm:text-[17px] font-extrabold tracking-wide text-white drop-shadow-sm font-sans uppercase">
+                  View Products
+                </span>
+                <span className="text-[11px] sm:text-[13px] font-bold text-white/90 font-sans tracking-wide">
+                  हमारे प्रोडक्ट्स देखें
+                </span>
+              </div>
+
+              {/* Premium Glass Circle Arrow Icon on Right */}
+              <div className="w-9 h-9 sm:w-[44px] sm:h-[44px] rounded-full bg-white/15 backdrop-blur-md flex items-center justify-center border border-white/25 shadow-[inset_0_1px_3px_rgba(255,255,255,0.4)] text-white shrink-0 group-hover:translate-x-1.5 transition-transform duration-300 relative z-10">
+                <Icons.ArrowRight className="w-5 h-5 stroke-[2.5] group-hover:translate-x-1 transition-transform duration-300" />
+              </div>
+            </motion.button>
+          </div>
+
+          {/* Dynamic automatic product carousel sliding every 1s */}
+          <ProductMiniCarousel
+            lang={lang}
+            onSelectProduct={(slug) => {
+              window.history.pushState({}, "", `/products/${slug}`);
+              setCurrentProductSlug(slug);
+              window.scrollTo({ top: 0 });
+            }}
+          />
+        </div>
+      </section>
 
       {/* SHOP FRONT SHOWCASE SECTION */}
       <section className="py-16 bg-gradient-to-b from-white to-slate-50 relative overflow-hidden border-b border-slate-200/50">
@@ -863,39 +805,6 @@ export default function App() {
         </motion.button>
       </div>
 
-      {/* 6. PRODUCTS CATALOG PREVIEW SECTION */}
-      <section id="products" className="py-24 bg-slate-50 text-slate-900 relative border-y border-slate-200/60 overflow-hidden scroll-mt-24">
-        {/* Subtle grid texture */}
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#00000003_1px,transparent_1px),linear-gradient(to_bottom,#00000003_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none" />
-        {/* Soft radial glow behind content */}
-        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full bg-orange-600/[0.04] blur-[120px] pointer-events-none" />
-
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-          <div className="flex justify-center mb-6">
-            <motion.button
-              whileHover={{ scale: 1.05, y: -2, boxShadow: "0 20px 40px -10px rgba(249, 115, 22, 0.4)" }}
-              whileTap={{ scale: 0.98 }}
-              onClick={() => {
-                setIsCatalogOpen(true);
-              }}
-              className="px-10 py-5 bg-gradient-to-r from-orange-600 to-amber-500 hover:from-orange-700 hover:to-amber-600 text-white font-extrabold text-base rounded-full shadow-lg shadow-orange-500/20 transition-all cursor-pointer flex items-center gap-3 border border-orange-500/20"
-            >
-              <span>View Products / हमारे प्रोडक्ट्स देखें</span>
-              <Icons.ArrowRight className="w-5 h-5 bg-white/20 p-1 rounded-full text-white" />
-            </motion.button>
-          </div>
-
-          {/* Dynamic automatic product carousel sliding every 1s */}
-          <ProductMiniCarousel
-            lang={lang}
-            onSelectProduct={(slug) => {
-              window.history.pushState({}, "", `/products/${slug}`);
-              setCurrentProductSlug(slug);
-              window.scrollTo({ top: 0 });
-            }}
-          />
-        </div>
-      </section>
 
       {/* FULLSCREEN PRODUCTS CATALOG OVERLAY */}
       <AnimatePresence>
@@ -1250,221 +1159,7 @@ export default function App() {
         </div>
       </section>
 
-      {/* 8. AVAILABLE PLASTIC SIZES (SPEC TABLE) */}
-      <section id="size-matrix" className="py-20 bg-slate-50 border-y border-slate-100/50 scroll-mt-24 overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-            
-            {/* Left Info Column */}
-            <div className="lg:col-span-5 flex flex-col">
-              <div className="inline-flex items-center gap-2 bg-orange-50 text-brand-orange text-xs font-bold font-mono px-3.5 py-1.5 rounded-full w-fit mb-5">
-                <Clock className="w-3.5 h-3.5" />
-                <span>SPECIFICATIONS SHEET</span>
-              </div>
-              <h2 className="text-3xl sm:text-4xl font-extrabold font-display text-brand-blue-dark tracking-tight mb-6">
-                Ready-to-Dispatch Widths & Custom Size Grid
-              </h2>
-              <p className="text-slate-600 text-sm sm:text-base leading-relaxed mb-6">
-                We supply premium plastic rolls with customized widths ranging from <strong className="text-brand-orange font-bold font-display">8 ft – 36 ft</strong>. Standard thicknesses and lengths are cataloged to suit both retail consumers and heavy infrastructure developers.
-              </p>
-              <div className="p-5 bg-white border border-slate-100 rounded-2xl shadow-sm space-y-4 mb-8">
-                <div className="flex justify-between items-center text-sm border-b border-slate-100 pb-3">
-                  <span className="text-slate-500 font-medium">Standard Width Availability:</span>
-                  <span className="font-bold text-brand-blue-royal font-display bg-blue-50 px-2.5 py-1 rounded">8 ft to 36 ft</span>
-                </div>
-                <div className="flex justify-between items-center text-sm border-b border-slate-100 pb-3">
-                  <span className="text-slate-500 font-medium">Tarpaulin Sizes Range:</span>
-                  <span className="font-bold text-brand-blue-royal font-display bg-blue-50 px-2.5 py-1 rounded">6×6 ft up to 60×100 ft</span>
-                </div>
-                <div className="flex justify-between items-center text-sm">
-                  <span className="text-slate-500 font-medium">Continuous Bulk Roll:</span>
-                  <span className="font-bold text-brand-blue-royal font-display bg-blue-50 px-2.5 py-1 rounded">Yes, standard full rolls</span>
-                </div>
-              </div>
-              <a
-                href="#enquire"
-                className="w-full sm:w-fit bg-brand-blue-dark hover:bg-brand-blue-royal text-white text-center font-bold px-6 py-3.5 rounded-full text-sm transition-all shadow"
-              >
-                Request Custom Size Configuration
-              </a>
-            </div>
 
-            {/* Right Table Column */}
-            <div className="lg:col-span-7">
-              <div className="bg-white rounded-3xl border border-slate-100 shadow-xl overflow-hidden">
-                <div className="bg-brand-blue-dark p-5 sm:p-6 text-white flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
-                  <div>
-                    <h3 className="font-bold text-lg font-display">
-                      {sizeChartTab === "plastic" ? "Plastic Sizing Matrix" : "Tarpaulin Size Chart"}
-                    </h3>
-                    <p className="text-xs text-slate-400 mt-1">
-                      {sizeChartTab === "plastic" ? "Width in Feet × Thickness Gauge Categories" : "Standard Feet Dimensions (Standard Gauges)"}
-                    </p>
-                  </div>
-                  
-                  {/* Tab Selector Buttons */}
-                  <div className="flex bg-white/10 p-1 rounded-xl self-stretch sm:self-auto shrink-0">
-                    <button
-                      onClick={() => setSizeChartTab("plastic")}
-                      className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-                        sizeChartTab === "plastic" ? "bg-orange-500 text-white" : "text-slate-300 hover:text-white"
-                      }`}
-                    >
-                      Plastic Roll
-                    </button>
-                    <button
-                      onClick={() => setSizeChartTab("tarpaulin")}
-                      className={`px-3 py-1.5 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-                        sizeChartTab === "tarpaulin" ? "bg-orange-500 text-white" : "text-slate-300 hover:text-white"
-                      }`}
-                    >
-                      Tarpaulin Chart
-                    </button>
-                  </div>
-                </div>
-
-                {sizeChartTab === "plastic" ? (
-                  <div className="divide-y divide-slate-100 transition-all duration-300">
-                    {SIZE_MATRIX.map((row, idx) => (
-                      <div key={idx} className="p-5 sm:p-6 flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 hover:bg-slate-50/50 transition-colors">
-                        <div className="sm:w-1/3 shrink-0">
-                          <span className="font-bold text-sm text-brand-blue-dark font-mono block">
-                            {row.category}
-                          </span>
-                        </div>
-                        <div className="flex flex-wrap gap-2">
-                          {row.sizes.map((sz, sIdx) => (
-                            <span
-                              key={sIdx}
-                              className="bg-slate-100 text-slate-700 font-bold text-xs px-2.5 py-1 rounded-lg border border-slate-200/50 font-mono"
-                            >
-                              {sz}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  /* Tarpaulin Size Chart in a Cute Frame */
-                  <div className="p-5 sm:p-6 bg-gradient-to-br from-orange-500/5 via-amber-500/5 to-orange-500/5 border-2 border-dashed border-orange-300 rounded-2xl m-4 sm:m-6 shadow-inner relative overflow-hidden transition-all duration-300">
-                    {/* Cute floating decorations */}
-                    <div className="absolute -top-10 -right-10 w-24 h-24 bg-orange-200/20 rounded-full blur-xl pointer-events-none" />
-                    <div className="absolute -bottom-10 -left-10 w-24 h-24 bg-amber-200/20 rounded-full blur-xl pointer-events-none" />
-
-                    <div className="flex items-center gap-3 mb-6 relative z-10">
-                      <div className="w-10 h-10 rounded-full bg-orange-100 border border-orange-200 flex items-center justify-center text-orange-600 shrink-0 text-lg">
-                        📐
-                      </div>
-                      <div>
-                        <h4 className="font-black text-slate-800 text-sm sm:text-base font-display flex flex-wrap items-center gap-2">
-                          <span>Standard Tarpaulin Sizing Matrix</span>
-                          <span className="text-[9px] font-black bg-orange-500 text-white px-2 py-0.5 rounded-md uppercase tracking-wider">
-                            Cute Frame
-                          </span>
-                        </h4>
-                        <p className="text-xs text-slate-500">Premium Double-Reinforced All-Weather Guards</p>
-                      </div>
-                    </div>
-
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 relative z-10">
-                      {/* Category 1: Standard & Utility */}
-                      <div className="bg-white/90 p-4 rounded-xl border border-orange-200/40 backdrop-blur-sm shadow-sm hover:border-orange-300/60 transition-colors">
-                        <div className="flex items-center gap-1.5 mb-2.5 border-b border-orange-100/60 pb-1.5">
-                          <span className="text-sm">🏡</span>
-                          <span className="font-extrabold text-xs text-slate-800 uppercase tracking-wider font-display">
-                            Small & Utility Sizes
-                          </span>
-                        </div>
-                        <div className="flex flex-wrap gap-2">
-                          {["6 × 6 ft", "9 × 12 ft", "12 × 12 ft", "12 × 15 ft"].map((sz) => (
-                            <span
-                              key={sz}
-                              className="bg-orange-50 text-orange-700 font-extrabold text-xs px-2.5 py-1.5 rounded-lg border border-orange-100/60 font-mono shadow-sm hover:scale-105 transition-transform"
-                            >
-                              {sz}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-
-                      {/* Category 2: Medium & Standard */}
-                      <div className="bg-white/90 p-4 rounded-xl border border-orange-200/40 backdrop-blur-sm shadow-sm hover:border-orange-300/60 transition-colors">
-                        <div className="flex items-center gap-1.5 mb-2.5 border-b border-orange-100/60 pb-1.5">
-                          <span className="text-sm">🚚</span>
-                          <span className="font-extrabold text-xs text-slate-800 uppercase tracking-wider font-display">
-                            Medium & Standard Sizes
-                          </span>
-                        </div>
-                        <div className="flex flex-wrap gap-2">
-                          {["12 × 18 ft", "15 × 18 ft", "18 × 24 ft", "24 × 24 ft"].map((sz) => (
-                            <span
-                              key={sz}
-                              className="bg-amber-50 text-amber-700 font-extrabold text-xs px-2.5 py-1.5 rounded-lg border border-amber-100/60 font-mono shadow-sm hover:scale-105 transition-transform"
-                            >
-                              {sz}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-
-                      {/* Category 3: Large & Commercial */}
-                      <div className="bg-white/90 p-4 rounded-xl border border-orange-200/40 backdrop-blur-sm shadow-sm hover:border-orange-300/60 transition-colors">
-                        <div className="flex items-center gap-1.5 mb-2.5 border-b border-orange-100/60 pb-1.5">
-                          <span className="text-sm">🏗️</span>
-                          <span className="font-extrabold text-xs text-slate-800 uppercase tracking-wider font-display">
-                            Large & Heavy-Duty Sizes
-                          </span>
-                        </div>
-                        <div className="flex flex-wrap gap-2">
-                          {["24 × 30 ft", "30 × 30 ft", "30 × 40 ft"].map((sz) => (
-                            <span
-                              key={sz}
-                              className="bg-rose-50 text-rose-700 font-extrabold text-xs px-2.5 py-1.5 rounded-lg border border-rose-100/60 font-mono shadow-sm hover:scale-105 transition-transform"
-                            >
-                              {sz}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-
-                      {/* Category 4: Super Large & Industrial */}
-                      <div className="bg-white/90 p-4 rounded-xl border border-orange-200/40 backdrop-blur-sm shadow-sm hover:border-orange-300/60 transition-colors">
-                        <div className="flex items-center gap-1.5 mb-2.5 border-b border-orange-100/60 pb-1.5">
-                          <span className="text-sm">⛈️</span>
-                          <span className="font-extrabold text-xs text-slate-800 uppercase tracking-wider font-display">
-                            Industrial & Bulk Covering
-                          </span>
-                        </div>
-                        <div className="flex flex-wrap gap-2">
-                          {["40 × 50 ft", "40 × 60 ft", "60 × 100 ft"].map((sz) => (
-                            <span
-                              key={sz}
-                              className="bg-blue-50 text-blue-700 font-extrabold text-xs px-2.5 py-1.5 rounded-lg border border-blue-100/60 font-mono shadow-sm hover:scale-105 transition-transform"
-                            >
-                              {sz}
-                            </span>
-                          ))}
-                        </div>
-                      </div>
-                    </div>
-
-                    {/* Cute Helper Footnote */}
-                    <div className="mt-5 p-3.5 bg-orange-500/10 border border-orange-500/20 rounded-xl flex items-start gap-2.5 text-[11px] text-orange-800 leading-relaxed font-medium">
-                      <span className="text-base shrink-0 select-none">🔔</span>
-                      <span>
-                        Aluminum Rust-Resistant Grommets are pre-installed at every 3 feet intervals for reliable heavy-duty anchoring and tying. Custom length configurations can be ordered at short notice!
-                      </span>
-                    </div>
-                  </div>
-                )}
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </section>
 
       {/* 9. WHY CHOOSE US */}
       <section id="why-choose" className="py-20 bg-white relative scroll-mt-24 overflow-hidden">
@@ -1510,6 +1205,200 @@ export default function App() {
               </motion.div>
             ))}
           </div>
+        </div>
+      </section>
+
+      {/* 8. AVAILABLE PLASTIC & TARPAULIN SIZES */}
+      <section id="size-matrix" className="py-20 bg-white border-b border-slate-200/40 scroll-mt-24 overflow-hidden relative">
+        <div className="absolute inset-0 bg-[linear-gradient(to_right,#00000002_1px,transparent_1px),linear-gradient(to_bottom,#00000002_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none" />
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+          
+          <div className="inline-flex items-center gap-2 bg-orange-50 text-brand-orange text-xs font-bold font-mono px-3.5 py-1.5 rounded-full w-fit mb-5 border border-orange-100">
+            <Clock className="w-3.5 h-3.5" />
+            <span>SIZES & SPECIFICATIONS</span>
+          </div>
+          <h2 className="text-3xl sm:text-4xl font-extrabold font-display text-brand-blue-dark tracking-tight mb-4">
+            {lang === "en" ? "Standard Size Configurations" : "मानक उपलब्ध साइज़"}
+          </h2>
+          <p className="text-slate-600 text-sm sm:text-base leading-relaxed mb-10 max-w-2xl mx-auto">
+            {lang === "en" 
+              ? "We supply premium quality plastic rolls and tarpaulins in multiple pre-configured dimensions and thicknesses. Select your category below to view availability."
+              : "हम कई प्रकार के पहले से तैयार आयामों और मोटाई (GSM) में प्रीमियम गुणवत्ता वाले प्लास्टिक रोल और तिरपाल की आपूर्ति करते हैं। अपनी पसंद चुनें:"}
+          </p>
+
+          <div className="bg-white rounded-3xl border border-slate-200/80 shadow-xl overflow-hidden text-left">
+            <div className="bg-gradient-to-r from-slate-900 to-[#0B2D5C] p-5 sm:p-6 text-white flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-slate-800">
+              <div>
+                <h3 className="font-bold text-lg font-display text-white">
+                  {sizeChartTab === "plastic" 
+                    ? (lang === "en" ? "Plastic Sizing Matrix" : "प्लास्टिक शीट साइज़ चार्ट") 
+                    : (lang === "en" ? "Tarpaulin Size Chart" : "तिरपाल साइज़ चार्ट")}
+                </h3>
+                <p className="text-xs text-slate-400 mt-1">
+                  {sizeChartTab === "plastic" 
+                    ? (lang === "en" ? "Width in Feet × Thickness Gauge Categories" : "चौड़ाई फीट में × मोटाई गेज श्रेणियां") 
+                    : (lang === "en" ? "Standard Feet Dimensions (Standard Gauges)" : "मानक फीट आयाम (मानक गेज)")}
+                </p>
+              </div>
+              
+              {/* Tab Selector Buttons */}
+              <div className="flex bg-white/10 p-1 rounded-xl self-stretch sm:self-auto shrink-0 border border-white/5">
+                <button
+                  onClick={() => setSizeChartTab("plastic")}
+                  className={`px-4 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                    sizeChartTab === "plastic" ? "bg-orange-500 text-white shadow-md" : "text-slate-300 hover:text-white"
+                  }`}
+                >
+                  {lang === "en" ? "Plastic Roll" : "प्लास्टिक रोल"}
+                </button>
+                <button
+                  onClick={() => setSizeChartTab("tarpaulin")}
+                  className={`px-4 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer ${
+                    sizeChartTab === "tarpaulin" ? "bg-orange-500 text-white shadow-md" : "text-slate-300 hover:text-white"
+                  }`}
+                >
+                  {lang === "en" ? "Tarpaulin Chart" : "तिरपाल चार्ट"}
+                </button>
+              </div>
+            </div>
+
+            {sizeChartTab === "plastic" ? (
+              <div className="divide-y divide-slate-100 transition-all duration-300 bg-white">
+                {SIZE_MATRIX.map((row, idx) => (
+                  <div key={idx} className="p-5 sm:p-6 flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 hover:bg-slate-50/50 transition-colors">
+                    <div className="sm:w-1/3 shrink-0">
+                      <span className="font-bold text-sm text-[#0B2D5C] font-mono block">
+                        {row.category}
+                      </span>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {row.sizes.map((sz, sIdx) => (
+                        <span
+                          key={sIdx}
+                          className="bg-slate-50 text-slate-700 font-extrabold text-xs px-2.5 py-1 rounded-lg border border-slate-200/50 font-mono shadow-sm"
+                        >
+                          {sz}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            ) : (
+              /* Tarpaulin Size Chart in a Cute Frame */
+              <div className="p-5 sm:p-6 bg-gradient-to-br from-orange-500/5 via-amber-500/5 to-orange-500/5 border-2 border-dashed border-orange-200 rounded-2xl m-4 sm:m-6 shadow-inner relative overflow-hidden transition-all duration-300">
+                {/* Cute floating decorations */}
+                <div className="absolute -top-10 -right-10 w-24 h-24 bg-orange-200/20 rounded-full blur-xl pointer-events-none" />
+                <div className="absolute -bottom-10 -left-10 w-24 h-24 bg-amber-200/20 rounded-full blur-xl pointer-events-none" />
+
+                <div className="flex items-center gap-3 mb-6 relative z-10">
+                  <div className="w-10 h-10 rounded-xl bg-orange-100 border border-orange-200 flex items-center justify-center text-orange-600 shrink-0 text-lg">
+                    📐
+                  </div>
+                  <div>
+                    <h4 className="font-black text-slate-800 text-sm sm:text-base font-display flex flex-wrap items-center gap-2">
+                      <span>Standard Tarpaulin Sizing Matrix</span>
+                      <span className="text-[9px] font-black bg-orange-500 text-white px-2 py-0.5 rounded-md uppercase tracking-wider">
+                        All Sizes
+                      </span>
+                    </h4>
+                    <p className="text-xs text-slate-500">Premium Double-Reinforced All-Weather Guards</p>
+                  </div>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 relative z-10">
+                  {/* Category 1: Standard & Utility */}
+                  <div className="bg-white/90 p-4 rounded-xl border border-orange-200/40 backdrop-blur-sm shadow-sm hover:border-orange-300/60 transition-colors">
+                    <div className="flex items-center gap-1.5 mb-2.5 border-b border-orange-100/60 pb-1.5">
+                      <span className="text-sm">🏡</span>
+                      <span className="font-extrabold text-xs text-slate-800 uppercase tracking-wider font-display">
+                        Small & Utility Sizes
+                      </span>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {["6 × 6 ft", "9 × 12 ft", "12 × 12 ft", "12 × 15 ft"].map((sz) => (
+                        <span
+                          key={sz}
+                          className="bg-orange-50 text-orange-700 font-extrabold text-xs px-2.5 py-1.5 rounded-lg border border-orange-100/60 font-mono shadow-sm hover:scale-105 transition-transform"
+                        >
+                          {sz}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Category 2: Medium & Standard */}
+                  <div className="bg-white/90 p-4 rounded-xl border border-orange-200/40 backdrop-blur-sm shadow-sm hover:border-orange-300/60 transition-colors">
+                    <div className="flex items-center gap-1.5 mb-2.5 border-b border-orange-100/60 pb-1.5">
+                      <span className="text-sm">🚚</span>
+                      <span className="font-extrabold text-xs text-slate-800 uppercase tracking-wider font-display">
+                        Medium & Standard Sizes
+                      </span>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {["12 × 18 ft", "15 × 18 ft", "18 × 24 ft", "24 × 24 ft"].map((sz) => (
+                        <span
+                          key={sz}
+                          className="bg-amber-50 text-amber-700 font-extrabold text-xs px-2.5 py-1.5 rounded-lg border border-amber-100/60 font-mono shadow-sm hover:scale-105 transition-transform"
+                        >
+                          {sz}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Category 3: Large & Commercial */}
+                  <div className="bg-white/90 p-4 rounded-xl border border-orange-200/40 backdrop-blur-sm shadow-sm hover:border-orange-300/60 transition-colors">
+                    <div className="flex items-center gap-1.5 mb-2.5 border-b border-orange-100/60 pb-1.5">
+                      <span className="text-sm">🏗️</span>
+                      <span className="font-extrabold text-xs text-slate-800 uppercase tracking-wider font-display">
+                        Large & Heavy-Duty Sizes
+                      </span>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {["24 × 30 ft", "30 × 30 ft", "30 × 40 ft"].map((sz) => (
+                        <span
+                          key={sz}
+                          className="bg-rose-50 text-rose-700 font-extrabold text-xs px-2.5 py-1.5 rounded-lg border border-rose-100/60 font-mono shadow-sm hover:scale-105 transition-transform"
+                        >
+                          {sz}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  {/* Category 4: Super Large & Industrial */}
+                  <div className="bg-white/90 p-4 rounded-xl border border-orange-200/40 backdrop-blur-sm shadow-sm hover:border-orange-300/60 transition-colors">
+                    <div className="flex items-center gap-1.5 mb-2.5 border-b border-orange-100/60 pb-1.5">
+                      <span className="text-sm">⛈️</span>
+                      <span className="font-extrabold text-xs text-slate-800 uppercase tracking-wider font-display">
+                        Industrial & Bulk Covering
+                      </span>
+                    </div>
+                    <div className="flex flex-wrap gap-2">
+                      {["40 × 50 ft", "40 × 60 ft", "60 × 100 ft"].map((sz) => (
+                        <span
+                          key={sz}
+                          className="bg-blue-50 text-blue-700 font-extrabold text-xs px-2.5 py-1.5 rounded-lg border border-blue-100/60 font-mono shadow-sm hover:scale-105 transition-transform"
+                        >
+                          {sz}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+                </div>
+
+                {/* Cute Helper Footnote */}
+                <div className="mt-5 p-3.5 bg-orange-500/10 border border-orange-500/20 rounded-xl flex items-start gap-2.5 text-[11px] text-orange-800 leading-relaxed font-medium">
+                  <span className="text-base shrink-0 select-none">🔔</span>
+                  <span>
+                    Aluminum Rust-Resistant Grommets are pre-installed at every 3 feet intervals for reliable heavy-duty anchoring and tying. Custom configurations can be ordered on request!
+                  </span>
+                </div>
+              </div>
+            )}
+          </div>
+
         </div>
       </section>
 
