@@ -49,6 +49,7 @@ import {
 import ProductCard from "./components/ProductCard";
 import GoogleReviewPopup from "./components/GoogleReviewPopup";
 import BrandCarousel from "./components/BrandCarousel";
+import ProductMiniCarousel from "./components/ProductMiniCarousel";
 import InquiryForm from "./components/InquiryForm";
 import InquiryModal from "./components/InquiryModal";
 import SingleProductSection from "./components/SingleProductSection";
@@ -56,6 +57,7 @@ import SupplierPopup from "./components/SupplierPopup";
 import HeroCarousel from "./components/HeroCarousel";
 import StoreStatusCard from "./components/StoreStatusCard";
 import CustomerSuccessCarousel from "./components/CustomerSuccessCarousel";
+import { ProductVideosSection } from "./components/ProductVideosSection";
 import { TRANSLATIONS } from "./translations";
 
 // Safe dynamic icon loader to keep code modular and readable
@@ -521,7 +523,10 @@ export default function App() {
         />
       ) : (
         <>
-        {/* 3. HERO SECTION */}
+          {/* 4. BRAND PARTNERS BAR (CAROUSEL) - MOVED TO TOP */}
+          <BrandCarousel />
+
+          {/* 3. HERO SECTION */}
           <section className="relative bg-gradient-to-b from-white via-slate-50 to-white text-slate-900 border-b border-slate-200/80 overflow-hidden py-16 lg:py-28">
         
         {/* Soft elegant warm ambient glow */}
@@ -741,6 +746,9 @@ export default function App() {
         </div>
       </section>
 
+      {/* PRODUCT VIDEOS SHOWCASE SECTION */}
+      <ProductVideosSection lang={lang} onEnquire={handleEnquire} />
+
       {/* SHOP FRONT SHOWCASE SECTION */}
       <section className="py-16 bg-gradient-to-b from-white to-slate-50 relative overflow-hidden border-b border-slate-200/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
@@ -842,9 +850,6 @@ export default function App() {
         </div>
       </section>
 
-      {/* 4. BRAND PARTNERS BAR (CAROUSEL) */}
-      <BrandCarousel />
-
       {/* Meet the Supplier CTA Section */}
       <div className="flex justify-center pb-12 bg-slate-50 border-b border-slate-100 relative z-10">
         <motion.button
@@ -865,26 +870,8 @@ export default function App() {
         {/* Soft radial glow behind content */}
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full bg-orange-600/[0.04] blur-[120px] pointer-events-none" />
 
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-          <div className="inline-flex items-center gap-2 bg-orange-50 border border-orange-200 px-4.5 py-1.5 rounded-full mb-6">
-            <span className="w-2 h-2 rounded-full bg-orange-500 animate-pulse" />
-            <span className="text-xs font-black font-mono text-orange-600 uppercase tracking-wider">
-              EXCLUSIVE POLYMER CATALOG
-            </span>
-          </div>
-
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black font-display tracking-tight leading-tight mb-6 text-[#0B2D5C]">
-            Explore Our Premium Polymer & <br />
-            <span className="bg-gradient-to-r from-orange-600 to-amber-600 bg-clip-text text-transparent font-black">
-              Waterproof Tarpaulin Catalog
-            </span>
-          </h2>
-
-          <p className="text-slate-600 text-sm sm:text-base md:text-lg leading-relaxed max-w-2xl mx-auto mb-10 font-semibold">
-            Discover Maharajganj's premier collection of certified heavy-duty plastic sheets, pond liners, concrete curing polythenes, nylon safety fencing, and waterproof tirpals. High durability, 100% UV stabilized, and designed for builders, agriculturalists, and businesses.
-          </p>
-
-          <div className="flex justify-center">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
+          <div className="flex justify-center mb-6">
             <motion.button
               whileHover={{ scale: 1.05, y: -2, boxShadow: "0 20px 40px -10px rgba(249, 115, 22, 0.4)" }}
               whileTap={{ scale: 0.98 }}
@@ -897,6 +884,16 @@ export default function App() {
               <Icons.ArrowRight className="w-5 h-5 bg-white/20 p-1 rounded-full text-white" />
             </motion.button>
           </div>
+
+          {/* Dynamic automatic product carousel sliding every 1s */}
+          <ProductMiniCarousel
+            lang={lang}
+            onSelectProduct={(slug) => {
+              window.history.pushState({}, "", `/products/${slug}`);
+              setCurrentProductSlug(slug);
+              window.scrollTo({ top: 0 });
+            }}
+          />
         </div>
       </section>
 
