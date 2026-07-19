@@ -142,8 +142,8 @@ export default function BrandCarousel({ lang = "en" }: BrandCarouselProps) {
           <div className="w-20 h-1 bg-gradient-to-r from-[#FF6B00] to-orange-500 mx-auto rounded-full mt-4" />
         </div>
 
-        {/* 5 Store Highlights Stats Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-4 mb-16 relative z-10">
+        {/* 4 Store Highlights Stats Cards */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-16 relative z-10">
           {/* Stat 1: 26+ Years of Trust (Est. 2000) */}
           <div className="flex items-center gap-4 p-4 rounded-2xl bg-gradient-to-r from-orange-50 to-white border border-orange-100 hover:border-orange-300 hover:shadow-md transition-all duration-300 text-left shadow-sm">
             <div className="w-12 h-12 rounded-xl bg-orange-100 flex items-center justify-center text-orange-600 shrink-0 shadow-inner">
@@ -200,21 +200,6 @@ export default function BrandCarousel({ lang = "en" }: BrandCarouselProps) {
               </h3>
               <p className="text-slate-600 text-xs font-semibold">
                 {lang === "en" ? "Happy Customers" : "10,000+ संतुष्ट ग्राहक"}
-              </p>
-            </div>
-          </div>
-
-          {/* Stat 5: Store Timings: 6:00 AM – 9:00 PM */}
-          <div className="flex items-center gap-4 p-4 rounded-2xl bg-gradient-to-r from-amber-50 to-white border border-amber-100 hover:border-amber-300 hover:shadow-md transition-all duration-300 text-left shadow-sm">
-            <div className="w-12 h-12 rounded-xl bg-amber-100 flex items-center justify-center text-amber-600 shrink-0 shadow-inner">
-              <Clock className="w-6 h-6 stroke-[2.5]" />
-            </div>
-            <div>
-              <h3 className="text-xl font-black font-display text-[#0B2D5C] leading-none mb-1">
-                Store Timings
-              </h3>
-              <p className="text-slate-600 text-xs font-semibold">
-                {lang === "en" ? "6:00 AM – 9:00 PM" : "प्रातः 6:00 से रात्रि 9:00 बजे तक"}
               </p>
             </div>
           </div>
