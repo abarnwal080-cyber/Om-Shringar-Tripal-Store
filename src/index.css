@@ -204,10 +204,10 @@
 /* Premium CTA Button Keyframes */
 @keyframes cta-glowing-pulse {
   0%, 100% {
-    box-shadow: 0 12px 30px rgba(255, 106, 0, 0.25), 0 4px 12px rgba(0, 0, 0, 0.12);
+    box-shadow: 0 12px 30px rgba(255, 106, 0, 0.25), 0 4px 12px rgba(0, 0, 0, 0.12), 0 0 0 0px rgba(255, 106, 0, 0);
   }
   50% {
-    box-shadow: 0 12px 40px rgba(255, 106, 0, 0.5), 0 4px 20px rgba(255, 106, 0, 0.25);
+    box-shadow: 0 12px 40px rgba(255, 106, 0, 0.5), 0 4px 20px rgba(255, 106, 0, 0.25), 0 0 24px 8px rgba(255, 106, 0, 0.4);
   }
 }
 
@@ -221,11 +221,25 @@
 }
 
 .animate-cta-pulse {
-  animation: cta-glowing-pulse 6s ease-in-out infinite;
+  animation: cta-glowing-pulse 4s ease-in-out infinite;
 }
 
 .animate-cta-shimmer {
   animation: cta-shimmer-sweep 5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
 }
+
+@keyframes orange-glow-pulse-black {
+  0%, 100% {
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4), 0 0 0 0px rgba(255, 122, 0, 0);
+  }
+  50% {
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.6), 0 0 22px 8px rgba(255, 122, 0, 0.65);
+  }
+}
+
+.animate-orange-glow-pulse {
+  animation: orange-glow-pulse-black 4s ease-in-out infinite;
+}
+
 
 

@@ -486,27 +486,18 @@ export default function App() {
 
       {/* MONSOON SALE CARD ON TOP */}
       <div className="bg-gradient-to-r from-amber-500/10 via-orange-500/10 to-amber-500/10 border-b border-amber-500/20 py-3.5 px-4 relative z-30 shadow-sm">
-        <div className="max-w-7xl mx-auto flex flex-col md:flex-row items-center justify-between gap-4">
-          <div className="flex flex-col sm:flex-row sm:items-center gap-3 text-center sm:text-left">
-            <span className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-black font-mono text-white bg-gradient-to-r from-orange-600 to-amber-500 rounded-full animate-pulse border border-orange-400/30 uppercase tracking-wider w-fit mx-auto sm:mx-0 shadow-sm shrink-0">
-              🌧️ MONSOON SALE LIVE NOW!
-            </span>
-            <div className="flex flex-col">
-              <h3 className="text-slate-900 font-extrabold text-sm sm:text-base leading-snug">
-                Heavy-Duty Plastic Sheets & Waterproof Tarpaulins at Wholesale Prices!
-              </h3>
-              <p className="text-xs text-slate-600 font-medium mt-0.5">
-                Special 15% discount for bulk inquiries and direct factory dispatch during this rainy season.
-              </p>
-            </div>
+        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-center gap-4 text-center sm:text-left">
+          <span className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-black font-mono text-white bg-gradient-to-r from-orange-600 to-amber-500 rounded-full animate-pulse border border-orange-400/30 uppercase tracking-wider w-fit mx-auto sm:mx-0 shadow-sm shrink-0">
+            🌧️ MONSOON SALE LIVE NOW!
+          </span>
+          <div className="flex flex-col">
+            <h3 className="text-slate-900 font-extrabold text-sm sm:text-base leading-snug">
+              Heavy-Duty Plastic Sheets & Waterproof Tarpaulins at Wholesale Prices!
+            </h3>
+            <p className="text-xs text-slate-600 font-medium mt-0.5">
+              Special 15% discount for bulk inquiries and direct factory dispatch during this rainy season.
+            </p>
           </div>
-          <a
-            href="#products"
-            className="text-xs font-extrabold text-white bg-gradient-to-r from-orange-600 to-amber-500 hover:from-orange-700 hover:to-amber-600 shadow-md hover:shadow-orange-500/20 px-5 py-2.5 rounded-xl border border-orange-500/20 transition-all hover:-translate-y-0.5 active:translate-y-0 uppercase tracking-wider shrink-0 cursor-pointer flex items-center gap-1.5"
-          >
-            <span>Explore Offers</span>
-            <span>➔</span>
-          </a>
         </div>
       </div>
 
@@ -537,35 +528,40 @@ export default function App() {
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full bg-orange-600/[0.04] blur-[120px] pointer-events-none" />
 
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-          <div className="flex justify-center mb-8">
+          <div className="flex justify-center mb-10">
             <motion.button
-              whileHover={{ y: -4, scale: 1.01 }}
+              whileHover={{ y: -4, scale: 1.02, boxShadow: "0 20px 40px rgba(255,106,0,0.3), 0 8px 24px rgba(11,31,58,0.2)" }}
               whileTap={{ scale: 0.97 }}
               onClick={() => {
                 setIsCatalogOpen(true);
               }}
-              className="group relative flex items-center justify-between gap-5 px-6 sm:px-8 h-[60px] sm:h-[68px] min-w-[280px] sm:min-w-[340px] rounded-full bg-gradient-to-r from-[#FF6A00] via-[#FF8C00] to-[#FF5E00] hover:from-[#FF8C00] hover:via-[#FF5E00] hover:to-[#FF6A00] border border-white/20 text-white font-sans transition-all duration-300 ease-in-out cursor-pointer select-none overflow-hidden animate-cta-pulse focus:outline-none focus:ring-4 focus:ring-orange-500/40 focus:ring-offset-2"
+              className="group relative flex items-center justify-between gap-4 px-4 sm:px-6 w-full max-w-[560px] h-[72px] rounded-full bg-gradient-to-r from-[#071324] via-[#0B1F3A] to-[#071324] border border-white/10 text-white font-sans transition-all duration-300 cursor-pointer select-none overflow-hidden animate-cta-pulse focus:outline-none focus:ring-4 focus:ring-orange-500/40 focus:ring-offset-2 shadow-[0_12px_30px_rgba(255,106,0,.25),_0_4px_12px_rgba(0,0,0,.12)]"
               aria-label="View Products Catalog"
             >
               {/* Subtle top glossy highlight layer */}
-              <div className="absolute inset-0 rounded-full border-t border-white/35 bg-gradient-to-b from-white/12 to-transparent pointer-events-none" />
+              <div className="absolute inset-0 rounded-full border-t border-white/20 bg-gradient-to-b from-white/10 to-transparent pointer-events-none" />
 
               {/* Shimmer/light sweep element (repeating every 5s) */}
-              <div className="absolute inset-0 w-1/3 h-full bg-gradient-to-r from-transparent via-white/20 to-transparent animate-cta-shimmer pointer-events-none" />
+              <div className="absolute inset-0 w-1/3 h-full bg-gradient-to-r from-transparent via-white/15 to-transparent animate-cta-shimmer pointer-events-none" />
 
-              {/* Text Area (English slightly larger, stacked cleanly) */}
-              <div className="flex flex-col text-left relative z-10 leading-tight">
-                <span className="text-sm sm:text-[17px] font-extrabold tracking-wide text-white drop-shadow-sm font-sans uppercase">
-                  View Products
+              {/* LEFT: Premium outlined package/cube SVG icon inside a circular glass background */}
+              <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/15 shadow-[inset_0_1px_3px_rgba(255,255,255,0.2)] text-white shrink-0">
+                <Icons.Package className="w-5 h-5 sm:w-6 sm:h-6 stroke-[1.5] text-[#FF7A00] group-hover:scale-110 transition-transform duration-300" />
+              </div>
+
+              {/* CENTER: Text with Poppins/Manrope/Inter fonts, high weight and custom sizes */}
+              <div className="flex flex-col text-left relative z-10 leading-tight flex-grow ml-2 sm:ml-4">
+                <span className="text-[18px] sm:text-[24px] md:text-[26px] font-black tracking-tight text-white drop-shadow-sm font-sans uppercase">
+                  {lang === "en" ? "VIEW PRODUCTS" : "उत्पाद देखें"}
                 </span>
-                <span className="text-[11px] sm:text-[13px] font-bold text-white/90 font-sans tracking-wide">
-                  हमारे प्रोडक्ट्स देखें
+                <span className="text-[11px] sm:text-[14px] font-medium text-orange-400/95 font-sans tracking-wide">
+                  {lang === "en" ? "Explore Our Complete Range" : "हमारे संपूर्ण रेंज को देखें"}
                 </span>
               </div>
 
-              {/* Premium Glass Circle Arrow Icon on Right */}
-              <div className="w-9 h-9 sm:w-[44px] sm:h-[44px] rounded-full bg-white/15 backdrop-blur-md flex items-center justify-center border border-white/25 shadow-[inset_0_1px_3px_rgba(255,255,255,0.4)] text-white shrink-0 group-hover:translate-x-1.5 transition-transform duration-300 relative z-10">
-                <Icons.ArrowRight className="w-5 h-5 stroke-[2.5] group-hover:translate-x-1 transition-transform duration-300" />
+              {/* RIGHT: Orange circular button containing an animated right arrow */}
+              <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-gradient-to-r from-[#FF6A00] to-[#FF8C00] flex items-center justify-center border border-white/20 shadow-lg text-white shrink-0 group-hover:scale-105 transition-transform duration-300 relative z-10">
+                <Icons.ArrowRight className="w-5 h-5 stroke-[2.5] group-hover:translate-x-1.5 transition-transform duration-300" />
               </div>
             </motion.button>
           </div>
@@ -1571,9 +1567,9 @@ export default function App() {
       <div className="hidden md:flex fixed left-0 top-[40%] z-40 transform -translate-y-1/2">
         <button
           onClick={() => handleEnquire("")}
-          className="bg-gradient-to-r from-orange-600 to-amber-500 hover:from-orange-700 hover:to-amber-600 text-white font-extrabold text-xs tracking-wider uppercase py-4 px-3 rounded-r-2xl shadow-2xl flex items-center gap-2 [writing-mode:vertical-lr] rotate-180 transition-all duration-300 hover:translate-x-1 cursor-pointer select-none border-t border-r border-b border-white/20 relative group"
+          className="bg-black hover:bg-slate-900 text-white font-extrabold text-xs tracking-wider uppercase py-4 px-3 rounded-r-2xl flex items-center gap-2 [writing-mode:vertical-lr] rotate-180 transition-all duration-300 hover:translate-x-1 cursor-pointer select-none border border-orange-500/30 relative group animate-orange-glow-pulse"
         >
-          <div className="absolute inset-0 bg-white/10 opacity-0 group-hover:opacity-100 transition-opacity rounded-r-2xl pointer-events-none" />
+          <div className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity rounded-r-2xl pointer-events-none" />
           <span className="animate-pulse">✨ {(lang as string) === "hi" ? "पूछताछ करें" : "Enquire Now"}</span>
         </button>
       </div>
@@ -1583,9 +1579,9 @@ export default function App() {
         <button
           id="enquiry-fab"
           onClick={() => handleEnquire("")}
-          className="flex items-center gap-[10px] border-none rounded-full cursor-pointer text-white font-extrabold tracking-[0.2px] transition-all duration-200 select-none shadow-[0_16px_34px_rgba(139,92,246,0.28),0_10px_24px_rgba(255,123,184,0.25)] hover:-translate-y-[2px] hover:scale-[1.03] hover:saturate-[1.05] active:translate-y-0 active:scale-[0.99]"
+          className="flex items-center gap-[10px] border border-orange-500/20 rounded-full cursor-pointer text-white font-extrabold tracking-[0.2px] transition-all duration-200 select-none hover:-translate-y-[2px] hover:scale-[1.03] active:translate-y-0 active:scale-[0.99] animate-orange-glow-pulse"
           style={{
-            background: "linear-gradient(135deg, #ff7bb8, #ff9f6e 45%, #8b5cf6)",
+            background: "#000000",
             padding: "14px 18px",
           }}
         >

@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { Play, X, Phone, MessageSquare, Sparkles, VolumeX, Volume2, Eye, ChevronLeft, ChevronRight, Video } from "lucide-react";
+import { Play, X, MessageSquare, Sparkles, Eye, ChevronLeft, ChevronRight } from "lucide-react";
 
 interface VideoItem {
   id: string;
@@ -13,52 +13,44 @@ interface VideoItem {
 
 const VIDEOS: VideoItem[] = [
   {
-    id: "stretch-film",
-    title: "Transparent Stretch Film Roll",
-    description: "Perfect for Cartons, Furniture, Luggage & Appliances Packing",
-    url: "https://flow-content.google/video/2069fedf-a8d4-45d4-aabf-516345492ad0?Expires=1784493517&KeyName=labs-flow-prod-cdn-key&Signature=AIqErRMpdW8OSvY1LWzZ39IpS0s",
-    badge: "Packaging",
-    badgeColor: "bg-emerald-500/10 text-emerald-400 border-emerald-500/20"
+    id: "CMtP5qLMRbk",
+    title: "Non Cuttable Sheets",
+    description: "Ultra-strong and virtually non-cuttable multi-layered protection sheets",
+    url: "https://www.youtube.com/embed/CMtP5qLMRbk?autoplay=1&mute=1&loop=1&playlist=CMtP5qLMRbk&playsinline=1&rel=0",
+    badge: "Non Cuttable",
+    badgeColor: "bg-red-50 text-red-700 border-red-200"
   },
   {
-    id: "relief-tarpaulin",
-    title: "Emergency Relief Tarpaulin",
-    description: "Heavy Duty Waterproof Shelter Protection",
-    url: "https://flow-content.google/video/06f5012d-78f3-4af7-92c1-444c3b4fa91e?Expires=1784493896&KeyName=labs-flow-prod-cdn-key&Signature=PyegshExSmhfn8RoGpI3U6E5-Rg",
-    badge: "Relief",
-    badgeColor: "bg-red-500/10 text-red-400 border-red-500/20"
+    id: "bijzl6m_ygg",
+    title: "Heavy Duty Shalimar & Jumbo Truck Covering",
+    description: "Premium waterproofing and robust coverage for industrial trucks and transport logistics",
+    url: "https://www.youtube.com/embed/bijzl6m_ygg?autoplay=1&mute=1&loop=1&playlist=bijzl6m_ygg&playsinline=1&rel=0",
+    badge: "Heavy Duty",
+    badgeColor: "bg-purple-50 text-purple-700 border-purple-200"
   },
   {
-    id: "construction-polythene",
-    title: "Construction Polythene Sheet",
-    description: "Road & Roof Dhalai Protection",
-    url: "https://flow-content.google/video/d51a2594-ab70-40ea-a73e-a686f7351baf?Expires=1784494096&KeyName=labs-flow-prod-cdn-key&Signature=ohXw2PCYe9AgiF_Y_ItsqF7NPCM",
+    id: "qlSVdQLMPcA",
+    title: "Dhalai Sheet",
+    description: "High performance road curing, foundation construction, and under-slab vapor barrier",
+    url: "https://www.youtube.com/embed/qlSVdQLMPcA?autoplay=1&mute=1&loop=1&playlist=qlSVdQLMPcA&playsinline=1&rel=0",
     badge: "Construction",
-    badgeColor: "bg-blue-500/10 text-blue-400 border-blue-500/20"
+    badgeColor: "bg-blue-50 text-blue-700 border-blue-200"
   },
   {
-    id: "yellow-plastic",
-    title: "Yellow Plastic Sheet",
-    description: "Heavy Duty Multipurpose Plastic Roll",
-    url: "https://flow-content.google/video/3f5b72ea-7520-4a2d-9d16-e7759f77b1d0?Expires=1784494456&KeyName=labs-flow-prod-cdn-key&Signature=rrPersogD1gXWcpedLeVUhrdRjA",
-    badge: "Plastic Sheet",
-    badgeColor: "bg-amber-500/10 text-amber-400 border-amber-500/20"
+    id: "jL3oVLMO_18",
+    title: "Tarpaulins Used by Govt",
+    description: "Heavy-duty government-standard emergency relief and disaster management covers",
+    url: "https://www.youtube.com/embed/jL3oVLMO_18?autoplay=1&mute=1&loop=1&playlist=jL3oVLMO_18&playsinline=1&rel=0",
+    badge: "Govt Approved",
+    badgeColor: "bg-emerald-50 text-emerald-700 border-emerald-200"
   },
   {
-    id: "shalimar-tarpaulin",
-    title: "Shalimar Heavy Duty Tarpaulin",
-    description: "Premium Waterproof Truck Cover",
-    url: "https://flow-content.google/video/4e26b34b-f992-4bea-9c8b-f747ef32adc1?Expires=1784494765&KeyName=labs-flow-prod-cdn-key&Signature=O4z3dY2p4hFIg3BZizE4sbvUa5o",
-    badge: "Tarpaulin",
-    badgeColor: "bg-purple-500/10 text-purple-400 border-purple-500/20"
-  },
-  {
-    id: "agriculture-sheet",
-    title: "Premium Agriculture Sheet",
-    description: "High GSM Crop, Silage & Mulching Protection",
-    url: "https://flow-content.google/video/2e09bebb-4e62-4e2a-9ec5-65475523c4f1?Expires=1784496365&KeyName=labs-flow-prod-cdn-key&Signature=QwwOadwt7myDZmg48y6E29QsTno",
-    badge: "Agriculture",
-    badgeColor: "bg-teal-500/10 text-teal-400 border-teal-500/20"
+    id: "xklevmfuaGk",
+    title: "Stretch Film Roll",
+    description: "Heavy duty stretch film wrapping rolls for carton securing, bundling, and industrial packaging",
+    url: "https://www.youtube.com/embed/xklevmfuaGk?autoplay=1&mute=1&loop=1&playlist=xklevmfuaGk&playsinline=1&rel=0",
+    badge: "Packaging Roll",
+    badgeColor: "bg-amber-50 text-amber-700 border-amber-200"
   }
 ];
 
@@ -73,23 +65,7 @@ interface VideoCardProps {
 }
 
 const VideoCard: React.FC<VideoCardProps> = ({ video, onSelect, isActive, hasDraggedRef }) => {
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [isPlaying, setIsPlaying] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
-
-  // Manage video autoplay/pause based on active slide visibility in viewport
-  useEffect(() => {
-    if (!videoRef.current) return;
-    if (isActive) {
-      videoRef.current.play()
-        .then(() => setIsPlaying(true))
-        .catch(() => setIsPlaying(false));
-    } else {
-      videoRef.current.pause();
-      setIsPlaying(false);
-    }
-  }, [isActive]);
 
   const handleCardClick = (e: React.MouseEvent) => {
     // If user dragged, do not trigger click/lightbox
@@ -100,81 +76,77 @@ const VideoCard: React.FC<VideoCardProps> = ({ video, onSelect, isActive, hasDra
     onSelect(video);
   };
 
-  const togglePlayPause = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    if (videoRef.current) {
-      if (isPlaying) {
-        videoRef.current.pause();
-        setIsPlaying(false);
-      } else {
-        videoRef.current.play()
-          .then(() => setIsPlaying(true))
-          .catch(() => {});
-      }
-    }
-  };
-
   return (
     <div
-      className="group relative flex flex-col bg-white rounded-[20px] shadow-lg overflow-hidden border border-slate-100 hover:border-[#FF7A00]/40 transition-all duration-300 hover:-translate-y-2 hover:shadow-[0_20px_40px_rgba(255,122,0,0.15)] cursor-grab active:cursor-grabbing h-full select-none"
+      className="group relative flex flex-col bg-white rounded-[20px] shadow-sm hover:shadow-[0_20px_40px_rgba(255,106,0,0.12)] border border-slate-100/80 hover:border-[#FF7A00]/30 transition-all duration-500 hover:-translate-y-2 cursor-pointer h-full select-none overflow-hidden"
       onClick={handleCardClick}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >
-      {/* Aspect Ratio Box for Video */}
-      <div className="relative aspect-[16/10] overflow-hidden bg-slate-950 pointer-events-none">
+      {/* Aspect Ratio Box for Video / Thumbnail */}
+      <div className="relative aspect-video w-full overflow-hidden bg-black select-none">
         
-        {/* Loading Skeleton */}
-        {isLoading && (
-          <div className="absolute inset-0 bg-slate-900 flex flex-col justify-between p-4 animate-pulse">
-            <div className="h-6 w-20 bg-slate-800 rounded-full" />
-            <div className="flex justify-center items-center h-full">
-              <div className="w-10 h-10 rounded-full bg-slate-800" />
-            </div>
-          </div>
+        {/* Render iframe only when card is active for lazy-loading/performance */}
+        {isActive ? (
+          <iframe
+            src={`${video.url}&controls=0&modestbranding=1&showinfo=0&iv_load_policy=3&enablejsapi=1`}
+            title={video.title}
+            className="w-full h-full scale-[1.02] border-0 select-none pointer-events-none"
+            allow="autoplay; encrypted-media; picture-in-picture"
+            loading="lazy"
+          />
+        ) : (
+          <img
+            src={`https://img.youtube.com/vi/${video.id}/hqdefault.jpg`}
+            alt={video.title}
+            className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
+            loading="lazy"
+          />
         )}
 
-        <video
-          ref={videoRef}
-          src={video.url}
-          className={`w-full h-full object-cover transition-transform duration-700 ease-out ${isHovered ? "scale-105" : "scale-100"}`}
-          muted
-          playsInline
-          loop
-          preload="metadata"
-          onLoadedData={() => setIsLoading(false)}
-        />
+        {/* Pointer-events blocker overlay to allow swiping/dragging and click expansion */}
+        <div className="absolute inset-0 z-10 bg-transparent" />
 
-        {/* Ambient Dark Overlay on Normal View */}
-        <div className="absolute inset-0 bg-gradient-to-t from-slate-950/60 via-transparent to-transparent" />
+        {/* Ambient Dark/Warm Overlay */}
+        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent z-10" />
 
-        {/* Floating Category Badge */}
-        <div className={`absolute top-4 left-4 border backdrop-blur-md font-mono text-[11px] font-extrabold px-3 py-1 rounded-full shadow-sm z-10 ${video.badgeColor}`}>
-          {video.badge}
-        </div>
-
-        {/* Floating Play Indicator over Video (shows when not hovered) */}
-        <div className="absolute inset-0 flex items-center justify-center sm:group-hover:opacity-0 transition-opacity duration-300">
-          <div className="w-12 h-12 rounded-full bg-white/20 backdrop-blur-sm border border-white/40 flex items-center justify-center text-white shadow-xl transform scale-100 group-hover:scale-110 transition-transform duration-300">
-            <Play className="w-5 h-5 fill-white ml-0.5 animate-pulse" />
+        {/* Hover overlay play button */}
+        <div className="absolute inset-0 flex items-center justify-center z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+          <div className="w-14 h-14 rounded-full bg-white/20 backdrop-blur-md border border-white/40 flex items-center justify-center text-white shadow-xl transform scale-90 group-hover:scale-100 transition-all duration-300">
+            <Play className="w-6 h-6 fill-white ml-1" />
           </div>
         </div>
+
+        {/* Small floating play indicator for static view */}
+        {!isHovered && (
+          <div className="absolute bottom-4 right-4 z-20 flex items-center gap-1.5 bg-black/40 backdrop-blur-sm px-2.5 py-1 rounded-md text-white text-[10px] font-bold">
+            <Play className="w-3 h-3 fill-white" />
+            <span>PREVIEW</span>
+          </div>
+        )}
       </div>
 
       {/* Card Content */}
-      <div className="p-6 flex flex-col justify-between flex-grow text-left">
+      <div className="p-6 flex flex-col justify-between flex-grow text-left bg-gradient-to-b from-white to-slate-50/30">
         <div>
-          <h3 className="text-base sm:text-lg font-black text-slate-900 tracking-tight mb-2 group-hover:text-[#FF7A00] transition-colors duration-200">
+          {/* Badge is now rendered below the stream */}
+          <div className="mb-2.5">
+            <span className={`inline-block border text-[10px] font-mono font-extrabold px-2.5 py-1 rounded-md ${video.badgeColor}`}>
+              {video.badge}
+            </span>
+          </div>
+          
+          <h3 className="text-base font-extrabold text-[#0B2D5C] tracking-tight mb-2 group-hover:text-[#FF7A00] transition-colors duration-300 leading-snug">
             {video.title}
           </h3>
-          <p className="text-slate-600 text-xs sm:text-sm font-semibold leading-relaxed">
+          <p className="text-slate-600 text-xs font-semibold leading-relaxed line-clamp-2">
             {video.description}
           </p>
         </div>
         
-        {/* Play Highlight Bar */}
-        <div className="flex items-center gap-1.5 mt-5 text-[11px] font-black text-[#FF7A00] uppercase tracking-wider">
-          <Eye className="w-4 h-4" />
+        {/* Click Prompt */}
+        <div className="flex items-center gap-1.5 mt-4 text-[10px] font-black text-[#FF7A00] uppercase tracking-wider">
+          <Eye className="w-3.5 h-3.5" />
           <span>Click to watch fullscreen</span>
         </div>
       </div>
@@ -189,8 +161,6 @@ interface ProductVideosSectionProps {
 
 export const ProductVideosSection: React.FC<ProductVideosSectionProps> = ({ lang, onEnquire }) => {
   const [selectedVideo, setSelectedVideo] = useState<VideoItem | null>(null);
-  const [lightboxMuted, setLightboxMuted] = useState(false);
-  const lightboxVideoRef = useRef<HTMLVideoElement>(null);
 
   // Responsive Visible Cards State
   const [visibleCount, setVisibleCount] = useState(3);
@@ -356,23 +326,8 @@ export const ProductVideosSection: React.FC<ProductVideosSectionProps> = ({ lang
     handleDragEnd();
   };
 
-  // Sync mute status when lightbox video opens
-  useEffect(() => {
-    if (selectedVideo && lightboxVideoRef.current) {
-      lightboxVideoRef.current.muted = lightboxMuted;
-    }
-  }, [selectedVideo, lightboxMuted]);
-
-  const toggleLightboxMute = () => {
-    if (lightboxVideoRef.current) {
-      const targetState = !lightboxMuted;
-      lightboxVideoRef.current.muted = targetState;
-      setLightboxMuted(targetState);
-    }
-  };
-
   const getWhatsAppMessage = (videoTitle: string) => {
-    const text = `Hi Mr. Vinod Kumar, I watched the application video for *${videoTitle}* on your website. I want to inquire about bulk wholesale pricing and order process for my store.`;
+    const text = `Hi Mr. Vinod Kumar, I watched the product video for *${videoTitle}* on your website. I want to inquire about bulk wholesale pricing and order process for my store.`;
     return `https://wa.me/918002194427?text=${encodeURIComponent(text)}`;
   };
 
@@ -494,7 +449,6 @@ export const ProductVideosSection: React.FC<ProductVideosSectionProps> = ({ lang
             </div>
           </div>
 
-
         </div>
       </section>
 
@@ -528,16 +482,6 @@ export const ProductVideosSection: React.FC<ProductVideosSectionProps> = ({ lang
                 </div>
                 
                 <div className="flex items-center gap-2">
-                  {/* Mute Control */}
-                  <button
-                    onClick={toggleLightboxMute}
-                    className="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-all cursor-pointer border border-white/5"
-                    aria-label={lightboxMuted ? "Unmute video" : "Mute video"}
-                    title={lightboxMuted ? "Unmute video" : "Mute video"}
-                  >
-                    {lightboxMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
-                  </button>
-                  
                   {/* Close button */}
                   <button
                     onClick={() => setSelectedVideo(null)}
@@ -550,17 +494,14 @@ export const ProductVideosSection: React.FC<ProductVideosSectionProps> = ({ lang
                 </div>
               </div>
 
-              {/* Dynamic Video */}
-              <div className="relative aspect-[16/9] bg-black">
-                <video
-                  ref={lightboxVideoRef}
-                  src={selectedVideo.url}
-                  className="w-full h-full object-contain"
-                  autoPlay
-                  controls
-                  playsInline
-                  loop
-                  preload="auto"
+              {/* YouTube Embedded Video Player inside Lightbox */}
+              <div className="relative aspect-video bg-black">
+                <iframe
+                  src={`https://www.youtube.com/embed/${selectedVideo.id}?autoplay=1&mute=0&loop=1&playlist=${selectedVideo.id}&playsinline=1&rel=0&controls=1&modestbranding=1`}
+                  title={selectedVideo.title}
+                  className="w-full h-full border-0"
+                  allow="autoplay; encrypted-media; gyroscope; picture-in-picture"
+                  allowFullScreen
                 />
               </div>
 
@@ -575,9 +516,9 @@ export const ProductVideosSection: React.FC<ProductVideosSectionProps> = ({ lang
                     href={getWhatsAppMessage(selectedVideo.title)}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="flex items-center gap-1.5 bg-[#25D366] hover:bg-[#20ba5a] text-white px-5 py-2.5 rounded-xl font-extrabold text-xs uppercase tracking-wider transition-colors shadow-md"
+                    className="flex items-center gap-1.5 bg-[#25D366] hover:bg-[#20ba5a] text-[#0B2D5C] px-5 py-2.5 rounded-xl font-extrabold text-xs uppercase tracking-wider transition-colors shadow-md"
                   >
-                    <MessageSquare className="w-4 h-4 fill-white" />
+                    <MessageSquare className="w-4 h-4 fill-[#0B2D5C]" />
                     <span>Inquire via WhatsApp</span>
                   </a>
 
@@ -586,9 +527,9 @@ export const ProductVideosSection: React.FC<ProductVideosSectionProps> = ({ lang
                       setSelectedVideo(null);
                       onEnquire(`Inquiry for product video: ${selectedVideo.title}`);
                     }}
-                    className="flex items-center gap-1.5 bg-gradient-to-r from-orange-600 to-amber-500 hover:from-orange-700 hover:to-amber-600 text-white px-5 py-2.5 rounded-xl font-extrabold text-xs uppercase tracking-wider transition-colors shadow-md"
+                    className="flex items-center gap-1.5 bg-gradient-to-r from-orange-600 to-amber-500 hover:from-orange-700 hover:to-amber-600 text-[#0B2D5C] px-5 py-2.5 rounded-xl font-extrabold text-xs uppercase tracking-wider transition-colors shadow-md"
                   >
-                    <Sparkles className="w-4 h-4 text-white" />
+                    <Sparkles className="w-4 h-4 text-[#0B2D5C]" />
                     <span>Get Free Quote</span>
                   </button>
                 </div>

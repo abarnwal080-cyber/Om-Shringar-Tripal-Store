@@ -281,10 +281,10 @@ export default function RetailPriceModal({ isOpen, onClose, currentLanguage, onO
                         onOpenInquiry();
                       }
                     }}
-                    className="flex-1 sm:flex-initial flex items-center justify-center gap-1.5 py-2.5 px-5 rounded-full bg-orange-600 hover:bg-orange-700 text-white font-bold text-xs transition-colors cursor-pointer"
+                    className="flex-1 sm:flex-initial flex items-center justify-center gap-1.5 py-2.5 px-5 rounded-full bg-black hover:bg-slate-900 text-white font-bold text-xs border border-orange-500/30 transition-all cursor-pointer animate-orange-glow-pulse"
                   >
                     <span>{isEn ? "Enquire Now" : "पूछताछ शुरू करें"}</span>
-                    <ArrowRight className="w-3.5 h-3.5" />
+                    <ArrowRight className="w-3.5 h-3.5 text-[#FF7A00]" />
                   </button>
                 </div>
               </div>
