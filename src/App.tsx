@@ -47,7 +47,7 @@ import {
 } from "./data";
 
 import ProductCard from "./components/ProductCard";
-import GoogleReviewPopup from "./components/GoogleReviewPopup";
+import CustomerReviewsSection from "./components/CustomerReviewsSection";
 import BrandCarousel from "./components/BrandCarousel";
 import ProductMiniCarousel from "./components/ProductMiniCarousel";
 import InquiryForm from "./components/InquiryForm";
@@ -208,7 +208,7 @@ export default function App() {
 
   // Intersection Observer for Active Navigation Highlight
   useEffect(() => {
-    const sections = ["about", "products", "special-uses", "size-matrix", "why-choose", "enquire", "contact"];
+    const sections = ["about", "products", "special-uses", "size-matrix", "why-choose", "reviews", "enquire", "contact"];
     const observerOptions = {
       root: null,
       rootMargin: "-25% 0px -55% 0px",
@@ -878,33 +878,8 @@ export default function App() {
         )}
       </AnimatePresence>
 
-      {/* GOOGLE REVIEWS SECTION */}
-      <section id="google-reviews" className="py-20 bg-gradient-to-b from-slate-50 to-white relative scroll-mt-24 border-t border-slate-100 overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          
-          {/* Section Header */}
-          <div className="text-center max-w-3xl mx-auto mb-12">
-            <div className="inline-flex items-center gap-2 bg-orange-50 text-brand-orange text-xs font-bold font-mono px-3.5 py-1.5 rounded-full mb-4 border border-orange-100/50">
-              <Star className="w-3.5 h-3.5 fill-brand-orange text-brand-orange" />
-              <span>GOOGLE CUSTOMER REVIEWS</span>
-            </div>
-            <h2 className="text-3xl sm:text-4xl font-extrabold font-display text-brand-blue-dark tracking-tight mb-4">
-              What Our Customers Say On Google
-            </h2>
-            <p className="text-slate-600 text-sm sm:text-base">
-              Explore authentic, live feedback and verified 5-star ratings left on Google by builders, farmers, and store visitors in Bihar.
-            </p>
-          </div>
-
-          {/* Elfsight Widget Container */}
-          <div className="w-full bg-white rounded-3xl border border-slate-100 p-4 sm:p-8 shadow-sm hover:shadow-md transition-shadow duration-300 min-h-[300px] flex items-center justify-center">
-            <div className="w-full">
-              <div className="elfsight-app-a79ce307-0e45-4c96-a6f7-5ae162ca490f" data-elfsight-app-lazy></div>
-            </div>
-          </div>
-
-        </div>
-      </section>
+      {/* CUSTOMER REVIEWS SECTION */}
+      <CustomerReviewsSection />
 
       {/* 5. ABOUT US SECTION */}
       <section id="about" className="py-20 bg-white relative overflow-hidden scroll-mt-24">
@@ -1641,9 +1616,6 @@ export default function App() {
         onClearPrefill={clearPrefill}
         currentLanguage={lang}
       />
-
-      {/* Google Review Prompt Popup */}
-      <GoogleReviewPopup />
 
     </div>
   );
