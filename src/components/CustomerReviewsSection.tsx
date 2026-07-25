@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { Star, CheckCircle2, MapPin, UserCheck, Building2, Sparkles, Quote, ChevronLeft, ChevronRight, Pause, Play } from "lucide-react";
+import { Star, CheckCircle2, MapPin, UserCheck, Building2, Sparkles, Quote, ChevronLeft, ChevronRight } from "lucide-react";
 
 export interface ReviewItem {
   id: string;
@@ -333,8 +333,8 @@ export const CustomerReviewsSection: React.FC = () => {
             </AnimatePresence>
           </div>
 
-          {/* Slider Pagination Controls & Auto-play Toggle */}
-          <div className="mt-6 flex flex-col sm:flex-row items-center justify-between gap-4 px-2">
+          {/* Slider Pagination Controls */}
+          <div className="mt-6 flex items-center justify-center px-2">
             
             {/* Dots Indicator */}
             <div className="flex items-center justify-center gap-2">
@@ -351,24 +351,6 @@ export const CustomerReviewsSection: React.FC = () => {
                 />
               ))}
             </div>
-
-            {/* Play/Pause Control Button */}
-            <button
-              onClick={() => setIsPlaying(!isPlaying)}
-              className="inline-flex items-center gap-1.5 text-xs font-extrabold text-slate-600 hover:text-[#0B2D5C] bg-white px-3 py-1.5 rounded-full border border-slate-200 shadow-xs transition-colors cursor-pointer"
-            >
-              {isPlaying ? (
-                <>
-                  <Pause className="w-3.5 h-3.5 text-[#FF7A00]" />
-                  <span>Pause Auto-slide</span>
-                </>
-              ) : (
-                <>
-                  <Play className="w-3.5 h-3.5 text-emerald-600 fill-emerald-600" />
-                  <span>Play Auto-slide</span>
-                </>
-              )}
-            </button>
 
           </div>
         </div>

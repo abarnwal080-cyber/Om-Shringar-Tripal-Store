@@ -361,9 +361,9 @@
           margin-top: 16px;
           text-align: center;
           animation: preloaderFadeIn 1s ease both;
-          animation-delay: 0.4s;
+          animation-delay: 0.3s;
           width: 100%;
-          max-width: 320px;
+          max-width: 360px;
           display: flex;
           flex-direction: column;
           align-items: center;
@@ -373,7 +373,7 @@
           font-family: "Inter", sans-serif;
           font-size: 10px;
           font-weight: 700;
-          color: #64748b; /* slate-500 */
+          color: #ea580c; /* brand orange */
           letter-spacing: 2px;
           text-transform: uppercase;
           margin-bottom: 12px;
@@ -381,7 +381,7 @@
 
         .preloader-partners-track {
           position: relative;
-          height: 48px;
+          height: 52px;
           width: 100%;
           display: flex;
           align-items: center;
@@ -391,17 +391,18 @@
         .preloader-partner-item {
           position: absolute;
           opacity: 0;
-          transform: translateY(10px) scale(0.95);
-          transition: opacity 0.5s cubic-bezier(0.4, 0, 0.2, 1), transform 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+          transform: translateY(8px) scale(0.92);
+          transition: opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1), transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
           display: flex;
           align-items: center;
           gap: 10px;
           pointer-events: none;
-          background: rgba(255, 255, 255, 0.03);
-          border: 1px solid rgba(255, 255, 255, 0.08);
-          padding: 6px 16px;
+          background: rgba(255, 255, 255, 0.08);
+          border: 1px solid rgba(255, 255, 255, 0.18);
+          padding: 6px 18px;
           border-radius: 9999px;
-          box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+          box-shadow: 0 4px 20px rgba(0,0,0,0.25);
+          backdrop-filter: blur(8px);
         }
 
         .preloader-partner-item.active {
@@ -411,19 +412,74 @@
         }
 
         .preloader-partner-item img {
-          height: 20px;
-          max-width: 90px;
+          height: 22px;
+          max-width: 100px;
           object-fit: contain;
           border-radius: 4px;
           background: #ffffff;
-          padding: 2px 4px;
+          padding: 2px 5px;
         }
 
         .preloader-partner-item span {
           font-family: "Outfit", "Inter", sans-serif;
+          font-size: 12px;
+          font-weight: 800;
+          color: #ffffff;
+          letter-spacing: 0.5px;
+        }
+
+        /* Fast Scrolling Bottom Marquee Banner for All Brands */
+        .preloader-brand-marquee {
+          position: absolute;
+          bottom: 20px;
+          left: 0;
+          width: 100%;
+          overflow: hidden;
+          background: rgba(255, 255, 255, 0.03);
+          border-y: 1px solid rgba(255, 255, 255, 0.08);
+          padding: 8px 0;
+          display: flex;
+          pointer-events: none;
+        }
+
+        .marquee-track {
+          display: flex;
+          gap: 24px;
+          white-space: nowrap;
+          animation: marqueeFast 12s linear infinite;
+        }
+
+        @keyframes marqueeFast {
+          0% { transform: translateX(0%); }
+          100% { transform: translateX(-50%); }
+        }
+
+        .marquee-item {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
+          background: rgba(255, 255, 255, 0.06);
+          border: 1px solid rgba(255, 255, 255, 0.12);
+          padding: 4px 12px;
+          border-radius: 8px;
+          shrink: 0;
+        }
+
+        .marquee-item img {
+          height: 16px;
+          width: auto;
+          max-width: 60px;
+          object-fit: contain;
+          background: #ffffff;
+          border-radius: 2px;
+          padding: 1px 3px;
+        }
+
+        .marquee-item span {
           font-size: 11px;
           font-weight: 700;
-          color: #f1f5f9;
+          color: #cbd5e1;
+          font-family: "Inter", sans-serif;
         }
 
         @keyframes preloaderFadeIn {
@@ -449,6 +505,9 @@
           }
           .preloader-logo-emblem span {
             font-size: 24px;
+          }
+          .preloader-brand-marquee {
+            bottom: 10px;
           }
         }
       </style>
@@ -487,9 +546,9 @@
           <p class="preloader-brand-subtitle">Premium Tarpaulin & Plastic Sheets</p>
         </div>
 
-        <!-- Authorized Trading Partner Carousel -->
+        <!-- Authorized Trading Partner Carousel with ALL 14 Brands -->
         <div class="preloader-partners">
-          <span class="preloader-partners-heading">Trading Partner Of</span>
+          <span class="preloader-partners-heading">Authorized Distributor & Brand Partner</span>
           <div class="preloader-partners-track">
             <div class="preloader-partner-item active">
               <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQhYupOFug5Yj8fRM0Q74ENy_gKWvv5Dy6M9SlsFfbaJTHeWNACb06XwCwy&s=10" alt="Shalimar" />
@@ -504,7 +563,7 @@
               <span>Silpaulin</span>
             </div>
             <div class="preloader-partner-item">
-              <img src="https://plain-apac-prod-public.komododecks.com/202607/03/nH1liaiAJsZ72n7WVMa5/image.jpg" alt="Capstone Cheetah" />
+              <img src="https://plain-apac-prod-public.komododecks.com/202607/03/nH1liaiAJsZ72n7WVMa5/image.jpg" alt="Cheetah" />
               <span>Cheetah</span>
             </div>
             <div class="preloader-partner-item">
@@ -512,10 +571,78 @@
               <span>Vision</span>
             </div>
             <div class="preloader-partner-item">
-              <img src="https://plain-apac-prod-public.komododecks.com/202607/03/m7zkbhNPvoPwDA32B9BY/image.jpg" alt="Goldpaulin" />
-              <span>Goldpaulin</span>
+              <img src="https://plain-apac-prod-public.komododecks.com/202607/03/m7zkbhNPvoPwDA32B9BY/image.jpg" alt="KNS" />
+              <span>KNS</span>
+            </div>
+            <div class="preloader-partner-item">
+              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSPjWOzy_wJ_BmDWWcyXAj3vAIhq-4Dbdj129c1auNaHA&s=10" alt="Black Bull" />
+              <span>Black Bull</span>
+            </div>
+            <div class="preloader-partner-item">
+              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVowJ2c1FfQeCQR_Jc32h9YCj6YL5jljWfWOppnMKRmw&s=10" alt="Double Bull" />
+              <span>Double Bull</span>
+            </div>
+            <div class="preloader-partner-item">
+              <img src="https://www.tuffpaulin.com/wp-content/uploads/2021/09/Tuff-logo-with-IS-Mark-e1629102662998.png" alt="Tuffpaulin" />
+              <span>Tuffpaulin</span>
+            </div>
+            <div class="preloader-partner-item">
+              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTx12lnc13eV1UzLcfMfjctY3t6ZzPaNfySie4uS1eGAA&s=10" alt="Mipatex" />
+              <span>Mipatex</span>
+            </div>
+            <div class="preloader-partner-item">
+              <img src="https://plain-apac-prod-public.komododecks.com/202607/16/fqOq0hB8ZA982pAThU7G/image.jpg" alt="Jumbo" />
+              <span>Jumbo</span>
+            </div>
+            <div class="preloader-partner-item">
+              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiEr-VxegD2eLYFiBrrsbcYjH4ZxR1FbEbgxfpNP4JUg&s=10" alt="Himalaya" />
+              <span>Himalaya</span>
+            </div>
+            <div class="preloader-partner-item">
+              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTG-uVnYN4I820w2J4ZgUanUXZK81heB3UXJE87SN2MsPDdIN1IMPrJGA&s" alt="Fortune" />
+              <span>Fortune</span>
+            </div>
+            <div class="preloader-partner-item">
+              <img src="https://plain-apac-prod-public.komododecks.com/202607/16/hDQT1Xo8iGIRV1LacJtu/image.jpg" alt="Vinex" />
+              <span>Vinex</span>
             </div>
           </div>
+        </div>
+      </div>
+
+      <!-- Fast Infinite Bottom Marquee of All Brand Logos -->
+      <div class="preloader-brand-marquee">
+        <div class="marquee-track">
+          <div class="marquee-item"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQhYupOFug5Yj8fRM0Q74ENy_gKWvv5Dy6M9SlsFfbaJTHeWNACb06XwCwy&s=10" alt="Shalimar" /><span>Shalimar</span></div>
+          <div class="marquee-item"><img src="https://plain-apac-prod-public.komododecks.com/202607/03/oDtfecDE2xAWZLABiKFx/image.jpg" alt="Greatpaulin" /><span>Greatpaulin</span></div>
+          <div class="marquee-item"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQeMUnP6Z2TnQ59-T8IoNdUnuS71PtlmQcf7bQIttKIS6MUbQv_4_OmhU4&s=10" alt="Silpaulin" /><span>Silpaulin</span></div>
+          <div class="marquee-item"><img src="https://plain-apac-prod-public.komododecks.com/202607/03/nH1liaiAJsZ72n7WVMa5/image.jpg" alt="Cheetah" /><span>Cheetah</span></div>
+          <div class="marquee-item"><img src="https://media.licdn.com/dms/image/v2/C560BAQFljvsCvp1y2w/company-logo_200_200/company-logo_200_200/0/1630584191714/vision_plastics_inc_logo?e=2147483647&v=beta&t=D5xt-vVoXRwqmnW2EX33_rczHrjV-GGGW1AxWZXcZmE" alt="Vision" /><span>Vision</span></div>
+          <div class="marquee-item"><img src="https://plain-apac-prod-public.komododecks.com/202607/03/m7zkbhNPvoPwDA32B9BY/image.jpg" alt="KNS" /><span>KNS</span></div>
+          <div class="marquee-item"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSPjWOzy_wJ_BmDWWcyXAj3vAIhq-4Dbdj129c1auNaHA&s=10" alt="Black Bull" /><span>Black Bull</span></div>
+          <div class="marquee-item"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVowJ2c1FfQeCQR_Jc32h9YCj6YL5jljWfWOppnMKRmw&s=10" alt="Double Bull" /><span>Double Bull</span></div>
+          <div class="marquee-item"><img src="https://www.tuffpaulin.com/wp-content/uploads/2021/09/Tuff-logo-with-IS-Mark-e1629102662998.png" alt="Tuffpaulin" /><span>Tuffpaulin</span></div>
+          <div class="marquee-item"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTx12lnc13eV1UzLcfMfjctY3t6ZzPaNfySie4uS1eGAA&s=10" alt="Mipatex" /><span>Mipatex</span></div>
+          <div class="marquee-item"><img src="https://plain-apac-prod-public.komododecks.com/202607/16/fqOq0hB8ZA982pAThU7G/image.jpg" alt="Jumbo" /><span>Jumbo</span></div>
+          <div class="marquee-item"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiEr-VxegD2eLYFiBrrsbcYjH4ZxR1FbEbgxfpNP4JUg&s=10" alt="Himalaya" /><span>Himalaya</span></div>
+          <div class="marquee-item"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTG-uVnYN4I820w2J4ZgUanUXZK81heB3UXJE87SN2MsPDdIN1IMPrJGA&s" alt="Fortune" /><span>Fortune</span></div>
+          <div class="marquee-item"><img src="https://plain-apac-prod-public.komododecks.com/202607/16/hDQT1Xo8iGIRV1LacJtu/image.jpg" alt="Vinex" /><span>Vinex</span></div>
+
+          {/* Duplicated for smooth loop */}
+          <div class="marquee-item"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQhYupOFug5Yj8fRM0Q74ENy_gKWvv5Dy6M9SlsFfbaJTHeWNACb06XwCwy&s=10" alt="Shalimar" /><span>Shalimar</span></div>
+          <div class="marquee-item"><img src="https://plain-apac-prod-public.komododecks.com/202607/03/oDtfecDE2xAWZLABiKFx/image.jpg" alt="Greatpaulin" /><span>Greatpaulin</span></div>
+          <div class="marquee-item"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQeMUnP6Z2TnQ59-T8IoNdUnuS71PtlmQcf7bQIttKIS6MUbQv_4_OmhU4&s=10" alt="Silpaulin" /><span>Silpaulin</span></div>
+          <div class="marquee-item"><img src="https://plain-apac-prod-public.komododecks.com/202607/03/nH1liaiAJsZ72n7WVMa5/image.jpg" alt="Cheetah" /><span>Cheetah</span></div>
+          <div class="marquee-item"><img src="https://media.licdn.com/dms/image/v2/C560BAQFljvsCvp1y2w/company-logo_200_200/company-logo_200_200/0/1630584191714/vision_plastics_inc_logo?e=2147483647&v=beta&t=D5xt-vVoXRwqmnW2EX33_rczHrjV-GGGW1AxWZXcZmE" alt="Vision" /><span>Vision</span></div>
+          <div class="marquee-item"><img src="https://plain-apac-prod-public.komododecks.com/202607/03/m7zkbhNPvoPwDA32B9BY/image.jpg" alt="KNS" /><span>KNS</span></div>
+          <div class="marquee-item"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSPjWOzy_wJ_BmDWWcyXAj3vAIhq-4Dbdj129c1auNaHA&s=10" alt="Black Bull" /><span>Black Bull</span></div>
+          <div class="marquee-item"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVowJ2c1FfQeCQR_Jc32h9YCj6YL5jljWfWOppnMKRmw&s=10" alt="Double Bull" /><span>Double Bull</span></div>
+          <div class="marquee-item"><img src="https://www.tuffpaulin.com/wp-content/uploads/2021/09/Tuff-logo-with-IS-Mark-e1629102662998.png" alt="Tuffpaulin" /><span>Tuffpaulin</span></div>
+          <div class="marquee-item"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTx12lnc13eV1UzLcfMfjctY3t6ZzPaNfySie4uS1eGAA&s=10" alt="Mipatex" /><span>Mipatex</span></div>
+          <div class="marquee-item"><img src="https://plain-apac-prod-public.komododecks.com/202607/16/fqOq0hB8ZA982pAThU7G/image.jpg" alt="Jumbo" /><span>Jumbo</span></div>
+          <div class="marquee-item"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiEr-VxegD2eLYFiBrrsbcYjH4ZxR1FbEbgxfpNP4JUg&s=10" alt="Himalaya" /><span>Himalaya</span></div>
+          <div class="marquee-item"><img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTG-uVnYN4I820w2J4ZgUanUXZK81heB3UXJE87SN2MsPDdIN1IMPrJGA&s" alt="Fortune" /><span>Fortune</span></div>
+          <div class="marquee-item"><img src="https://plain-apac-prod-public.komododecks.com/202607/16/hDQT1Xo8iGIRV1LacJtu/image.jpg" alt="Vinex" /><span>Vinex</span></div>
         </div>
       </div>
     </div>
@@ -526,7 +653,7 @@
         var startTime = Date.now();
         var isPageLoaded = false;
         
-        // Partner logos carousel logic
+        // Partner logos carousel fast logic (cycles every 250ms)
         var currentBrand = 0;
         var brandItems = document.querySelectorAll('.preloader-partner-item');
         var carouselInterval;
@@ -536,7 +663,7 @@
             brandItems[currentBrand].classList.remove('active');
             currentBrand = (currentBrand + 1) % brandItems.length;
             brandItems[currentBrand].classList.add('active');
-          }, 1800);
+          }, 250); // Fast 250ms rotation for 1-by-1 logo switching
         }
 
         // Action to trigger preloader fade out and complete DOM removal
@@ -553,10 +680,10 @@
           }
         }
 
-        // Logic to coordinate load event and 4.5s timer
+        // Logic to coordinate load event and timer
         function checkAndHide() {
           var elapsedTime = Date.now() - startTime;
-          var minDuration = 4500; // Keep showing for at least 4500ms
+          var minDuration = 4000; // Keep showing for 4 seconds (4000ms)
           
           if (elapsedTime >= minDuration) {
             hidePreloader();
@@ -571,12 +698,12 @@
           checkAndHide();
         });
 
-        // Fail-safe backup trigger (maximum 8 seconds load delay safeguard)
+        // Fail-safe backup trigger (maximum 6 seconds load delay safeguard)
         setTimeout(function() {
           if (!isPageLoaded) {
             hidePreloader();
           }
-        }, 8000);
+        }, 6000);
       })();
     </script>
 

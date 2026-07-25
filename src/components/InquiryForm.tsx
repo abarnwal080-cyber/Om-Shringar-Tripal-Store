@@ -459,8 +459,8 @@ export default function InquiryForm({
           position: relative;
           display: flex;
           align-items: center;
-          gap: 12px;
-          padding: 14px 15px;
+          gap: 14px;
+          padding: 14px 18px;
           border-radius: 18px;
           border: 1px solid #ece7f6;
           background: linear-gradient(180deg, #fff, #fbf8ff);
@@ -479,8 +479,8 @@ export default function InquiryForm({
 
         .radio-tile input {
           accent-color: var(--accent2);
-          transform: scale(1.08);
-          margin: 0;
+          transform: scale(1.15);
+          margin: 0 10px 0 0 !important;
           flex: 0 0 auto;
           cursor: pointer;
         }
@@ -490,6 +490,7 @@ export default function InquiryForm({
           font-weight: 700;
           color: #334155;
           line-height: 1.25;
+          padding-left: 4px;
         }
 
         .radio-tile input:checked + span {
@@ -955,24 +956,59 @@ export default function InquiryForm({
                   autoComplete="off"
                 />
 
-                <div className="flex items-center gap-3">
-                 <button
-                   type="button"
-                   className="back-btn"
-                   onClick={() => setStep(5)}
-                 >
-                   <ArrowLeft className="w-4 h-4" />
-                   <span>{currentLanguage === "hi" ? "पीछे" : "Back"}</span>
-                 </button>
-                 <button
-                   type="button"
-                   className="next-btn"
-                   onClick={() => handleNextStep(6)}
-                 >
-                   {t.step6Button}
-                 </button>
-               </div>
-             </div>
+                <div className="mt-4 pt-3 border-t border-purple-100">
+                  <label htmlFor="additionalNotes" className="text-sm font-bold text-slate-700 block mb-1">
+                    {t.additionalRequirementsLabel}
+                  </label>
+                  <div className="relative">
+                    <textarea
+                      id="additionalNotes"
+                      value={formData.additionalNotes}
+                      onChange={handleInputChange}
+                      placeholder={t.additionalRequirementsPlaceholder}
+                      rows={2}
+                      className="w-full text-sm pr-10"
+                    />
+                    <button
+                      type="button"
+                      onClick={toggleListening}
+                      title="Voice Typing"
+                      className={`absolute right-3 bottom-3 p-2 rounded-full transition-colors cursor-pointer ${
+                        isListening ? "bg-red-500 text-white animate-pulse" : "bg-purple-100 text-purple-700 hover:bg-purple-200"
+                      }`}
+                    >
+                      {isListening ? <MicOff className="w-4 h-4" /> : <Mic className="w-4 h-4" />}
+                    </button>
+                  </div>
+                  {isListening && (
+                    <p className="text-xs text-purple-600 font-bold mt-1 flex items-center gap-1">
+                      <span className="w-2 h-2 rounded-full bg-red-500 animate-ping" />
+                      {t.micStatusListening}
+                    </p>
+                  )}
+                  {listeningError && (
+                    <p className="text-xs text-red-500 font-bold mt-1">{listeningError}</p>
+                  )}
+                </div>
+
+                <div className="flex items-center gap-3 mt-4">
+                  <button
+                    type="button"
+                    className="back-btn"
+                    onClick={() => setStep(5)}
+                  >
+                    <ArrowLeft className="w-4 h-4" />
+                    <span>{currentLanguage === "hi" ? "पीछे" : "Back"}</span>
+                  </button>
+                  <button
+                    type="button"
+                    className="next-btn"
+                    onClick={() => handleNextStep(6)}
+                  >
+                    {t.ok}
+                  </button>
+                </div>
+              </div>
 
             {/* Step 7: Summary Page */}
             <div className={`form-step ${step === 7 ? "active-step" : ""}`} data-step="7">

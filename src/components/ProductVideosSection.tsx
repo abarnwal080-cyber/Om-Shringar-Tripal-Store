@@ -13,44 +13,44 @@ interface VideoItem {
 
 const VIDEOS: VideoItem[] = [
   {
+    id: "xklevmfuaGk",
+    title: "📦 Ultimate Guide to Stretch Film: Wrap Like a Pro!",
+    description: "Heavy duty stretch film wrapping rolls for carton securing, bundling, and industrial packaging",
+    url: "https://www.youtube.com/embed/xklevmfuaGk?autoplay=1&mute=1&loop=1&playlist=xklevmfuaGk&playsinline=1&rel=0",
+    badge: "Stretch Film Roll",
+    badgeColor: "bg-amber-50 text-amber-700 border-amber-200"
+  },
+  {
+    id: "jL3oVLMO_18",
+    title: "Restoring Hope: Relief Workers Installing Emergency Tarpaulin Shelters",
+    description: "Heavy-duty emergency relief tarpaulins and disaster management shelters",
+    url: "https://www.youtube.com/embed/jL3oVLMO_18?autoplay=1&mute=1&loop=1&playlist=jL3oVLMO_18&playsinline=1&rel=0",
+    badge: "Emergency Tarpaulin",
+    badgeColor: "bg-emerald-50 text-emerald-700 border-emerald-200"
+  },
+  {
     id: "CMtP5qLMRbk",
-    title: "Non Cuttable Sheets",
-    description: "Ultra-strong and virtually non-cuttable multi-layered protection sheets",
+    title: "Heavy Duty Yellow Plastic Tarpaulin Sheet / Tirpal – 100% Waterproof, UV Resistant & Tear-Proof",
+    description: "Ultra-strong yellow plastic tarpaulin sheet – 100% waterproof, UV resistant & tear-proof protection",
     url: "https://www.youtube.com/embed/CMtP5qLMRbk?autoplay=1&mute=1&loop=1&playlist=CMtP5qLMRbk&playsinline=1&rel=0",
-    badge: "Non Cuttable",
-    badgeColor: "bg-red-50 text-red-700 border-red-200"
+    badge: "Heavy Duty Yellow Sheet",
+    badgeColor: "bg-yellow-50 text-yellow-800 border-yellow-200"
   },
   {
     id: "bijzl6m_ygg",
-    title: "Heavy Duty Shalimar & Jumbo Truck Covering",
-    description: "Premium waterproofing and robust coverage for industrial trucks and transport logistics",
+    title: "Heavy duty plastic sheet cover 202607202015",
+    description: "Heavy duty plastic sheet truck cover for transport logistics and cargo weatherproofing",
     url: "https://www.youtube.com/embed/bijzl6m_ygg?autoplay=1&mute=1&loop=1&playlist=bijzl6m_ygg&playsinline=1&rel=0",
-    badge: "Heavy Duty",
+    badge: "Truck Cover",
     badgeColor: "bg-purple-50 text-purple-700 border-purple-200"
   },
   {
     id: "qlSVdQLMPcA",
-    title: "Dhalai Sheet",
-    description: "High performance road curing, foundation construction, and under-slab vapor barrier",
+    title: "🚀 Ultimate Guide to Construction Black-Black Polythene Sheets!",
+    description: "Ultimate guide to construction black polythene sheets for road curing, foundation, and dhalai",
     url: "https://www.youtube.com/embed/qlSVdQLMPcA?autoplay=1&mute=1&loop=1&playlist=qlSVdQLMPcA&playsinline=1&rel=0",
-    badge: "Construction",
+    badge: "Construction Roll",
     badgeColor: "bg-blue-50 text-blue-700 border-blue-200"
-  },
-  {
-    id: "jL3oVLMO_18",
-    title: "Tarpaulins Used by Govt",
-    description: "Heavy-duty government-standard emergency relief and disaster management covers",
-    url: "https://www.youtube.com/embed/jL3oVLMO_18?autoplay=1&mute=1&loop=1&playlist=jL3oVLMO_18&playsinline=1&rel=0",
-    badge: "Govt Approved",
-    badgeColor: "bg-emerald-50 text-emerald-700 border-emerald-200"
-  },
-  {
-    id: "xklevmfuaGk",
-    title: "Stretch Film Roll",
-    description: "Heavy duty stretch film wrapping rolls for carton securing, bundling, and industrial packaging",
-    url: "https://www.youtube.com/embed/xklevmfuaGk?autoplay=1&mute=1&loop=1&playlist=xklevmfuaGk&playsinline=1&rel=0",
-    badge: "Packaging Roll",
-    badgeColor: "bg-amber-50 text-amber-700 border-amber-200"
   }
 ];
 
