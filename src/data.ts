@@ -328,7 +328,8 @@ export const PRODUCTS: Product[] = [
       "https://plain-apac-prod-public.komododecks.com/202607/09/XZIjVVBxoKiATRHNKDXZ/image.jpg",
       "https://plain-apac-prod-public.komododecks.com/202607/09/IC8EGq4OoMQUyfg7wIj8/image.png",
       "https://plain-apac-prod-public.komododecks.com/202607/09/0YM1Z46abjzC6qEhFcNu/image.png",
-      "https://plain-apac-prod-public.komododecks.com/202607/09/gGKNRgvofNlcUcvYnF9j/image.png"
+      "https://plain-apac-prod-public.komododecks.com/202607/09/gGKNRgvofNlcUcvYnF9j/image.png",
+      "https://lh3.googleusercontent.com/GVZyEChy8hTpNVgZds_-vzvfyIWXhKkdorFgQ07GeBxdJBQNI7a-3Dr_cZ4LZQGRXVszWUr182X1t-A2=w1690"
     ],
     availableSizes: "Available Sizes: 8 ft – 36 ft",
     commonSizes: ["8 ft", "10 ft", "12 ft", "15 ft", "18 ft", "20 ft", "24 ft", "30 ft", "36 ft"],
