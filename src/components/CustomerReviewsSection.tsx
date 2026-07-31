@@ -312,7 +312,7 @@ export const CustomerReviewsSection: React.FC = () => {
                   {/* Review Quote Text */}
                   <div className="relative text-left mb-6">
                     <Quote className="w-8 h-8 text-slate-200 absolute -top-3 -left-3 rotate-180 -z-0 opacity-60" />
-                    <p className="relative z-10 text-slate-700 sm:text-base text-sm font-medium leading-relaxed italic pl-4 border-l-2 border-[#FF7A00]/40">
+                    <p className="relative z-10 text-slate-800 sm:text-lg text-base font-amaranth-bold not-italic leading-relaxed pl-4 border-l-2 border-[#FF7A00]/40">
                       "{currentReview.review}"
                     </p>
                   </div>

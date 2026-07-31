@@ -232,7 +232,7 @@ export default function CustomerSuccessCarousel({ currentLanguage, onEnquire }: 
                   </div>
 
                   {/* Feedback Text */}
-                  <blockquote className="text-base sm:text-lg md:text-xl font-medium font-sans leading-relaxed text-slate-100 mb-8 italic">
+                  <blockquote className="text-base sm:text-lg md:text-xl font-amaranth-bold not-italic leading-relaxed text-slate-100 mb-8">
                     "{currentLanguage === "en" ? active.textEn : active.textHi}"
                   </blockquote>
                 </div>
