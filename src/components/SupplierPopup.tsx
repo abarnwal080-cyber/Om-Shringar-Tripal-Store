@@ -78,12 +78,39 @@ const SUPPLIER_HTML = `<!DOCTYPE html>
       }
     }
 
-    /* cute frame container for owner image */
+    /* cute frame container for owner / store / warehouse images */
+    .frames-container {
+      display: flex;
+      align-items: flex-start;
+      justify-content: center;
+      gap: 1.2rem;
+      margin-bottom: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    .frame-item {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .frame-label {
+      font-size: 0.72rem;
+      font-weight: 700;
+      color: #6b4d27;
+      margin-top: 0.3rem;
+      background: #f8f1e5;
+      padding: 0.2rem 0.6rem;
+      border-radius: 12px;
+      border: 1px solid #ebdcc8;
+      letter-spacing: 0.2px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+    }
+
     .owner-frame {
       position: relative;
-      width: 120px;
-      height: 120px;
-      margin-bottom: 0.8rem;
+      width: 110px;
+      height: 110px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -352,35 +379,26 @@ const SUPPLIER_HTML = `<!DOCTYPE html>
 </head>
 <body>
   <div class="card">
-    <!-- Owner image inside cute frame with SVG decorative border -->
+    <!-- Owner image inside cute frame -->
     <div class="owner-frame">
-      <!-- cute decorative SVG frame (rotating flower-like pattern) -->
       <svg class="cute-border-svg" viewBox="0 0 200 200" fill="none" xmlns="http://www.w3.org/2000/svg">
         <circle cx="100" cy="100" r="88" stroke="#f7d9aa" stroke-width="3" stroke-dasharray="10 8" fill="none" opacity="0.9" />
         <circle cx="100" cy="100" r="98" stroke="#fad390" stroke-width="2.5" stroke-dasharray="6 10" fill="none" opacity="0.8" />
-        <!-- small cute leaves / dots -->
         <circle cx="100" cy="12" r="5" fill="#f6b83d" opacity="0.8" />
         <circle cx="100" cy="188" r="5" fill="#f6b83d" opacity="0.8" />
         <circle cx="12" cy="100" r="5" fill="#f6b83d" opacity="0.8" />
         <circle cx="188" cy="100" r="5" fill="#f6b83d" opacity="0.8" />
-        <circle cx="38" cy="38" r="4" fill="#ffcf7a" opacity="0.7" />
-        <circle cx="162" cy="38" r="4" fill="#ffcf7a" opacity="0.7" />
-        <circle cx="38" cy="162" r="4" fill="#ffcf7a" opacity="0.7" />
-        <circle cx="162" cy="162" r="4" fill="#ffcf7a" opacity="0.7" />
       </svg>
-      <!-- sparkle icons -->
       <span class="frame-sparkle sparkle1"><i class="fas fa-star"></i></span>
       <span class="frame-sparkle sparkle2"><i class="fas fa-star"></i></span>
       <span class="frame-sparkle sparkle3"><i class="fas fa-heart"></i></span>
       <span class="frame-sparkle sparkle4"><i class="fas fa-circle"></i></span>
       
-      <!-- actual owner image from provided URL -->
       <img 
         src="https://plain-apac-prod-public.komododecks.com/202607/04/de0uRzABCTBM2Rp6uDZu/image.png" 
         alt="Mr. Vinod Kumar Varnawal" 
         class="owner-img"
         loading="eager"
-        onerror="this.onerror=null; this.src='data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 width=%22160%22 height=%22160%22%3E%3Ccircle cx=%2280%22 cy=%2280%22 r=%2275%22 fill=%22%23f3d9b1%22/%3E%3Ctext x=%2280%22 y=%22100%22 text-anchor=%22middle%22 fill=%22%23b07d4b%22 font-size=%2222%22%3EVK%3C/text%3E%3C/svg%3E';"
       >
     </div>
 
@@ -392,33 +410,30 @@ const SUPPLIER_HTML = `<!DOCTYPE html>
     <div class="message-box">
       <p class="message-text">
         <i class="fas fa-quote-left"></i> 
-        We bring you <span class="highlight">plastic sheets, tarpaulins of all genuine brands</span> 
-        and premium <span class="highlight">fencing polyester net</span> — crafted with unwavering commitment. 
-        Every product reflects our promise of <strong>durability, trust & genuine quality</strong>. 
-        Your satisfaction is our tradition. <i class="fas fa-quote-right"></i>
+        Direct factory supply of <span class="highlight">plastic sheets, tarpaulins & fencing nets</span> — guaranteed quality & genuine brand trust. <i class="fas fa-quote-right"></i>
       </p>
     </div>
 
-    <!-- Product highlights with animation -->
+    <!-- Product highlights -->
     <div class="product-grid">
       <div class="product-tag">
         <i class="fas fa-box"></i> 
-        <span>Plastic Sheets <br><small style="font-weight:400; color:#5e4a34;">All genuine brands</small></span>
+        <span>Plastic Sheets</span>
       </div>
       <div class="product-tag">
         <i class="fas fa-water"></i> 
-        <span>Tarpaulins <br><small style="font-weight:400; color:#5e4a34;">Heavy-duty quality</small></span>
+        <span>Heavy Tarpaulins</span>
       </div>
       <div class="product-tag">
         <i class="fas fa-fence"></i> 
-        <span>Fencing Polyester Net <br><small style="font-weight:400; color:#5e4a34;">Strong & reliable</small></span>
+        <span>Fencing Nets</span>
       </div>
     </div>
 
-    <!-- Quality promise seal with animated bounce -->
+    <!-- Quality promise seal -->
     <div class="promise-seal">
       <i class="fas fa-shield-alt"></i> 
-      <span><strong>Our Promise:</strong> Authenticity · Strength · Trust</span>
+      <span><strong>Promise:</strong> Genuine Quality · Direct Stock · Trust</span>
     </div>
   </div>
 
