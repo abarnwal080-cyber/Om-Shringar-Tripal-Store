@@ -285,7 +285,7 @@ function sendCustomerEmail(data, submissionId) {
 
           <div style="background-color: #f0fdf4; border-left: 4px solid #16a34a; padding: 15px; border-radius: 8px; margin-bottom: 25px; font-size: 14px; color: #14532d;">
             <strong>If you need immediate assistance, contact us:</strong><br>
-            📞 9852076197<br>
+            📞 8210625483<br>
             🌐 <a href="http://www.shridantahub.in" style="color: #ea580c; text-decoration: none; font-weight: bold;">www.shridantahub.in</a>
           </div>
 

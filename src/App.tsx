@@ -642,7 +642,7 @@ export default function App() {
                   <span>{lang === "en" ? "Get Store Directions" : "दुकान का रास्ता खोजें"}</span>
                 </a>
                 <a 
-                  href="tel:+918002194427"
+                  href="tel:+918210625483"
                   className="inline-flex items-center gap-2 bg-white hover:bg-slate-50 text-slate-800 border border-slate-200 px-6 py-3 rounded-xl font-bold text-sm shadow-sm transition-all active:scale-95 cursor-pointer"
                 >
                   <Phone className="w-4 h-4 text-brand-orange" />
@@ -1397,7 +1397,7 @@ export default function App() {
                       href={BUSINESS_INFO.phoneFormatted}
                       className="text-sm font-extrabold text-brand-blue-royal font-mono hover:text-brand-orange transition-colors block mt-0.5"
                     >
-                      +91 8002194427
+                      +91 8210625483
                     </a>
                   </div>
                 </div>
@@ -1615,7 +1615,7 @@ export default function App() {
             className="fixed left-6 bottom-6 z-40"
           >
             <a
-              href="https://wa.me/918002194427?text=Hi!%20I%20visited%20your%20website%20and%20wanted%20to%20inquire%20about%20your%20products."
+              href="https://wa.me/918210625483?text=Hi!%20I%20visited%20your%20website%20and%20wanted%20to%20inquire%20about%20your%20products."
               target="_blank"
               rel="noopener noreferrer"
               aria-label="WhatsApp Integrated Inquiry"

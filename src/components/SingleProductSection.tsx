@@ -483,25 +483,57 @@ export default function SingleProductSection({
                 </div>
               </div>
 
-              {/* Action Bar */}
-              <div className="border-t border-slate-100 pt-6 flex flex-col sm:flex-row gap-4 items-center w-full">
-                <button
-                  onClick={() => onEnquire(product.name)}
-                  className="w-full sm:flex-1 flex items-center justify-center gap-2.5 py-4 px-8 rounded-full bg-brand-blue-dark hover:bg-slate-800 text-white text-sm font-extrabold shadow transition-all cursor-pointer"
-                >
-                  <Sparkles className="w-4 h-4 text-amber-400 animate-pulse" />
-                  <span>{currentLanguage === "hi" ? "अभी संपर्क करें" : "Get in Touch Now"}</span>
-                </button>
+              {/* Dedicated Enquire for Product Tab Section */}
+              <div className="border-t border-slate-200 pt-6 mt-6 w-full">
+                <div className="bg-gradient-to-r from-slate-900 via-[#0B2D5C] to-slate-900 rounded-2xl p-5 sm:p-6 text-white shadow-xl border border-slate-800">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 pb-3.5 border-b border-white/10">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-xl bg-orange-500/20 border border-orange-500/40 flex items-center justify-center text-orange-400 font-bold text-lg shrink-0">
+                        📩
+                      </div>
+                      <div>
+                        <span className="text-[10px] font-mono text-orange-400 font-extrabold uppercase tracking-widest block">
+                          {currentLanguage === "hi" ? "उत्पाद पूछताछ फ़ॉर्म" : "DIRECT PRODUCT INQUIRY"}
+                        </span>
+                        <h3 className="text-base sm:text-lg font-black font-display text-white tracking-tight">
+                          {currentLanguage === "hi" 
+                            ? `${product.name} के लिए पूछताछ करें` 
+                            : `Enquire for ${product.name}`}
+                        </h3>
+                      </div>
+                    </div>
+                    <span className="inline-flex items-center gap-1.5 text-[11px] bg-emerald-500/20 text-emerald-300 font-extrabold px-3 py-1 rounded-full border border-emerald-500/30 shrink-0 self-start sm:self-auto">
+                      <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+                      {currentLanguage === "hi" ? "सर्वोत्तम फ़ैक्टरी मूल्य" : "Best Factory Pricing"}
+                    </span>
+                  </div>
 
-                <a
-                  href={getWhatsAppLink(product.name)}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="w-full sm:flex-1 flex items-center justify-center gap-2.5 py-4 px-8 rounded-full bg-gradient-to-r from-emerald-600 to-green-500 hover:from-emerald-700 hover:to-green-600 text-white text-sm font-black shadow transition-all"
-                >
-                  <MessageSquare className="w-4 h-4" />
-                  <span>{currentLanguage === "hi" ? "व्हाट्सएप पूछताछ" : "WhatsApp Inquiry"}</span>
-                </a>
+                  <p className="text-xs text-slate-300 mb-4 font-medium leading-relaxed">
+                    {currentLanguage === "hi"
+                      ? `${product.name} के लिए विशेष दरें और जानकारी प्राप्त करने हेतु संपर्क माध्यम चुनें:`
+                      : `Select your preferred contact option below to get instant quotes for ${product.name}:`}
+                  </p>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+                    <button
+                      onClick={() => onEnquire(product.name)}
+                      className="w-full flex items-center justify-center gap-2.5 py-4 px-6 rounded-xl bg-orange-500 hover:bg-orange-600 active:scale-[0.98] text-white text-xs sm:text-sm font-extrabold shadow-lg transition-all cursor-pointer group"
+                    >
+                      <Sparkles className="w-4 h-4 text-amber-200 animate-pulse" />
+                      <span>{currentLanguage === "hi" ? " Get in Touch Now (फ़ॉर्म पूछताछ)" : "Get in Touch Now"}</span>
+                    </button>
+
+                    <a
+                      href={getWhatsAppLink(product.name)}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-full flex items-center justify-center gap-2.5 py-4 px-6 rounded-xl bg-gradient-to-r from-emerald-600 to-green-500 hover:from-emerald-700 hover:to-green-600 active:scale-[0.98] text-white text-xs sm:text-sm font-extrabold shadow-lg transition-all text-center"
+                    >
+                      <MessageSquare className="w-4 h-4" />
+                      <span>{currentLanguage === "hi" ? " WhatsApp Enquiry (व्हाट्सएप)" : "WhatsApp Enquiry"}</span>
+                    </a>
+                  </div>
+                </div>
               </div>
             </div>
 

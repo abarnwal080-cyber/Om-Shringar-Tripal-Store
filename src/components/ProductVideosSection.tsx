@@ -244,13 +244,13 @@ export const ProductVideosSection: React.FC<ProductVideosSectionProps> = ({ lang
     }
   }, [isSeamlessReset]);
 
-  // Autoplay timer sliding every 3 seconds (pauses on hover, drag, or active lightbox)
+  // Autoplay timer sliding every 9 seconds (pauses on hover, drag, or active lightbox)
   useEffect(() => {
     if (isHovered || isDragging || selectedVideo || isSeamlessReset) return;
 
     const timer = setInterval(() => {
       handleNext();
-    }, 3000);
+    }, 9000);
 
     return () => clearInterval(timer);
   }, [isHovered, isDragging, selectedVideo, isSeamlessReset, currentIndex]);
@@ -328,7 +328,7 @@ export const ProductVideosSection: React.FC<ProductVideosSectionProps> = ({ lang
 
   const getWhatsAppMessage = (videoTitle: string) => {
     const text = `Hi Mr. Vinod Kumar, I watched the product video for *${videoTitle}* on your website. I want to inquire about bulk wholesale pricing and order process for my store.`;
-    return `https://wa.me/918002194427?text=${encodeURIComponent(text)}`;
+    return `https://wa.me/918210625483?text=${encodeURIComponent(text)}`;
   };
 
   // Calculate sliding track translations
