@@ -49,13 +49,13 @@ const SUPPLIER_HTML = `<!DOCTYPE html>
     }
 
     .card {
-      max-width: 780px;
+      max-width: 620px;
       width: 100%;
       background: rgba(255, 255, 255, 0.95);
       backdrop-filter: blur(18px);
-      border-radius: 3.5rem 3.5rem 3rem 3rem;
-      box-shadow: 0 30px 55px rgba(0, 0, 0, 0.08), 0 10px 25px rgba(0, 20, 40, 0.06);
-      padding: 2.5rem 2.2rem 2.8rem;
+      border-radius: 2.5rem;
+      box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08), 0 8px 20px rgba(0, 20, 40, 0.05);
+      padding: 1.8rem 1.6rem 2rem;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -81,9 +81,9 @@ const SUPPLIER_HTML = `<!DOCTYPE html>
     /* cute frame container for owner image */
     .owner-frame {
       position: relative;
-      width: 160px;
-      height: 160px;
-      margin-bottom: 1.5rem;
+      width: 120px;
+      height: 120px;
+      margin-bottom: 0.8rem;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -103,10 +103,10 @@ const SUPPLIER_HTML = `<!DOCTYPE html>
 
     .cute-border-svg {
       position: absolute;
-      top: -18px;
-      left: -18px;
-      width: calc(100% + 36px);
-      height: calc(100% + 36px);
+      top: -14px;
+      left: -14px;
+      width: calc(100% + 28px);
+      height: calc(100% + 28px);
       z-index: 0;
       animation: rotateFrame 25s infinite linear;
     }
@@ -126,8 +126,8 @@ const SUPPLIER_HTML = `<!DOCTYPE html>
       border-radius: 50%;
       object-fit: cover;
       object-position: center 20%;
-      border: 4px solid white;
-      box-shadow: 0 15px 30px rgba(0, 0, 0, 0.15);
+      border: 3px solid white;
+      box-shadow: 0 12px 24px rgba(0, 0, 0, 0.12);
       position: relative;
       z-index: 2;
       background: #f0e6d2;
@@ -141,7 +141,7 @@ const SUPPLIER_HTML = `<!DOCTYPE html>
     /* decorative tiny stars/dots around frame */
     .frame-sparkle {
       position: absolute;
-      font-size: 1.1rem;
+      font-size: 0.9rem;
       color: #ffb142;
       z-index: 3;
       animation: sparkleFloat 2.5s infinite alternate;
@@ -150,8 +150,8 @@ const SUPPLIER_HTML = `<!DOCTYPE html>
 
     .sparkle1 { top: -5px; right: -5px; animation-delay: 0s; }
     .sparkle2 { bottom: 2px; left: -8px; animation-delay: 0.6s; }
-    .sparkle3 { top: 30px; left: -15px; animation-delay: 1.2s; color: #f39c12; }
-    .sparkle4 { bottom: 15px; right: -12px; animation-delay: 0.3s; color: #f6a83e; }
+    .sparkle3 { top: 20px; left: -12px; animation-delay: 1.2s; color: #f39c12; }
+    .sparkle4 { bottom: 10px; right: -10px; animation-delay: 0.3s; color: #f6a83e; }
 
     @keyframes sparkleFloat {
       0% { opacity: 0.4; transform: translateY(0px) scale(0.9); }
@@ -159,10 +159,10 @@ const SUPPLIER_HTML = `<!DOCTYPE html>
     }
 
     h1 {
-      font-size: 2.2rem;
+      font-size: 1.35rem;
       font-weight: 700;
       color: #1e2b3c;
-      margin-top: 0.2rem;
+      margin-top: 0.1rem;
       letter-spacing: -0.3px;
       line-height: 1.2;
       background: linear-gradient(135deg, #1e2b3c 0%, #2c3e50 80%);
@@ -172,13 +172,13 @@ const SUPPLIER_HTML = `<!DOCTYPE html>
     }
 
     .owner-name {
-      font-size: 2.4rem;
+      font-size: 1.5rem;
       font-weight: 800;
       background: linear-gradient(to right, #b76e2e, #d4943a, #b56a2c);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
-      margin: 0.3rem 0 0.1rem;
+      margin: 0.2rem 0 0.1rem;
       animation: shimmer 3s infinite alternate;
     }
 
@@ -190,12 +190,12 @@ const SUPPLIER_HTML = `<!DOCTYPE html>
     .title-badge {
       background: #f9efe2;
       color: #8b5a2b;
-      padding: 0.4rem 1.5rem;
+      padding: 0.3rem 1.1rem;
       border-radius: 30px;
       font-weight: 600;
-      font-size: 0.95rem;
+      font-size: 0.8rem;
       letter-spacing: 0.3px;
-      margin: 0.8rem 0 1.3rem;
+      margin: 0.5rem 0 0.9rem;
       display: inline-flex;
       align-items: center;
       gap: 0.4rem;
@@ -211,10 +211,10 @@ const SUPPLIER_HTML = `<!DOCTYPE html>
 
     .message-box {
       background: #fafbfc;
-      border-radius: 2.5rem;
-      padding: 1.8rem 1.8rem;
-      margin: 1rem 0 1.5rem;
-      box-shadow: inset 0 1px 8px rgba(0,0,0,0.02), 0 15px 25px -12px rgba(0,0,0,0.1);
+      border-radius: 1.8rem;
+      padding: 1.2rem 1.4rem;
+      margin: 0.6rem 0 1rem;
+      box-shadow: inset 0 1px 6px rgba(0,0,0,0.02), 0 10px 20px -10px rgba(0,0,0,0.08);
       border: 1px solid #f0eee7;
       width: 100%;
       position: relative;
@@ -227,8 +227,8 @@ const SUPPLIER_HTML = `<!DOCTYPE html>
     }
 
     .message-text {
-      font-size: 1.2rem;
-      line-height: 1.7;
+      font-size: 0.95rem;
+      line-height: 1.55;
       color: #2d3a4a;
       font-weight: 500;
       text-align: center;
@@ -237,7 +237,7 @@ const SUPPLIER_HTML = `<!DOCTYPE html>
     .message-text i {
       color: #d4943a;
       margin: 0 3px;
-      font-size: 0.9rem;
+      font-size: 0.8rem;
       vertical-align: middle;
     }
 
@@ -254,22 +254,22 @@ const SUPPLIER_HTML = `<!DOCTYPE html>
       flex-wrap: wrap;
       align-items: center;
       justify-content: center;
-      gap: 1.2rem;
-      margin: 1.7rem 0 0.8rem;
+      gap: 0.8rem;
+      margin: 1rem 0 0.6rem;
       width: 100%;
     }
 
     .product-tag {
       background: white;
       border-radius: 3rem;
-      padding: 0.9rem 1.5rem;
+      padding: 0.6rem 1.1rem;
       display: flex;
       align-items: center;
-      gap: 0.6rem;
+      gap: 0.5rem;
       font-weight: 650;
-      font-size: 1rem;
+      font-size: 0.825rem;
       color: #1e2b3c;
-      box-shadow: 0 8px 18px rgba(0,0,0,0.04);
+      box-shadow: 0 6px 14px rgba(0,0,0,0.03);
       border: 1px solid #ede7dc;
       transition: all 0.25s;
       animation: popIn 0.7s ease backwards;
@@ -286,15 +286,15 @@ const SUPPLIER_HTML = `<!DOCTYPE html>
     }
 
     .product-tag i {
-      font-size: 1.5rem;
+      font-size: 1.1rem;
       color: #d4943a;
       transition: transform 0.2s;
     }
 
     .product-tag:hover {
-      transform: translateY(-4px);
+      transform: translateY(-3px);
       border-color: #d4943a;
-      box-shadow: 0 18px 25px -12px rgba(180, 120, 50, 0.25);
+      box-shadow: 0 12px 20px -10px rgba(180, 120, 50, 0.2);
     }
 
     .product-tag:hover i {
@@ -302,18 +302,18 @@ const SUPPLIER_HTML = `<!DOCTYPE html>
     }
 
     .promise-seal {
-      margin-top: 2rem;
+      margin-top: 1rem;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 0.8rem;
+      gap: 0.6rem;
       background: #fffbf5;
       border-radius: 4rem;
-      padding: 0.9rem 2.2rem;
+      padding: 0.6rem 1.5rem;
       border: 1px dashed #d4943a;
       color: #5e3a1c;
       font-weight: 600;
-      font-size: 1.05rem;
+      font-size: 0.85rem;
       animation: gentleBounce 2.2s infinite alternate;
     }
 
@@ -323,13 +323,13 @@ const SUPPLIER_HTML = `<!DOCTYPE html>
     }
 
     .promise-seal i {
-      font-size: 1.8rem;
+      font-size: 1.2rem;
       color: #b76e2e;
     }
 
     .footer-note {
-      margin-top: 1rem;
-      font-size: 0.9rem;
+      margin-top: 0.8rem;
+      font-size: 0.75rem;
       color: #6b5b4b;
       opacity: 0.8;
       font-style: italic;
@@ -337,15 +337,15 @@ const SUPPLIER_HTML = `<!DOCTYPE html>
 
     @media (max-width: 500px) {
       .card {
-        padding: 2rem 1.2rem;
-        border-radius: 2rem;
+        padding: 1.2rem 0.9rem;
+        border-radius: 1.8rem;
       }
       .owner-frame {
-        width: 140px;
-        height: 140px;
+        width: 100px;
+        height: 100px;
       }
       .owner-name {
-        font-size: 2rem;
+        font-size: 1.3rem;
       }
     }
   </style>

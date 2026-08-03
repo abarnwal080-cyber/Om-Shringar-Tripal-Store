@@ -502,10 +502,6 @@ export default function SingleProductSection({
                         </h3>
                       </div>
                     </div>
-                    <span className="inline-flex items-center gap-1.5 text-[11px] bg-emerald-500/20 text-emerald-300 font-extrabold px-3 py-1 rounded-full border border-emerald-500/30 shrink-0 self-start sm:self-auto">
-                      <span className="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-                      {currentLanguage === "hi" ? "सर्वोत्तम फ़ैक्टरी मूल्य" : "Best Factory Pricing"}
-                    </span>
                   </div>
 
                   <p className="text-xs text-slate-300 mb-4 font-medium leading-relaxed">
