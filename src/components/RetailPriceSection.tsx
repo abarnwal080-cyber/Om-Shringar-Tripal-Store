@@ -1,5 +1,5 @@
 import { motion } from "motion/react";
-import { Phone, CheckCircle, ArrowRight } from "lucide-react";
+import { Phone, CheckCircle, ArrowRight, Store } from "lucide-react";
 import { BUSINESS_INFO } from "../data";
 
 interface RetailPriceSectionProps {
@@ -172,11 +172,16 @@ export default function RetailPriceSection({ currentLanguage, onOpenInquiry }: R
           <h2 id="retail-title" className="text-3xl sm:text-4xl md:text-5xl font-black font-display tracking-tight mb-4 text-slate-900 leading-tight">
             {isEn ? "Retail Price List" : "ताजा रिटेल प्राइस लिस्ट"}
           </h2>
-          <p className="text-slate-600 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed">
+          <p className="text-slate-600 text-sm sm:text-base max-w-2xl mx-auto leading-relaxed mb-4">
             {isEn 
               ? "Reference retail prices only. Prices may increase or decrease depending on market conditions, GSM, size, brand, and order quantity."
               : "कृपया ध्यान दें: ये केवल संदर्भ खुदरा दरें हैं। बाजार की स्थिति, जीएसएम (मोटाई), आकार, ब्रांड और ऑर्डर की मात्रा के आधार पर दरें कम या ज्यादा हो सकती हैं।"}
           </p>
+
+          <div className="inline-flex items-center gap-2.5 px-4 py-2 rounded-2xl bg-amber-50 border border-amber-200 text-amber-950 text-xs sm:text-sm font-semibold max-w-2xl mx-auto shadow-sm text-left">
+            <Store className="w-4 h-4 text-amber-600 shrink-0" />
+            <span>For shipping your product, you have to visit our physical store; online shipping service is not available.</span>
+          </div>
         </div>
 
         {/* Pricing Cards Grid */}

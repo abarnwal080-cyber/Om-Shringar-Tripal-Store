@@ -52,14 +52,13 @@ import ProductCard from "./components/ProductCard";
 import CustomerReviewsSection from "./components/CustomerReviewsSection";
 import BrandCarousel from "./components/BrandCarousel";
 import ProductMiniCarousel from "./components/ProductMiniCarousel";
-import InquiryForm from "./components/InquiryForm";
-import InquiryModal from "./components/InquiryModal";
 import SingleProductSection from "./components/SingleProductSection";
 import SupplierPopup from "./components/SupplierPopup";
 import HeroCarousel from "./components/HeroCarousel";
 import StoreStatusCard from "./components/StoreStatusCard";
 import CustomerSuccessCarousel from "./components/CustomerSuccessCarousel";
 import { ProductVideosSection } from "./components/ProductVideosSection";
+import { TermsModal } from "./components/TermsModal";
 import { TRANSLATIONS } from "./translations";
 
 // Safe dynamic icon loader to keep code modular and readable
@@ -71,23 +70,21 @@ function DynamicIcon({ name, className }: { name: string; className?: string }) 
 export default function App() {
   const lang = "en";
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  const [prefilledProduct, setPrefilledProduct] = useState("");
   const [activeTab, setActiveTab] = useState("All");
   const [expandedFAQ, setExpandedFAQ] = useState<number | null>(null);
   const [supplierOpen, setSupplierOpen] = useState(false);
   const [heroBgImage, setHeroBgImage] = useState("https://plain-apac-prod-public.komododecks.com/202607/03/eckT9KEMGbavrebTJwPJ/image.png");
-  const [inquiryOpen, setInquiryOpen] = useState(false);
   const [sizeChartTab, setSizeChartTab] = useState<"plastic" | "tarpaulin">("plastic");
 
   const [navbarVisible, setNavbarVisible] = useState(true);
   const [showScrollTop, setShowScrollTop] = useState(false);
-  const [showMapFloating, setShowMapFloating] = useState(false);
   const [isAtFaqOrBelow, setIsAtFaqOrBelow] = useState(false);
   const [activeSection, setActiveSection] = useState("");
   const lastScrollY = useRef(0);
 
   const [isCatalogOpen, setIsCatalogOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
+  const [isTermsOpen, setIsTermsOpen] = useState(false);
 
   const [currentProductSlug, setCurrentProductSlug] = useState<string | null>(null);
 
@@ -192,17 +189,11 @@ export default function App() {
             setNavbarVisible(true); // scrolling up
           }
           
-          // Scroll-to-top button & floating map visibility
+          // Scroll-to-top button
           if (currentScrollY > 500) {
             setShowScrollTop(true);
           } else {
             setShowScrollTop(false);
-          }
-
-          if (currentScrollY > 250) {
-            setShowMapFloating(true);
-          } else {
-            setShowMapFloating(false);
           }
           
           // Check if FAQ or below is reached to hide floating icons
@@ -261,9 +252,11 @@ export default function App() {
   const inquiryRef = useRef<HTMLDivElement>(null);
   const t = TRANSLATIONS[lang];
 
-  const handleEnquire = (productName: string) => {
-    setPrefilledProduct(productName || "");
-    setInquiryOpen(true);
+  const handleEnquire = (productName: string = "") => {
+    const text = productName
+      ? `Hi, I am visiting your website and have an inquiry about ${productName} at Om Shringar Tirpal Store. Please share details and pricing.`
+      : `Hi, I am visiting your website and have an inquiry about bulk orders at Om Shringar Tirpal Store. Please share your catalog.`;
+    window.open(`${BUSINESS_INFO.whatsappLink}?text=${encodeURIComponent(text)}`, "_blank", "noopener,noreferrer");
   };
 
    const handleMobileNavClick = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
@@ -289,10 +282,6 @@ export default function App() {
         });
       }
     }, 150); // slight delay to let menu start collapsing or let state settle
-  };
-
-  const clearPrefill = () => {
-    setPrefilledProduct("");
   };
 
   const getWhatsAppGeneralLink = () => {
@@ -422,6 +411,16 @@ export default function App() {
                 )}
               </a>
             ))}
+
+            {/* White T&C Tab Hyperlink */}
+            <button
+              onClick={() => setIsTermsOpen(true)}
+              className="bg-white text-slate-900 hover:bg-orange-500 hover:text-white font-extrabold text-xs px-3.5 py-1.5 rounded-full transition-all duration-200 shadow-md flex items-center gap-1.5 cursor-pointer border border-white/50 active:scale-95"
+              title="Terms & Conditions / Disclaimer"
+            >
+              <FileText className="w-3.5 h-3.5 text-orange-500 hover:text-white transition-colors" />
+              <span>T&C</span>
+            </button>
           </nav>
  
           {/* Mobile Hamburger Toggle */}
@@ -441,9 +440,19 @@ export default function App() {
               initial={{ opacity: 0, height: 0 }}
               animate={{ opacity: 1, height: "auto" }}
               exit={{ opacity: 0, height: 0 }}
-              className="lg:hidden bg-white border-t border-slate-100 overflow-hidden shadow-inner"
+              className="lg:hidden bg-white/95 backdrop-blur-md border-t border-slate-100 overflow-hidden shadow-2xl relative"
             >
-              <div className="px-4 py-6 space-y-4 flex flex-col">
+              {/* Subtle Semi-Transparent Close (X) Button in Top-Right Corner */}
+              <button
+                onClick={() => setMobileMenuOpen(false)}
+                className="absolute top-3.5 right-4 w-11 h-11 min-w-[44px] min-h-[44px] rounded-full bg-slate-100/80 hover:bg-slate-200/90 text-slate-500 hover:text-slate-800 flex items-center justify-center transition-all cursor-pointer border border-slate-200/60 shadow-sm z-20 active:scale-95"
+                aria-label="Close navigation menu"
+                title="Close Menu"
+              >
+                <X className="w-5 h-5 stroke-[2.5]" />
+              </button>
+
+              <div className="px-4 py-6 pr-16 space-y-4 flex flex-col">
                 <a 
                   href="#about" 
                   onClick={(e) => handleMobileNavClick(e, "about")}
@@ -486,6 +495,17 @@ export default function App() {
                 >
                   {t.navFindStore}
                 </a>
+
+                <button 
+                  onClick={() => {
+                    setMobileMenuOpen(false);
+                    setIsTermsOpen(true);
+                  }}
+                  className="text-base font-bold text-slate-800 hover:text-orange-600 py-1 flex items-center gap-2 cursor-pointer text-left"
+                >
+                  <FileText className="w-4 h-4 text-orange-500" />
+                  <span>T&C / Disclaimer</span>
+                </button>
 
                 <div className="pt-4 border-t border-slate-100 flex flex-col gap-3">
                   <button
@@ -774,6 +794,15 @@ export default function App() {
                   >
                     <Icons.X className="w-5 h-5" />
                   </button>
+                </div>
+
+                {/* Physical Store Shipping Notice Banner */}
+                <div className="w-full max-w-2xl mx-auto bg-amber-50 border border-amber-300/80 rounded-2xl p-3 flex items-start gap-2.5 text-amber-950 text-xs font-semibold shadow-sm">
+                  <Icons.Store className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
+                  <div>
+                    <strong className="text-amber-900 font-extrabold block text-[10px] uppercase tracking-wider mb-0.5">Shipping & Delivery Notice:</strong>
+                    For shipping your product, you have to visit our physical store; online shipping service is not available.
+                  </div>
                 </div>
 
                 {/* Search Bar with Glassmorphism */}
@@ -1510,6 +1539,13 @@ export default function App() {
                 <a href="#special-uses" className="hover:text-white transition-colors">Special Applications</a>
                 <a href="#size-matrix" className="hover:text-white transition-colors">Size Spec Tables</a>
                 <a href="#why-choose" className="hover:text-white transition-colors">Why Choose Us</a>
+                <button 
+                  onClick={() => setIsTermsOpen(true)}
+                  className="text-white hover:text-orange-400 font-bold transition-colors text-left cursor-pointer flex items-center gap-1.5 pt-1"
+                >
+                  <FileText className="w-3.5 h-3.5 text-orange-400" />
+                  <span>T&C / Image Disclaimer</span>
+                </button>
               </nav>
             </div>
 
@@ -1562,7 +1598,7 @@ export default function App() {
                 Developed by <span className="text-orange-500 font-semibold">Priyaranjan Raj</span>
               </p>
             </div>
-            <div className="flex gap-4">
+            <div className="flex gap-4 items-center">
               <a href={BUSINESS_INFO.googleMapsUrl} target="_blank" rel="noreferrer" className="hover:text-white transition-colors">
                 Google Maps Find Us
               </a>
@@ -1570,59 +1606,19 @@ export default function App() {
               <a href={BUSINESS_INFO.phoneFormatted} className="hover:text-white transition-colors">
                 Proprietor Direct-Dial
               </a>
+              <span className="text-slate-600">|</span>
+              <button 
+                onClick={() => setIsTermsOpen(true)}
+                className="text-white hover:text-orange-400 font-extrabold transition-colors cursor-pointer underline underline-offset-4 flex items-center gap-1"
+              >
+                <span>T&C</span>
+              </button>
             </div>
           </div>
         </div>
       </footer>
 
       {/* 13. FLOATING ACTION CTA WIDGETS */}
-      
-      {/* Floating Vertical "Enquire Now" Tab: Desktop Only */}
-      <AnimatePresence>
-        {!isAtFaqOrBelow && (
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            animate={{ opacity: 1, x: 0 }}
-            exit={{ opacity: 0, x: -20 }}
-            className="hidden md:flex fixed left-0 top-[40%] z-40 transform -translate-y-1/2"
-          >
-            <button
-              onClick={() => handleEnquire("")}
-              className="bg-black hover:bg-slate-900 text-white font-extrabold text-xs tracking-wider uppercase py-4 px-3 rounded-r-2xl flex items-center gap-2 [writing-mode:vertical-lr] rotate-180 transition-all duration-300 hover:translate-x-1 cursor-pointer select-none border border-orange-500/30 relative group animate-orange-glow-pulse"
-            >
-              <div className="absolute inset-0 bg-white/5 opacity-0 group-hover:opacity-100 transition-opacity rounded-r-2xl pointer-events-none" />
-              <span className="animate-pulse">✨ {(lang as string) === "hi" ? "पूछताछ करें" : "Enquire Now"}</span>
-            </button>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Unified Floating Get Quote Button: Mobile & Desktop (Aligned Bottom Right as custom enquiry-fab) */}
-      <AnimatePresence>
-        {!isAtFaqOrBelow && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.8, y: 20 }}
-            className="fixed right-[22px] bottom-[22px] z-[9999]"
-          >
-            <button
-              id="enquiry-fab"
-              onClick={() => handleEnquire("")}
-              className="flex items-center gap-[10px] border border-orange-500/20 rounded-full cursor-pointer text-white font-extrabold tracking-[0.2px] transition-all duration-200 select-none hover:-translate-y-[2px] hover:scale-[1.03] active:translate-y-0 active:scale-[0.99] animate-orange-glow-pulse"
-              style={{
-                background: "#000000",
-                padding: "14px 18px",
-              }}
-            >
-              <svg className="w-[22px] h-[22px] fill-white shrink-0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
-                <path d="M20 2H4c-1.1 0-1.99.9-1.99 2L2 22l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm-7 12h-2v-2h2v2zm0-4h-2V6h2v4z" />
-              </svg>
-              <span className="uppercase tracking-wider font-extrabold">{(lang as string) === "hi" ? "पूछताछ करें" : "Enquire Now"}</span>
-            </button>
-          </motion.div>
-        )}
-      </AnimatePresence>
 
       {/* Unified Floating WhatsApp Button: Mobile & Desktop (Aligned Bottom Left) */}
       <AnimatePresence>
@@ -1651,29 +1647,6 @@ export default function App() {
         )}
       </AnimatePresence>
 
-      {/* Floating Google Maps Location Icon Button (Appears on Scroll) */}
-      <AnimatePresence>
-        {showMapFloating && !isAtFaqOrBelow && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8, y: 15 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.8, y: 15 }}
-            className="fixed left-5 bottom-[90px] z-40"
-          >
-            <a
-              href={BUSINESS_INFO.googleMapsUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Shop Location on Google Maps"
-              title="Shop Location on Google Maps"
-              className="w-11 h-11 sm:w-12 sm:h-12 bg-white text-red-600 rounded-full shadow-lg border border-slate-200 hover:border-red-500/60 hover:bg-red-600 hover:text-white hover:shadow-red-500/25 flex items-center justify-center transition-all duration-300 hover:scale-110 active:scale-95 cursor-pointer group"
-            >
-              <MapPin className="w-5 h-5 sm:w-6 sm:h-6 stroke-[2.2] group-hover:animate-bounce" />
-            </a>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
       {/* Floating Scroll-to-Top Button (Stacked above the WhatsApp Button) */}
       <AnimatePresence>
         {showScrollTop && !isAtFaqOrBelow && (
@@ -1681,7 +1654,7 @@ export default function App() {
             initial={{ opacity: 0, scale: 0.8, y: 10 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.8, y: 10 }}
-            className="fixed right-6 bottom-24 z-40"
+            className="fixed right-6 bottom-6 z-40"
           >
             <button
               onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
@@ -1698,14 +1671,8 @@ export default function App() {
       {/* Supplier Popup Modal */}
       <SupplierPopup isOpen={supplierOpen} onClose={() => setSupplierOpen(false)} />
 
-      {/* Conversational Quote Assistant Typeform Modal */}
-      <InquiryModal
-        isOpen={inquiryOpen}
-        onClose={() => setInquiryOpen(false)}
-        prefilledProduct={prefilledProduct}
-        onClearPrefill={clearPrefill}
-        currentLanguage={lang}
-      />
+      {/* Website Content & Image Disclaimer Modal */}
+      <TermsModal isOpen={isTermsOpen} onClose={() => setIsTermsOpen(false)} />
 
     </div>
   );

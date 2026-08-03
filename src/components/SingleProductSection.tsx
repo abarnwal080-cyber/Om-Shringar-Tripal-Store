@@ -20,11 +20,12 @@ import {
   Warehouse,
   Leaf,
   Waves,
-  Bird
+  Bird,
+  Store,
+  AlertCircle
 } from "lucide-react";
 import { Product, BUSINESS_INFO, PRODUCTS, getProductSlug } from "../data";
 import LazyImage from "./LazyImage";
-import InquiryForm from "./InquiryForm";
 
 interface SingleProductSectionProps {
   product: Product;
@@ -322,9 +323,20 @@ export default function SingleProductSection({
                   {product.name}
                 </h1>
 
-                <p className="text-slate-600 text-base sm:text-lg leading-relaxed mb-6 font-medium">
+                <p className="text-slate-600 text-base sm:text-lg leading-relaxed mb-4 font-medium">
                   {product.description}
                 </p>
+
+                {/* Shipping Disclaimer Notice */}
+                <div className="bg-amber-50 border-2 border-amber-300/80 rounded-2xl p-4 mb-6 flex items-start gap-3 text-amber-950 shadow-sm">
+                  <Store className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
+                  <div className="text-xs sm:text-sm font-semibold leading-relaxed">
+                    <strong className="text-amber-900 block font-extrabold uppercase text-[11px] tracking-wider mb-0.5">
+                      Shipping & Store Pickup Notice:
+                    </strong>
+                    For shipping your product, you have to visit our physical store; online shipping service is not available.
+                  </div>
+                </div>
 
                 {/* Tabbed content controller */}
                 <div className="border-b border-slate-200 flex flex-wrap gap-1 sm:gap-2 mb-6">
@@ -483,22 +495,22 @@ export default function SingleProductSection({
                 </div>
               </div>
 
-              {/* Dedicated Enquire for Product Tab Section */}
+              {/* Dedicated WhatsApp Inquiry for Product */}
               <div className="border-t border-slate-200 pt-6 mt-6 w-full">
-                <div className="bg-gradient-to-r from-slate-900 via-[#0B2D5C] to-slate-900 rounded-2xl p-5 sm:p-6 text-white shadow-xl border border-slate-800">
-                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4 pb-3.5 border-b border-white/10">
+                <div className="bg-gradient-to-r from-emerald-900 via-slate-900 to-emerald-950 rounded-2xl p-5 sm:p-6 text-white shadow-xl border border-emerald-500/30">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-3 pb-3 border-b border-white/10">
                     <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 rounded-xl bg-orange-500/20 border border-orange-500/40 flex items-center justify-center text-orange-400 font-bold text-lg shrink-0">
-                        📩
+                      <div className="w-10 h-10 rounded-xl bg-emerald-500/20 border border-emerald-500/40 flex items-center justify-center text-emerald-400 font-bold text-lg shrink-0">
+                        💬
                       </div>
                       <div>
-                        <span className="text-[10px] font-mono text-orange-400 font-extrabold uppercase tracking-widest block">
-                          {currentLanguage === "hi" ? "उत्पाद पूछताछ फ़ॉर्म" : "DIRECT PRODUCT INQUIRY"}
+                        <span className="text-[10px] font-mono text-emerald-400 font-extrabold uppercase tracking-widest block">
+                          {currentLanguage === "hi" ? "व्हाट्सएप पर तुरंत पूछताछ" : "DIRECT WHATSAPP INQUIRY"}
                         </span>
                         <h3 className="text-base sm:text-lg font-black font-display text-white tracking-tight">
                           {currentLanguage === "hi" 
-                            ? `${product.name} के लिए पूछताछ करें` 
-                            : `Enquire for ${product.name}`}
+                            ? `${product.name} के लिए व्हाट्सएप पर बात करें` 
+                            : `Inquire for ${product.name} on WhatsApp`}
                         </h3>
                       </div>
                     </div>
@@ -506,29 +518,17 @@ export default function SingleProductSection({
 
                   <p className="text-xs text-slate-300 mb-4 font-medium leading-relaxed">
                     {currentLanguage === "hi"
-                      ? `${product.name} के लिए विशेष दरें और जानकारी प्राप्त करने हेतु संपर्क माध्यम चुनें:`
-                      : `Select your preferred contact option below to get instant quotes for ${product.name}:`}
+                      ? `${product.name} के लिए तुरंत व्हाट्सएप पर सबसे बेहतर डीलर रेट्स, साइज़िंग और डिलीवरी की जानकारी पाएं:`
+                      : `Get instant wholesale rates, custom sizes, and delivery timelines for ${product.name} directly on WhatsApp:`}
                   </p>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
-                    <button
-                      onClick={() => onEnquire(product.name)}
-                      className="w-full flex items-center justify-center gap-2.5 py-4 px-6 rounded-xl bg-orange-500 hover:bg-orange-600 active:scale-[0.98] text-white text-xs sm:text-sm font-extrabold shadow-lg transition-all cursor-pointer group"
-                    >
-                      <Sparkles className="w-4 h-4 text-amber-200 animate-pulse" />
-                      <span>{currentLanguage === "hi" ? " Get in Touch Now (फ़ॉर्म पूछताछ)" : "Get in Touch Now"}</span>
-                    </button>
-
-                    <a
-                      href={getWhatsAppLink(product.name)}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="w-full flex items-center justify-center gap-2.5 py-4 px-6 rounded-xl bg-gradient-to-r from-emerald-600 to-green-500 hover:from-emerald-700 hover:to-green-600 active:scale-[0.98] text-white text-xs sm:text-sm font-extrabold shadow-lg transition-all text-center"
-                    >
-                      <MessageSquare className="w-4 h-4" />
-                      <span>{currentLanguage === "hi" ? " WhatsApp Enquiry (व्हाट्सएप)" : "WhatsApp Enquiry"}</span>
-                    </a>
-                  </div>
+                  <button
+                    onClick={() => onEnquire(product.name)}
+                    className="w-full flex items-center justify-center gap-2.5 py-4 px-6 rounded-xl bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 active:scale-[0.98] text-white text-xs sm:text-sm font-extrabold shadow-lg transition-all cursor-pointer group"
+                  >
+                    <MessageSquare className="w-5 h-5 fill-current" />
+                    <span>{currentLanguage === "hi" ? " व्हाट्सएप पर रेट्स व जानकारी प्राप्त करें" : "Chat on WhatsApp for Wholesale Pricing & Sizing"}</span>
+                  </button>
                 </div>
               </div>
             </div>

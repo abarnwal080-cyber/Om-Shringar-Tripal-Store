@@ -1,6 +1,6 @@
 import { useState, useEffect, MouseEvent } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { ChevronLeft, ChevronRight, CheckCircle2, ArrowRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, CheckCircle2, ArrowRight, Store } from "lucide-react";
 import { Product, BUSINESS_INFO, getProductSlug } from "../data";
 import LazyImage from "./LazyImage";
 
@@ -127,7 +127,7 @@ export default function ProductCard({ product, onEnquire, onViewDetails, current
           </h3>
 
           {/* 2-4 Feature Badges */}
-          <div className="flex flex-wrap gap-2 mb-4">
+          <div className="flex flex-wrap gap-2 mb-3">
             {product.features.slice(0, 4).map((feat, index) => (
               <span
                 key={index}
@@ -137,6 +137,12 @@ export default function ProductCard({ product, onEnquire, onViewDetails, current
                 {feat}
               </span>
             ))}
+          </div>
+
+          {/* Physical Store Shipping Notice */}
+          <div className="bg-amber-50/80 border border-amber-200 rounded-xl p-2.5 mb-4 flex items-start gap-2 text-amber-900 text-[11px] font-semibold leading-tight">
+            <Store className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
+            <span>For shipping your product, you have to visit our physical store; online shipping service is not available.</span>
           </div>
         </div>
 
