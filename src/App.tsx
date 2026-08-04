@@ -81,6 +81,7 @@ export default function App() {
 
   const [navbarVisible, setNavbarVisible] = useState(true);
   const [showScrollTop, setShowScrollTop] = useState(false);
+  const [scrollProgress, setScrollProgress] = useState(0);
   const [isAtFooter, setIsAtFooter] = useState(false);
   const [activeSection, setActiveSection] = useState("");
   const lastScrollY = useRef(0);
@@ -197,8 +198,13 @@ export default function App() {
             setNavbarVisible(true); // scrolling up
           }
           
+          // Calculate scroll progress percentage for aeroplane ring
+          const totalScroll = document.documentElement.scrollHeight - window.innerHeight;
+          const currentProgress = totalScroll > 0 ? Math.min(100, Math.max(0, (currentScrollY / totalScroll) * 100)) : 0;
+          setScrollProgress(currentProgress);
+          
           // Scroll-to-top button
-          if (currentScrollY > 500) {
+          if (currentScrollY > 150) {
             setShowScrollTop(true);
           } else {
             setShowScrollTop(false);
@@ -1627,39 +1633,70 @@ export default function App() {
 
       {/* 13. FLOATING ACTION CTA WIDGETS */}
 
-      {/* Floating Right-Side CTA Stack: Aeroplane on top, Size Calculator below */}
+      {/* Floating Center Aeroplane Scroll-To-Top Button with Scroll Progress Circle Ring */}
+      <AnimatePresence>
+        {!isAtFooter && showScrollTop && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8, y: 20 }}
+            animate={{ opacity: 1, scale: 1, y: 0 }}
+            exit={{ opacity: 0, scale: 0.8, y: 20 }}
+            className="fixed left-1/2 -translate-x-1/2 bottom-6 z-40"
+          >
+            <motion.button
+              whileHover={{ scale: 1.1, y: -2 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+              aria-label="Aeroplane Fly to Top"
+              title={`Scroll to top (${Math.round(scrollProgress)}% scrolled)`}
+              className="relative flex items-center justify-center w-13 h-13 sm:w-14 sm:h-14 rounded-full bg-white text-slate-900 shadow-2xl backdrop-blur-md transition-all duration-300 cursor-pointer group p-1"
+            >
+              {/* SVG Circular Progress Ring */}
+              <svg className="absolute inset-0 w-full h-full -rotate-90 pointer-events-none p-0.5" viewBox="0 0 52 52">
+                {/* Track Circle */}
+                <circle
+                  cx="26"
+                  cy="26"
+                  r="23"
+                  className="stroke-slate-200"
+                  strokeWidth="3.5"
+                  fill="none"
+                />
+                {/* Scroll Progress Dark Circle Line */}
+                <circle
+                  cx="26"
+                  cy="26"
+                  r="23"
+                  className="stroke-slate-900 transition-all duration-150 ease-out"
+                  strokeWidth="3.5"
+                  strokeLinecap="round"
+                  fill="none"
+                  strokeDasharray={144.51}
+                  strokeDashoffset={144.51 - (scrollProgress / 100) * 144.51}
+                />
+              </svg>
+
+              <Plane className="w-6 h-6 -rotate-45 text-[#0B2D5C] group-hover:text-orange-600 transition-transform duration-300 group-hover:-translate-y-1 group-hover:scale-110 relative z-10" />
+            </motion.button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Floating Right-Side Size Calculator Button */}
       <AnimatePresence>
         {!isAtFooter && (
           <motion.div
             initial={{ opacity: 0, scale: 0.8, x: 20 }}
             animate={{ opacity: 1, scale: 1, x: 0 }}
             exit={{ opacity: 0, scale: 0.8, x: 20 }}
-            className="fixed right-5 bottom-6 z-40 flex flex-col items-end gap-2.5 pointer-events-none"
+            className="fixed right-5 bottom-6 z-40"
           >
-            {/* Aeroplane Button (Stacked directly ABOVE Size Calculator) */}
-            <motion.button
-              whileHover={{ scale: 1.1, y: -2 }}
-              whileTap={{ scale: 0.95 }}
-              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-              aria-label="Aeroplane Fly to Top"
-              title="Aeroplane - Scroll to top"
-              className="pointer-events-auto flex items-center justify-center w-12 h-12 sm:w-13 sm:h-13 rounded-full bg-white hover:bg-orange-50 text-slate-900 hover:text-orange-600 shadow-2xl border-2 border-orange-200/80 hover:border-orange-400 backdrop-blur-md transition-all duration-300 cursor-pointer group relative"
-            >
-              <Plane className="w-6 h-6 -rotate-45 text-[#0B2D5C] group-hover:text-orange-600 transition-transform duration-300 group-hover:-translate-y-1 group-hover:scale-110" />
-              <span className="absolute -top-1 -right-1 flex h-3 w-3">
-                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
-                <span className="relative inline-flex rounded-full h-3 w-3 bg-orange-500"></span>
-              </span>
-            </motion.button>
-
-            {/* Size Calculator Button (Icon Only) */}
             <motion.button
               whileHover={{ scale: 1.1, y: -2 }}
               whileTap={{ scale: 0.95 }}
               onClick={() => setSizeCalcOpen(true)}
               aria-label="Size Calculator"
               title="Tarpaulin Best Size Calculator - साइज़ कैलकुलेटर"
-              className="pointer-events-auto flex items-center justify-center w-12 h-12 sm:w-13 sm:h-13 rounded-full bg-gradient-to-r from-orange-500 via-rose-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white shadow-2xl border-2 border-white/80 transition-all duration-300 cursor-pointer group animate-orange-glow-pulse p-1"
+              className="flex items-center justify-center w-12 h-12 sm:w-13 sm:h-13 rounded-full bg-gradient-to-r from-orange-500 via-rose-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white shadow-2xl border-2 border-white/80 transition-all duration-300 cursor-pointer group animate-orange-glow-pulse p-1"
             >
               <img 
                 src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT6GGc51kvR33E3LkKQOeAzeZeGbc_d-vGcpICshiHEJQ&s=10" 

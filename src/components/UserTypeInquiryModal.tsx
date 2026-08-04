@@ -1,5 +1,5 @@
 import React from "react";
-import { X, ShoppingCart, HardHat, Store, Landmark, MessageSquare, Sparkles } from "lucide-react";
+import { X, ShoppingCart, HardHat, Store, Landmark, Building2, HelpCircle, Sparkles, MessageSquare } from "lucide-react";
 import { BUSINESS_INFO } from "../data";
 
 interface UserTypeInquiryModalProps {
@@ -22,59 +22,75 @@ export default function UserTypeInquiryModal({
   const roles = [
     {
       id: "customer",
-      titleHi: "ग्राहक (Retail Customer)",
-      titleEn: "Retail Customer",
-      subHi: "घर, कृषि या व्यक्तिगत उपयोग के लिए",
-      subEn: "For personal, home or farm use",
+      titleHi: "ग्राहक",
+      titleEn: "Customer",
+      subHi: "घर या खेती उपयोग",
+      subEn: "Personal / Farm Use",
       icon: ShoppingCart,
       color: "from-blue-500 to-indigo-600",
-      bgLight: "bg-blue-50 border-blue-200 text-blue-900",
-      badgeHi: "व्यक्तिगत खरीद",
-      badgeEn: "Personal Use",
-      roleTitle: "Retail Customer (व्यक्तिगत उपयोग)",
-      roleDesc: "I need product details, pricing, and home/local delivery options for my personal/farm use.",
+      bgLight: "bg-blue-50/80 border-blue-200 text-blue-900",
+      roleTitle: "Retail Customer (व्यक्तिगत/खेती)",
+      roleDesc: "I need product details and pricing for personal/farm use.",
     },
     {
       id: "contractor",
-      titleHi: "कॉन्ट्रैक्टर (Contractor / Builder)",
-      titleEn: "Contractor / Builder",
-      subHi: "साइट प्रोटेक्शन, पॉन्ड लाइनिंग व प्रोजेक्ट्स",
-      subEn: "Site protection, pond lining & projects",
+      titleHi: "कॉन्ट्रैक्टर",
+      titleEn: "Contractor",
+      subHi: "साइट व प्रोजेक्ट्स",
+      subEn: "Site & Construction",
       icon: HardHat,
       color: "from-amber-500 to-orange-600",
-      bgLight: "bg-amber-50 border-amber-200 text-amber-900",
-      badgeHi: "प्रोजेक्ट रेट्स",
-      badgeEn: "Project Supply",
-      roleTitle: "Contractor / Builder (प्रोजेक्ट एवं साइट उपयोग)",
-      roleDesc: "I need bulk project rates, heavy-duty GSM specifications, and site delivery timelines.",
+      bgLight: "bg-amber-50/80 border-amber-200 text-amber-900",
+      roleTitle: "Contractor (साइट व प्रोजेक्ट)",
+      roleDesc: "I need bulk rates and specs for site work.",
     },
     {
       id: "dealer",
-      titleHi: "डीलर व थोक व्यापारी (Dealer / Wholesaler)",
-      titleEn: "Dealer / Wholesaler",
-      subHi: "दुकान रीसेल, डीलरशिप व बल्क स्टॉक",
-      subEn: "Bulk resale, shop supply & dealership",
+      titleHi: "डीलर / रीसेलर",
+      titleEn: "Dealer / Wholesale",
+      subHi: "दुकान रीसेल व बल्क",
+      subEn: "Shop Resale & Bulk",
       icon: Store,
       color: "from-emerald-500 to-teal-600",
-      bgLight: "bg-emerald-50 border-emerald-200 text-emerald-900",
-      badgeHi: "थोक भाव",
-      badgeEn: "Wholesale Rate",
-      roleTitle: "Dealer / Wholesaler (डीलर व थोक व्यापारी)",
-      roleDesc: "I need wholesale price catalog, dealership margin details, and bulk shop supply terms.",
+      bgLight: "bg-emerald-50/80 border-emerald-200 text-emerald-900",
+      roleTitle: "Dealer / Wholesaler (डीलर)",
+      roleDesc: "I need wholesale price catalog and dealership terms.",
     },
     {
       id: "govt",
-      titleHi: "सरकारी व B2B (Govt / B2B Entity)",
-      titleEn: "Government / B2B Entity",
-      subHi: "सरकारी टेंडर, राहत सामग्री व कॉर्पोरेट बिलिंग",
-      subEn: "Govt tenders, relief supplies & GST billing",
+      titleHi: "सरकारी / B2B",
+      titleEn: "Govt / B2B",
+      subHi: "टेंडर व GST बिलिंग",
+      subEn: "Tenders & GST Bill",
       icon: Landmark,
       color: "from-purple-600 to-pink-600",
-      bgLight: "bg-purple-50 border-purple-200 text-purple-900",
-      badgeHi: "GST बिलिंग",
-      badgeEn: "GST Invoice & Quotation",
-      roleTitle: "Government / B2B Entity (सरकारी व संस्थागत आपूर्ति)",
-      roleDesc: "I require GST billing, official quotation, specifications sheet, and procurement process.",
+      bgLight: "bg-purple-50/80 border-purple-200 text-purple-900",
+      roleTitle: "Government / B2B Entity",
+      roleDesc: "I require GST invoice, quotation, and official specs.",
+    },
+    {
+      id: "company",
+      titleHi: "कंपनी जुड़ें",
+      titleEn: "Company Partner",
+      subHi: "दुकान से व्यावसायिक जुड़ाव",
+      subEn: "To associate with shop",
+      icon: Building2,
+      color: "from-rose-500 to-red-600",
+      bgLight: "bg-rose-50/80 border-rose-200 text-rose-900",
+      roleTitle: "Company (व्यावसायिक जुड़ाव)",
+      roleDesc: "We want to associate/partner with your store for supply & business.",
+    },
+    {
+      id: "others",
+      titleHi: "अन्य पूछताछ",
+      titleEn: "Others",
+      subHi: "सामान्य सवाल व जानकारी",
+      subEn: "General Inquiry",
+      icon: HelpCircle,
+      color: "from-slate-600 to-slate-800",
+      bgLight: "bg-slate-100 border-slate-300 text-slate-800",
+      roleTitle: "General Inquiry (अन्य)",
+      roleDesc: "I have a general query regarding your products and services.",
     },
   ];
 
@@ -97,85 +113,84 @@ export default function UserTypeInquiryModal({
   };
 
   return (
-    <div className="fixed inset-0 z-[110] flex items-center justify-center p-4 bg-black/60 backdrop-blur-md overflow-y-auto animate-fade-in">
-      <div className="relative z-10 w-full max-w-xl my-auto">
-        <div className="bg-gradient-to-br from-slate-900 via-[#0B2D5C] to-slate-900 p-1 sm:p-1.5 rounded-[32px] shadow-[0_25px_60px_rgba(0,0,0,0.5)] border border-amber-500/30">
-          <div className="bg-slate-950/90 rounded-[28px] p-5 sm:p-7 relative overflow-hidden border border-white/10">
+    <div className="fixed inset-0 z-[110] flex items-center justify-center p-3 sm:p-4 bg-slate-900/60 backdrop-blur-md animate-fade-in">
+      <div className="relative z-10 w-full max-w-lg my-auto">
+        
+        {/* Cute White Frame Container */}
+        <div className="bg-gradient-to-br from-orange-200 via-amber-100 to-orange-200 p-1.5 sm:p-2 rounded-[28px] shadow-2xl border-2 border-orange-300/80">
+          <div className="bg-white rounded-[22px] p-4 sm:p-5 relative border border-orange-100/80 shadow-sm">
             
             {/* Close Button */}
             <button
               onClick={onClose}
-              className="absolute top-4 right-4 w-9 h-9 rounded-full bg-slate-800 hover:bg-rose-600 text-slate-300 hover:text-white flex items-center justify-center transition-all cursor-pointer z-20"
+              className="absolute top-3 right-3 w-8 h-8 rounded-full bg-slate-100 hover:bg-rose-500 text-slate-500 hover:text-white flex items-center justify-center transition-all cursor-pointer z-20 border border-slate-200/80"
               aria-label="Close"
             >
-              <X className="w-5 h-5" />
+              <X className="w-4 h-4" />
             </button>
 
-            {/* Header */}
-            <div className="text-center mb-6 pr-6 pl-2">
-              <div className="inline-flex items-center gap-2 px-3.5 py-1 rounded-full bg-amber-500/20 border border-amber-500/40 text-amber-300 text-xs font-bold uppercase tracking-widest mb-2">
-                <Sparkles className="w-3.5 h-3.5 animate-pulse" />
-                <span>{lang === "hi" ? "त्वरित पूछताछ सहायिका" : "Who Are You?"}</span>
+            {/* Cute Header */}
+            <div className="text-center mb-3.5 pr-6 pl-2">
+              <div className="inline-flex items-center gap-1.5 px-3 py-0.5 rounded-full bg-orange-100 border border-orange-200 text-orange-700 text-[11px] font-bold tracking-wide mb-1">
+                <Sparkles className="w-3 h-3 text-orange-500 animate-pulse" />
+                <span>{lang === "hi" ? "अपनी पहचान चुनें" : "Select Your Role"}</span>
               </div>
               <h2
-                className="text-2xl sm:text-3xl font-black text-white tracking-tight"
+                className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight"
                 style={{ fontFamily: "'Amaranth', sans-serif" }}
               >
-                {lang === "hi" ? "अपनी भूमिका चुनें (Who are you?)" : "Select Your Role for Custom Draft"}
+                {lang === "hi" ? "आपकी क्या भूमिका है? (Who are you?)" : "Who Are You?"}
               </h2>
-              <p className="text-xs sm:text-sm text-slate-300 font-medium mt-1">
+              <p className="text-[11px] sm:text-xs text-slate-500 font-medium mt-0.5 truncate">
                 {productName ? (
-                  <>Inquiring for: <span className="text-amber-400 font-extrabold">{productName}</span></>
+                  <>Inquiring for: <span className="text-orange-600 font-bold">{productName}</span></>
                 ) : customContext ? (
                   <>{customContext}</>
                 ) : (
-                  <>{lang === "hi" ? "व्हाट्सएप पर आपकी आवश्यकतानुसार कस्टमाइज्ड मैसेज तैयार होगा:" : "Choose an option to create a customized WhatsApp message:"}</>
+                  <>{lang === "hi" ? "व्हाट्सएप चैट हेतु एक ऑप्शन चुनें:" : "Select an option for quick WhatsApp draft:"}</>
                 )}
               </p>
             </div>
 
-            {/* Role Options Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+            {/* 6 Role Options Grid - Compact & Fits Mobile Screen */}
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-2.5">
               {roles.map((role) => {
                 const IconComponent = role.icon;
                 return (
                   <button
                     key={role.id}
                     onClick={() => handleSelectRole(role)}
-                    className="flex flex-col text-left p-4 rounded-2xl bg-slate-900/90 hover:bg-slate-800 border border-slate-700/80 hover:border-amber-500/60 transition-all duration-200 group cursor-pointer relative overflow-hidden shadow-lg hover:-translate-y-0.5 active:translate-y-0"
+                    className="flex flex-col items-center text-center p-2.5 sm:p-3 rounded-xl bg-orange-50/40 hover:bg-orange-100/70 border border-orange-200/60 hover:border-orange-400 transition-all duration-200 group cursor-pointer shadow-sm hover:shadow-md hover:-translate-y-0.5 active:translate-y-0 relative"
                   >
-                    <div className="flex items-start justify-between gap-2 mb-2">
-                      <div className={`w-11 h-11 rounded-xl bg-gradient-to-br ${role.color} flex items-center justify-center text-white shadow-md group-hover:scale-110 transition-transform`}>
-                        <IconComponent className="w-5 h-5" />
-                      </div>
-                      <span className="text-[10px] font-extrabold uppercase px-2 py-0.5 rounded-full bg-slate-800 text-amber-300 border border-slate-700">
-                        {lang === "hi" ? role.badgeHi : role.badgeEn}
-                      </span>
+                    <div className={`w-9 h-9 sm:w-10 sm:h-10 rounded-xl bg-gradient-to-br ${role.color} flex items-center justify-center text-white shadow-sm mb-1.5 group-hover:scale-110 transition-transform`}>
+                      <IconComponent className="w-4 h-4 sm:w-5 sm:h-5" />
                     </div>
 
-                    <h3 className="text-sm font-black text-white group-hover:text-amber-300 transition-colors leading-snug">
+                    <h3
+                      className="text-xs sm:text-sm font-bold text-slate-900 group-hover:text-orange-600 transition-colors leading-tight"
+                      style={{ fontFamily: "'Amaranth', sans-serif" }}
+                    >
                       {lang === "hi" ? role.titleHi : role.titleEn}
                     </h3>
-                    <p className="text-[11px] text-slate-400 font-medium mt-1 leading-relaxed">
+                    <p className="text-[10px] text-slate-500 font-medium mt-0.5 leading-tight line-clamp-1">
                       {lang === "hi" ? role.subHi : role.subEn}
                     </p>
 
-                    <div className="mt-3 pt-2.5 border-t border-slate-800/80 flex items-center justify-between text-[11px] font-bold text-emerald-400 group-hover:text-emerald-300">
-                      <span className="flex items-center gap-1.5">
-                        <MessageSquare className="w-3.5 h-3.5 fill-current" />
-                        <span>{lang === "hi" ? "व्हाट्सएप चैट शुरू करें" : "Open WhatsApp Draft"}</span>
-                      </span>
-                      <span className="transform group-hover:translate-x-1 transition-transform">→</span>
-                    </div>
+                    <span className="mt-1.5 text-[9px] font-bold text-emerald-600 group-hover:text-emerald-700 flex items-center gap-0.5">
+                      <MessageSquare className="w-2.5 h-2.5 fill-current" />
+                      <span>{lang === "hi" ? "चैट शुरू करें" : "WhatsApp"}</span>
+                    </span>
                   </button>
                 );
               })}
             </div>
 
-            {/* Bottom Note */}
-            <p className="text-[11px] text-center text-slate-400 mt-5 font-medium">
-              💡 {lang === "hi" ? "चुनने के बाद आपका व्हाट्सएप अपने आप सही मैसेज ड्राफ्ट के साथ खुल जाएगा।" : "Selecting an option will automatically launch WhatsApp with your pre-filled inquiry message."}
-            </p>
+            {/* Cute Footnote */}
+            <div className="mt-3 text-center">
+              <span className="inline-block text-[10px] text-slate-500 font-semibold bg-slate-100 px-3 py-1 rounded-full border border-slate-200/80">
+                ⚡ {lang === "hi" ? "क्लिक करते ही तैयार मैसेज के साथ व्हाट्सएप खुल जाएगा" : "Clicking will open WhatsApp with custom message draft"}
+              </span>
+            </div>
 
           </div>
         </div>
