@@ -59,6 +59,8 @@ import StoreStatusCard from "./components/StoreStatusCard";
 import CustomerSuccessCarousel from "./components/CustomerSuccessCarousel";
 import { ProductVideosSection } from "./components/ProductVideosSection";
 import { TermsModal } from "./components/TermsModal";
+import SizeCalculatorModal from "./components/SizeCalculatorModal";
+import UserTypeInquiryModal from "./components/UserTypeInquiryModal";
 import { TRANSLATIONS } from "./translations";
 
 // Safe dynamic icon loader to keep code modular and readable
@@ -75,16 +77,22 @@ export default function App() {
   const [supplierOpen, setSupplierOpen] = useState(false);
   const [heroBgImage, setHeroBgImage] = useState("https://plain-apac-prod-public.komododecks.com/202607/03/eckT9KEMGbavrebTJwPJ/image.png");
   const [sizeChartTab, setSizeChartTab] = useState<"plastic" | "tarpaulin">("plastic");
+  const [sizeCalcOpen, setSizeCalcOpen] = useState(false);
 
   const [navbarVisible, setNavbarVisible] = useState(true);
   const [showScrollTop, setShowScrollTop] = useState(false);
-  const [isAtFaqOrBelow, setIsAtFaqOrBelow] = useState(false);
+  const [isAtFooter, setIsAtFooter] = useState(false);
   const [activeSection, setActiveSection] = useState("");
   const lastScrollY = useRef(0);
 
   const [isCatalogOpen, setIsCatalogOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [isTermsOpen, setIsTermsOpen] = useState(false);
+
+  // User Role / Type Selection Modal for customized WhatsApp drafts
+  const [userTypeModalOpen, setUserTypeModalOpen] = useState(false);
+  const [userTypeModalProduct, setUserTypeModalProduct] = useState("");
+  const [userTypeModalContext, setUserTypeModalContext] = useState("");
 
   const [currentProductSlug, setCurrentProductSlug] = useState<string | null>(null);
 
@@ -196,14 +204,14 @@ export default function App() {
             setShowScrollTop(false);
           }
           
-          // Check if FAQ or below is reached to hide floating icons
-          const enquireElem = document.getElementById("enquire");
-          if (enquireElem) {
-            const rect = enquireElem.getBoundingClientRect();
-            if (rect.top <= window.innerHeight * 0.75) {
-              setIsAtFaqOrBelow(true);
+          // Check if Footer is reached to hide floating icons
+          const footerElem = document.querySelector("footer");
+          if (footerElem) {
+            const rect = footerElem.getBoundingClientRect();
+            if (rect.top <= window.innerHeight * 0.9) {
+              setIsAtFooter(true);
             } else {
-              setIsAtFaqOrBelow(false);
+              setIsAtFooter(false);
             }
           }
 
@@ -252,11 +260,10 @@ export default function App() {
   const inquiryRef = useRef<HTMLDivElement>(null);
   const t = TRANSLATIONS[lang];
 
-  const handleEnquire = (productName: string = "") => {
-    const text = productName
-      ? `Hi, I am visiting your website and have an inquiry about ${productName} at Om Shringar Tirpal Store. Please share details and pricing.`
-      : `Hi, I am visiting your website and have an inquiry about bulk orders at Om Shringar Tirpal Store. Please share your catalog.`;
-    window.open(`${BUSINESS_INFO.whatsappLink}?text=${encodeURIComponent(text)}`, "_blank", "noopener,noreferrer");
+  const handleEnquire = (productName: string = "", customContext: string = "") => {
+    setUserTypeModalProduct(productName);
+    setUserTypeModalContext(customContext);
+    setUserTypeModalOpen(true);
   };
 
    const handleMobileNavClick = (e: React.MouseEvent<HTMLAnchorElement>, targetId: string) => {
@@ -1620,21 +1627,63 @@ export default function App() {
 
       {/* 13. FLOATING ACTION CTA WIDGETS */}
 
+      {/* Floating Right-Side CTA Stack: Aeroplane on top, Size Calculator below */}
+      <AnimatePresence>
+        {!isAtFooter && (
+          <motion.div
+            initial={{ opacity: 0, scale: 0.8, x: 20 }}
+            animate={{ opacity: 1, scale: 1, x: 0 }}
+            exit={{ opacity: 0, scale: 0.8, x: 20 }}
+            className="fixed right-5 bottom-6 z-40 flex flex-col items-end gap-2.5 pointer-events-none"
+          >
+            {/* Aeroplane Button (Stacked directly ABOVE Size Calculator) */}
+            <motion.button
+              whileHover={{ scale: 1.1, y: -2 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+              aria-label="Aeroplane Fly to Top"
+              title="Aeroplane - Scroll to top"
+              className="pointer-events-auto flex items-center justify-center w-12 h-12 sm:w-13 sm:h-13 rounded-full bg-white hover:bg-orange-50 text-slate-900 hover:text-orange-600 shadow-2xl border-2 border-orange-200/80 hover:border-orange-400 backdrop-blur-md transition-all duration-300 cursor-pointer group relative"
+            >
+              <Plane className="w-6 h-6 -rotate-45 text-[#0B2D5C] group-hover:text-orange-600 transition-transform duration-300 group-hover:-translate-y-1 group-hover:scale-110" />
+              <span className="absolute -top-1 -right-1 flex h-3 w-3">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-orange-400 opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-3 w-3 bg-orange-500"></span>
+              </span>
+            </motion.button>
+
+            {/* Size Calculator Button (Icon Only) */}
+            <motion.button
+              whileHover={{ scale: 1.1, y: -2 }}
+              whileTap={{ scale: 0.95 }}
+              onClick={() => setSizeCalcOpen(true)}
+              aria-label="Size Calculator"
+              title="Tarpaulin Best Size Calculator - साइज़ कैलकुलेटर"
+              className="pointer-events-auto flex items-center justify-center w-12 h-12 sm:w-13 sm:h-13 rounded-full bg-gradient-to-r from-orange-500 via-rose-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white shadow-2xl border-2 border-white/80 transition-all duration-300 cursor-pointer group animate-orange-glow-pulse p-1"
+            >
+              <img 
+                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT6GGc51kvR33E3LkKQOeAzeZeGbc_d-vGcpICshiHEJQ&s=10" 
+                alt="Size Calculator" 
+                className="w-full h-full rounded-full object-cover group-hover:rotate-12 transition-transform shrink-0"
+              />
+            </motion.button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
       {/* Unified Floating WhatsApp Button: Mobile & Desktop (Aligned Bottom Left) */}
       <AnimatePresence>
-        {!isAtFaqOrBelow && (
+        {!isAtFooter && (
           <motion.div
             initial={{ opacity: 0, scale: 0.8, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
             exit={{ opacity: 0, scale: 0.8, y: 20 }}
-            className="fixed left-6 bottom-6 z-40"
+            className="fixed left-5 bottom-6 z-40"
           >
-            <a
-              href="https://wa.me/918210625483?text=Hi!%20I%20visited%20your%20website%20and%20wanted%20to%20inquire%20about%20your%20products."
-              target="_blank"
-              rel="noopener noreferrer"
+            <button
+              onClick={() => handleEnquire("", "Direct WhatsApp Chat")}
               aria-label="WhatsApp Integrated Inquiry"
-              className="w-14 h-14 bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white rounded-full shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all duration-300 cursor-pointer relative group border border-emerald-400/20"
+              className="w-13 h-13 sm:w-14 sm:h-14 bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 text-white rounded-full shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all duration-300 cursor-pointer relative group border border-emerald-400/20"
             >
               {/* Pulsating Ring Indicator */}
               <span className="absolute inset-0 rounded-full border-2 border-emerald-500/40 animate-ping pointer-events-none" />
@@ -1642,27 +1691,6 @@ export default function App() {
               <svg className="w-7 h-7 text-white fill-current group-hover:rotate-12 transition-transform shrink-0" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                 <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L0 24l6.335-1.662c1.746.953 3.71 1.458 5.705 1.459h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z" />
               </svg>
-            </a>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* Floating Scroll-to-Top Button (Stacked above the WhatsApp Button) */}
-      <AnimatePresence>
-        {showScrollTop && !isAtFaqOrBelow && (
-          <motion.div
-            initial={{ opacity: 0, scale: 0.8, y: 10 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            exit={{ opacity: 0, scale: 0.8, y: 10 }}
-            className="fixed right-6 bottom-6 z-40"
-          >
-            <button
-              onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
-              aria-label="Scroll to top"
-              title="Scroll to top"
-              className="w-12 h-12 rounded-full bg-white/90 hover:bg-white text-slate-800 hover:text-orange-600 shadow-2xl border border-slate-200 flex items-center justify-center backdrop-blur-md transition-all duration-200 active:scale-90 cursor-pointer group"
-            >
-              <Plane className="w-5 h-5 -rotate-45 text-[#0B2D5C] group-hover:text-[#FF7A00] transition-transform duration-200 group-hover:-translate-y-1" />
             </button>
           </motion.div>
         )}
@@ -1673,6 +1701,18 @@ export default function App() {
 
       {/* Website Content & Image Disclaimer Modal */}
       <TermsModal isOpen={isTermsOpen} onClose={() => setIsTermsOpen(false)} />
+
+      {/* Tarpaulin Size Recommender Calculator Modal */}
+      <SizeCalculatorModal isOpen={sizeCalcOpen} onClose={() => setSizeCalcOpen(false)} lang={lang} onInquire={handleEnquire} />
+
+      {/* Role / User Type Selection Modal for Customized WhatsApp Inquiry */}
+      <UserTypeInquiryModal
+        isOpen={userTypeModalOpen}
+        onClose={() => setUserTypeModalOpen(false)}
+        productName={userTypeModalProduct}
+        customContext={userTypeModalContext}
+        lang={lang}
+      />
 
     </div>
   );

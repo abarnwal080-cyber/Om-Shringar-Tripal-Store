@@ -512,15 +512,17 @@ export const ProductVideosSection: React.FC<ProductVideosSectionProps> = ({ lang
                 </p>
                 
                 <div className="flex items-center gap-3">
-                  <a
-                    href={getWhatsAppMessage(selectedVideo.title)}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-1.5 bg-[#25D366] hover:bg-[#20ba5a] text-[#0B2D5C] px-5 py-2.5 rounded-xl font-extrabold text-xs uppercase tracking-wider transition-colors shadow-md"
+                  <button
+                    onClick={() => {
+                      const title = selectedVideo.title;
+                      setSelectedVideo(null);
+                      onEnquire(`Video Demo: ${title}`);
+                    }}
+                    className="flex items-center gap-1.5 bg-[#25D366] hover:bg-[#20ba5a] text-[#0B2D5C] px-5 py-2.5 rounded-xl font-extrabold text-xs uppercase tracking-wider transition-colors shadow-md cursor-pointer"
                   >
                     <MessageSquare className="w-4 h-4 fill-[#0B2D5C]" />
                     <span>Inquire via WhatsApp</span>
-                  </a>
+                  </button>
 
                   <button
                     onClick={() => {
