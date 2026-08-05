@@ -61,6 +61,7 @@ import { ProductVideosSection } from "./components/ProductVideosSection";
 import { TermsModal } from "./components/TermsModal";
 import SizeCalculatorModal from "./components/SizeCalculatorModal";
 import UserTypeInquiryModal from "./components/UserTypeInquiryModal";
+import SizeChartPopupModal from "./components/SizeChartPopupModal";
 import { TRANSLATIONS } from "./translations";
 
 // Safe dynamic icon loader to keep code modular and readable
@@ -95,6 +96,9 @@ export default function App() {
   const [userTypeModalProduct, setUserTypeModalProduct] = useState("");
   const [userTypeModalContext, setUserTypeModalContext] = useState("");
 
+  // Cute Size Chart Popup Modal State
+  const [sizeChartPopupOpen, setSizeChartPopupOpen] = useState(false);
+
   const [currentProductSlug, setCurrentProductSlug] = useState<string | null>(null);
 
   // Clear enquiry submission state on page refresh (initial app mount)
@@ -102,9 +106,11 @@ export default function App() {
     localStorage.removeItem("enquiry_submitted");
   }, []);
 
-  // Lock body scroll when fullscreen overlay catalog is open
+  // Lock body scroll when any modal, loader, or overlay is active
+  const isAnyModalActive = isCatalogOpen || isTermsOpen || sizeCalcOpen || userTypeModalOpen || supplierOpen || sizeChartPopupOpen;
+
   useEffect(() => {
-    if (isCatalogOpen) {
+    if (isAnyModalActive) {
       document.body.style.overflow = "hidden";
     } else {
       document.body.style.overflow = "unset";
@@ -112,7 +118,7 @@ export default function App() {
     return () => {
       document.body.style.overflow = "unset";
     };
-  }, [isCatalogOpen]);
+  }, [isAnyModalActive]);
 
   const slugify = (text: string) => {
     return text
@@ -1163,11 +1169,22 @@ export default function App() {
           <h2 className="text-3xl sm:text-4xl font-extrabold font-display text-brand-blue-dark tracking-tight mb-4">
             {lang === "en" ? "Standard Size Configurations" : "मानक उपलब्ध साइज़"}
           </h2>
-          <p className="text-slate-600 text-sm sm:text-base leading-relaxed mb-10 max-w-2xl mx-auto">
-            {lang === "en" 
-              ? "We supply premium quality plastic rolls and tarpaulins in multiple pre-configured dimensions and thicknesses. Select your category below to view availability."
-              : "हम कई प्रकार के पहले से तैयार आयामों और मोटाई (GSM) में प्रीमियम गुणवत्ता वाले प्लास्टिक रोल और तिरपाल की आपूर्ति करते हैं। अपनी पसंद चुनें:"}
-          </p>
+          <div className="mb-10 text-center space-y-3">
+            <p className="text-slate-600 text-sm sm:text-base leading-relaxed max-w-2xl mx-auto">
+              {lang === "en" 
+                ? "We supply premium quality plastic rolls and tarpaulins in multiple pre-configured dimensions and thicknesses. Select your category below to view availability."
+                : "हम कई प्रकार के पहले से तैयार आयामों और मोटाई (GSM) में प्रीमियम गुणवत्ता वाले प्लास्टिक रोल और तिरपाल की आपूर्ति करते हैं। अपनी पसंद चुनें:"}
+            </p>
+
+            <button
+              onClick={() => setSizeChartPopupOpen(true)}
+              className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-orange-500 via-rose-500 to-amber-500 hover:from-orange-600 hover:to-rose-600 text-white font-black text-xs sm:text-sm rounded-full shadow-lg shadow-orange-500/20 hover:shadow-orange-500/30 transition-all cursor-pointer hover:scale-105 active:scale-95"
+              style={{ fontFamily: "'Amaranth', sans-serif" }}
+            >
+              <Sparkles className="w-4 h-4 text-amber-200 animate-pulse" />
+              <span>Click here to see chart (सभी साइज़ देखें)</span>
+            </button>
+          </div>
 
           <div className="bg-white rounded-3xl border border-slate-200/80 shadow-xl overflow-hidden text-left">
             <div className="bg-gradient-to-r from-slate-900 to-[#0B2D5C] p-5 sm:p-6 text-white flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-slate-800">
@@ -1299,7 +1316,7 @@ export default function App() {
                       </span>
                     </div>
                     <div className="flex flex-wrap gap-2">
-                      {["24 × 30 ft", "30 × 30 ft", "30 × 40 ft"].map((sz) => (
+                      {["24 × 30 ft", "30 × 30 ft", "36 × 40 ft", "40 × 40 ft"].map((sz) => (
                         <span
                           key={sz}
                           className="bg-rose-50 text-rose-700 font-extrabold text-xs px-2.5 py-1.5 rounded-lg border border-rose-100/60 font-mono shadow-sm hover:scale-105 transition-transform"
@@ -1319,7 +1336,7 @@ export default function App() {
                       </span>
                     </div>
                     <div className="flex flex-wrap gap-2">
-                      {["40 × 50 ft", "40 × 60 ft", "60 × 100 ft"].map((sz) => (
+                      {["30 × 75 ft", "40 × 60 ft", "40 × 80 ft", "100 × 50 ft", "100 × 100 ft"].map((sz) => (
                         <span
                           key={sz}
                           className="bg-blue-50 text-blue-700 font-extrabold text-xs px-2.5 py-1.5 rounded-lg border border-blue-100/60 font-mono shadow-sm hover:scale-105 transition-transform"
@@ -1749,6 +1766,14 @@ export default function App() {
         productName={userTypeModalProduct}
         customContext={userTypeModalContext}
         lang={lang}
+      />
+
+      {/* Cute Size Chart Popup Modal */}
+      <SizeChartPopupModal
+        isOpen={sizeChartPopupOpen}
+        onClose={() => setSizeChartPopupOpen(false)}
+        lang={lang}
+        onSelectSize={(szStr) => handleEnquire("", `Selected Size from Chart: ${szStr}`)}
       />
 
     </div>

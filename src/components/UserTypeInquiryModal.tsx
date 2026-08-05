@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { X, ShoppingCart, HardHat, Store, Landmark, Building2, HelpCircle, Sparkles, MessageSquare } from "lucide-react";
 import { BUSINESS_INFO } from "../data";
 
@@ -17,6 +17,18 @@ export default function UserTypeInquiryModal({
   customContext = "",
   lang = "en",
 }: UserTypeInquiryModalProps) {
+  // Lock background scroll when modal is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isOpen]);
+
   if (!isOpen) return null;
 
   const roles = [

@@ -1,5 +1,5 @@
-import React, { useState, useMemo } from "react";
-import { X, Calculator, Sparkles, ChevronDown, ChevronUp, MessageSquare } from "lucide-react";
+import React, { useState, useMemo, useEffect } from "react";
+import { X, Calculator, Sparkles, MessageSquare } from "lucide-react";
 import { BUSINESS_INFO } from "../data";
 
 interface SizeCalculatorModalProps {
@@ -11,7 +11,8 @@ interface SizeCalculatorModalProps {
 
 const SIZE_CHART: [number, number][] = [
   [6, 6], [8, 6], [8, 8], [8, 10], [10, 10], [10, 15], [12, 10], [12, 12], [12, 15], [12, 18],
-  [15, 15], [15, 18], [15, 21], [18, 24], [20, 30], [24, 30], [24, 36], [30, 36], [36, 40], [36, 70]
+  [15, 15], [15, 18], [15, 21], [18, 24], [20, 30], [24, 30], [24, 36], [30, 36], [36, 40], [40, 40],
+  [30, 75], [40, 60], [36, 70], [40, 80], [100, 50], [100, 100]
 ];
 
 const CONVERSION: Record<string, { factor: number; name: string; label: string }> = {
@@ -49,7 +50,6 @@ export default function SizeCalculatorModal({ isOpen, onClose, lang = "en", onIn
   const [unit, setUnit] = useState<string>("ft");
   const [length, setLength] = useState<string>("");
   const [width, setWidth] = useState<string>("");
-  const [showChart, setShowChart] = useState<boolean>(false);
 
   // Result popup state inside calculator
   const [popupActive, setPopupActive] = useState<boolean>(false);
@@ -97,6 +97,18 @@ export default function SizeCalculatorModal({ isOpen, onClose, lang = "en", onIn
     });
     setPopupActive(true);
   };
+
+  // Lock body scroll when modal is open
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isOpen]);
 
   if (!isOpen) return null;
 
@@ -224,47 +236,6 @@ export default function SizeCalculatorModal({ isOpen, onClose, lang = "en", onIn
               </button>
             </div>
 
-            {/* Expandable Chart Tab */}
-            <div className="mt-6 pt-4 border-t border-slate-100 text-center relative z-10">
-              <button
-                onClick={() => setShowChart(!showChart)}
-                className="inline-flex items-center gap-2 py-2.5 px-4 bg-orange-50 hover:bg-orange-100 border border-dashed border-orange-300 rounded-full text-xs sm:text-sm font-bold text-orange-800 transition-all cursor-pointer"
-              >
-                <span>📋</span>
-                <span>{showChart ? "छुपाएँ / Hide Size Chart" : "Click here to see all size chart"}</span>
-                {showChart ? <ChevronUp className="w-4 h-4" /> : <ChevronDown className="w-4 h-4" />}
-              </button>
-
-              {showChart && (
-                <div className="mt-4 p-3 bg-amber-50/60 rounded-2xl border border-amber-200 max-h-48 overflow-y-auto text-left">
-                  <div className="flex flex-wrap gap-1.5 justify-center">
-                    {SIZE_CHART.map(([d1, d2], idx) => {
-                      const isHighlighted =
-                        result?.bestSize &&
-                        ((result.bestSize[0] === d1 && result.bestSize[1] === d2) ||
-                          (result.bestSize[0] === d2 && result.bestSize[1] === d1));
-
-                      return (
-                        <span
-                          key={idx}
-                          className={`px-2.5 py-1 rounded-full text-xs font-semibold border ${
-                            isHighlighted
-                              ? "bg-amber-300 border-amber-500 text-amber-950 font-black shadow-sm ring-2 ring-amber-400"
-                              : "bg-white border-slate-200 text-slate-700"
-                          }`}
-                        >
-                          {d1} × {d2} ft
-                        </span>
-                      );
-                    })}
-                    <span className="px-2.5 py-1 rounded-full text-xs font-semibold bg-rose-100 border border-rose-300 text-rose-800">
-                      ✨ Custom
-                    </span>
-                  </div>
-                </div>
-              )}
-            </div>
-
           </div>
         </div>
       </div>
@@ -348,7 +319,7 @@ export default function SizeCalculatorModal({ isOpen, onClose, lang = "en", onIn
                 <h3 className="text-xl font-bold text-slate-800 mb-2">कोई स्टैंडर्ड साइज़ नहीं</h3>
                 <p className="text-xs text-slate-600 leading-relaxed mb-4">
                   आपकी ज़रूरत: <strong>{result?.userLenFt.toFixed(2)} × {result?.userWidFt.toFixed(2)} ft</strong><br />
-                  मानक साइज़ 36×70 ft तक उपलब्ध हैं। कृपया कस्टम तिरपाल हेतु संपर्क करें!
+                  मानक साइज़ 100×100 ft तक उपलब्ध हैं। कृपया कस्टम तिरपाल हेतु संपर्क करें!
                 </p>
                 <div className="space-y-2.5">
                   <button

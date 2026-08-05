@@ -255,6 +255,18 @@ export const ProductVideosSection: React.FC<ProductVideosSectionProps> = ({ lang
     return () => clearInterval(timer);
   }, [isHovered, isDragging, selectedVideo, isSeamlessReset, currentIndex]);
 
+  // Lock background scroll when video lightbox is active
+  useEffect(() => {
+    if (selectedVideo) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [selectedVideo]);
+
   // Keyboard controls for lightbox
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
