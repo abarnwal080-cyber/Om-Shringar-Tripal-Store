@@ -180,8 +180,8 @@
           position: fixed;
           top: 0;
           left: 0;
-          width: 100%;
-          height: 100%;
+          width: 100vw;
+          height: 100vh;
           background: #ffffff;
           z-index: 999999;
           display: flex;
@@ -190,7 +190,6 @@
           align-items: center;
           transition: opacity 0.6s cubic-bezier(0.25, 1, 0.5, 1), visibility 0.6s;
           overflow: hidden;
-          color: #001f3f;
         }
 
         #premium-preloader.fade-out {
@@ -198,43 +197,8 @@
           visibility: hidden;
         }
 
-        /* Floating light particles background */
-        .particles-container {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          pointer-events: none;
-        }
-
-        .preloader-particle {
-          position: absolute;
-          background: rgba(10, 99, 255, 0.25); /* Brand blue accent */
-          border-radius: 50%;
-          pointer-events: none;
-          animation: preloaderFloatUp 6s infinite linear;
-        }
-
-        @keyframes preloaderFloatUp {
-          0% {
-            transform: translateY(105vh) scale(0.5);
-            opacity: 0;
-          }
-          10% {
-            opacity: 0.8;
-          }
-          90% {
-            opacity: 0.8;
-          }
-          100% {
-            transform: translateY(-5vh) scale(1.2);
-            opacity: 0;
-          }
-        }
-
-        /* Central branding */
-        .preloader-main {
+        /* Central content container */
+        .preloader-content {
           display: flex;
           flex-direction: column;
           align-items: center;
@@ -243,378 +207,125 @@
           z-index: 10;
         }
 
-        /* ==========================
-                3D SHIELD LOADER
-        ========================== */
-
-        .loader {
+        /* 180px x 180px Circular Frame with Premium Golden Border and Soft Glow */
+        .video-circle-frame {
           position: relative;
-          width: 250px;
-          height: 250px;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          margin-bottom: 20px;
-        }
-
-        /* Golden Glow Halo / Aura Behind Lion */
-
-        .golden-aura {
-          position: absolute;
-          width: 210px;
-          height: 210px;
+          width: 180px;
+          height: 180px;
           border-radius: 50%;
-          background: radial-gradient(circle, rgba(255, 183, 3, 0.5) 0%, rgba(255, 122, 0, 0.25) 50%, rgba(255, 122, 0, 0) 75%);
-          animation: goldenGlowPulse 2s ease-in-out infinite alternate;
-          filter: blur(10px);
-          pointer-events: none;
-        }
-
-        /* Majestic Roaring Lion Wrapper & Image */
-
-        .lion-wrapper {
-          position: relative;
-          width: 175px;
-          height: 175px;
+          border: 4px solid #d4af37; /* Premium Golden Border */
+          box-shadow: 
+            0 0 20px rgba(212, 175, 55, 0.65),
+            0 0 40px rgba(255, 193, 7, 0.4),
+            0 12px 30px rgba(0, 0, 0, 0.12); /* Soft Glowing Shadow */
+          overflow: hidden;
+          background: #ffffff;
           display: flex;
-          justify-content: center;
           align-items: center;
-          animation: lionFloat 2.5s ease-in-out infinite alternate;
-          z-index: 5;
+          justify-content: center;
+          margin-bottom: 20px;
+          animation: goldenGlowPulse 2.5s ease-in-out infinite alternate;
         }
 
-        .lion-img {
+        .preloader-video {
           width: 100%;
           height: 100%;
           object-fit: cover;
           border-radius: 50%;
-          border: 3.5px solid #FFC000;
-          box-shadow: 
-            0 0 20px #FFB703,
-            0 0 40px rgba(255, 122, 0, 0.85),
-            0 0 70px rgba(255, 183, 3, 0.45);
+          display: block;
         }
-
-        /* Animations */
 
         @keyframes goldenGlowPulse {
           0% {
-            transform: scale(0.92);
-            opacity: 0.6;
-            filter: blur(8px) drop-shadow(0 0 15px #FFB703);
+            box-shadow: 
+              0 0 15px rgba(212, 175, 55, 0.5),
+              0 0 30px rgba(255, 193, 7, 0.3),
+              0 8px 20px rgba(0, 0, 0, 0.08);
+            transform: scale(0.98);
           }
           100% {
-            transform: scale(1.15);
-            opacity: 1;
-            filter: blur(14px) drop-shadow(0 0 35px #FF7A00);
+            box-shadow: 
+              0 0 25px rgba(212, 175, 55, 0.85),
+              0 0 50px rgba(255, 193, 7, 0.55),
+              0 15px 35px rgba(0, 0, 0, 0.15);
+            transform: scale(1.02);
           }
         }
 
-        @keyframes lionFloat {
-          0%, 100% {
-            transform: translateY(0px) scale(1);
-          }
-          50% {
-            transform: translateY(-8px) scale(1.05);
-          }
-        }
-
-        @keyframes lionRoarPulse {
-          0% {
-            filter: drop-shadow(0 0 12px rgba(255, 122, 0, 0.6));
-          }
-          100% {
-            filter: drop-shadow(0 0 28px rgba(239, 68, 68, 0.95));
-          }
-        }
-
-        @keyframes orbit {
-          0% {
-            transform: rotate(0deg) translateX(95px) rotate(0deg);
-          }
-          100% {
-            transform: rotate(360deg) translateX(95px) rotate(-360deg);
-          }
-        }
-
-        .preloader-text-container {
-          text-align: center;
-          margin-bottom: 24px;
-        }
-
-        .preloader-brand-title {
+        .preloader-title {
           font-family: "Outfit", "Inter", sans-serif;
-          font-size: 26px;
+          font-size: 22px;
           font-weight: 800;
           letter-spacing: 0.5px;
-          color: #001f3f;
-          margin: 0 0 6px 0;
+          color: #0f172a;
+          margin: 0 0 4px 0;
           text-transform: uppercase;
-          animation: preloaderFadeInDown 0.8s cubic-bezier(0.25, 1, 0.5, 1) both;
+          text-align: center;
         }
 
-        .preloader-brand-subtitle {
+        .preloader-subtitle {
           font-family: "Inter", sans-serif;
-          font-size: 13px;
+          font-size: 12px;
           font-weight: 700;
-          color: #ea580c; /* Brand orange accent */
+          color: #ea580c;
           letter-spacing: 1.5px;
           margin: 0;
           text-transform: uppercase;
-          animation: preloaderFadeInUp 0.8s cubic-bezier(0.25, 1, 0.5, 1) both;
-          animation-delay: 0.2s;
-        }
-
-        @keyframes preloaderFadeInDown {
-          0% {
-            opacity: 0;
-            transform: translateY(-15px);
-          }
-          100% {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        @keyframes preloaderFadeInUp {
-          0% {
-            opacity: 0;
-            transform: translateY(15px);
-          }
-          100% {
-            opacity: 1;
-            transform: translateY(0);
-          }
-        }
-
-        /* Authorized partners section */
-        .preloader-partners {
-          margin-top: 12px;
           text-align: center;
-          animation: preloaderFadeIn 1s ease both;
-          animation-delay: 0.3s;
-          width: 100%;
-          max-width: 360px;
-          display: flex;
-          flex-direction: column;
-          align-items: center;
         }
 
-        .preloader-partners-heading {
-          font-family: "Inter", sans-serif;
-          font-size: 11px;
-          font-weight: 800;
-          color: #0A63FF; /* Vibrant blue accent */
-          letter-spacing: 2px;
-          text-transform: uppercase;
-          margin-bottom: 12px;
-        }
-
-        .preloader-partners-track {
-          position: relative;
-          height: 52px;
-          width: 100%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-        }
-
-        .preloader-partner-item {
-          position: absolute;
-          opacity: 0;
-          transform: translateY(8px) scale(0.92);
-          transition: opacity 0.25s cubic-bezier(0.4, 0, 0.2, 1), transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-          display: flex;
-          align-items: center;
-          gap: 10px;
-          pointer-events: none;
-          background: #ffffff;
-          border: 1.5px solid #cbd5e1;
-          padding: 6px 18px;
-          border-radius: 9999px;
-          box-shadow: 0 6px 20px rgba(10, 99, 255, 0.12);
-        }
-
-        .preloader-partner-item.active {
-          opacity: 1;
-          transform: translateY(0) scale(1);
-          pointer-events: auto;
-        }
-
-        .preloader-partner-item img {
-          height: 22px;
-          max-width: 100px;
-          object-fit: contain;
-          border-radius: 4px;
-          background: #ffffff;
-          border: 1px solid #e2e8f0;
-          padding: 2px 5px;
-        }
-
-        .preloader-partner-item span {
-          font-family: "Outfit", "Inter", sans-serif;
-          font-size: 13px;
-          font-weight: 800;
-          color: #001f3f;
-          letter-spacing: 0.5px;
-        }
-
-        @keyframes preloaderFadeIn {
-          0% { opacity: 0; }
-          100% { opacity: 1; }
-        }
-
-        /* Adjustments for smaller mobile screens */
         @media (max-width: 480px) {
-          .preloader-brand-title {
-            font-size: 20px;
+          .video-circle-frame {
+            width: 160px;
+            height: 160px;
           }
-          .preloader-brand-subtitle {
+          .preloader-title {
+            font-size: 18px;
+          }
+          .preloader-subtitle {
             font-size: 11px;
-          }
-          .loader {
-            width: 200px;
-            height: 200px;
-          }
-          .golden-aura {
-            width: 170px;
-            height: 170px;
-          }
-          .lion-wrapper {
-            width: 140px;
-            height: 140px;
           }
         }
       </style>
 
-      <!-- Floating particle system -->
-      <div class="particles-container">
-        <div class="preloader-particle" style="left: 10%; width: 5px; height: 5px; animation-duration: 5s; animation-delay: 0s;"></div>
-        <div class="preloader-particle" style="left: 25%; width: 7px; height: 7px; animation-duration: 7s; animation-delay: 1.5s; background: rgba(255,122,0,0.25);"></div>
-        <div class="preloader-particle" style="left: 40%; width: 4px; height: 4px; animation-duration: 4s; animation-delay: 0.5s;"></div>
-        <div class="preloader-particle" style="left: 55%; width: 6px; height: 6px; animation-duration: 6s; animation-delay: 2s;"></div>
-        <div class="preloader-particle" style="left: 70%; width: 8px; height: 8px; animation-duration: 8s; animation-delay: 1s; background: rgba(255,122,0,0.2);"></div>
-        <div class="preloader-particle" style="left: 85%; width: 5px; height: 5px; animation-duration: 5s; animation-delay: 2.5s;"></div>
-        <div class="preloader-particle" style="left: 15%; width: 6px; height: 6px; animation-duration: 6.5s; animation-delay: 3s;"></div>
-        <div class="preloader-particle" style="left: 48%; width: 5px; height: 5px; animation-duration: 5.5s; animation-delay: 3.5s; background: rgba(10,99,255,0.35);"></div>
-        <div class="preloader-particle" style="left: 63%; width: 4px; height: 4px; animation-duration: 4.5s; animation-delay: 1.8s;"></div>
-        <div class="preloader-particle" style="left: 92%; width: 7px; height: 7px; animation-duration: 7.5s; animation-delay: 0.8s;"></div>
-      </div>
-
-      <!-- Main center element -->
-      <div class="preloader-main">
-        <!-- Ferocious Roaring Lion Loader -->
-        <div class="loader">
-          <div class="golden-aura"></div>
-
-          <div class="lion-wrapper">
-            <img 
-              src="https://i.pinimg.com/736x/7e/cf/e9/7ecfe9c9504fae1d332c3fa61f06e4c8.jpg" 
-              alt="Roaring Lion" 
-              class="lion-img"
-              referrerpolicy="no-referrer"
-            />
-          </div>
+      <div class="preloader-content">
+        <div class="video-circle-frame">
+          <video 
+            src="https://files.catbox.moe/1b5qau.mp4" 
+            autoplay 
+            muted 
+            loop 
+            playsinline 
+            class="preloader-video"
+          ></video>
         </div>
-
-        <!-- Typography Branding Section -->
-        <div class="preloader-text-container">
-          <h1 class="preloader-brand-title">Om Shringar Tirpal Store</h1>
-          <p class="preloader-brand-subtitle">Premium Tarpaulin & Plastic Sheets</p>
-        </div>
-
-        <!-- Authorized Trading Partner Carousel with ALL 14 Brands -->
-        <div class="preloader-partners">
-          <span class="preloader-partners-heading">Authorized Distributor & Brand Partner</span>
-          <div class="preloader-partners-track">
-            <div class="preloader-partner-item active">
-              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQhYupOFug5Yj8fRM0Q74ENy_gKWvv5Dy6M9SlsFfbaJTHeWNACb06XwCwy&s=10" alt="Shalimar" />
-              <span>Shalimar</span>
-            </div>
-            <div class="preloader-partner-item">
-              <img src="https://plain-apac-prod-public.komododecks.com/202607/03/oDtfecDE2xAWZLABiKFx/image.jpg" alt="Greatpaulin" />
-              <span>Greatpaulin</span>
-            </div>
-            <div class="preloader-partner-item">
-              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQeMUnP6Z2TnQ59-T8IoNdUnuS71PtlmQcf7bQIttKIS6MUbQv_4_OmhU4&s=10" alt="Silpaulin" />
-              <span>Silpaulin</span>
-            </div>
-            <div class="preloader-partner-item">
-              <img src="https://plain-apac-prod-public.komododecks.com/202607/03/nH1liaiAJsZ72n7WVMa5/image.jpg" alt="Cheetah" />
-              <span>Cheetah</span>
-            </div>
-            <div class="preloader-partner-item">
-              <img src="https://media.licdn.com/dms/image/v2/C560BAQFljvsCvp1y2w/company-logo_200_200/company-logo_200_200/0/1630584191714/vision_plastics_inc_logo?e=2147483647&v=beta&t=D5xt-vVoXRwqmnW2EX33_rczHrjV-GGGW1AxWZXcZmE" alt="Vision" />
-              <span>Vision</span>
-            </div>
-            <div class="preloader-partner-item">
-              <img src="https://plain-apac-prod-public.komododecks.com/202607/03/m7zkbhNPvoPwDA32B9BY/image.jpg" alt="KNS" />
-              <span>KNS</span>
-            </div>
-            <div class="preloader-partner-item">
-              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSPjWOzy_wJ_BmDWWcyXAj3vAIhq-4Dbdj129c1auNaHA&s=10" alt="Black Bull" />
-              <span>Black Bull</span>
-            </div>
-            <div class="preloader-partner-item">
-              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQVowJ2c1FfQeCQR_Jc32h9YCj6YL5jljWfWOppnMKRmw&s=10" alt="Double Bull" />
-              <span>Double Bull</span>
-            </div>
-            <div class="preloader-partner-item">
-              <img src="https://www.tuffpaulin.com/wp-content/uploads/2021/09/Tuff-logo-with-IS-Mark-e1629102662998.png" alt="Tuffpaulin" />
-              <span>Tuffpaulin</span>
-            </div>
-            <div class="preloader-partner-item">
-              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTx12lnc13eV1UzLcfMfjctY3t6ZzPaNfySie4uS1eGAA&s=10" alt="Mipatex" />
-              <span>Mipatex</span>
-            </div>
-            <div class="preloader-partner-item">
-              <img src="https://plain-apac-prod-public.komododecks.com/202607/16/fqOq0hB8ZA982pAThU7G/image.jpg" alt="Jumbo" />
-              <span>Jumbo</span>
-            </div>
-            <div class="preloader-partner-item">
-              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRiEr-VxegD2eLYFiBrrsbcYjH4ZxR1FbEbgxfpNP4JUg&s=10" alt="Himalaya" />
-              <span>Himalaya</span>
-            </div>
-            <div class="preloader-partner-item">
-              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTG-uVnYN4I820w2J4ZgUanUXZK81heB3UXJE87SN2MsPDdIN1IMPrJGA&s" alt="Fortune" />
-              <span>Fortune</span>
-            </div>
-            <div class="preloader-partner-item">
-              <img src="https://plain-apac-prod-public.komododecks.com/202607/16/hDQT1Xo8iGIRV1LacJtu/image.jpg" alt="Vinex" />
-              <span>Vinex</span>
-            </div>
-          </div>
-        </div>
+        <h1 class="preloader-title">Om Shringar Tirpal Store</h1>
+        <p class="preloader-subtitle">Premium Tarpaulin & Plastic Sheets</p>
       </div>
     </div>
 
-    <!-- Script to handle brand logo carousel cycling and smart transition timeout -->
+    <!-- Preloader Auto-dismiss and Scroll Lock Control Script -->
     <script>
       (function() {
-        var startTime = Date.now();
-        var isPageLoaded = false;
-        
-        // Partner logos carousel fast logic (cycles every 250ms)
-        var currentBrand = 0;
-        var brandItems = document.querySelectorAll('.preloader-partner-item');
-        var carouselInterval;
-        
-        if (brandItems.length > 0) {
-          carouselInterval = setInterval(function() {
-            brandItems[currentBrand].classList.remove('active');
-            currentBrand = (currentBrand + 1) % brandItems.length;
-            brandItems[currentBrand].classList.add('active');
-          }, 250); // Fast 250ms rotation for 1-by-1 logo switching
+        // Lock page scroll while loader is active
+        document.documentElement.classList.add('preloader-active');
+        document.body.classList.add('preloader-active');
+
+        // Play video programmatically if muted autoplay policy requires explicit trigger
+        var video = document.querySelector('.preloader-video');
+        if (video) {
+          video.muted = true;
+          video.play().catch(function(err) {
+            console.log('Video autoplay trigger:', err);
+          });
         }
 
-        // Action to trigger preloader fade out and complete DOM removal
+        // Hide preloader automatically after 4 seconds with smooth fade-out
         function hidePreloader() {
           var preloader = document.getElementById('premium-preloader');
-          if (preloader) {
+          if (preloader && !preloader.classList.contains('fade-out')) {
             preloader.classList.add('fade-out');
-            if (carouselInterval) clearInterval(carouselInterval);
             
-            // Clean up from DOM once transition completes & restore page scrollbar
             setTimeout(function() {
               preloader.remove();
               document.documentElement.classList.remove('preloader-active');
@@ -623,30 +334,7 @@
           }
         }
 
-        // Logic to coordinate load event and timer
-        function checkAndHide() {
-          var elapsedTime = Date.now() - startTime;
-          var minDuration = 4000; // Keep showing for 4 seconds (4000ms)
-          
-          if (elapsedTime >= minDuration) {
-            hidePreloader();
-          } else {
-            setTimeout(hidePreloader, minDuration - elapsedTime);
-          }
-        }
-
-        // Normal full load completion
-        window.addEventListener('load', function() {
-          isPageLoaded = true;
-          checkAndHide();
-        });
-
-        // Fail-safe backup trigger (maximum 6 seconds load delay safeguard)
-        setTimeout(function() {
-          if (!isPageLoaded) {
-            hidePreloader();
-          }
-        }, 6000);
+        setTimeout(hidePreloader, 4000);
       })();
     </script>
 
