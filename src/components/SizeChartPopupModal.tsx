@@ -72,8 +72,14 @@ export default function SizeChartPopupModal({
   ];
 
   return (
-    <div className="fixed inset-0 z-[120] flex items-center justify-center p-3 sm:p-4 bg-slate-900/60 backdrop-blur-md animate-fade-in">
-      <div className="relative z-10 w-full max-w-2xl my-auto">
+    <div 
+      className="fixed inset-0 z-[120] flex items-center justify-center p-3 sm:p-4 bg-slate-900/60 backdrop-blur-md animate-fade-in cursor-pointer"
+      onClick={onClose}
+    >
+      <div 
+        className="relative z-10 w-full max-w-2xl my-auto cursor-default"
+        onClick={(e) => e.stopPropagation()}
+      >
         
         {/* Cute White Frame Container */}
         <div className="bg-gradient-to-br from-orange-200 via-amber-100 to-orange-200 p-1.5 sm:p-2 rounded-[28px] shadow-2xl border-2 border-orange-300/80">
@@ -134,7 +140,7 @@ export default function SizeChartPopupModal({
             </div>
 
             {/* Scrollable Chart Content */}
-            <div className="overflow-y-auto pr-1 space-y-3 flex-1 text-left custom-scrollbar">
+            <div className="overflow-y-auto pr-1 space-y-3 flex-1 text-left custom-scrollbar modal-scrollable-content overscroll-contain">
               {activeTab === "tarpaulin" ? (
                 <div className="space-y-2.5">
                   {tarpaulinCategories.map((cat, idx) => (

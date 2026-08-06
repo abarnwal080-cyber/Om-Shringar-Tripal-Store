@@ -66,7 +66,7 @@ export const TermsModal: React.FC<TermsModalProps> = ({ isOpen, onClose }) => {
             </div>
 
             {/* Modal Body */}
-            <div className="p-6 sm:p-8 space-y-4 text-slate-700 text-sm sm:text-base leading-relaxed max-h-[75vh] overflow-y-auto">
+            <div className="p-6 sm:p-8 space-y-4 text-slate-700 text-sm sm:text-base leading-relaxed max-h-[75vh] overflow-y-auto modal-scrollable-content overscroll-contain">
               <div className="flex items-start gap-3 bg-amber-50 border border-amber-200/70 p-4 rounded-2xl text-amber-900 text-xs sm:text-sm font-medium">
                 <ShieldAlert className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
                 <p>

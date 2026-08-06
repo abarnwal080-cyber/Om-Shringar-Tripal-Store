@@ -525,7 +525,7 @@ export default function SupplierPopup({ isOpen, onClose }: SupplierPopupProps) {
             </div>
 
             {/* Dedicated placeholder container as requested */}
-            <div id="supplier-popup-content" className="flex-grow w-full h-full p-2 md:p-4 overflow-hidden">
+            <div id="supplier-popup-content" className="flex-grow w-full h-full p-2 md:p-4 overflow-hidden modal-scrollable-content overscroll-contain">
               <iframe
                 title="Supplier Profile"
                 srcDoc={SUPPLIER_HTML}

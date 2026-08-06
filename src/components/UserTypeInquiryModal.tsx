@@ -125,12 +125,18 @@ export default function UserTypeInquiryModal({
   };
 
   return (
-    <div className="fixed inset-0 z-[110] flex items-center justify-center p-3 sm:p-4 bg-slate-900/60 backdrop-blur-md animate-fade-in">
-      <div className="relative z-10 w-full max-w-lg my-auto">
+    <div 
+      className="fixed inset-0 z-[110] flex items-center justify-center p-3 sm:p-4 bg-slate-900/60 backdrop-blur-md animate-fade-in"
+      onClick={onClose}
+    >
+      <div 
+        className="relative z-10 w-full max-w-lg my-auto"
+        onClick={(e) => e.stopPropagation()}
+      >
         
         {/* Cute White Frame Container */}
         <div className="bg-gradient-to-br from-orange-200 via-amber-100 to-orange-200 p-1.5 sm:p-2 rounded-[28px] shadow-2xl border-2 border-orange-300/80">
-          <div className="bg-white rounded-[22px] p-4 sm:p-5 relative border border-orange-100/80 shadow-sm">
+          <div className="bg-white rounded-[22px] p-4 sm:p-5 relative border border-orange-100/80 shadow-sm max-h-[85vh] flex flex-col modal-scrollable-content overscroll-contain">
             
             {/* Close Button */}
             <button

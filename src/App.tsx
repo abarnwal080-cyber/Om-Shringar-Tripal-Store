@@ -106,17 +106,83 @@ export default function App() {
     localStorage.removeItem("enquiry_submitted");
   }, []);
 
-  // Lock body scroll when any modal, loader, or overlay is active
+  // Professional Modal Popup System: Lock body scroll, prevent layout shifts, handle keyboard/touch, restore scroll position
   const isAnyModalActive = isCatalogOpen || isTermsOpen || sizeCalcOpen || userTypeModalOpen || supplierOpen || sizeChartPopupOpen;
 
   useEffect(() => {
-    if (isAnyModalActive) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "unset";
+    if (!isAnyModalActive) return;
+
+    // 1. Store exact scroll position to restore later when modal closes
+    const scrollY = window.scrollY;
+
+    // 2. Calculate scrollbar width to prevent layout shifts
+    const scrollbarWidth = window.innerWidth - document.documentElement.clientWidth;
+
+    // 3. Lock background page completely (no vertical/horizontal scroll or jump)
+    document.body.style.position = "fixed";
+    document.body.style.top = `-${scrollY}px`;
+    document.body.style.left = "0";
+    document.body.style.right = "0";
+    document.body.style.width = "100%";
+    document.body.style.overflow = "hidden";
+    if (scrollbarWidth > 0) {
+      document.body.style.paddingRight = `${scrollbarWidth}px`;
     }
+
+    // 4. Handle Escape key & block background page scroll keys
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === "Escape") {
+        setIsCatalogOpen(false);
+        setIsTermsOpen(false);
+        setSizeCalcOpen(false);
+        setUserTypeModalOpen(false);
+        setSupplierOpen(false);
+        setSizeChartPopupOpen(false);
+        return;
+      }
+
+      // Prevent page scrolling keys (Space, Arrows, PageUp/Down, Home, End) if not typing in input
+      const scrollKeys = ["Space", "ArrowUp", "ArrowDown", "PageUp", "PageDown", "Home", "End", " "];
+      if (scrollKeys.includes(e.key) || scrollKeys.includes(e.code)) {
+        const active = document.activeElement;
+        const isInput = active && (
+          active.tagName === "INPUT" ||
+          active.tagName === "TEXTAREA" ||
+          active.tagName === "SELECT" ||
+          (active as HTMLElement).isContentEditable
+        );
+        if (!isInput) {
+          e.preventDefault();
+        }
+      }
+    };
+
+    // 5. Prevent touch scrolling on background overlay for mobile
+    const handleTouchMove = (e: TouchEvent) => {
+      const target = e.target as HTMLElement | null;
+      if (target && !target.closest(".modal-scrollable-content")) {
+        e.preventDefault();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    document.addEventListener("touchmove", handleTouchMove, { passive: false });
+
     return () => {
-      document.body.style.overflow = "unset";
+      window.removeEventListener("keydown", handleKeyDown);
+      document.removeEventListener("touchmove", handleTouchMove);
+
+      // Restore body styles cleanly
+      document.body.style.position = "";
+      document.body.style.top = "";
+      document.body.style.left = "";
+      document.body.style.right = "";
+      document.body.style.width = "";
+      document.body.style.overflow = "";
+      document.body.style.paddingRight = "";
+
+      // Restore exact previous scroll position without jump
+      window.scrollTo(0, scrollY);
     };
   }, [isAnyModalActive]);
 

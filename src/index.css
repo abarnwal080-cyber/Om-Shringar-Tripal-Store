@@ -248,5 +248,11 @@
   animation: orange-glow-pulse-black 4s ease-in-out infinite;
 }
 
+/* Professional Modal System Helper Rules */
+.modal-scrollable-content {
+  overscroll-behavior: contain !important;
+  -webkit-overflow-scrolling: touch;
+}
+
 
 

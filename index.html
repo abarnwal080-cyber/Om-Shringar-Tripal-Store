@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="en" class="scroll-smooth">
+<html lang="en" class="scroll-smooth preloader-active">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -159,7 +159,7 @@
     <!-- Elfsight Google Reviews Platform Script -->
     <script src="https://static.elfsight.com/platform/platform.js" async defer></script>
   </head>
-  <body>
+  <body class="preloader-active">
     <!-- ============================================================================ -->
     <!-- PREMIUM PRELOADER (NEWLY INTEGRATED)                                         -->
     <!-- Luxury Industrial Theme for Om Shringar Tirpal Store                         -->
@@ -168,6 +168,14 @@
     <!-- ============================================================================ -->
     <div id="premium-preloader">
       <style>
+        html.preloader-active,
+        body.preloader-active {
+          overflow: hidden !important;
+          height: 100vh !important;
+          max-height: 100vh !important;
+          touch-action: none;
+        }
+
         #premium-preloader {
           position: fixed;
           top: 0;
@@ -241,135 +249,82 @@
 
         .loader {
           position: relative;
-          width: 220px;
-          height: 220px;
+          width: 250px;
+          height: 250px;
           display: flex;
           justify-content: center;
           align-items: center;
-          margin-bottom: 16px;
+          margin-bottom: 20px;
         }
 
-        /* Outer Glow Ring */
+        /* Golden Glow Halo / Aura Behind Lion */
 
-        .ring {
+        .golden-aura {
           position: absolute;
-          width: 190px;
-          height: 190px;
+          width: 210px;
+          height: 210px;
           border-radius: 50%;
-          border: 4px solid transparent;
-          border-top: 4px solid #0A63FF;
-          border-right: 4px solid #FF7A00;
-          animation: spin 2s linear infinite;
-          filter: drop-shadow(0 0 12px rgba(10,99,255,.4));
+          background: radial-gradient(circle, rgba(255, 183, 3, 0.5) 0%, rgba(255, 122, 0, 0.25) 50%, rgba(255, 122, 0, 0) 75%);
+          animation: goldenGlowPulse 2s ease-in-out infinite alternate;
+          filter: blur(10px);
+          pointer-events: none;
         }
 
-        /* Dashed Ring */
+        /* Majestic Roaring Lion Wrapper & Image */
 
-        .ring2 {
-          position: absolute;
-          width: 160px;
-          height: 160px;
-          border-radius: 50%;
-          border: 3px dashed rgba(10,99,255,.35);
-          animation: spinReverse 8s linear infinite;
-        }
-
-        /* 3D Shield */
-
-        .shield {
+        .lion-wrapper {
           position: relative;
-          width: 95px;
-          height: 110px;
-          background: linear-gradient(145deg,#1D7CFF,#0052D4);
-          clip-path: polygon(50% 0%,92% 15%,92% 55%,50% 100%,8% 55%,8% 15%);
-          box-shadow:
-          0 20px 40px rgba(0,82,212,.35),
-          0 0 25px rgba(0,102,255,.35);
-          animation:
-          float 2.5s ease-in-out infinite,
-          shieldRotate 5s linear infinite;
-          transform-style: preserve-3d;
+          width: 175px;
+          height: 175px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          animation: lionFloat 2.5s ease-in-out infinite alternate;
+          z-index: 5;
         }
 
-        .shield:before {
-          content: "";
-          position: absolute;
-          inset: 10px;
-          background: linear-gradient(180deg,
-          rgba(255,255,255,.75),
-          rgba(255,255,255,.05));
-          clip-path: polygon(50% 0%,92% 15%,92% 55%,50% 100%,8% 55%,8% 15%);
-          opacity: .9;
-        }
-
-        .shield:after {
-          content: "";
-          position: absolute;
-          width: 24px;
-          height: 24px;
+        .lion-img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
           border-radius: 50%;
-          background: #fff;
-          top: 24px;
-          left: 50%;
-          transform: translateX(-50%);
-          box-shadow:
-          0 0 15px #fff,
-          0 0 35px #3da9ff;
-        }
-
-        /* Floating Particles */
-
-        .particle {
-          position: absolute;
-          width: 8px;
-          height: 8px;
-          background: #0A63FF;
-          border-radius: 50%;
-          box-shadow: 0 0 12px currentColor;
-          animation: orbit 5s linear infinite;
-        }
-
-        .p1 {
-          animation-delay: 0s;
-        }
-
-        .p2 {
-          animation-delay: 1.2s;
-          background: #FF7A00;
-        }
-
-        .p3 {
-          animation-delay: 2.5s;
-        }
-
-        .p4 {
-          animation-delay: 3.7s;
-          background: #00BFFF;
+          border: 3.5px solid #FFC000;
+          box-shadow: 
+            0 0 20px #FFB703,
+            0 0 40px rgba(255, 122, 0, 0.85),
+            0 0 70px rgba(255, 183, 3, 0.45);
         }
 
         /* Animations */
 
-        @keyframes spin {
+        @keyframes goldenGlowPulse {
+          0% {
+            transform: scale(0.92);
+            opacity: 0.6;
+            filter: blur(8px) drop-shadow(0 0 15px #FFB703);
+          }
           100% {
-            transform: rotate(360deg);
+            transform: scale(1.15);
+            opacity: 1;
+            filter: blur(14px) drop-shadow(0 0 35px #FF7A00);
           }
         }
 
-        @keyframes spinReverse {
+        @keyframes lionFloat {
+          0%, 100% {
+            transform: translateY(0px) scale(1);
+          }
+          50% {
+            transform: translateY(-8px) scale(1.05);
+          }
+        }
+
+        @keyframes lionRoarPulse {
+          0% {
+            filter: drop-shadow(0 0 12px rgba(255, 122, 0, 0.6));
+          }
           100% {
-            transform: rotate(-360deg);
-          }
-        }
-
-        @keyframes float {
-          50% {
-            transform: translateY(-10px);
-          }
-        }
-
-        @keyframes shieldRotate {
-          50% {
-            transform: rotateY(18deg);
+            filter: drop-shadow(0 0 28px rgba(239, 68, 68, 0.95));
           }
         }
 
@@ -518,20 +473,16 @@
             font-size: 11px;
           }
           .loader {
-            width: 180px;
-            height: 180px;
+            width: 200px;
+            height: 200px;
           }
-          .ring {
-            width: 150px;
-            height: 150px;
+          .golden-aura {
+            width: 170px;
+            height: 170px;
           }
-          .ring2 {
-            width: 125px;
-            height: 125px;
-          }
-          .shield {
-            width: 75px;
-            height: 88px;
+          .lion-wrapper {
+            width: 140px;
+            height: 140px;
           }
         }
       </style>
@@ -552,17 +503,18 @@
 
       <!-- Main center element -->
       <div class="preloader-main">
-        <!-- 3D Shield Loader -->
+        <!-- Ferocious Roaring Lion Loader -->
         <div class="loader">
-          <div class="ring"></div>
-          <div class="ring2"></div>
+          <div class="golden-aura"></div>
 
-          <div class="particle p1"></div>
-          <div class="particle p2"></div>
-          <div class="particle p3"></div>
-          <div class="particle p4"></div>
-
-          <div class="shield"></div>
+          <div class="lion-wrapper">
+            <img 
+              src="https://i.pinimg.com/736x/7e/cf/e9/7ecfe9c9504fae1d332c3fa61f06e4c8.jpg" 
+              alt="Roaring Lion" 
+              class="lion-img"
+              referrerpolicy="no-referrer"
+            />
+          </div>
         </div>
 
         <!-- Typography Branding Section -->
@@ -662,9 +614,11 @@
             preloader.classList.add('fade-out');
             if (carouselInterval) clearInterval(carouselInterval);
             
-            // Clean up from DOM once transition completes
+            // Clean up from DOM once transition completes & restore page scrollbar
             setTimeout(function() {
               preloader.remove();
+              document.documentElement.classList.remove('preloader-active');
+              document.body.classList.remove('preloader-active');
             }, 600);
           }
         }

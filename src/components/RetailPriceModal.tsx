@@ -209,7 +209,7 @@ export default function RetailPriceModal({ isOpen, onClose, currentLanguage, onO
             </div>
 
             {/* Scrollable Price list body */}
-            <div className="flex-grow overflow-y-auto p-5 sm:p-6 space-y-6 custom-scrollbar text-slate-200">
+            <div className="flex-grow overflow-y-auto p-5 sm:p-6 space-y-6 custom-scrollbar text-slate-200 modal-scrollable-content overscroll-contain">
               
               {/* Top Banner Alert */}
               <div className="p-4 rounded-2xl bg-amber-500/10 border border-amber-500/20 text-xs text-amber-200 leading-relaxed flex items-start gap-3">

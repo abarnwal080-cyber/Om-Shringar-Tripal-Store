@@ -124,7 +124,10 @@ export default function SizeCalculatorModal({ isOpen, onClose, lang = "en", onIn
   };
 
   return (
-    <div className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-md overflow-y-auto animate-fade-in">
+    <div 
+      className="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-black/60 backdrop-blur-md overflow-y-auto animate-fade-in cursor-pointer"
+      onClick={onClose}
+    >
       {/* Cute Floating Decoration Backgrounds */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden z-0 opacity-40">
         <span className="absolute top-[8%] left-[6%] text-3xl animate-bounce">⭐</span>
@@ -134,9 +137,12 @@ export default function SizeCalculatorModal({ isOpen, onClose, lang = "en", onIn
       </div>
 
       {/* Main Container Card */}
-      <div className="relative z-10 w-full max-w-[520px] my-auto">
+      <div 
+        className="relative z-10 w-full max-w-[520px] my-auto cursor-default"
+        onClick={(e) => e.stopPropagation()}
+      >
         <div className="bg-gradient-to-br from-amber-100 via-orange-100 to-rose-100 p-2 sm:p-3 rounded-[38px] shadow-[0_25px_60px_rgba(0,0,0,0.3)] ring-8 ring-orange-200/60">
-          <div className="bg-white rounded-[30px] p-6 sm:p-8 border-2 border-dashed border-orange-200 relative overflow-hidden">
+          <div className="bg-white rounded-[30px] p-6 sm:p-8 border-2 border-dashed border-orange-200 relative overflow-hidden max-h-[88vh] overflow-y-auto modal-scrollable-content overscroll-contain">
             
             {/* Close Button */}
             <button
