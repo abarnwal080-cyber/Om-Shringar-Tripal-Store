@@ -216,7 +216,156 @@
     <!-- Elfsight Google Reviews Platform Script -->
     <script src="https://static.elfsight.com/platform/platform.js" async defer></script>
   </head>
-  <body>
+  <body class="preloader-active">
+    <!-- Custom 3s Preloader -->
+    <div id="custom-preloader">
+      <style>
+        html.preloader-active,
+        body.preloader-active {
+          overflow: hidden !important;
+          height: 100vh !important;
+        }
+
+        #custom-preloader {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100vw;
+          height: 100vh;
+          background: #ffffff;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          z-index: 999999;
+          overflow: hidden;
+          font-family: Arial, Helvetica, sans-serif;
+          transition: opacity 0.4s ease, visibility 0.4s ease;
+        }
+
+        #custom-preloader.fade-out {
+          opacity: 0;
+          visibility: hidden;
+        }
+
+        .loader {
+          width: min(430px, 86vw);
+          text-align: center;
+        }
+
+        /* LOGO */
+        .logo {
+          width: 190px;
+          height: 190px;
+          margin: 0 auto 16px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+
+        .logo img {
+          width: 100%;
+          height: 100%;
+          object-fit: contain;
+          display: block;
+        }
+
+        /* BRAND NAME */
+        .brand-name {
+          font-size: 21px;
+          font-weight: 700;
+          letter-spacing: 0.3px;
+          color: #151515;
+          line-height: 1.2;
+        }
+
+        /* PROGRESS TRACK */
+        .progress-track {
+          width: 100%;
+          height: 4px;
+          margin-top: 24px;
+          background: #ededed;
+          border-radius: 50px;
+          overflow: hidden;
+        }
+
+        /* ORANGE FILL */
+        .progress-fill {
+          width: 0;
+          height: 100%;
+          background: #ff6a00;
+          border-radius: inherit;
+        }
+
+        .progress-fill.animate {
+          animation: fillBar 3s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+        }
+
+        @keyframes fillBar {
+          from {
+            width: 0%;
+          }
+          to {
+            width: 100%;
+          }
+        }
+
+        /* MOBILE */
+        @media (max-width: 500px) {
+          .logo {
+            width: 155px;
+            height: 155px;
+          }
+
+          .brand-name {
+            font-size: 18px;
+          }
+        }
+      </style>
+
+      <div class="loader">
+        <div class="logo">
+          <img
+            src="https://plain-apac-prod-public.komododecks.com/202607/05/7O9jo950h35goeKsP6Gr/image.png" 
+            alt="Om Shringar Tirpal Store Logo" 
+          />
+        </div> 
+
+        <div class="brand-name"> 
+          Om Shringar Tirpal Store 
+        </div> 
+
+        <div class="progress-track"> 
+          <div class="progress-fill" id="progress"></div> 
+        </div> 
+      </div>
+    </div>
+
+    <script>
+      (function() {
+        document.documentElement.classList.add('preloader-active');
+        document.body.classList.add('preloader-active');
+
+        var progress = document.getElementById("progress");
+        if (progress) {
+          progress.classList.add("animate");
+        }
+
+        function hidePreloader() {
+          var preloader = document.getElementById('custom-preloader');
+          if (preloader && !preloader.classList.contains('fade-out')) {
+            preloader.classList.add('fade-out');
+            setTimeout(function() {
+              preloader.remove();
+              document.documentElement.classList.remove('preloader-active');
+              document.body.classList.remove('preloader-active');
+            }, 400);
+          }
+        }
+
+        setTimeout(hidePreloader, 3000);
+      })();
+    </script>
+
     <div id="root"></div>
     <script type="module" src="/src/main.tsx"></script>
   </body>
