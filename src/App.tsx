@@ -88,8 +88,22 @@ export default function App() {
   const lastScrollY = useRef(0);
 
   const [isCatalogOpen, setIsCatalogOpen] = useState(false);
+  const [showShippingNotice, setShowShippingNotice] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [isTermsOpen, setIsTermsOpen] = useState(false);
+
+  // Auto-hide Shipping & Delivery notice after 2 seconds when catalog opens
+  useEffect(() => {
+    if (isCatalogOpen) {
+      setShowShippingNotice(true);
+      const timer = setTimeout(() => {
+        setShowShippingNotice(false);
+      }, 2000);
+      return () => clearTimeout(timer);
+    } else {
+      setShowShippingNotice(false);
+    }
+  }, [isCatalogOpen]);
 
   // User Role / Type Selection Modal for customized WhatsApp drafts
   const [userTypeModalOpen, setUserTypeModalOpen] = useState(false);
@@ -339,6 +353,37 @@ export default function App() {
   const t = TRANSLATIONS[lang];
 
   const handleEnquire = (productName: string = "", customContext: string = "") => {
+    const textToCheck = (productName + " " + customContext + " " + (currentProductSlug || "")).toLowerCase();
+    const isRetailOnly = 
+      textToCheck.includes("chatai") ||
+      textToCheck.includes("mat") ||
+      textToCheck.includes("table cover") ||
+      textToCheck.includes("table cloth") ||
+      textToCheck.includes("thermocol") ||
+      textToCheck.includes("foam") ||
+      textToCheck.includes("cosmetic") ||
+      textToCheck.includes("shringar") ||
+      textToCheck.includes("plastic-mat") ||
+      textToCheck.includes("waterproof-table") ||
+      textToCheck.includes("fencing") ||
+      textToCheck.includes("resham") ||
+      textToCheck.includes("polyester") ||
+      textToCheck.includes("jali") ||
+      textToCheck.includes("net");
+
+    if (isRetailOnly) {
+      let matchedName = productName;
+      if (!matchedName && currentProductSlug) {
+        const found = PRODUCTS.find((p) => getProductSlug(p.id) === currentProductSlug || p.id === currentProductSlug);
+        if (found) matchedName = found.name;
+      }
+      const finalProductName = matchedName || customContext || "Retail Product";
+      const message = `Hi Om Shringar Tirpal Store!\n\nI am contacting you regarding retail purchase of *${finalProductName}*.\nPlease share available designs, sizes, and retail price details. Thank you!`;
+      const whatsappUrl = `${BUSINESS_INFO.whatsappLink}?text=${encodeURIComponent(message)}`;
+      window.open(whatsappUrl, "_blank", "noopener,noreferrer");
+      return;
+    }
+
     setUserTypeModalProduct(productName);
     setUserTypeModalContext(customContext);
     setUserTypeModalOpen(true);
@@ -848,183 +893,90 @@ export default function App() {
             className="fixed inset-0 bg-slate-50 z-50 overflow-y-auto flex flex-col antialiased text-slate-900"
           >
             {/* STICKY GLASSMORPHIC HEADER */}
-            <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200/80 px-4 py-4 sm:px-6 shadow-sm">
-              <div className="max-w-7xl mx-auto flex flex-col gap-4">
+            <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200/80 px-4 py-3 sm:px-6 shadow-sm">
+              <div className="max-w-7xl mx-auto flex items-center justify-between">
                 
-                {/* Header Row: Back Button & Title & Close */}
-                <div className="flex items-center justify-between gap-4">
-                  <button
-                    onClick={() => {
-                      setIsCatalogOpen(false);
-                    }}
-                    className="flex items-center gap-2 px-4 py-2.5 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-800 font-extrabold text-xs sm:text-sm transition-all active:scale-95 cursor-pointer"
-                  >
-                    <Icons.ArrowLeft className="w-4 h-4 text-orange-600" />
-                    <span>Back / पीछे जाएं</span>
-                  </button>
+                {/* Back Button (SVG Arrow only) */}
+                <button
+                  onClick={() => {
+                    setIsCatalogOpen(false);
+                  }}
+                  className="p-2.5 rounded-full bg-slate-100 hover:bg-slate-200 border border-slate-200/80 text-slate-800 transition-all active:scale-95 cursor-pointer flex items-center justify-center shadow-sm"
+                  aria-label="Back"
+                >
+                  <Icons.ArrowLeft className="w-5 h-5 text-orange-600" />
+                </button>
 
-                  <div className="text-center">
-                    <h3 className="text-sm sm:text-lg font-black font-display text-[#0B2D5C] tracking-tight flex items-center gap-2 justify-center uppercase">
-                      <span className="text-orange-500 text-lg sm:text-xl">📦</span>
-                      <span>OUR PRODUCTS / हमारे प्रोडक्ट्स</span>
-                    </h3>
-                  </div>
-
-                  <button
-                    onClick={() => {
-                      setIsCatalogOpen(false);
-                    }}
-                    className="p-2 rounded-xl bg-slate-100 hover:bg-slate-200 border border-slate-200 text-slate-600 hover:text-slate-900 transition-all active:scale-95 cursor-pointer"
-                    aria-label="Close"
-                  >
-                    <Icons.X className="w-5 h-5" />
-                  </button>
-                </div>
-
-                {/* Physical Store Shipping Notice Banner */}
-                <div className="w-full max-w-2xl mx-auto bg-amber-50 border border-amber-300/80 rounded-2xl p-3 flex items-start gap-2.5 text-amber-950 text-xs font-semibold shadow-sm">
-                  <Icons.Store className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
-                  <div>
-                    <strong className="text-amber-900 font-extrabold block text-[10px] uppercase tracking-wider mb-0.5">Shipping & Delivery Notice:</strong>
-                    For shipping your product, you have to visit our physical store; online shipping service is not available.
-                  </div>
-                </div>
-
-                {/* Search Bar with Glassmorphism */}
-                <div className="relative w-full max-w-2xl mx-auto">
-                  <div className="absolute inset-y-0 left-4 flex items-center pointer-events-none">
-                    <Icons.Search className="w-5 h-5 text-slate-400" />
-                  </div>
-                  <input
-                    type="text"
-                    value={searchQuery}
-                    onChange={(e) => setSearchQuery(e.target.value)}
-                    placeholder="Search products like HDPE Tarpaulin, Pond Liner, Plastic Sheet..."
-                    className="w-full bg-white border border-slate-200 hover:border-orange-500/50 focus:border-orange-500 focus:ring-2 focus:ring-orange-500/20 text-slate-900 font-bold placeholder-slate-400 text-sm pl-12 pr-10 py-3.5 rounded-2xl shadow-inner focus:outline-none transition-all"
-                  />
-                  {searchQuery && (
-                    <button
-                      onClick={() => setSearchQuery("")}
-                      className="absolute inset-y-0 right-4 flex items-center text-slate-400 hover:text-slate-900 cursor-pointer"
-                    >
-                      <Icons.X className="w-4 h-4" />
-                    </button>
-                  )}
-                </div>
-
-                {/* Category Filter Chips (All, Construction, Agriculture, Packaging, Waterproofing, Others) */}
-                <div className="w-full overflow-hidden border-t border-slate-100 pt-3">
-                  <div className="flex overflow-x-auto pb-2 gap-2 no-scrollbar scroll-smooth snap-x sm:justify-center">
-                    {[
-                      { id: "All", label: "All / सभी", emoji: "🏭" },
-                      { id: "Construction", label: "Construction / भवन निर्माण", emoji: "🏗" },
-                      { id: "Agriculture", label: "Agriculture / कृषि", emoji: "🌱" },
-                      { id: "Packaging", label: "Packaging / पैकिंग", emoji: "📦" },
-                      { id: "Waterproofing", label: "Waterproofing / वॉटरप्रूफ", emoji: "🌧" },
-                      { id: "Others", label: "Others / अन्य", emoji: "🏡" },
-                    ].map((tab) => {
-                      const count = getChipCount(tab.id);
-                      const isActive = activeTab === tab.id;
-                      return (
-                        <button
-                          key={tab.id}
-                          onClick={() => setActiveTab(tab.id)}
-                          className={`relative flex items-center gap-2 py-2.5 px-4 rounded-xl font-bold text-xs whitespace-nowrap transition-all duration-300 snap-start cursor-pointer hover:-translate-y-[1px] active:scale-95 ${
-                            isActive
-                              ? "text-white shadow-lg bg-orange-600 border border-orange-500"
-                              : "bg-slate-100 text-slate-700 border border-slate-200 hover:bg-slate-200 hover:text-slate-900"
-                          }`}
-                        >
-                          <span className="text-sm shrink-0">{tab.emoji}</span>
-                          <span>{tab.label}</span>
-                          <span className={`inline-flex items-center justify-center text-[10px] px-1.5 py-0.5 rounded-full font-bold font-mono transition-colors ${
-                            isActive
-                              ? "bg-white/20 text-white"
-                              : "bg-slate-200 text-slate-600"
-                          }`}>
-                            {count}
-                          </span>
-                        </button>
-                      );
-                    })}
-                  </div>
-                </div>
+                {/* Close Button (SVG Cross only) */}
+                <button
+                  onClick={() => {
+                    setIsCatalogOpen(false);
+                  }}
+                  className="p-2.5 rounded-full bg-slate-100 hover:bg-slate-200 border border-slate-200/80 text-slate-700 hover:text-slate-900 transition-all active:scale-95 cursor-pointer flex items-center justify-center shadow-sm"
+                  aria-label="Close"
+                >
+                  <Icons.X className="w-5 h-5" />
+                </button>
 
               </div>
             </header>
 
             {/* OVERLAY BODY AREA */}
-            <main className="flex-1 bg-slate-50 py-12 px-4 sm:px-6 lg:px-8 relative">
+            <main className="flex-1 bg-slate-50 py-8 px-4 sm:px-6 lg:px-8 relative">
               {/* Background ambient glows */}
               <div className="absolute top-1/4 left-1/4 w-[30%] h-[30%] rounded-full bg-orange-500/[0.03] blur-3xl pointer-events-none" />
               <div className="absolute bottom-1/4 right-1/4 w-[30%] h-[30%] rounded-full bg-blue-500/[0.02] blur-3xl pointer-events-none" />
 
               <div className="max-w-7xl mx-auto relative z-10">
                 
-                {/* Search query feedback banner */}
-                {searchQuery.trim() !== "" && (
-                  <div className="flex items-center justify-center gap-3 mb-8 bg-orange-50 border border-orange-100 rounded-2xl px-6 py-3 max-w-xl mx-auto">
-                    <span className="text-xs sm:text-sm font-bold text-slate-700">
-                      Showing results for: <span className="text-orange-600 font-mono">"{searchQuery}"</span>
-                    </span>
-                    <button
-                      onClick={() => setSearchQuery("")}
-                      className="text-[10px] sm:text-xs font-bold text-slate-600 hover:text-slate-900 bg-white border border-slate-200 px-3 py-1.5 rounded-xl shadow-sm transition-all active:scale-95 cursor-pointer"
+                {/* Physical Store Shipping Notice Banner (Auto Disappears after 2 seconds) */}
+                <AnimatePresence>
+                  {showShippingNotice && (
+                    <motion.div
+                      initial={{ opacity: 0, height: 0, marginBottom: 0 }}
+                      animate={{ opacity: 1, height: "auto", marginBottom: 24 }}
+                      exit={{ opacity: 0, height: 0, marginBottom: 0 }}
+                      transition={{ duration: 0.4, ease: "easeInOut" }}
+                      className="w-full max-w-2xl mx-auto bg-amber-50 border border-amber-300/80 rounded-2xl p-3.5 flex items-start gap-2.5 text-amber-950 text-xs font-semibold shadow-sm overflow-hidden"
                     >
-                      Clear Search
-                    </button>
-                  </div>
-                )}
-
+                      <Icons.Store className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
+                      <div>
+                        <strong className="text-amber-900 font-extrabold block text-[10px] uppercase tracking-wider mb-0.5">Shipping & Delivery Notice:</strong>
+                        For shipping your product, you have to visit our physical store; online shipping service is not available.
+                      </div>
+                    </motion.div>
+                  )}
+                </AnimatePresence>
                 {/* Grid layout */}
-                {getFilteredProducts().length === 0 ? (
-                  <div className="text-center py-20 px-4 bg-white border border-slate-200 rounded-3xl shadow-sm max-w-xl mx-auto my-8">
-                    <span className="text-5xl">🔍</span>
-                    <h3 className="text-xl font-extrabold text-[#0B2D5C] mt-4 mb-2">No products match your search</h3>
-                    <p className="text-slate-500 text-sm font-medium mb-6">
-                      We couldn't find any products matching your selection. Try typing a different keyword or resetting your filters.
-                    </p>
-                    <button
-                      onClick={() => {
-                        setSearchQuery("");
-                        setActiveTab("All");
-                      }}
-                      className="px-6 py-3.5 bg-gradient-to-r from-orange-600 to-amber-500 hover:from-orange-700 hover:to-amber-600 text-white font-extrabold text-xs sm:text-sm rounded-xl shadow-md transition-all active:scale-95 cursor-pointer"
+                <motion.div
+                  layout
+                  className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 sm:gap-8"
+                >
+                  {PRODUCTS.map((product) => (
+                    <motion.div
+                      layout
+                      key={product.id}
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.95 }}
+                      transition={{ duration: 0.3 }}
+                      className="h-full"
                     >
-                      Reset Search & Filters
-                    </button>
-                  </div>
-                ) : (
-                  <motion.div
-                    layout
-                    className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 sm:gap-8"
-                  >
-                    {getFilteredProducts().map((product) => (
-                      <motion.div
-                        layout
-                        key={product.id}
-                        initial={{ opacity: 0, scale: 0.95 }}
-                        animate={{ opacity: 1, scale: 1 }}
-                        exit={{ opacity: 0, scale: 0.95 }}
-                        transition={{ duration: 0.3 }}
-                        className="h-full"
-                      >
-                        <ProductCard
-                          product={product}
-                          onEnquire={handleEnquire}
-                          currentLanguage={lang}
-                          onViewDetails={(prod) => {
-                            setIsCatalogOpen(false);
-                            const slug = getProductSlug(prod.id);
-                            window.history.pushState({}, "", `/products/${slug}`);
-                            setCurrentProductSlug(slug);
-                            window.scrollTo({ top: 0 });
-                          }}
-                        />
-                      </motion.div>
-                    ))}
-                  </motion.div>
-                )}
+                      <ProductCard
+                        product={product}
+                        onEnquire={handleEnquire}
+                        currentLanguage={lang}
+                        onViewDetails={(prod) => {
+                          setIsCatalogOpen(false);
+                          const slug = getProductSlug(prod.id);
+                          window.history.pushState({}, "", `/products/${slug}`);
+                          setCurrentProductSlug(slug);
+                          window.scrollTo({ top: 0 });
+                        }}
+                      />
+                    </motion.div>
+                  ))}
+                </motion.div>
               </div>
             </main>
           </motion.div>
@@ -1773,20 +1725,33 @@ export default function App() {
             exit={{ opacity: 0, scale: 0.8, x: 20 }}
             className="fixed right-5 bottom-6 z-40"
           >
-            <motion.button
-              whileHover={{ scale: 1.1, y: -2 }}
-              whileTap={{ scale: 0.95 }}
+            <button
               onClick={() => setSizeCalcOpen(true)}
               aria-label="Size Calculator"
               title="Tarpaulin Best Size Calculator - साइज़ कैलकुलेटर"
-              className="flex items-center justify-center w-12 h-12 sm:w-13 sm:h-13 rounded-full bg-gradient-to-r from-orange-500 via-rose-500 to-amber-500 hover:from-orange-600 hover:to-amber-600 text-white shadow-2xl border-2 border-white/80 transition-all duration-300 cursor-pointer group animate-orange-glow-pulse p-1"
+              className="w-13 h-13 sm:w-14 sm:h-14 bg-gradient-to-r from-orange-600 via-amber-500 to-orange-500 hover:from-orange-700 hover:to-amber-600 text-white rounded-full shadow-2xl flex items-center justify-center hover:scale-110 active:scale-95 transition-all duration-300 cursor-pointer relative group border border-amber-300/30"
             >
-              <img 
-                src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT6GGc51kvR33E3LkKQOeAzeZeGbc_d-vGcpICshiHEJQ&s=10" 
-                alt="Size Calculator" 
-                className="w-full h-full rounded-full object-cover group-hover:rotate-12 transition-transform shrink-0"
-              />
-            </motion.button>
+              {/* Pulsating Ring Indicator */}
+              <span className="absolute inset-0 rounded-full border-2 border-orange-500/40 animate-ping pointer-events-none" />
+              
+              {/* Premium Mathematical Calculator SVG */}
+              <svg 
+                className="w-7 h-7 text-white fill-none stroke-current group-hover:rotate-12 transition-transform shrink-0" 
+                viewBox="0 0 24 24" 
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <rect x="4" y="2" width="16" height="20" rx="3" strokeWidth="2" className="stroke-white fill-white/10" />
+                <line x1="7" y1="6" x2="17" y2="6" strokeWidth="2.5" className="stroke-amber-200" />
+                {/* Math Symbol 1: + */}
+                <path d="M7.5 11h3M9 9.5v3" strokeWidth="1.8" strokeLinecap="round" />
+                {/* Math Symbol 2: − */}
+                <path d="M13.5 11h3" strokeWidth="1.8" strokeLinecap="round" />
+                {/* Math Symbol 3: × */}
+                <path d="M7.5 16l3 3M10.5 16l-3 3" strokeWidth="1.8" strokeLinecap="round" />
+                {/* Math Symbol 4: = */}
+                <path d="M13.5 16.5h3M13.5 18.5h3" strokeWidth="1.8" strokeLinecap="round" />
+              </svg>
+            </button>
           </motion.div>
         )}
       </AnimatePresence>

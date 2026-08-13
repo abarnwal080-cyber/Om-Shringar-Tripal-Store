@@ -222,30 +222,22 @@ export default function ProductMiniCarousel({ lang, onSelectProduct }: ProductMi
                   className="bg-white rounded-2xl border border-slate-100 p-4 shadow-md hover:shadow-xl transition-all hover:-translate-y-1.5 cursor-pointer flex flex-col justify-between h-[310px] relative group overflow-hidden"
                 >
                   {/* Image Container */}
-                  <div className="w-full h-[60%] rounded-xl bg-slate-50 overflow-hidden flex items-center justify-center relative mb-3 pointer-events-none">
+                  <div className="w-full h-[65%] rounded-xl bg-slate-50 overflow-hidden flex items-center justify-center relative mb-3 pointer-events-none">
                     <img
                       src={product.images[0]}
                       alt={product.name}
                       referrerPolicy="no-referrer"
                       className="max-w-[85%] max-h-[85%] object-contain transition-transform duration-500 group-hover:scale-105"
                     />
-                    
-                    {/* Category Tag */}
-                    <span className="absolute bottom-2 left-2 text-[9px] font-bold font-mono px-2 py-0.5 rounded-full bg-orange-500/10 text-orange-600 border border-orange-500/15">
-                      {product.category}
-                    </span>
                   </div>
 
-                  {/* Product Details */}
+                  {/* Product Details - Only Name */}
                   <div className="flex flex-col justify-between flex-grow text-left">
-                    <h4 className="text-sm font-extrabold text-[#0B2D5C] font-display line-clamp-2 tracking-tight group-hover:text-orange-600 transition-colors duration-200">
+                    <h4 className="text-sm font-extrabold text-[#0B2D5C] font-display line-clamp-2 tracking-tight group-hover:text-orange-600 transition-colors duration-200 text-center">
                       {product.name}
                     </h4>
                     
-                    <div className="flex items-center justify-between mt-3 pt-2.5 border-t border-slate-100">
-                      <span className="text-[10px] font-bold font-mono text-slate-400 uppercase tracking-widest">
-                        {product.specs?.Brand || "GENUINE BRAND"}
-                      </span>
+                    <div className="flex items-center justify-center mt-3 pt-2.5 border-t border-slate-100">
                       <span className="text-xs font-extrabold text-orange-600 flex items-center gap-1 group-hover:translate-x-1 transition-transform">
                         <span>{lang === "en" ? "View Details" : "विवरण देखें"}</span>
                         <span>➔</span>

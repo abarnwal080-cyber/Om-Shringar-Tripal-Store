@@ -148,6 +148,23 @@ export default function SingleProductSection({
     };
   }, [product, currentLanguage]);
 
+  // Check if product is retail-only
+  const isRetailItem = 
+    product.id === "cosmetics-shringar" || 
+    product.id === "plastic-mat-chatai" || 
+    product.id === "waterproof-table-cover" || 
+    product.id === "thermocol-sheets" ||
+    product.id === "fencing-net" ||
+    product.id === "fencing-net-jali" ||
+    product.name.toLowerCase().includes("chatai") ||
+    product.name.toLowerCase().includes("table cover") ||
+    product.name.toLowerCase().includes("thermocol") ||
+    product.name.toLowerCase().includes("cosmetic") ||
+    product.name.toLowerCase().includes("fencing") ||
+    product.name.toLowerCase().includes("resham") ||
+    product.name.toLowerCase().includes("polyester") ||
+    product.name.toLowerCase().includes("jali");
+
   // Related Products logic
   const relatedProducts = PRODUCTS.filter((p) => p.id !== product.id && p.category === product.category).slice(0, 3);
   if (relatedProducts.length < 3) {
@@ -332,9 +349,17 @@ export default function SingleProductSection({
                   <Store className="w-5 h-5 text-amber-600 shrink-0 mt-0.5" />
                   <div className="text-xs sm:text-sm font-semibold leading-relaxed">
                     <strong className="text-amber-900 block font-extrabold uppercase text-[11px] tracking-wider mb-0.5">
-                      Shipping & Store Pickup Notice:
+                      {isRetailItem 
+                        ? (currentLanguage === "hi" ? "केवल रिटेल बिक्री के लिए / For Only Retail:" : "For Only Retail:")
+                        : (currentLanguage === "hi" ? "स्टोर पिकअप व शिपिंग नोटिस:" : "Shipping & Store Pickup Notice:")}
                     </strong>
-                    For shipping your product, you have to visit our physical store; online shipping service is not available.
+                    {isRetailItem
+                      ? (currentLanguage === "hi"
+                          ? "यह उत्पाद केवल हमारे फिजिकल स्टोर पर रिटेल (खुदरा) बिक्री के लिए उपलब्ध है।"
+                          : "This product is available for retail purchase only at our physical store.")
+                      : (currentLanguage === "hi"
+                          ? "उत्पाद प्राप्त करने के लिए आपको हमारे स्टोर पर आना होगा; ऑनलाइन शिपिंग सेवा उपलब्ध नहीं है।"
+                          : "For shipping your product, you have to visit our physical store; online shipping service is not available.")}
                   </div>
                 </div>
 
@@ -518,8 +543,8 @@ export default function SingleProductSection({
 
                   <p className="text-xs text-slate-300 mb-4 font-medium leading-relaxed">
                     {currentLanguage === "hi"
-                      ? `${product.name} के लिए तुरंत व्हाट्सएप पर सबसे बेहतर डीलर रेट्स, साइज़िंग और डिलीवरी की जानकारी पाएं:`
-                      : `Get instant wholesale rates, custom sizes, and delivery timelines for ${product.name} directly on WhatsApp:`}
+                      ? `${product.name} के लिए तुरंत व्हाट्सएप पर सबसे बेहतर ${isRetailItem ? "रिटेल रेट्स" : "डीलर रेट्स"}, साइज़िंग और जानकारी पाएं:`
+                      : `Get instant ${isRetailItem ? "retail pricing" : "wholesale rates"}, custom sizes, and details for ${product.name} directly on WhatsApp:`}
                   </p>
 
                   <button
@@ -527,7 +552,13 @@ export default function SingleProductSection({
                     className="w-full flex items-center justify-center gap-2.5 py-4 px-6 rounded-xl bg-gradient-to-r from-emerald-500 to-green-600 hover:from-emerald-600 hover:to-green-700 active:scale-[0.98] text-white text-xs sm:text-sm font-extrabold shadow-lg transition-all cursor-pointer group"
                   >
                     <MessageSquare className="w-5 h-5 fill-current" />
-                    <span>{currentLanguage === "hi" ? " व्हाट्सएप पर रेट्स व जानकारी प्राप्त करें" : "Chat on WhatsApp for Wholesale Pricing & Sizing"}</span>
+                    <span>
+                      {currentLanguage === "hi" 
+                        ? " व्हाट्सएप पर रेट्स व जानकारी प्राप्त करें" 
+                        : isRetailItem 
+                          ? "Chat on WhatsApp for Pricing & Details" 
+                          : "Chat on WhatsApp for Wholesale Pricing & Sizing"}
+                    </span>
                   </button>
                 </div>
               </div>

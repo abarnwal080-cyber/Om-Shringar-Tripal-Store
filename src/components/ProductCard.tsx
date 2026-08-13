@@ -1,7 +1,7 @@
 import { useState, useEffect, MouseEvent } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { ChevronLeft, ChevronRight, CheckCircle2, ArrowRight, Store } from "lucide-react";
-import { Product, BUSINESS_INFO, getProductSlug } from "../data";
+import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
+import { Product, getProductSlug } from "../data";
 import LazyImage from "./LazyImage";
 
 interface ProductCardProps {
@@ -11,7 +11,7 @@ interface ProductCardProps {
   currentLanguage?: "en" | "hi";
 }
 
-export default function ProductCard({ product, onEnquire, onViewDetails, currentLanguage = "en" }: ProductCardProps) {
+export default function ProductCard({ product, onViewDetails, currentLanguage = "en" }: ProductCardProps) {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -43,20 +43,11 @@ export default function ProductCard({ product, onEnquire, onViewDetails, current
       transition={{ duration: 0.6 }}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className="bg-white rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-slate-200/80 flex flex-col h-full group"
+      onClick={() => onViewDetails(product)}
+      className="bg-white rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-slate-200/80 flex flex-col h-full group cursor-pointer"
     >
       {/* Image Carousel Area */}
       <div className="relative aspect-video w-full overflow-hidden bg-slate-900">
-        {product.isBestSeller && (
-          <div className="absolute top-4 left-4 z-20 bg-orange-500 text-white font-bold text-[10px] sm:text-xs px-3.5 py-1.5 rounded-full shadow-md flex items-center gap-1 uppercase tracking-wider">
-            🔥 Best Seller
-          </div>
-        )}
-        
-        <div className="absolute top-4 right-4 z-20 bg-brand-blue-dark/85 backdrop-blur-md text-white font-bold text-[10px] sm:text-xs px-3.5 py-1.5 rounded-full border border-white/10 uppercase tracking-wider">
-          {product.category}
-        </div>
-
         {/* Carousel Images */}
         <div className="absolute inset-0 w-full h-full">
           <AnimatePresence mode="wait">
@@ -79,7 +70,7 @@ export default function ProductCard({ product, onEnquire, onViewDetails, current
         </div>
 
         {/* Subtle Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-transparent z-10 pointer-events-none" />
+        <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent z-10 pointer-events-none" />
 
         {/* Navigation Arrows */}
         {product.images.length > 1 && (
@@ -87,20 +78,20 @@ export default function ProductCard({ product, onEnquire, onViewDetails, current
             <button
               onClick={prevSlide}
               aria-label="Previous Slide"
-              className="absolute left-3 top-1/2 -translate-y-1/2 z-20 w-9 h-9 flex items-center justify-center rounded-full bg-black/45 hover:bg-orange-500 text-white backdrop-blur-sm transition-all duration-200 active:scale-90"
+              className="absolute left-3 top-1/2 -translate-y-1/2 z-20 w-8 h-8 flex items-center justify-center rounded-full bg-black/45 hover:bg-orange-500 text-white backdrop-blur-sm transition-all duration-200 active:scale-90 opacity-0 group-hover:opacity-100"
             >
-              <ChevronLeft className="w-5 h-5" />
+              <ChevronLeft className="w-4 h-4" />
             </button>
             <button
               onClick={nextSlide}
               aria-label="Next Slide"
-              className="absolute right-3 top-1/2 -translate-y-1/2 z-20 w-9 h-9 flex items-center justify-center rounded-full bg-black/45 hover:bg-orange-500 text-white backdrop-blur-sm transition-all duration-200 active:scale-90"
+              className="absolute right-3 top-1/2 -translate-y-1/2 z-20 w-8 h-8 flex items-center justify-center rounded-full bg-black/45 hover:bg-orange-500 text-white backdrop-blur-sm transition-all duration-200 active:scale-90 opacity-0 group-hover:opacity-100"
             >
-              <ChevronRight className="w-5 h-5" />
+              <ChevronRight className="w-4 h-4" />
             </button>
 
             {/* Slider Dots Indicator */}
-            <div className="absolute bottom-3 left-1/2 -translate-x-1/2 z-20 flex gap-1.5 bg-black/40 px-2.5 py-1 rounded-full backdrop-blur-sm">
+            <div className="absolute bottom-2.5 left-1/2 -translate-x-1/2 z-20 flex gap-1.5 bg-black/40 px-2.5 py-1 rounded-full backdrop-blur-sm">
               {product.images.map((_, idx) => (
                 <button
                   key={idx}
@@ -108,8 +99,8 @@ export default function ProductCard({ product, onEnquire, onViewDetails, current
                     e.stopPropagation();
                     setCurrentSlide(idx);
                   }}
-                  className={`w-2 h-2 rounded-full transition-all duration-200 ${
-                    idx === currentSlide ? "bg-orange-500 w-3.5" : "bg-white/60 hover:bg-white"
+                  className={`w-1.5 h-1.5 rounded-full transition-all duration-200 ${
+                    idx === currentSlide ? "bg-orange-500 w-3" : "bg-white/60 hover:bg-white"
                   }`}
                   aria-label={`Go to slide ${idx + 1}`}
                 />
@@ -119,42 +110,24 @@ export default function ProductCard({ product, onEnquire, onViewDetails, current
         )}
       </div>
 
-      {/* Product Information Body */}
-      <div className="p-6 md:p-8 flex-grow flex flex-col justify-between">
-        <div>
-          <h3 className="text-xl md:text-2xl font-bold font-display text-brand-blue-dark tracking-tight mb-3 hover:text-orange-600 transition-colors">
+      {/* Product Information Body - Only Product Name */}
+      <div className="p-5 flex-grow flex flex-col justify-between">
+        <div className="my-auto py-2">
+          <h3 className="text-lg md:text-xl font-extrabold font-display text-brand-blue-dark tracking-tight text-center group-hover:text-orange-600 transition-colors line-clamp-2">
             {product.name}
           </h3>
-
-          {/* 2-4 Feature Badges */}
-          <div className="flex flex-wrap gap-2 mb-3">
-            {product.features.slice(0, 4).map((feat, index) => (
-              <span
-                key={index}
-                className="inline-flex items-center gap-1.5 text-[11px] font-bold bg-slate-50 text-slate-700 px-3 py-1.5 rounded-xl border border-slate-200/50 shadow-sm"
-              >
-                <CheckCircle2 className="w-3.5 h-3.5 text-green-600" />
-                {feat}
-              </span>
-            ))}
-          </div>
-
-          {/* Physical Store Shipping Notice */}
-          <div className="bg-amber-50/80 border border-amber-200 rounded-xl p-2.5 mb-4 flex items-start gap-2 text-amber-900 text-[11px] font-semibold leading-tight">
-            <Store className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
-            <span>For shipping your product, you have to visit our physical store; online shipping service is not available.</span>
-          </div>
         </div>
 
-        {/* Buttons Action Bar */}
-        <div className="mt-auto pt-4 border-t border-slate-100 flex items-center">
+        {/* Action Button */}
+        <div className="mt-4 pt-3 border-t border-slate-100 flex items-center">
           <a
             href={`/products/${getProductSlug(product.id)}`}
             onClick={(e) => {
               e.preventDefault();
+              e.stopPropagation();
               onViewDetails(product);
             }}
-            className="w-full flex items-center justify-center gap-2 py-3.5 px-4 rounded-full bg-gradient-to-r from-orange-600 to-amber-500 hover:from-orange-700 hover:to-amber-600 text-white font-extrabold text-sm transition-all duration-200 shadow-md hover:scale-[1.01] active:scale-[0.98] cursor-pointer text-center"
+            className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-full bg-gradient-to-r from-orange-600 to-amber-500 hover:from-orange-700 hover:to-amber-600 text-white font-extrabold text-xs sm:text-sm transition-all duration-200 shadow-md hover:scale-[1.01] active:scale-[0.98] cursor-pointer text-center"
           >
             <span>{currentLanguage === "hi" ? "अधिक जानें" : "Know More"}</span>
             <ArrowRight className="w-4 h-4" />
