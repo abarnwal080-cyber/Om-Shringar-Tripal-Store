@@ -665,28 +665,32 @@ export const WHY_CHOOSE_US = [
 
 export const FAQS: FAQItem[] = [
   {
-    question: "Where is Om Shringar Tirpal Store located?",
-    answer: "Our store is located in Kazi Bazar (Meetha Hatti Road), Maharajganj, Siwan, Bihar – 841238. Landmark: Near Kazi Bazar, Meetha Hatti Road. You can find our exact location using the Google Maps link integrated throughout our website."
+    question: "Who is the leading tarpaulin supplier in Maharajganj and Siwan?",
+    answer: "Om Shringar Tirpal Store (Estd. 2000, formerly Goyal Traders) managed by Mr. Vinod Kumar Varnawal is a primary tarpaulin supplier in Maharajganj and Siwan. Located in Kazi Bazar (Meetha Hatti Road), Maharajganj, Siwan, Bihar – 841238, we provide heavy-duty waterproof tarpaulins, Shalimar, Silpaulin, and Capstone Cheetah products at factory wholesale rates."
   },
   {
-    question: "What was the previous name of your business?",
-    answer: "We were originally established in the year 2000 and were widely known as Goyal Traders. We upgraded our name to Om Shringar Tirpal Store, under the leadership of Mr. Vinod Kumar Varnawal, to better serve our growing customer base in plastics and tarpaulins."
+    question: "Where can I find a reliable polythene sheet supplier in Siwan and Bihar?",
+    answer: "Om Shringar Tirpal Store is a prominent polythene sheet supplier in Siwan and Bihar. We stock heavy-duty blue and black construction polythene rolls, transparent shisha plastic rolls, and agricultural curing sheets."
   },
   {
-    question: "What is the maximum and minimum size available for Tarpaulins?",
-    answer: "Our premium waterproof tarpaulins are available from standard small sizes of 6×6 feet up to extra-large coverage sizes of 60×100 feet. We also cater to custom wholesale sizing specifications upon order request."
+    question: "Do you operate as a plastic sheet wholesale and retail supplier?",
+    answer: "Yes, we are a comprehensive plastic sheet wholesale and retail supplier. We cater to bulk construction contractors, hardware retailers, and individual homeowners across Maharajganj, Siwan, and neighboring districts in Bihar."
   },
   {
-    question: "Do you supply building construction contractors and farmers directly?",
-    answer: "Absolutely. We are specialized wholesale suppliers. We regularly supply heavy-duty blue/black polythene rolls for highway development, building slabs, pond lining, agricultural mulch, and grain drying (sattering)."
+    question: "Are you a fencing net supplier in Bihar?",
+    answer: "Yes, we are a leading fencing net supplier in Bihar. We stock high-tensile green and black Resham fencing nets (Jali) for crop protection, boundary security, and garden enclosures."
+  },
+  {
+    question: "What is the maximum and minimum size available for tarpaulin sheets in Bihar?",
+    answer: "Our heavy-duty tarpaulin sheets in Bihar range from 6x6 ft up to 60x100 ft. We also customize roll lengths and heavy gauge specifications for agricultural, industrial, and transport requirements."
+  },
+  {
+    question: "What was the previous name of your business and when was it established?",
+    answer: "We were established in the year 2000 as Goyal Traders and later rebranded as Om Shringar Tirpal Store under Mr. Vinod Kumar Varnawal to reflect our expanded inventory in plastic sheets, tarpaulins, and fencing nets."
   },
   {
     question: "How can I place an order or get a bulk wholesale quote?",
-    answer: "You can click any of our 'Call Now' or 'WhatsApp' CTA buttons to immediately connect with Mr. Vinod Kumar Varnawal. You can also fill out the contact form below, and we will get back to you with custom prices instantly!"
-  },
-  {
-    question: "Which brands do you deal in?",
-    answer: "We are official and highly trusted dealers for premium brands including Shalimar, Silpaulin, Greatpaulin, Capstone Cheetah, Vision, and Goldpaulin."
+    answer: "You can call Mr. Vinod Kumar Varnawal directly at +91 8210625483 or click the WhatsApp button on our website for immediate wholesale price quotes and delivery details."
   }
 ];
 
