@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback } from "react";
 import { motion } from "motion/react";
-import { Play, ChevronLeft, ChevronRight, Sparkles, Volume2, VolumeX } from "lucide-react";
+import { Play, ChevronLeft, ChevronRight, Sparkles, Volume2, VolumeX, RotateCw } from "lucide-react";
 
 interface ProductVideosSectionProps {
   lang?: "en" | "hi";
@@ -10,28 +10,34 @@ interface ProductVideosSectionProps {
 interface VideoSourceItem {
   id: string;
   url: string;
+  defaultRotate?: number; // 0, 90, 180, 270
 }
 
 const VIDEO_ITEMS: VideoSourceItem[] = [
   {
     id: "video-1",
     url: "https://dhalai.edgeone.dev/",
+    defaultRotate: 90,
   },
   {
     id: "video-2",
     url: "https://stretchi.edgeone.dev/",
+    defaultRotate: 0,
   },
   {
     id: "video-3",
     url: "https://hopep.edgeone.dev/",
+    defaultRotate: 0,
   },
   {
     id: "video-4",
     url: "https://stretch.edgeone.dev/",
+    defaultRotate: 90,
   },
   {
     id: "video-5",
     url: "https://sensible-blush-cjql8l17.edgeone.dev/",
+    defaultRotate: 90,
   },
 ];
 
@@ -59,15 +65,7 @@ const HTML5VideoSlide: React.FC<HTML5VideoSlideProps> = ({
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(true);
-  const [isPortrait, setIsPortrait] = useState<boolean | null>(null);
-
-  // Handle Metadata Loaded to dynamically preserve exact orientation
-  const handleLoadedMetadata = (e: React.SyntheticEvent<HTMLVideoElement, Event>) => {
-    const video = e.currentTarget;
-    if (video.videoWidth && video.videoHeight) {
-      setIsPortrait(video.videoHeight > video.videoWidth);
-    }
-  };
+  const [rotation, setRotation] = useState<number>(item.defaultRotate || 0);
 
   // Autoplay management: ONLY play when active AND the section is visible on screen
   useEffect(() => {
@@ -133,18 +131,19 @@ const HTML5VideoSlide: React.FC<HTML5VideoSlideProps> = ({
     setIsMuted(newMuted);
   };
 
+  const handleManualRotate = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    setRotation((prev) => (prev + 90) % 360);
+  };
+
+  const isRotated90or270 = rotation === 90 || rotation === 270;
+
   return (
     <div
       onClick={() => {
         if (!isActive) onSelectSlide(index);
       }}
-      className={`relative flex-shrink-0 transition-all duration-300 select-none flex flex-col items-center justify-center cursor-pointer ${
-        isPortrait === true
-          ? "w-[260px] sm:w-[300px] md:w-[320px] aspect-[9/16]"
-          : isPortrait === false
-          ? "w-[320px] sm:w-[480px] md:w-[580px] aspect-[16/9]"
-          : "w-[300px] sm:w-[420px] aspect-[16/10]"
-      }`}
+      className="relative flex-shrink-0 transition-all duration-300 select-none flex flex-col items-center justify-center cursor-pointer w-[260px] sm:w-[290px] md:w-[310px] aspect-[9/16]"
     >
       <div
         className={`relative w-full h-full bg-slate-950 rounded-2xl sm:rounded-3xl overflow-hidden transition-all duration-300 flex items-center justify-center ${
@@ -153,25 +152,41 @@ const HTML5VideoSlide: React.FC<HTML5VideoSlideProps> = ({
             : "shadow-md opacity-75 hover:opacity-100 scale-95 border border-slate-200/80"
         }`}
       >
-        {/* Native HTML5 MP4 Video */}
-        <video
-          ref={videoRef}
-          src={item.url}
-          muted
-          playsInline
-          preload="metadata"
-          disablePictureInPicture
-          controlsList="nodownload noplaybackrate"
-          className="w-full h-full object-cover rounded-2xl sm:rounded-3xl"
-          onLoadedMetadata={handleLoadedMetadata}
-          onPlay={handlePlay}
-          onPause={handlePause}
-          onEnded={handleEnded}
-          onClick={handleTogglePlay}
-        >
-          <source src={item.url} type="video/mp4" />
-          Your browser does not support the video tag.
-        </video>
+        {/* Video Canvas with Uniform 9:16 Portrait Ratio & Rotation Transformation */}
+        <div className="absolute inset-0 flex items-center justify-center overflow-hidden bg-black">
+          <video
+            ref={videoRef}
+            src={item.url}
+            muted
+            playsInline
+            preload="metadata"
+            disablePictureInPicture
+            controlsList="nodownload noplaybackrate"
+            style={
+              isRotated90or270
+                ? {
+                    width: "177.78%",
+                    height: "56.25%",
+                    transform: `rotate(${rotation}deg)`,
+                    objectFit: "cover",
+                  }
+                : {
+                    width: "100%",
+                    height: "100%",
+                    transform: rotation !== 0 ? `rotate(${rotation}deg)` : undefined,
+                    objectFit: "cover",
+                  }
+            }
+            className="max-w-none rounded-2xl sm:rounded-3xl transition-transform duration-300"
+            onPlay={handlePlay}
+            onPause={handlePause}
+            onEnded={handleEnded}
+            onClick={handleTogglePlay}
+          >
+            <source src={item.url} type="video/mp4" />
+            Your browser does not support the video tag.
+          </video>
+        </div>
 
         {/* Play / Pause Central Click Overlay when paused */}
         {!isPlaying && (
@@ -187,21 +202,34 @@ const HTML5VideoSlide: React.FC<HTML5VideoSlideProps> = ({
           </div>
         )}
 
-        {/* Quick Unmute / Mute Toggle Button at top-right */}
-        <button
-          onClick={handleToggleMute}
-          className="absolute top-3.5 right-3.5 z-20 w-8 h-8 rounded-full bg-black/50 hover:bg-black/70 backdrop-blur-md text-white flex items-center justify-center transition-all opacity-80 hover:opacity-100 cursor-pointer shadow-md"
-          aria-label={isMuted ? "Unmute video" : "Mute video"}
-        >
-          {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
-        </button>
+        {/* Top Control Actions: Rotation Toggle + Sound Mute/Unmute */}
+        <div className="absolute top-3.5 right-3.5 z-20 flex items-center gap-2">
+          {/* Rotate Toggle */}
+          <button
+            onClick={handleManualRotate}
+            title="Rotate Video"
+            className="w-8 h-8 rounded-full bg-black/50 hover:bg-black/75 backdrop-blur-md text-white flex items-center justify-center transition-all opacity-80 hover:opacity-100 cursor-pointer shadow-md"
+            aria-label="Rotate video"
+          >
+            <RotateCw className="w-3.5 h-3.5" />
+          </button>
 
-        {/* Badge showing orientation mode */}
-        {isPortrait !== null && (
-          <div className="absolute bottom-3.5 left-3.5 z-20 px-2.5 py-1 rounded-md bg-black/50 backdrop-blur-md text-[10px] font-mono text-white/90 uppercase tracking-wider pointer-events-none">
-            {isPortrait ? "📱 9:16 Portrait" : "🖥️ 16:9 Landscape"}
-          </div>
-        )}
+          {/* Quick Unmute / Mute Toggle */}
+          <button
+            onClick={handleToggleMute}
+            title={isMuted ? "Unmute video" : "Mute video"}
+            className="w-8 h-8 rounded-full bg-black/50 hover:bg-black/75 backdrop-blur-md text-white flex items-center justify-center transition-all opacity-80 hover:opacity-100 cursor-pointer shadow-md"
+            aria-label={isMuted ? "Unmute video" : "Mute video"}
+          >
+            {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
+          </button>
+        </div>
+
+        {/* Uniform 9:16 Portrait Badge */}
+        <div className="absolute bottom-3.5 left-3.5 z-20 px-2.5 py-1 rounded-md bg-black/50 backdrop-blur-md text-[10px] font-mono text-white/90 uppercase tracking-wider pointer-events-none flex items-center gap-1.5">
+          <span className="w-1.5 h-1.5 rounded-full bg-orange-400 animate-pulse" />
+          <span>📱 9:16 Portrait</span>
+        </div>
       </div>
     </div>
   );
@@ -328,8 +356,8 @@ export const ProductVideosSection: React.FC<ProductVideosSectionProps> = ({
 
             <p className="text-slate-600 text-sm sm:text-base font-semibold">
               {lang === "en"
-                ? "Continuous auto-playing application videos. Slide to explore portrait and landscape demonstrations."
-                : "लगातार ऑटो-प्ले होने वाली वीडियो गैलरी। पोर्ट्रेट और लैंडस्केप वीडियो देखने के लिए स्लाइड करें।"}
+                ? "Continuous auto-playing application videos in uniform, balanced 9:16 portrait view. Slide to explore."
+                : "यूनिफॉर्म 9:16 पोर्ट्रेट व्यू में लगातार ऑटो-प्ले होने वाली वीडियो गैलरी। सभी वीडियो देखने के लिए स्लाइड करें।"}
             </p>
           </div>
 
