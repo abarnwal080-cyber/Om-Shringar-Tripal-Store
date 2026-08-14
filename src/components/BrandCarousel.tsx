@@ -164,7 +164,7 @@ export default function BrandCarousel({ lang = "en" }: BrandCarouselProps) {
         <div className="mb-14 sm:mb-16 relative z-10 max-w-5xl mx-auto flex justify-center px-2">
           <div className="w-full rounded-2xl sm:rounded-3xl overflow-hidden shadow-lg border border-slate-200/80 bg-white hover:shadow-xl transition-all duration-300">
             <img
-              src="https://plain-apac-prod-public.komododecks.com/202608/14/MKuEzljiUI3FcAd1KcXR/image.jpg"
+              src="https://plain-apac-prod-public.komododecks.com/202608/14/bVUVVLBhxabfY0hCENjj/image.png"
               alt="Om Shringar Tirpal Store - 26+ Years of Trust, 50+ Sizes, 100% Waterproof, 10k+ Happy Customers"
               referrerPolicy="no-referrer"
               className="w-full h-auto object-cover sm:object-contain rounded-2xl sm:rounded-3xl block"
