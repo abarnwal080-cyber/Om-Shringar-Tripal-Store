@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useCallback } from "react";
 import { motion } from "motion/react";
 import { Play, ChevronLeft, ChevronRight, Sparkles, Volume2, VolumeX } from "lucide-react";
 
@@ -39,6 +39,7 @@ interface HTML5VideoSlideProps {
   item: VideoSourceItem;
   index: number;
   isActive: boolean;
+  isSectionVisible: boolean;
   onSelectSlide: (index: number) => void;
   onVideoPlay: (index: number) => void;
   onVideoEnded: (index: number) => void;
@@ -49,6 +50,7 @@ const HTML5VideoSlide: React.FC<HTML5VideoSlideProps> = ({
   item,
   index,
   isActive,
+  isSectionVisible,
   onSelectSlide,
   onVideoPlay,
   onVideoEnded,
@@ -67,13 +69,12 @@ const HTML5VideoSlide: React.FC<HTML5VideoSlideProps> = ({
     }
   };
 
-  // Autoplay management when active or visible
+  // Autoplay management: ONLY play when active AND the section is visible on screen
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
 
-    if (isActive) {
-      video.currentTime = 0;
+    if (isActive && isSectionVisible) {
       video.muted = isMuted;
       video
         .play()
@@ -85,7 +86,7 @@ const HTML5VideoSlide: React.FC<HTML5VideoSlideProps> = ({
       video.pause();
       setIsPlaying(false);
     }
-  }, [isActive, isMuted]);
+  }, [isActive, isSectionVisible, isMuted]);
 
   const handlePlay = () => {
     setIsPlaying(true);
@@ -156,7 +157,6 @@ const HTML5VideoSlide: React.FC<HTML5VideoSlideProps> = ({
         <video
           ref={videoRef}
           src={item.url}
-          autoPlay
           muted
           playsInline
           preload="metadata"
@@ -213,35 +213,63 @@ export const ProductVideosSection: React.FC<ProductVideosSectionProps> = ({
   const sectionRef = useRef<HTMLElement>(null);
   const sliderContainerRef = useRef<HTMLDivElement>(null);
   const [activeIndex, setActiveIndex] = useState(0);
+  const [isSectionVisible, setIsSectionVisible] = useState(false);
 
-  const scrollToSlide = (index: number) => {
+  // Monitor if section is actually in the user's viewport
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsSectionVisible(entry.isIntersecting);
+      },
+      { threshold: 0.25 }
+    );
+
+    if (sectionRef.current) {
+      observer.observe(sectionRef.current);
+    }
+
+    return () => {
+      observer.disconnect();
+    };
+  }, []);
+
+  // Safe horizontal-only scroll without ever moving the window scroll position!
+  const scrollToSlide = useCallback((index: number) => {
     if (!sliderContainerRef.current) return;
     const clampedIndex = (index + VIDEO_ITEMS.length) % VIDEO_ITEMS.length;
     setActiveIndex(clampedIndex);
 
     const container = sliderContainerRef.current;
-    const slides = container.children;
-    if (slides[clampedIndex]) {
-      (slides[clampedIndex] as HTMLElement).scrollIntoView({
+    const targetSlide = container.children[clampedIndex] as HTMLElement;
+    if (targetSlide) {
+      const slideLeft = targetSlide.offsetLeft;
+      const slideWidth = targetSlide.offsetWidth;
+      const containerWidth = container.offsetWidth;
+      const targetScrollLeft = slideLeft - (containerWidth - slideWidth) / 2;
+
+      // STRICTLY scrolls the container's horizontal axis ONLY (no window scroll)
+      container.scrollTo({
+        left: Math.max(0, targetScrollLeft),
         behavior: "smooth",
-        block: "nearest",
-        inline: "center",
       });
     }
-  };
+  }, []);
 
-  // Video ended callback -> automatically advances to the next video and auto-plays
-  const handleVideoEnded = (endedIndex: number) => {
-    const nextIndex = (endedIndex + 1) % VIDEO_ITEMS.length;
-    scrollToSlide(nextIndex);
-  };
+  // When current active video ends, move ONLY horizontally to the next slide
+  const handleVideoEnded = useCallback((endedIndex: number) => {
+    // Only auto-advance if the section is currently visible to the user
+    if (isSectionVisible) {
+      const nextIndex = (endedIndex + 1) % VIDEO_ITEMS.length;
+      scrollToSlide(nextIndex);
+    }
+  }, [isSectionVisible, scrollToSlide]);
 
   const handleVideoPlay = (_index: number) => {
-    // Currently playing
+    // Playing
   };
 
   const handleVideoPause = (_index: number) => {
-    // Currently paused
+    // Paused
   };
 
   const handlePrev = () => {
@@ -254,7 +282,7 @@ export const ProductVideosSection: React.FC<ProductVideosSectionProps> = ({
     scrollToSlide(next);
   };
 
-  // Listen to slider scroll to update activeIndex
+  // Listen to slider horizontal scroll to update activeIndex
   const handleScroll = () => {
     if (!sliderContainerRef.current) return;
     const container = sliderContainerRef.current;
@@ -331,6 +359,7 @@ export const ProductVideosSection: React.FC<ProductVideosSectionProps> = ({
                   item={item}
                   index={index}
                   isActive={activeIndex === index}
+                  isSectionVisible={isSectionVisible}
                   onSelectSlide={scrollToSlide}
                   onVideoPlay={handleVideoPlay}
                   onVideoEnded={handleVideoEnded}
