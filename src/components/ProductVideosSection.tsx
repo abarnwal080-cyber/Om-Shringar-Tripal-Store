@@ -1,557 +1,386 @@
-import React, { useState, useEffect, useRef } from "react";
-import { motion, AnimatePresence } from "motion/react";
-import { Play, X, MessageSquare, Sparkles, Eye, ChevronLeft, ChevronRight } from "lucide-react";
+import React, { useState, useRef, useEffect } from "react";
+import { motion } from "motion/react";
+import { Play, ChevronLeft, ChevronRight, Sparkles, Volume2, VolumeX } from "lucide-react";
 
-interface VideoItem {
-  id: string;
-  title: string;
-  description: string;
-  url: string;
-  badge: string;
-  badgeColor: string;
+interface ProductVideosSectionProps {
+  lang?: "en" | "hi";
+  onEnquire?: (subject: string) => void;
 }
 
-const VIDEOS: VideoItem[] = [
+interface VideoSourceItem {
+  id: string;
+  url: string;
+}
+
+const VIDEO_ITEMS: VideoSourceItem[] = [
   {
-    id: "xklevmfuaGk",
-    title: "📦 Ultimate Guide to Stretch Film: Wrap Like a Pro!",
-    description: "Heavy duty stretch film wrapping rolls for carton securing, bundling, and industrial packaging",
-    url: "https://www.youtube.com/embed/xklevmfuaGk?autoplay=1&mute=1&loop=1&playlist=xklevmfuaGk&playsinline=1&rel=0",
-    badge: "Stretch Film Roll",
-    badgeColor: "bg-amber-50 text-amber-700 border-amber-200"
+    id: "video-1",
+    url: "https://dhalai.edgeone.dev/",
   },
   {
-    id: "jL3oVLMO_18",
-    title: "Restoring Hope: Relief Workers Installing Emergency Tarpaulin Shelters",
-    description: "Heavy-duty emergency relief tarpaulins and disaster management shelters",
-    url: "https://www.youtube.com/embed/jL3oVLMO_18?autoplay=1&mute=1&loop=1&playlist=jL3oVLMO_18&playsinline=1&rel=0",
-    badge: "Emergency Tarpaulin",
-    badgeColor: "bg-emerald-50 text-emerald-700 border-emerald-200"
+    id: "video-2",
+    url: "https://stretchi.edgeone.dev/",
   },
   {
-    id: "CMtP5qLMRbk",
-    title: "Heavy Duty Yellow Plastic Tarpaulin Sheet / Tirpal – 100% Waterproof, UV Resistant & Tear-Proof",
-    description: "Ultra-strong yellow plastic tarpaulin sheet – 100% waterproof, UV resistant & tear-proof protection",
-    url: "https://www.youtube.com/embed/CMtP5qLMRbk?autoplay=1&mute=1&loop=1&playlist=CMtP5qLMRbk&playsinline=1&rel=0",
-    badge: "Heavy Duty Yellow Sheet",
-    badgeColor: "bg-yellow-50 text-yellow-800 border-yellow-200"
+    id: "video-3",
+    url: "https://hopep.edgeone.dev/",
   },
   {
-    id: "bijzl6m_ygg",
-    title: "Heavy duty plastic sheet cover 202607202015",
-    description: "Heavy duty plastic sheet truck cover for transport logistics and cargo weatherproofing",
-    url: "https://www.youtube.com/embed/bijzl6m_ygg?autoplay=1&mute=1&loop=1&playlist=bijzl6m_ygg&playsinline=1&rel=0",
-    badge: "Truck Cover",
-    badgeColor: "bg-purple-50 text-purple-700 border-purple-200"
+    id: "video-4",
+    url: "https://stretch.edgeone.dev/",
   },
   {
-    id: "qlSVdQLMPcA",
-    title: "🚀 Ultimate Guide to Construction Black-Black Polythene Sheets!",
-    description: "Ultimate guide to construction black polythene sheets for road curing, foundation, and dhalai",
-    url: "https://www.youtube.com/embed/qlSVdQLMPcA?autoplay=1&mute=1&loop=1&playlist=qlSVdQLMPcA&playsinline=1&rel=0",
-    badge: "Construction Roll",
-    badgeColor: "bg-blue-50 text-blue-700 border-blue-200"
-  }
+    id: "video-5",
+    url: "https://sensible-blush-cjql8l17.edgeone.dev/",
+  },
 ];
 
-// Number of slides to clone on both ends for infinite horizontal loop
-const CLONE_COUNT = 3;
-
-interface VideoCardProps {
-  video: VideoItem;
-  onSelect: (video: VideoItem) => void;
+interface HTML5VideoSlideProps {
+  item: VideoSourceItem;
+  index: number;
   isActive: boolean;
-  hasDraggedRef: React.RefObject<boolean>;
+  onSelectSlide: (index: number) => void;
+  onVideoPlay: (index: number) => void;
+  onVideoEnded: (index: number) => void;
+  onVideoPause: (index: number) => void;
 }
 
-const VideoCard: React.FC<VideoCardProps> = ({ video, onSelect, isActive, hasDraggedRef }) => {
-  const [isHovered, setIsHovered] = useState(false);
+const HTML5VideoSlide: React.FC<HTML5VideoSlideProps> = ({
+  item,
+  index,
+  isActive,
+  onSelectSlide,
+  onVideoPlay,
+  onVideoEnded,
+  onVideoPause,
+}) => {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [isMuted, setIsMuted] = useState(true);
+  const [isPortrait, setIsPortrait] = useState<boolean | null>(null);
 
-  const handleCardClick = (e: React.MouseEvent) => {
-    // If user dragged, do not trigger click/lightbox
-    if (hasDraggedRef.current) {
-      e.stopPropagation();
+  // Handle Metadata Loaded to dynamically preserve exact orientation
+  const handleLoadedMetadata = (e: React.SyntheticEvent<HTMLVideoElement, Event>) => {
+    const video = e.currentTarget;
+    if (video.videoWidth && video.videoHeight) {
+      setIsPortrait(video.videoHeight > video.videoWidth);
+    }
+  };
+
+  // Autoplay management when active or visible
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+
+    if (isActive) {
+      video.currentTime = 0;
+      video.muted = isMuted;
+      video
+        .play()
+        .then(() => setIsPlaying(true))
+        .catch(() => {
+          setIsPlaying(false);
+        });
+    } else {
+      video.pause();
+      setIsPlaying(false);
+    }
+  }, [isActive, isMuted]);
+
+  const handlePlay = () => {
+    setIsPlaying(true);
+    onVideoPlay(index);
+  };
+
+  const handlePause = () => {
+    setIsPlaying(false);
+    onVideoPause(index);
+  };
+
+  const handleEnded = () => {
+    setIsPlaying(false);
+    onVideoEnded(index);
+  };
+
+  const handleTogglePlay = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    const video = videoRef.current;
+    if (!video) return;
+
+    if (!isActive) {
+      onSelectSlide(index);
       return;
     }
-    onSelect(video);
+
+    if (video.paused) {
+      video
+        .play()
+        .then(() => setIsPlaying(true))
+        .catch(() => {});
+    } else {
+      video.pause();
+      setIsPlaying(false);
+    }
+  };
+
+  const handleToggleMute = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    const video = videoRef.current;
+    if (!video) return;
+    const newMuted = !video.muted;
+    video.muted = newMuted;
+    setIsMuted(newMuted);
   };
 
   return (
     <div
-      className="group relative flex flex-col bg-white rounded-[20px] shadow-sm hover:shadow-[0_20px_40px_rgba(255,106,0,0.12)] border border-slate-100/80 hover:border-[#FF7A00]/30 transition-all duration-500 hover:-translate-y-2 cursor-pointer h-full select-none overflow-hidden"
-      onClick={handleCardClick}
-      onMouseEnter={() => setIsHovered(true)}
-      onMouseLeave={() => setIsHovered(false)}
+      onClick={() => {
+        if (!isActive) onSelectSlide(index);
+      }}
+      className={`relative flex-shrink-0 transition-all duration-300 select-none flex flex-col items-center justify-center cursor-pointer ${
+        isPortrait === true
+          ? "w-[260px] sm:w-[300px] md:w-[320px] aspect-[9/16]"
+          : isPortrait === false
+          ? "w-[320px] sm:w-[480px] md:w-[580px] aspect-[16/9]"
+          : "w-[300px] sm:w-[420px] aspect-[16/10]"
+      }`}
     >
-      {/* Aspect Ratio Box for Video / Thumbnail */}
-      <div className="relative aspect-video w-full overflow-hidden bg-black select-none">
-        
-        {/* Render iframe only when card is active for lazy-loading/performance */}
-        {isActive ? (
-          <iframe
-            src={`${video.url}&controls=0&modestbranding=1&showinfo=0&iv_load_policy=3&enablejsapi=1`}
-            title={video.title}
-            className="w-full h-full scale-[1.02] border-0 select-none pointer-events-none"
-            allow="autoplay; encrypted-media; picture-in-picture"
-            loading="lazy"
-          />
-        ) : (
-          <img
-            src={`https://img.youtube.com/vi/${video.id}/hqdefault.jpg`}
-            alt={video.title}
-            className="w-full h-full object-cover transition-transform duration-700 ease-out group-hover:scale-105"
-            loading="lazy"
-          />
+      <div
+        className={`relative w-full h-full bg-slate-950 rounded-2xl sm:rounded-3xl overflow-hidden transition-all duration-300 flex items-center justify-center ${
+          isActive
+            ? "shadow-2xl ring-2 ring-orange-500 scale-100 border-2 border-orange-400"
+            : "shadow-md opacity-75 hover:opacity-100 scale-95 border border-slate-200/80"
+        }`}
+      >
+        {/* Native HTML5 MP4 Video */}
+        <video
+          ref={videoRef}
+          src={item.url}
+          autoPlay
+          muted
+          playsInline
+          preload="metadata"
+          disablePictureInPicture
+          controlsList="nodownload noplaybackrate"
+          className="w-full h-full object-cover rounded-2xl sm:rounded-3xl"
+          onLoadedMetadata={handleLoadedMetadata}
+          onPlay={handlePlay}
+          onPause={handlePause}
+          onEnded={handleEnded}
+          onClick={handleTogglePlay}
+        >
+          <source src={item.url} type="video/mp4" />
+          Your browser does not support the video tag.
+        </video>
+
+        {/* Play / Pause Central Click Overlay when paused */}
+        {!isPlaying && (
+          <div
+            onClick={handleTogglePlay}
+            className="absolute inset-0 z-10 flex items-center justify-center bg-black/30 hover:bg-black/40 backdrop-blur-[2px] transition-all cursor-pointer"
+            aria-label="Play video"
+            role="button"
+          >
+            <div className="w-14 h-14 sm:w-16 sm:h-16 rounded-full bg-white/35 backdrop-blur-md border border-white/40 flex items-center justify-center text-white shadow-xl transform scale-95 hover:scale-105 transition-all">
+              <Play className="w-6 h-6 sm:w-7 sm:h-7 fill-white text-white ml-1" />
+            </div>
+          </div>
         )}
 
-        {/* Pointer-events blocker overlay to allow swiping/dragging and click expansion */}
-        <div className="absolute inset-0 z-10 bg-transparent" />
+        {/* Quick Unmute / Mute Toggle Button at top-right */}
+        <button
+          onClick={handleToggleMute}
+          className="absolute top-3.5 right-3.5 z-20 w-8 h-8 rounded-full bg-black/50 hover:bg-black/70 backdrop-blur-md text-white flex items-center justify-center transition-all opacity-80 hover:opacity-100 cursor-pointer shadow-md"
+          aria-label={isMuted ? "Unmute video" : "Mute video"}
+        >
+          {isMuted ? <VolumeX className="w-4 h-4" /> : <Volume2 className="w-4 h-4" />}
+        </button>
 
-        {/* Ambient Dark/Warm Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-t from-black/50 via-black/10 to-transparent z-10" />
-
-        {/* Hover overlay play button */}
-        <div className="absolute inset-0 flex items-center justify-center z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
-          <div className="w-14 h-14 rounded-full bg-white/20 backdrop-blur-md border border-white/40 flex items-center justify-center text-white shadow-xl transform scale-90 group-hover:scale-100 transition-all duration-300">
-            <Play className="w-6 h-6 fill-white ml-1" />
-          </div>
-        </div>
-
-        {/* Small floating play indicator for static view */}
-        {!isHovered && (
-          <div className="absolute bottom-4 right-4 z-20 flex items-center gap-1.5 bg-black/40 backdrop-blur-sm px-2.5 py-1 rounded-md text-white text-[10px] font-bold">
-            <Play className="w-3 h-3 fill-white" />
-            <span>PREVIEW</span>
+        {/* Badge showing orientation mode */}
+        {isPortrait !== null && (
+          <div className="absolute bottom-3.5 left-3.5 z-20 px-2.5 py-1 rounded-md bg-black/50 backdrop-blur-md text-[10px] font-mono text-white/90 uppercase tracking-wider pointer-events-none">
+            {isPortrait ? "📱 9:16 Portrait" : "🖥️ 16:9 Landscape"}
           </div>
         )}
-      </div>
-
-      {/* Card Content */}
-      <div className="p-6 flex flex-col justify-between flex-grow text-left bg-gradient-to-b from-white to-slate-50/30">
-        <div>
-          {/* Badge is now rendered below the stream */}
-          <div className="mb-2.5">
-            <span className={`inline-block border text-[10px] font-mono font-extrabold px-2.5 py-1 rounded-md ${video.badgeColor}`}>
-              {video.badge}
-            </span>
-          </div>
-          
-          <h3 className="text-base font-extrabold text-[#0B2D5C] tracking-tight mb-2 group-hover:text-[#FF7A00] transition-colors duration-300 leading-snug">
-            {video.title}
-          </h3>
-          <p className="text-slate-600 text-xs font-semibold leading-relaxed line-clamp-2">
-            {video.description}
-          </p>
-        </div>
-        
-        {/* Click Prompt */}
-        <div className="flex items-center gap-1.5 mt-4 text-[10px] font-black text-[#FF7A00] uppercase tracking-wider">
-          <Eye className="w-3.5 h-3.5" />
-          <span>Click to watch fullscreen</span>
-        </div>
       </div>
     </div>
   );
 };
 
-interface ProductVideosSectionProps {
-  lang: "en" | "hi";
-  onEnquire: (subject: string) => void;
-}
+export const ProductVideosSection: React.FC<ProductVideosSectionProps> = ({
+  lang = "en",
+}) => {
+  const sectionRef = useRef<HTMLElement>(null);
+  const sliderContainerRef = useRef<HTMLDivElement>(null);
+  const [activeIndex, setActiveIndex] = useState(0);
 
-export const ProductVideosSection: React.FC<ProductVideosSectionProps> = ({ lang, onEnquire }) => {
-  const [selectedVideo, setSelectedVideo] = useState<VideoItem | null>(null);
+  const scrollToSlide = (index: number) => {
+    if (!sliderContainerRef.current) return;
+    const clampedIndex = (index + VIDEO_ITEMS.length) % VIDEO_ITEMS.length;
+    setActiveIndex(clampedIndex);
 
-  // Responsive Visible Cards State
-  const [visibleCount, setVisibleCount] = useState(3);
-  const [currentIndex, setCurrentIndex] = useState(CLONE_COUNT);
-  const [isSeamlessReset, setIsSeamlessReset] = useState(false);
-  const [isHovered, setIsHovered] = useState(false);
+    const container = sliderContainerRef.current;
+    const slides = container.children;
+    if (slides[clampedIndex]) {
+      (slides[clampedIndex] as HTMLElement).scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+        inline: "center",
+      });
+    }
+  };
 
-  // Drag and Touch States
-  const containerRef = useRef<HTMLDivElement>(null);
-  const [containerWidth, setContainerWidth] = useState(0);
-  const dragStartXRef = useRef(0);
-  const [dragOffset, setDragOffset] = useState(0);
-  const [isDragging, setIsDragging] = useState(false);
-  const hasDraggedRef = useRef(false);
+  // Video ended callback -> automatically advances to the next video and auto-plays
+  const handleVideoEnded = (endedIndex: number) => {
+    const nextIndex = (endedIndex + 1) % VIDEO_ITEMS.length;
+    scrollToSlide(nextIndex);
+  };
 
-  // Determine container width for responsive touch calculations
-  useEffect(() => {
-    if (!containerRef.current) return;
-    const resizeObserver = new ResizeObserver((entries) => {
-      for (let entry of entries) {
-        setContainerWidth(entry.contentRect.width);
-      }
-    });
-    resizeObserver.observe(containerRef.current);
-    return () => resizeObserver.disconnect();
-  }, []);
+  const handleVideoPlay = (_index: number) => {
+    // Currently playing
+  };
 
-  // Update visible cards on window resize
-  useEffect(() => {
-    const updateVisibleCount = () => {
-      if (window.innerWidth < 640) {
-        setVisibleCount(1);
-      } else if (window.innerWidth < 1024) {
-        setVisibleCount(2);
-      } else {
-        setVisibleCount(3);
-      }
-    };
-
-    updateVisibleCount();
-    window.addEventListener("resize", updateVisibleCount);
-    return () => window.removeEventListener("resize", updateVisibleCount);
-  }, []);
-
-  // Clone items on left and right for seamless looping
-  const displayVideos = [
-    ...VIDEOS.slice(-CLONE_COUNT),
-    ...VIDEOS,
-    ...VIDEOS.slice(0, CLONE_COUNT),
-  ];
-
-  // Sliding Navigations
-  const handleNext = () => {
-    if (isSeamlessReset) return;
-    setCurrentIndex((prev) => prev + 1);
+  const handleVideoPause = (_index: number) => {
+    // Currently paused
   };
 
   const handlePrev = () => {
-    if (isSeamlessReset) return;
-    setCurrentIndex((prev) => prev - 1);
+    const prev = activeIndex > 0 ? activeIndex - 1 : VIDEO_ITEMS.length - 1;
+    scrollToSlide(prev);
   };
 
-  // Seamless Infinite reset handling
-  const handleTransitionEnd = () => {
-    if (currentIndex >= VIDEOS.length + CLONE_COUNT) {
-      setIsSeamlessReset(true);
-      setCurrentIndex(CLONE_COUNT);
-    } else if (currentIndex < CLONE_COUNT) {
-      setIsSeamlessReset(true);
-      setCurrentIndex(VIDEOS.length + CLONE_COUNT - 1);
-    }
+  const handleNext = () => {
+    const next = activeIndex < VIDEO_ITEMS.length - 1 ? activeIndex + 1 : 0;
+    scrollToSlide(next);
   };
 
-  // Turn transitions back on after the zero-duration seamless jump frame
-  useEffect(() => {
-    if (isSeamlessReset) {
-      const raf = requestAnimationFrame(() => {
-        setIsSeamlessReset(false);
-      });
-      return () => cancelAnimationFrame(raf);
-    }
-  }, [isSeamlessReset]);
+  // Listen to slider scroll to update activeIndex
+  const handleScroll = () => {
+    if (!sliderContainerRef.current) return;
+    const container = sliderContainerRef.current;
+    const containerCenter = container.getBoundingClientRect().left + container.offsetWidth / 2;
 
-  // Autoplay timer sliding every 9 seconds (pauses on hover, drag, or active lightbox)
-  useEffect(() => {
-    if (isHovered || isDragging || selectedVideo || isSeamlessReset) return;
+    let closestIndex = 0;
+    let minDistance = Infinity;
 
-    const timer = setInterval(() => {
-      handleNext();
-    }, 9000);
-
-    return () => clearInterval(timer);
-  }, [isHovered, isDragging, selectedVideo, isSeamlessReset, currentIndex]);
-
-  // Lock background scroll when video lightbox is active
-  useEffect(() => {
-    if (selectedVideo) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "unset";
-    }
-    return () => {
-      document.body.style.overflow = "unset";
-    };
-  }, [selectedVideo]);
-
-  // Keyboard controls for lightbox
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === "Escape") {
-        setSelectedVideo(null);
+    Array.from(container.children).forEach((child, i) => {
+      const rect = (child as HTMLElement).getBoundingClientRect();
+      const childCenter = rect.left + rect.width / 2;
+      const distance = Math.abs(containerCenter - childCenter);
+      if (distance < minDistance) {
+        minDistance = distance;
+        closestIndex = i;
       }
-    };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, []);
+    });
 
-  // Drag and Touch Handlers
-  const handleDragStart = (clientX: number) => {
-    if (isSeamlessReset) return;
-    dragStartXRef.current = clientX;
-    setIsDragging(true);
-    setDragOffset(0);
-    hasDraggedRef.current = false;
-  };
-
-  const handleDragMove = (clientX: number) => {
-    if (!isDragging) return;
-    const deltaX = clientX - dragStartXRef.current;
-    setDragOffset(deltaX);
-    if (Math.abs(deltaX) > 5) {
-      hasDraggedRef.current = true;
+    if (closestIndex !== activeIndex) {
+      setActiveIndex(closestIndex);
     }
   };
-
-  const handleDragEnd = () => {
-    if (!isDragging) return;
-    setIsDragging(false);
-
-    const swipeThreshold = 50; // swipe delta threshold in pixels
-    if (dragOffset < -swipeThreshold) {
-      handleNext();
-    } else if (dragOffset > swipeThreshold) {
-      handlePrev();
-    }
-    setDragOffset(0);
-  };
-
-  const onMouseDown = (e: React.MouseEvent) => {
-    e.preventDefault();
-    handleDragStart(e.clientX);
-  };
-
-  const onMouseMove = (e: React.MouseEvent) => {
-    handleDragMove(e.clientX);
-  };
-
-  const onMouseUp = () => {
-    handleDragEnd();
-  };
-
-  const onMouseLeave = () => {
-    handleDragEnd();
-  };
-
-  const onTouchStart = (e: React.TouchEvent) => {
-    handleDragStart(e.touches[0].clientX);
-  };
-
-  const onTouchMove = (e: React.TouchEvent) => {
-    handleDragMove(e.touches[0].clientX);
-  };
-
-  const onTouchEnd = () => {
-    handleDragEnd();
-  };
-
-  const getWhatsAppMessage = (videoTitle: string) => {
-    const text = `Hi Mr. Vinod Kumar, I watched the product video for *${videoTitle}* on your website. I want to inquire about bulk wholesale pricing and order process for my store.`;
-    return `https://wa.me/918210625483?text=${encodeURIComponent(text)}`;
-  };
-
-  // Calculate sliding track translations
-  const basePercentageOffset = -currentIndex * (100 / visibleCount);
-  const dragPercentageContribution = containerWidth ? (dragOffset / containerWidth) * 100 : 0;
-  const totalOffsetPercentage = basePercentageOffset + dragPercentageContribution;
 
   return (
-    <>
-      {/* Core Video Carousel Section */}
-      <section className="relative bg-white py-20 lg:py-28 overflow-hidden text-slate-900 border-b border-slate-200/60">
+    <section
+      ref={sectionRef}
+      id="video-gallery"
+      className="relative bg-white py-14 sm:py-18 lg:py-22 overflow-hidden text-slate-900 border-b border-slate-200/80 scroll-mt-20"
+    >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
-        {/* Glowing Background Decorative Gradients */}
-        <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-gradient-to-br from-[#FF7A00]/5 to-transparent blur-[120px] pointer-events-none rounded-full" />
-        <div className="absolute bottom-0 left-0 w-[500px] h-[500px] bg-gradient-to-tr from-pink-500/5 to-transparent blur-[120px] pointer-events-none rounded-full" />
-
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          
-          {/* Header Section */}
-          <div className="text-center max-w-3xl mx-auto mb-16 lg:mb-20">
-            <div className="inline-flex items-center gap-2 bg-orange-50 border border-orange-200 text-[#FF7A00] font-mono text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-widest mb-4">
+        {/* Header with Navigation Indicator */}
+        <div className="flex flex-col md:flex-row md:items-end justify-between mb-8 sm:mb-12 gap-6">
+          <div className="max-w-2xl">
+            <div className="inline-flex items-center gap-2 bg-orange-50 border border-orange-200 text-[#FF7A00] font-mono text-xs font-bold px-3.5 py-1.5 rounded-full uppercase tracking-wider mb-3">
               <Sparkles className="w-4 h-4 animate-pulse" />
-              <span>{lang === "en" ? "Interactive Video Gallery" : "इंटरएक्टिव वीडियो गैलरी"}</span>
+              <span>{lang === "en" ? "Interactive Video Slider" : "इंटरएक्टिव वीडियो स्लाइडर"}</span>
             </div>
-            
-            <h2 className="text-3xl sm:text-4xl md:text-5xl font-extrabold font-display text-[#0B2D5C] tracking-tight leading-tight mb-6">
+
+            <h2 className="text-2xl sm:text-3xl md:text-4xl font-extrabold font-display text-[#0B2D5C] tracking-tight leading-tight mb-2">
               {lang === "en" ? "Real Applications of Our Products" : "हमारे उत्पादों के वास्तविक अनुप्रयोग"}
             </h2>
-            
-            <p className="text-slate-600 text-base sm:text-lg leading-relaxed font-semibold">
-              {lang === "en" 
-                ? "Watch how our premium products are used across construction, transportation, agriculture, warehousing, packaging and emergency protection."
-                : "देखें कि हमारे प्रीमियम उत्पादों का उपयोग निर्माण, परिवहन, कृषि, भंडारण, पैकेजिंग और आपातकालीन सुरक्षा में कैसे किया जाता है।"}
+
+            <p className="text-slate-600 text-sm sm:text-base font-semibold">
+              {lang === "en"
+                ? "Continuous auto-playing application videos. Slide to explore portrait and landscape demonstrations."
+                : "लगातार ऑटो-प्ले होने वाली वीडियो गैलरी। पोर्ट्रेट और लैंडस्केप वीडियो देखने के लिए स्लाइड करें।"}
             </p>
           </div>
 
-          {/* Premium Infinite Horizontal Carousel */}
-          <div 
-            className="relative mb-20 group/carousel"
-            onMouseEnter={() => setIsHovered(true)}
-            onMouseLeave={() => setIsHovered(false)}
-          >
-            
-            {/* Carousel Viewport Window */}
-            <div 
-              ref={containerRef}
-              className="overflow-hidden rounded-[24px] relative"
-            >
-              <div
-                className="flex flex-row flex-nowrap"
-                style={{
-                  transform: `translate3d(${totalOffsetPercentage}%, 0, 0)`,
-                  transition: isSeamlessReset ? "none" : "transform 600ms cubic-bezier(0.16, 1, 0.3, 1)"
-                }}
-                onTransitionEnd={handleTransitionEnd}
-                onMouseDown={onMouseDown}
-                onMouseMove={onMouseMove}
-                onMouseUp={onMouseUp}
-                onMouseLeave={onMouseLeave}
-                onTouchStart={onTouchStart}
-                onTouchMove={onTouchMove}
-                onTouchEnd={onTouchEnd}
-              >
-                {displayVideos.map((video, idx) => {
-                  // Determine if card is currently fully or partially visible inside the active carousel window
-                  const isActive = idx >= currentIndex && idx < currentIndex + visibleCount;
-
-                  return (
-                    <div
-                      key={`${video.id}-${idx}`}
-                      className="flex-shrink-0 px-3 md:px-4"
-                      style={{
-                        width: `${100 / visibleCount}%`,
-                        boxSizing: "border-box"
-                      }}
-                    >
-                      <VideoCard 
-                        video={video} 
-                        onSelect={setSelectedVideo} 
-                        isActive={isActive}
-                        hasDraggedRef={hasDraggedRef}
-                      />
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* Left & Right Navigation Arrows with Glassmorphism */}
-            <button
-              onClick={handlePrev}
-              className="absolute left-1 sm:left-[-25px] top-1/2 -translate-y-1/2 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-slate-950/80 backdrop-blur-md hover:bg-slate-950 text-white flex items-center justify-center border border-white/15 shadow-2xl transition-all hover:scale-110 active:scale-95 cursor-pointer z-20"
-              aria-label="Previous Slide"
-            >
-              <ChevronLeft className="w-5 h-5 sm:w-6 sm:h-6 text-[#FF7A00]" />
-            </button>
-
-            <button
-              onClick={handleNext}
-              className="absolute right-1 sm:right-[-25px] top-1/2 -translate-y-1/2 w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-slate-950/80 backdrop-blur-md hover:bg-slate-950 text-white flex items-center justify-center border border-white/15 shadow-2xl transition-all hover:scale-110 active:scale-95 cursor-pointer z-20"
-              aria-label="Next Slide"
-            >
-              <ChevronRight className="w-5 h-5 sm:w-6 sm:h-6 text-[#FF7A00]" />
-            </button>
-
-            {/* Mobile swipe dots indicator */}
-            <div className="flex justify-center gap-2 mt-6 md:hidden">
-              {VIDEOS.map((_, idx) => {
-                const normalizedIndex = (currentIndex - CLONE_COUNT + VIDEOS.length) % VIDEOS.length;
-                const isActive = normalizedIndex === idx;
-                return (
-                  <div
-                    key={idx}
-                    className={`h-1.5 rounded-full transition-all duration-300 ${isActive ? "w-6 bg-[#FF7A00]" : "w-1.5 bg-slate-600"}`}
-                  />
-                );
-              })}
-            </div>
+          {/* Top Counter Display */}
+          <div className="hidden sm:flex items-center gap-2 px-3 py-1.5 rounded-full bg-slate-100 border border-slate-200 text-xs font-mono font-bold text-slate-600 self-start md:self-auto select-none">
+            <span>Video</span>
+            <span className="text-orange-600 font-black">{activeIndex + 1}</span>
+            <span>of</span>
+            <span>{VIDEO_ITEMS.length}</span>
           </div>
-
         </div>
-      </section>
 
-      {/* Lightbox Modal */}
-      <AnimatePresence>
-        {selectedVideo && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-[9999] flex items-center justify-center p-4 sm:p-6 bg-slate-950/90 backdrop-blur-md"
-            onClick={() => setSelectedVideo(null)}
+        {/* HORIZONTAL SLIDER / CAROUSEL CONTAINER */}
+        <div className="relative">
+          <div
+            ref={sliderContainerRef}
+            onScroll={handleScroll}
+            className="flex items-center gap-5 sm:gap-7 overflow-x-auto pb-6 pt-2 px-2 scrollbar-none snap-x snap-mandatory scroll-smooth"
+            style={{
+              scrollbarWidth: "none",
+              msOverflowStyle: "none",
+            }}
           >
-            <motion.div
-              initial={{ scale: 0.95, y: 20 }}
-              animate={{ scale: 1, y: 0 }}
-              exit={{ scale: 0.95, y: 20 }}
-              transition={{ type: "spring", damping: 25, stiffness: 300 }}
-              className="relative bg-slate-900 border border-white/10 w-full max-w-4xl rounded-3xl overflow-hidden shadow-2xl z-10"
-              onClick={(e) => e.stopPropagation()}
-            >
-              {/* Video Player Header */}
-              <div className="flex items-center justify-between p-5 bg-slate-950/80 border-b border-white/5">
-                <div className="flex flex-col text-left">
-                  <span className="font-mono text-[10px] font-extrabold uppercase text-[#FF7A00] tracking-wider mb-0.5">
-                    {selectedVideo.badge} Application
-                  </span>
-                  <h4 className="text-base sm:text-lg font-black text-white">
-                    {selectedVideo.title}
-                  </h4>
-                </div>
-                
-                <div className="flex items-center gap-2">
-                  {/* Close button */}
-                  <button
-                    onClick={() => setSelectedVideo(null)}
-                    className="w-10 h-10 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center transition-all cursor-pointer border border-white/5"
-                    aria-label="Close Lightbox"
-                    title="Close Video"
-                  >
-                    <X className="w-5 h-5" />
-                  </button>
-                </div>
-              </div>
-
-              {/* YouTube Embedded Video Player inside Lightbox */}
-              <div className="relative aspect-video bg-black">
-                <iframe
-                  src={`https://www.youtube.com/embed/${selectedVideo.id}?autoplay=1&mute=0&loop=1&playlist=${selectedVideo.id}&playsinline=1&rel=0&controls=1&modestbranding=1`}
-                  title={selectedVideo.title}
-                  className="w-full h-full border-0"
-                  allow="autoplay; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
+            {VIDEO_ITEMS.map((item, index) => (
+              <div key={item.id} className="snap-center flex-shrink-0">
+                <HTML5VideoSlide
+                  item={item}
+                  index={index}
+                  isActive={activeIndex === index}
+                  onSelectSlide={scrollToSlide}
+                  onVideoPlay={handleVideoPlay}
+                  onVideoEnded={handleVideoEnded}
+                  onVideoPause={handleVideoPause}
                 />
               </div>
+            ))}
+          </div>
 
-              {/* Video Footer Action */}
-              <div className="p-6 bg-slate-950/60 border-t border-white/5 flex flex-col sm:flex-row sm:items-center justify-between gap-4 text-left">
-                <p className="text-slate-300 text-sm font-semibold max-w-md">
-                  {selectedVideo.description}
-                </p>
-                
-                <div className="flex items-center gap-3">
-                  <button
-                    onClick={() => {
-                      const title = selectedVideo.title;
-                      setSelectedVideo(null);
-                      onEnquire(`Video Demo: ${title}`);
-                    }}
-                    className="flex items-center gap-1.5 bg-[#25D366] hover:bg-[#20ba5a] text-[#0B2D5C] px-5 py-2.5 rounded-xl font-extrabold text-xs uppercase tracking-wider transition-colors shadow-md cursor-pointer"
-                  >
-                    <MessageSquare className="w-4 h-4 fill-[#0B2D5C]" />
-                    <span>Inquire via WhatsApp</span>
-                  </button>
+          {/* Slide Navigation Controls: Left Arrow at Initial + Dots in Center + Right Arrow at Final */}
+          <div className="flex items-center justify-center gap-3 sm:gap-4 mt-6">
+            {/* Left Arrow (Initial) */}
+            <button
+              onClick={handlePrev}
+              className="w-10 h-10 rounded-full bg-slate-100 hover:bg-orange-500 hover:text-white text-slate-700 border border-slate-200/90 flex items-center justify-center transition-all shadow-xs active:scale-95 cursor-pointer"
+              aria-label="Previous Video Slide"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </button>
 
-                  <button
-                    onClick={() => {
-                      setSelectedVideo(null);
-                      onEnquire(`Inquiry for product video: ${selectedVideo.title}`);
-                    }}
-                    className="flex items-center gap-1.5 bg-gradient-to-r from-orange-600 to-amber-500 hover:from-orange-700 hover:to-amber-600 text-[#0B2D5C] px-5 py-2.5 rounded-xl font-extrabold text-xs uppercase tracking-wider transition-colors shadow-md"
-                  >
-                    <Sparkles className="w-4 h-4 text-[#0B2D5C]" />
-                    <span>Get Free Quote</span>
-                  </button>
-                </div>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </>
+            {/* Dots */}
+            <div className="flex items-center gap-2">
+              {VIDEO_ITEMS.map((_, i) => (
+                <button
+                  key={i}
+                  onClick={() => scrollToSlide(i)}
+                  className={`h-2.5 rounded-full transition-all duration-300 cursor-pointer ${
+                    activeIndex === i
+                      ? "w-8 bg-orange-600"
+                      : "w-2.5 bg-slate-300 hover:bg-slate-400"
+                  }`}
+                  aria-label={`Go to slide ${i + 1}`}
+                />
+              ))}
+            </div>
+
+            {/* Right Arrow (Final) */}
+            <button
+              onClick={handleNext}
+              className="w-10 h-10 rounded-full bg-slate-100 hover:bg-orange-500 hover:text-white text-slate-700 border border-slate-200/90 flex items-center justify-center transition-all shadow-xs active:scale-95 cursor-pointer"
+              aria-label="Next Video Slide"
+            >
+              <ChevronRight className="w-5 h-5" />
+            </button>
+          </div>
+        </div>
+
+      </div>
+    </section>
   );
 };
+
+export default ProductVideosSection;

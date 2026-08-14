@@ -355,25 +355,6 @@ export const CustomerReviewsSection: React.FC = () => {
           </div>
         </div>
 
-        {/* Bottom Trust CTA Box */}
-        <div className="mt-14 p-6 sm:p-8 rounded-[22px] bg-gradient-to-r from-[#0B2D5C] via-[#092244] to-[#0B2D5C] text-white flex flex-col md:flex-row items-center justify-between gap-6 shadow-xl border border-white/10 text-left">
-          <div className="space-y-1">
-            <h4 className="text-lg sm:text-xl font-extrabold text-white">
-              Are you looking for high quality tarpaulin or plastic sheets in Bihar?
-            </h4>
-            <p className="text-slate-300 text-xs sm:text-sm font-medium">
-              Join thousands of satisfied local buyers, dealers, and contractors. Get wholesale prices & instant factory quote.
-            </p>
-          </div>
-
-          <a
-            href="#contact"
-            className="px-6 py-3 rounded-full bg-[#FF7A00] hover:bg-[#ff881a] text-white font-extrabold text-xs uppercase tracking-wider transition-all shadow-lg hover:shadow-orange-500/20 shrink-0 cursor-pointer"
-          >
-            Contact Store
-          </a>
-        </div>
-
       </div>
     </section>
   );

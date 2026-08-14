@@ -32,10 +32,9 @@ export default function StoreStatusCard({ currentLanguage, className = "", varia
       const hours = ist.getHours();
       const minutes = ist.getMinutes();
 
-      // Store is open Monday to Saturday, 6:00 AM to 9:00 PM (06:00 to 21:00)
-      const isMonToSat = day !== 0;
+      // Store is open Monday to Sunday, 6:00 AM to 9:00 PM (06:00 to 21:00)
       const isWithinHours = hours >= 6 && hours < 21;
-      const openNow = isMonToSat && isWithinHours;
+      const openNow = isWithinHours;
 
       setIsOpen(openNow);
 
@@ -53,32 +52,22 @@ export default function StoreStatusCard({ currentLanguage, className = "", varia
         }
       } else {
         // Closed. Find when it opens.
-        if (day === 0) {
-          // Sunday, opens Monday at 6:00 AM
+        if (hours < 6) {
+          // Opens today at 6:00 AM
+          const totalMinutesLeft = (6 * 60) - (hours * 60 + minutes);
+          const hrs = Math.floor(totalMinutesLeft / 60);
+          const mins = totalMinutesLeft % 60;
           if (currentLanguage === "en") {
-            setTimeLeftStr("Opens Monday at 6:00 AM");
+            setTimeLeftStr(`Opens in ${hrs > 0 ? `${hrs}h ` : ""}${mins}m (at 6:00 AM)`);
           } else {
-            setTimeLeftStr("सोमवार सुबह 6:00 बजे खुलेगा");
+            setTimeLeftStr(`सुबह 6:00 बजे खुलेगा (${hrs > 0 ? `${hrs} घंटे ` : ""}${mins} मिनट में)`);
           }
         } else {
-          // Mon-Sat but outside hours
-          if (hours < 6) {
-            // Opens today at 6:00 AM
-            const totalMinutesLeft = (6 * 60) - (hours * 60 + minutes);
-            const hrs = Math.floor(totalMinutesLeft / 60);
-            const mins = totalMinutesLeft % 60;
-            if (currentLanguage === "en") {
-              setTimeLeftStr(`Opens in ${hrs > 0 ? `${hrs}h ` : ""}${mins}m (at 6:00 AM)`);
-            } else {
-              setTimeLeftStr(`सुबह 6:00 बजे खुलेगा (${hrs > 0 ? `${hrs} घंटे ` : ""}${mins} मिनट में)`);
-            }
+          // Opens tomorrow at 6:00 AM
+          if (currentLanguage === "en") {
+            setTimeLeftStr("Opens tomorrow at 6:00 AM");
           } else {
-            // Opens tomorrow at 6:00 AM
-            if (currentLanguage === "en") {
-              setTimeLeftStr("Opens tomorrow at 6:00 AM");
-            } else {
-              setTimeLeftStr("कल सुबह 6:00 बजे खुलेगा");
-            }
+            setTimeLeftStr("कल सुबह 6:00 बजे खुलेगा");
           }
         }
       }
@@ -177,7 +166,7 @@ export default function StoreStatusCard({ currentLanguage, className = "", varia
             </p>
 
             <p className={`text-[11px] font-mono mt-1 ${isDark ? "text-slate-400" : "text-slate-500"}`}>
-              {currentLanguage === "en" ? "Monday to Saturday" : "सोमवार से शनिवार (रविवार बंद)"}
+              {currentLanguage === "en" ? "Monday to Sunday (All 7 Days Open)" : "सोमवार से रविवार (सातों दिन खुला)"}
             </p>
 
             {/* Countdown / Smart timing notification */}

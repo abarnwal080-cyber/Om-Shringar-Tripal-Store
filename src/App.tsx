@@ -61,7 +61,6 @@ import { ProductVideosSection } from "./components/ProductVideosSection";
 import { TermsModal } from "./components/TermsModal";
 import SizeCalculatorModal from "./components/SizeCalculatorModal";
 import UserTypeInquiryModal from "./components/UserTypeInquiryModal";
-import SizeChartPopupModal from "./components/SizeChartPopupModal";
 import { TRANSLATIONS } from "./translations";
 
 // Safe dynamic icon loader to keep code modular and readable
@@ -110,9 +109,6 @@ export default function App() {
   const [userTypeModalProduct, setUserTypeModalProduct] = useState("");
   const [userTypeModalContext, setUserTypeModalContext] = useState("");
 
-  // Cute Size Chart Popup Modal State
-  const [sizeChartPopupOpen, setSizeChartPopupOpen] = useState(false);
-
   const [currentProductSlug, setCurrentProductSlug] = useState<string | null>(null);
 
   // Clear enquiry submission state on page refresh (initial app mount)
@@ -121,7 +117,7 @@ export default function App() {
   }, []);
 
   // Professional Modal Popup System: Lock body scroll, prevent layout shifts, handle keyboard/touch, restore scroll position
-  const isAnyModalActive = isCatalogOpen || isTermsOpen || sizeCalcOpen || userTypeModalOpen || sizeChartPopupOpen;
+  const isAnyModalActive = isCatalogOpen || isTermsOpen || sizeCalcOpen || userTypeModalOpen;
 
   useEffect(() => {
     if (!isAnyModalActive) return;
@@ -150,7 +146,6 @@ export default function App() {
         setIsTermsOpen(false);
         setSizeCalcOpen(false);
         setUserTypeModalOpen(false);
-        setSizeChartPopupOpen(false);
         return;
       }
 
@@ -794,7 +789,7 @@ export default function App() {
           <ProductVideosSection lang={lang} onEnquire={handleEnquire} />
 
       {/* SHOP FRONT SHOWCASE SECTION */}
-      <section className="py-16 bg-gradient-to-b from-white to-slate-50 relative overflow-hidden border-b border-slate-200/50">
+      <section id="shop-showcase" className="py-16 bg-gradient-to-b from-white to-slate-50 relative overflow-hidden border-b border-slate-200/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
             
@@ -1237,21 +1232,12 @@ export default function App() {
           <h2 className="text-3xl sm:text-4xl font-extrabold font-display text-brand-blue-dark tracking-tight mb-4">
             {lang === "en" ? "Standard Size Configurations" : "मानक उपलब्ध साइज़"}
           </h2>
-          <div className="mb-10 text-center space-y-3">
+          <div className="mb-10 text-center">
             <p className="text-slate-600 text-sm sm:text-base leading-relaxed max-w-2xl mx-auto">
               {lang === "en" 
                 ? "We supply premium quality plastic rolls and tarpaulins in multiple pre-configured dimensions and thicknesses. Select your category below to view availability."
                 : "हम कई प्रकार के पहले से तैयार आयामों और मोटाई (GSM) में प्रीमियम गुणवत्ता वाले प्लास्टिक रोल और तिरपाल की आपूर्ति करते हैं। अपनी पसंद चुनें:"}
             </p>
-
-            <button
-              onClick={() => setSizeChartPopupOpen(true)}
-              className="inline-flex items-center gap-2 px-5 py-2.5 bg-gradient-to-r from-orange-500 via-rose-500 to-amber-500 hover:from-orange-600 hover:to-rose-600 text-white font-black text-xs sm:text-sm rounded-full shadow-lg shadow-orange-500/20 hover:shadow-orange-500/30 transition-all cursor-pointer hover:scale-105 active:scale-95"
-              style={{ fontFamily: "'Amaranth', sans-serif" }}
-            >
-              <Sparkles className="w-4 h-4 text-amber-200 animate-pulse" />
-              <span>Click here to see chart (सभी साइज़ देखें)</span>
-            </button>
           </div>
 
           <div className="bg-white rounded-3xl border border-slate-200/80 shadow-xl overflow-hidden text-left">
@@ -1844,14 +1830,6 @@ export default function App() {
         productName={userTypeModalProduct}
         customContext={userTypeModalContext}
         lang={lang}
-      />
-
-      {/* Cute Size Chart Popup Modal */}
-      <SizeChartPopupModal
-        isOpen={sizeChartPopupOpen}
-        onClose={() => setSizeChartPopupOpen(false)}
-        lang={lang}
-        onSelectSize={(szStr) => handleEnquire("", `Selected Size from Chart: ${szStr}`)}
       />
 
     </div>

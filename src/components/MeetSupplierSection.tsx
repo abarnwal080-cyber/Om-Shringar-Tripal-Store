@@ -370,8 +370,8 @@ export const MeetSupplierSection: React.FC<MeetSupplierSectionProps> = ({
             <br />
             <span className="text-orange-600 font-amaranth-bold text-xs mt-1 inline-block">
               {isHindi
-                ? "दुकान खुलने का समय: सोमवार से शनिवार (सुबह 9:00 AM से रात 8:30 PM)"
-                : "Store Timings: Monday to Saturday (9:00 AM – 8:30 PM)"}
+                ? "दुकान खुलने का समय: सोमवार से रविवार (सुबह 6:00 AM से रात 9:00 PM)"
+                : "Store Timings: Monday to Sunday (6:00 AM – 9:00 PM)"}
             </span>
           </p>
 
