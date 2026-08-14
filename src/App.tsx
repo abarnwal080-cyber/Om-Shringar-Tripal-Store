@@ -39,7 +39,6 @@ const warehouseImage = "https://plain-apac-prod-public.komododecks.com/202608/03
 import {
   BUSINESS_INFO,
   PRODUCTS,
-  SPECIAL_PURPOSE_SHEETS,
   SIZE_MATRIX,
   WHY_CHOOSE_US,
   FAQS,
@@ -1127,46 +1126,27 @@ export default function App() {
 
 
 
-      {/* 7. SPECIAL PURPOSE SHEETS (FEATURES GRID) */}
-      <section id="special-uses" className="py-20 bg-white relative scroll-mt-24 overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+      {/* 7. SPECIAL PURPOSE SHEETS (VERSATILE MULTI-APPLICATION FIELDS) */}
+      <section id="special-uses" className="py-14 sm:py-20 bg-white relative scroll-mt-24 overflow-hidden">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
           
-          {/* Section Header */}
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <div className="inline-flex items-center gap-2 bg-blue-50 text-brand-blue-royal text-xs font-bold font-mono px-3.5 py-1.5 rounded-full mb-4">
+          {/* Section Header with VERSATILE MULTI-APPLICATION FIELDS text */}
+          <div className="text-center max-w-3xl mx-auto mb-8 sm:mb-12">
+            <div className="inline-flex items-center gap-2 bg-blue-50 text-brand-blue-royal text-xs font-bold font-mono px-3.5 py-1.5 rounded-full border border-blue-100/80">
               <Sparkles className="w-3.5 h-3.5 text-brand-orange" />
               <span>VERSATILE MULTI-APPLICATION FIELDS</span>
             </div>
-            <h2 className="text-3xl sm:text-4xl font-extrabold font-display text-brand-blue-dark tracking-tight mb-4">
-              Premium Special-Purpose Polymer Sheets
-            </h2>
-            <p className="text-slate-600 text-sm sm:text-base">
-              Our plastic rolls and tarpaulins are custom manufactured to suit a massive range of agricultural, residential, commercial, and structural setups.
-            </p>
           </div>
 
-          {/* Feature Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
-            {SPECIAL_PURPOSE_SHEETS.map((sheet, idx) => (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, y: 15 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: idx * 0.05 }}
-                className="p-6 bg-slate-50 hover:bg-white rounded-2xl border border-slate-100 hover:border-brand-orange/30 shadow-sm hover:shadow-lg transition-all duration-300 relative group"
-              >
-                <div className="w-10 h-10 bg-white text-brand-orange border border-slate-100 rounded-xl flex items-center justify-center shadow-sm mb-4 group-hover:bg-brand-orange group-hover:text-white group-hover:border-transparent transition-all duration-300">
-                  <DynamicIcon name={sheet.iconName} className="w-5 h-5" />
-                </div>
-                <h3 className="text-base font-bold font-display text-brand-blue-dark mb-1.5 group-hover:text-brand-orange transition-colors">
-                  {sheet.title}
-                </h3>
-                <p className="text-xs text-slate-500 leading-relaxed">
-                  {sheet.description}
-                </p>
-              </motion.div>
-            ))}
+          {/* Special-Purpose Polymer Sheets Application Image Banner */}
+          <div className="w-full rounded-2xl sm:rounded-3xl overflow-hidden shadow-lg border border-slate-200/80 bg-white hover:shadow-xl transition-all duration-300">
+            <img
+              src="https://plain-apac-prod-public.komododecks.com/202608/14/8zpRBCiEnXI7AQgsHnV5/image.png"
+              alt="Premium Special-Purpose Polymer Sheets - Versatile Multi-Application Fields"
+              referrerPolicy="no-referrer"
+              className="w-full h-auto object-contain rounded-2xl sm:rounded-3xl block"
+              loading="lazy"
+            />
           </div>
         </div>
       </section>
