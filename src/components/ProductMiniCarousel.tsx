@@ -20,9 +20,13 @@ export default function ProductMiniCarousel({ lang, onSelectProduct }: ProductMi
   const containerRef = useRef<HTMLDivElement>(null);
   const [containerWidth, setContainerWidth] = useState(0);
   const dragStartXRef = useRef(0);
+  const dragStartYRef = useRef(0);
+  const touchDirectionRef = useRef<"horizontal" | "vertical" | null>(null);
   const [dragOffset, setDragOffset] = useState(0);
   const [isDragging, setIsDragging] = useState(false);
+  const [isUserTouching, setIsUserTouching] = useState(false);
   const hasDraggedRef = useRef(false);
+  const touchResumeTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   // Determine container width for responsive touch calculations
   useEffect(() => {
@@ -94,16 +98,16 @@ export default function ProductMiniCarousel({ lang, onSelectProduct }: ProductMi
     }
   }, [isSeamlessReset]);
 
-  // Autoplay timer sliding every 1 second (pauses on hover or active dragging)
+  // Autoplay timer sliding smoothly every 3.5s (pauses on hover, touch, or active dragging)
   useEffect(() => {
-    if (isHovered || isDragging || isSeamlessReset) return;
+    if (isHovered || isDragging || isUserTouching || isSeamlessReset) return;
 
     const timer = setInterval(() => {
       handleNext();
-    }, 1000); // 1 second as requested
+    }, 3500);
 
     return () => clearInterval(timer);
-  }, [isHovered, isDragging, isSeamlessReset, currentIndex]);
+  }, [isHovered, isDragging, isUserTouching, isSeamlessReset, currentIndex]);
 
   // Drag and Touch Handlers
   const handleDragStart = (clientX: number) => {
@@ -118,7 +122,7 @@ export default function ProductMiniCarousel({ lang, onSelectProduct }: ProductMi
     if (!isDragging) return;
     const deltaX = clientX - dragStartXRef.current;
     setDragOffset(deltaX);
-    if (Math.abs(deltaX) > 5) {
+    if (Math.abs(deltaX) > 8) {
       hasDraggedRef.current = true;
     }
   };
@@ -127,7 +131,7 @@ export default function ProductMiniCarousel({ lang, onSelectProduct }: ProductMi
     if (!isDragging) return;
     setIsDragging(false);
 
-    const swipeThreshold = 50; // swipe delta threshold in pixels
+    const swipeThreshold = 45; // swipe delta threshold in pixels
     if (dragOffset < -swipeThreshold) {
       handleNext();
     } else if (dragOffset > swipeThreshold) {
@@ -156,15 +160,60 @@ export default function ProductMiniCarousel({ lang, onSelectProduct }: ProductMi
   };
 
   const onTouchStart = (e: React.TouchEvent) => {
-    handleDragStart(e.touches[0].clientX);
+    if (isSeamlessReset) return;
+    if (touchResumeTimeoutRef.current) {
+      clearTimeout(touchResumeTimeoutRef.current);
+    }
+    setIsUserTouching(true);
+    dragStartXRef.current = e.touches[0].clientX;
+    dragStartYRef.current = e.touches[0].clientY;
+    touchDirectionRef.current = null;
+    hasDraggedRef.current = false;
+    setDragOffset(0);
   };
 
   const onTouchMove = (e: React.TouchEvent) => {
-    handleDragMove(e.touches[0].clientX);
+    if (isSeamlessReset) return;
+    const clientX = e.touches[0].clientX;
+    const clientY = e.touches[0].clientY;
+    const deltaX = clientX - dragStartXRef.current;
+    const deltaY = clientY - dragStartYRef.current;
+
+    // Detect gesture direction if not decided yet
+    if (touchDirectionRef.current === null) {
+      if (Math.abs(deltaX) > 7 || Math.abs(deltaY) > 7) {
+        if (Math.abs(deltaX) > Math.abs(deltaY)) {
+          touchDirectionRef.current = "horizontal";
+          setIsDragging(true);
+        } else {
+          touchDirectionRef.current = "vertical";
+          setIsDragging(false);
+        }
+      }
+    }
+
+    // Only capture drag if the user is actually swiping horizontally
+    if (touchDirectionRef.current === "horizontal") {
+      setDragOffset(deltaX);
+      if (Math.abs(deltaX) > 8) {
+        hasDraggedRef.current = true;
+      }
+    }
   };
 
   const onTouchEnd = () => {
-    handleDragEnd();
+    if (touchDirectionRef.current === "horizontal") {
+      handleDragEnd();
+    } else {
+      setIsDragging(false);
+      setDragOffset(0);
+    }
+    touchDirectionRef.current = null;
+    
+    // Resume autoplay after a brief delay
+    touchResumeTimeoutRef.current = setTimeout(() => {
+      setIsUserTouching(false);
+    }, 2000);
   };
 
   const handleCardClick = (e: React.MouseEvent, slug: string) => {
@@ -190,12 +239,14 @@ export default function ProductMiniCarousel({ lang, onSelectProduct }: ProductMi
       <div 
         ref={containerRef}
         className="overflow-hidden rounded-3xl relative"
+        style={{ touchAction: "pan-y" }}
       >
         <div
           className="flex flex-row flex-nowrap cursor-grab active:cursor-grabbing"
           style={{
             transform: `translate3d(${totalOffsetPercentage}%, 0, 0)`,
-            transition: isSeamlessReset ? "none" : "transform 500ms cubic-bezier(0.16, 1, 0.3, 1)"
+            transition: isSeamlessReset ? "none" : "transform 500ms cubic-bezier(0.16, 1, 0.3, 1)",
+            touchAction: "pan-y"
           }}
           onTransitionEnd={handleTransitionEnd}
           onMouseDown={onMouseDown}

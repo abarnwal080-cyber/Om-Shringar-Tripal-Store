@@ -68,7 +68,10 @@ interface BrandCarouselProps {
 export default function BrandCarousel({ lang = "en" }: BrandCarouselProps) {
   const [activeIndex, setActiveIndex] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
+  const [isUserTouching, setIsUserTouching] = useState(false);
   const touchStartX = useRef<number | null>(null);
+  const touchStartY = useRef<number | null>(null);
+  const touchResumeTimer = useRef<NodeJS.Timeout | null>(null);
 
   const handlePrev = () => {
     setActiveIndex((prev) => (prev === 0 ? BRANDS.length - 1 : prev - 1));
@@ -78,32 +81,48 @@ export default function BrandCarousel({ lang = "en" }: BrandCarouselProps) {
     setActiveIndex((prev) => (prev === BRANDS.length - 1 ? 0 : prev + 1));
   };
 
-  // Auto-slide effect
+  // Auto-slide effect (smooth 3.5s interval)
   useEffect(() => {
-    if (isHovered) return;
+    if (isHovered || isUserTouching) return;
     const interval = setInterval(() => {
       handleNext();
-    }, 1000); // 1 second
+    }, 3500);
     return () => clearInterval(interval);
-  }, [isHovered, activeIndex]);
+  }, [isHovered, isUserTouching, activeIndex]);
 
   // Touch Swipe Handlers for Mobile
   const handleTouchStart = (e: React.TouchEvent) => {
+    if (touchResumeTimer.current) {
+      clearTimeout(touchResumeTimer.current);
+    }
+    setIsUserTouching(true);
     touchStartX.current = e.touches[0].clientX;
+    touchStartY.current = e.touches[0].clientY;
   };
 
   const handleTouchEnd = (e: React.TouchEvent) => {
-    if (touchStartX.current === null) return;
-    const touchEndX = e.changedTouches[0].clientX;
-    const diff = touchStartX.current - touchEndX;
-    const threshold = 50; // swipe threshold in pixels
+    if (touchStartX.current !== null && touchStartY.current !== null) {
+      const touchEndX = e.changedTouches[0].clientX;
+      const touchEndY = e.changedTouches[0].clientY;
+      const diffX = touchStartX.current - touchEndX;
+      const diffY = touchStartY.current - touchEndY;
+      const threshold = 40; // swipe threshold in pixels
 
-    if (diff > threshold) {
-      handleNext();
-    } else if (diff < -threshold) {
-      handlePrev();
+      // Only trigger slide if horizontal swipe is greater than vertical movement
+      if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > threshold) {
+        if (diffX > 0) {
+          handleNext();
+        } else {
+          handlePrev();
+        }
+      }
     }
     touchStartX.current = null;
+    touchStartY.current = null;
+
+    touchResumeTimer.current = setTimeout(() => {
+      setIsUserTouching(false);
+    }, 2000);
   };
 
   const getRelativeIndex = (index: number) => {
@@ -210,7 +229,7 @@ export default function BrandCarousel({ lang = "en" }: BrandCarouselProps) {
           className="relative flex items-center justify-center w-full h-[240px] md:h-[400px] mb-8 md:mb-12 overflow-visible select-none"
           onTouchStart={handleTouchStart}
           onTouchEnd={handleTouchEnd}
-          style={{ perspective: "1200px", transformStyle: "preserve-3d" }}
+          style={{ perspective: "1200px", transformStyle: "preserve-3d", touchAction: "pan-y" }}
         >
           {BRANDS.map((brand, index) => {
             const diff = getRelativeIndex(index);

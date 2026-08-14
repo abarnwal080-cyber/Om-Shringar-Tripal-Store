@@ -53,7 +53,7 @@ import CustomerReviewsSection from "./components/CustomerReviewsSection";
 import BrandCarousel from "./components/BrandCarousel";
 import ProductMiniCarousel from "./components/ProductMiniCarousel";
 import SingleProductSection from "./components/SingleProductSection";
-import SupplierPopup from "./components/SupplierPopup";
+import MeetSupplierSection from "./components/MeetSupplierSection";
 import HeroCarousel from "./components/HeroCarousel";
 import StoreStatusCard from "./components/StoreStatusCard";
 import CustomerSuccessCarousel from "./components/CustomerSuccessCarousel";
@@ -75,7 +75,7 @@ export default function App() {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [activeTab, setActiveTab] = useState("All");
   const [expandedFAQ, setExpandedFAQ] = useState<number | null>(null);
-  const [supplierOpen, setSupplierOpen] = useState(false);
+  const [isSupplierPageOpen, setIsSupplierPageOpen] = useState(false);
   const [heroBgImage, setHeroBgImage] = useState("https://plain-apac-prod-public.komododecks.com/202607/03/eckT9KEMGbavrebTJwPJ/image.png");
   const [sizeChartTab, setSizeChartTab] = useState<"plastic" | "tarpaulin">("plastic");
   const [sizeCalcOpen, setSizeCalcOpen] = useState(false);
@@ -121,7 +121,7 @@ export default function App() {
   }, []);
 
   // Professional Modal Popup System: Lock body scroll, prevent layout shifts, handle keyboard/touch, restore scroll position
-  const isAnyModalActive = isCatalogOpen || isTermsOpen || sizeCalcOpen || userTypeModalOpen || supplierOpen || sizeChartPopupOpen;
+  const isAnyModalActive = isCatalogOpen || isTermsOpen || sizeCalcOpen || userTypeModalOpen || sizeChartPopupOpen;
 
   useEffect(() => {
     if (!isAnyModalActive) return;
@@ -150,7 +150,6 @@ export default function App() {
         setIsTermsOpen(false);
         setSizeCalcOpen(false);
         setUserTypeModalOpen(false);
-        setSupplierOpen(false);
         setSizeChartPopupOpen(false);
         return;
       }
@@ -219,11 +218,21 @@ export default function App() {
       if (path.length > 1 && path.endsWith("/")) {
         path = path.slice(0, -1);
       }
+      if (path === "/meet-the-supplier" || path === "/meet-supplier") {
+        setIsSupplierPageOpen(true);
+        return null;
+      } else {
+        setIsSupplierPageOpen(false);
+      }
       if (path.startsWith("/products/")) {
         return path.substring("/products/".length) || null;
       }
       if (path && path !== "/") {
         const slug = path.substring(1);
+        if (slug === "meet-the-supplier" || slug === "meet-supplier") {
+          setIsSupplierPageOpen(true);
+          return null;
+        }
         if (slug) {
           const matched = findProductBySlug(slug);
           if (matched) {
@@ -393,6 +402,12 @@ export default function App() {
     e.preventDefault();
     setMobileMenuOpen(false);
     
+    if (isSupplierPageOpen || currentProductSlug) {
+      window.history.pushState({}, "", "/");
+      setIsSupplierPageOpen(false);
+      setCurrentProductSlug(null);
+    }
+
     if (targetId === "products") {
       setIsCatalogOpen(true);
     }
@@ -477,7 +492,19 @@ export default function App() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
           
           {/* Logo Branding */}
-          <a href="#" className="flex flex-col">
+          <a
+            href="/"
+            onClick={(e) => {
+              if (isSupplierPageOpen || currentProductSlug) {
+                e.preventDefault();
+                window.history.pushState({}, "", "/");
+                setIsSupplierPageOpen(false);
+                setCurrentProductSlug(null);
+                window.scrollTo({ top: 0, behavior: "smooth" });
+              }
+            }}
+            className="flex flex-col"
+          >
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 rounded-lg bg-orange-500 flex items-center justify-center text-white shadow-md p-1.5 shrink-0">
                 <svg viewBox="0 0 24 24" className="w-full h-full text-white" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -513,6 +540,11 @@ export default function App() {
                 href={link.href} 
                 onClick={(e) => {
                   e.preventDefault();
+                  if (isSupplierPageOpen || currentProductSlug) {
+                    window.history.pushState({}, "", "/");
+                    setIsSupplierPageOpen(false);
+                    setCurrentProductSlug(null);
+                  }
                   if (link.id === "products") {
                     setIsCatalogOpen(true);
                   }
@@ -678,9 +710,21 @@ export default function App() {
           onBack={() => {
             window.history.pushState({}, "", "/");
             setCurrentProductSlug(null);
+            setIsSupplierPageOpen(false);
             window.scrollTo({ top: 0 });
           }}
           currentLanguage={lang}
+          onEnquire={handleEnquire}
+        />
+      ) : isSupplierPageOpen ? (
+        <MeetSupplierSection
+          onBack={() => {
+            window.history.pushState({}, "", "/");
+            setIsSupplierPageOpen(false);
+            setCurrentProductSlug(null);
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          }}
+          lang={lang}
           onEnquire={handleEnquire}
         />
       ) : (
@@ -873,7 +917,12 @@ export default function App() {
         <motion.button
           whileHover={{ y: -3, scale: 1.02, boxShadow: "0 12px 30px -5px rgba(249, 115, 22, 0.35)" }}
           whileTap={{ scale: 0.97 }}
-          onClick={() => setSupplierOpen(true)}
+          onClick={() => {
+            window.history.pushState({}, "", "/meet-the-supplier");
+            setIsSupplierPageOpen(true);
+            setCurrentProductSlug(null);
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          }}
           className="flex items-center gap-2.5 px-10 py-4 bg-gradient-to-r from-orange-600 to-amber-500 hover:from-orange-700 hover:to-amber-600 text-white font-extrabold text-base rounded-full shadow-xl transition-all border border-orange-500/20 cursor-pointer"
         >
           <span className="text-xl">🤝</span>
@@ -890,7 +939,8 @@ export default function App() {
             animate={{ y: 0, opacity: 1 }}
             exit={{ y: "100%", opacity: 0.95 }}
             transition={{ type: "spring", damping: 30, stiffness: 220 }}
-            className="fixed inset-0 bg-slate-50 z-50 overflow-y-auto flex flex-col antialiased text-slate-900"
+            className="fixed inset-0 bg-slate-50 z-50 overflow-y-auto flex flex-col antialiased text-slate-900 modal-scrollable-content overscroll-contain"
+            style={{ WebkitOverflowScrolling: "touch", touchAction: "pan-y" }}
           >
             {/* STICKY GLASSMORPHIC HEADER */}
             <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200/80 px-4 py-3 sm:px-6 shadow-sm">
@@ -1780,9 +1830,6 @@ export default function App() {
           </motion.div>
         )}
       </AnimatePresence>
-
-      {/* Supplier Popup Modal */}
-      <SupplierPopup isOpen={supplierOpen} onClose={() => setSupplierOpen(false)} />
 
       {/* Website Content & Image Disclaimer Modal */}
       <TermsModal isOpen={isTermsOpen} onClose={() => setIsTermsOpen(false)} />
