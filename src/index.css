@@ -254,5 +254,17 @@
   -webkit-overflow-scrolling: touch;
 }
 
+@keyframes gradientMove {
+  to {
+    background-position: 200% center;
+  }
+}
+
+@keyframes shine {
+  to {
+    transform: translateX(100%);
+  }
+}
+
 
 

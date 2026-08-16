@@ -39,7 +39,6 @@ const warehouseImage = "https://plain-apac-prod-public.komododecks.com/202608/03
 import {
   BUSINESS_INFO,
   PRODUCTS,
-  SIZE_MATRIX,
   WHY_CHOOSE_US,
   FAQS,
   Product,
@@ -60,6 +59,7 @@ import { ProductVideosSection } from "./components/ProductVideosSection";
 import { TermsModal } from "./components/TermsModal";
 import SizeCalculatorModal from "./components/SizeCalculatorModal";
 import UserTypeInquiryModal from "./components/UserTypeInquiryModal";
+import SizeChartSection from "./components/SizeChartSection";
 import { TRANSLATIONS } from "./translations";
 
 // Safe dynamic icon loader to keep code modular and readable
@@ -75,7 +75,6 @@ export default function App() {
   const [expandedFAQ, setExpandedFAQ] = useState<number | null>(null);
   const [isSupplierPageOpen, setIsSupplierPageOpen] = useState(false);
   const [heroBgImage, setHeroBgImage] = useState("https://plain-apac-prod-public.komododecks.com/202607/03/eckT9KEMGbavrebTJwPJ/image.png");
-  const [sizeChartTab, setSizeChartTab] = useState<"plastic" | "tarpaulin">("plastic");
   const [sizeCalcOpen, setSizeCalcOpen] = useState(false);
 
   const [navbarVisible, setNavbarVisible] = useState(true);
@@ -1200,201 +1199,11 @@ export default function App() {
         </div>
       </section>
 
-      {/* 8. AVAILABLE PLASTIC & TARPAULIN SIZES */}
-      <section id="size-matrix" className="py-20 bg-white border-b border-slate-200/40 scroll-mt-24 overflow-hidden relative">
-        <div className="absolute inset-0 bg-[linear-gradient(to_right,#00000002_1px,transparent_1px),linear-gradient(to_bottom,#00000002_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none" />
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-          
-          <div className="inline-flex items-center gap-2 bg-orange-50 text-brand-orange text-xs font-bold font-mono px-3.5 py-1.5 rounded-full w-fit mb-5 border border-orange-100">
-            <Clock className="w-3.5 h-3.5" />
-            <span>SIZES & SPECIFICATIONS</span>
-          </div>
-          <h2 className="text-3xl sm:text-4xl font-extrabold font-display text-brand-blue-dark tracking-tight mb-4">
-            {lang === "en" ? "Standard Size Configurations" : "मानक उपलब्ध साइज़"}
-          </h2>
-          <div className="mb-10 text-center">
-            <p className="text-slate-600 text-sm sm:text-base leading-relaxed max-w-2xl mx-auto">
-              {lang === "en" 
-                ? "We supply premium quality plastic rolls and tarpaulins in multiple pre-configured dimensions and thicknesses. Select your category below to view availability."
-                : "हम कई प्रकार के पहले से तैयार आयामों और मोटाई (GSM) में प्रीमियम गुणवत्ता वाले प्लास्टिक रोल और तिरपाल की आपूर्ति करते हैं। अपनी पसंद चुनें:"}
-            </p>
-          </div>
-
-          <div className="bg-white rounded-3xl border border-slate-200/80 shadow-xl overflow-hidden text-left">
-            <div className="bg-gradient-to-r from-slate-900 to-[#0B2D5C] p-5 sm:p-6 text-white flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4 border-b border-slate-800">
-              <div>
-                <h3 className="font-bold text-lg font-display text-white">
-                  {sizeChartTab === "plastic" 
-                    ? (lang === "en" ? "Plastic Sizing Matrix" : "प्लास्टिक शीट साइज़ चार्ट") 
-                    : (lang === "en" ? "Tarpaulin Size Chart" : "तिरपाल साइज़ चार्ट")}
-                </h3>
-                <p className="text-xs text-slate-400 mt-1">
-                  {sizeChartTab === "plastic" 
-                    ? (lang === "en" ? "Width in Feet × Thickness Gauge Categories" : "चौड़ाई फीट में × मोटाई गेज श्रेणियां") 
-                    : (lang === "en" ? "Standard Feet Dimensions (Standard Gauges)" : "मानक फीट आयाम (मानक गेज)")}
-                </p>
-              </div>
-              
-              {/* Tab Selector Buttons */}
-              <div className="flex bg-white/10 p-1 rounded-xl self-stretch sm:self-auto shrink-0 border border-white/5">
-                <button
-                  onClick={() => setSizeChartTab("plastic")}
-                  className={`px-4 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-                    sizeChartTab === "plastic" ? "bg-orange-500 text-white shadow-md" : "text-slate-300 hover:text-white"
-                  }`}
-                >
-                  {lang === "en" ? "Plastic Roll" : "प्लास्टिक रोल"}
-                </button>
-                <button
-                  onClick={() => setSizeChartTab("tarpaulin")}
-                  className={`px-4 py-2 rounded-lg text-xs font-bold transition-all cursor-pointer ${
-                    sizeChartTab === "tarpaulin" ? "bg-orange-500 text-white shadow-md" : "text-slate-300 hover:text-white"
-                  }`}
-                >
-                  {lang === "en" ? "Tarpaulin Chart" : "तिरपाल चार्ट"}
-                </button>
-              </div>
-            </div>
-
-            {sizeChartTab === "plastic" ? (
-              <div className="divide-y divide-slate-100 transition-all duration-300 bg-white">
-                {SIZE_MATRIX.map((row, idx) => (
-                  <div key={idx} className="p-5 sm:p-6 flex flex-col sm:flex-row sm:items-center gap-4 sm:gap-6 hover:bg-slate-50/50 transition-colors">
-                    <div className="sm:w-1/3 shrink-0">
-                      <span className="font-bold text-sm text-[#0B2D5C] font-mono block">
-                        {row.category}
-                      </span>
-                    </div>
-                    <div className="flex flex-wrap gap-2">
-                      {row.sizes.map((sz, sIdx) => (
-                        <span
-                          key={sIdx}
-                          className="bg-slate-50 text-slate-700 font-extrabold text-xs px-2.5 py-1 rounded-lg border border-slate-200/50 font-mono shadow-sm"
-                        >
-                          {sz}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            ) : (
-              /* Tarpaulin Size Chart in a Cute Frame */
-              <div className="p-5 sm:p-6 bg-gradient-to-br from-orange-500/5 via-amber-500/5 to-orange-500/5 border-2 border-dashed border-orange-200 rounded-2xl m-4 sm:m-6 shadow-inner relative overflow-hidden transition-all duration-300">
-                {/* Cute floating decorations */}
-                <div className="absolute -top-10 -right-10 w-24 h-24 bg-orange-200/20 rounded-full blur-xl pointer-events-none" />
-                <div className="absolute -bottom-10 -left-10 w-24 h-24 bg-amber-200/20 rounded-full blur-xl pointer-events-none" />
-
-                <div className="flex items-center gap-3 mb-6 relative z-10">
-                  <div className="w-10 h-10 rounded-xl bg-orange-100 border border-orange-200 flex items-center justify-center text-orange-600 shrink-0 text-lg">
-                    📐
-                  </div>
-                  <div>
-                    <h4 className="font-black text-slate-800 text-sm sm:text-base font-display flex flex-wrap items-center gap-2">
-                      <span>Standard Tarpaulin Sizing Matrix</span>
-                      <span className="text-[9px] font-black bg-orange-500 text-white px-2 py-0.5 rounded-md uppercase tracking-wider">
-                        All Sizes
-                      </span>
-                    </h4>
-                    <p className="text-xs text-slate-500">Premium Double-Reinforced All-Weather Guards</p>
-                  </div>
-                </div>
-
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 relative z-10">
-                  {/* Category 1: Standard & Utility */}
-                  <div className="bg-white/90 p-4 rounded-xl border border-orange-200/40 backdrop-blur-sm shadow-sm hover:border-orange-300/60 transition-colors">
-                    <div className="flex items-center gap-1.5 mb-2.5 border-b border-orange-100/60 pb-1.5">
-                      <span className="text-sm">🏡</span>
-                      <span className="font-extrabold text-xs text-slate-800 uppercase tracking-wider font-display">
-                        Small & Utility Sizes
-                      </span>
-                    </div>
-                    <div className="flex flex-wrap gap-2">
-                      {["6 × 6 ft", "9 × 12 ft", "12 × 12 ft", "12 × 15 ft"].map((sz) => (
-                        <span
-                          key={sz}
-                          className="bg-orange-50 text-orange-700 font-extrabold text-xs px-2.5 py-1.5 rounded-lg border border-orange-100/60 font-mono shadow-sm hover:scale-105 transition-transform"
-                        >
-                          {sz}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Category 2: Medium & Standard */}
-                  <div className="bg-white/90 p-4 rounded-xl border border-orange-200/40 backdrop-blur-sm shadow-sm hover:border-orange-300/60 transition-colors">
-                    <div className="flex items-center gap-1.5 mb-2.5 border-b border-orange-100/60 pb-1.5">
-                      <span className="text-sm">🚚</span>
-                      <span className="font-extrabold text-xs text-slate-800 uppercase tracking-wider font-display">
-                        Medium & Standard Sizes
-                      </span>
-                    </div>
-                    <div className="flex flex-wrap gap-2">
-                      {["12 × 18 ft", "15 × 18 ft", "18 × 24 ft", "24 × 24 ft"].map((sz) => (
-                        <span
-                          key={sz}
-                          className="bg-amber-50 text-amber-700 font-extrabold text-xs px-2.5 py-1.5 rounded-lg border border-amber-100/60 font-mono shadow-sm hover:scale-105 transition-transform"
-                        >
-                          {sz}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Category 3: Large & Commercial */}
-                  <div className="bg-white/90 p-4 rounded-xl border border-orange-200/40 backdrop-blur-sm shadow-sm hover:border-orange-300/60 transition-colors">
-                    <div className="flex items-center gap-1.5 mb-2.5 border-b border-orange-100/60 pb-1.5">
-                      <span className="text-sm">🏗️</span>
-                      <span className="font-extrabold text-xs text-slate-800 uppercase tracking-wider font-display">
-                        Large & Heavy-Duty Sizes
-                      </span>
-                    </div>
-                    <div className="flex flex-wrap gap-2">
-                      {["24 × 30 ft", "30 × 30 ft", "36 × 40 ft", "40 × 40 ft"].map((sz) => (
-                        <span
-                          key={sz}
-                          className="bg-rose-50 text-rose-700 font-extrabold text-xs px-2.5 py-1.5 rounded-lg border border-rose-100/60 font-mono shadow-sm hover:scale-105 transition-transform"
-                        >
-                          {sz}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-
-                  {/* Category 4: Super Large & Industrial */}
-                  <div className="bg-white/90 p-4 rounded-xl border border-orange-200/40 backdrop-blur-sm shadow-sm hover:border-orange-300/60 transition-colors">
-                    <div className="flex items-center gap-1.5 mb-2.5 border-b border-orange-100/60 pb-1.5">
-                      <span className="text-sm">⛈️</span>
-                      <span className="font-extrabold text-xs text-slate-800 uppercase tracking-wider font-display">
-                        Industrial & Bulk Covering
-                      </span>
-                    </div>
-                    <div className="flex flex-wrap gap-2">
-                      {["30 × 75 ft", "40 × 60 ft", "40 × 80 ft", "100 × 50 ft", "100 × 100 ft"].map((sz) => (
-                        <span
-                          key={sz}
-                          className="bg-blue-50 text-blue-700 font-extrabold text-xs px-2.5 py-1.5 rounded-lg border border-blue-100/60 font-mono shadow-sm hover:scale-105 transition-transform"
-                        >
-                          {sz}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                </div>
-
-                {/* Cute Helper Footnote */}
-                <div className="mt-5 p-3.5 bg-orange-500/10 border border-orange-500/20 rounded-xl flex items-start gap-2.5 text-[11px] text-orange-800 leading-relaxed font-medium">
-                  <span className="text-base shrink-0 select-none">🔔</span>
-                  <span>
-                    Aluminum Rust-Resistant Grommets are pre-installed at every 3 feet intervals for reliable heavy-duty anchoring and tying. Custom configurations can be ordered on request!
-                  </span>
-                </div>
-              </div>
-            )}
-          </div>
-
-        </div>
-      </section>
+      {/* 8. AVAILABLE PLASTIC & TARPAULIN SIZES (PREMIUM SIZE CHART) */}
+      <SizeChartSection
+        lang={lang}
+        onSelectSize={(szStr) => handleEnquire("", `Inquiry for Size: ${szStr}`)}
+      />
 
       {/* 10. INTERACTIVE FAQ & INQUIRY FORM */}
       <section id="enquire" ref={inquiryRef} className="py-20 bg-slate-50 border-t border-slate-100 relative scroll-mt-24 overflow-hidden">
