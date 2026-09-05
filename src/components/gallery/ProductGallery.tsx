@@ -72,7 +72,30 @@ export default function ProductGallery({
     if (allVideos.length > 0) {
       setRotation(allVideos[0].defaultRotate || 0);
     }
-  }, [images, allVideos.length > 0 ? allVideos[0].url : ""]);
+  }, [productName, images]);
+
+  // When active video changes, immediately load new video and apply correct rotation
+  useEffect(() => {
+    if (currentVideo) {
+      setRotation(currentVideo.defaultRotate || 0);
+      setIsPlaying(true);
+      if (videoRef.current) {
+        try {
+          videoRef.current.load();
+          videoRef.current.play().catch(() => {
+            // Autoplay policy fallback: mute and play
+            if (videoRef.current) {
+              videoRef.current.muted = true;
+              setIsMuted(true);
+              videoRef.current.play().catch(() => {});
+            }
+          });
+        } catch {
+          // ignore
+        }
+      }
+    }
+  }, [currentVideo?.url]);
 
   // Keyboard navigation for Lightbox
   useEffect(() => {
@@ -245,6 +268,7 @@ export default function ProductGallery({
           /* Video Player View */
           <div className="relative w-full h-full flex items-center justify-center bg-black overflow-hidden">
             <video
+              key={currentVideo.url}
               ref={videoRef}
               src={currentVideo.url}
               autoPlay

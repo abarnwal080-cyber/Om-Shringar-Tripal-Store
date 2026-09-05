@@ -161,11 +161,6 @@ export const PRODUCTS: Product[] = [
         url: "https://stretchi.edgeone.dev/",
         title: "Transparent Stretch Film Roll Wrapping & Cling Test",
         defaultRotate: 0
-      },
-      {
-        url: "https://stretch.edgeone.dev/",
-        title: "Industrial Stretch Film Elasticity & High-Cling Demonstration",
-        defaultRotate: 90
       }
     ],
     faqs: [
