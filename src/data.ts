@@ -1,3 +1,9 @@
+export interface ProductVideo {
+  url: string;
+  title: string;
+  defaultRotate?: number;
+}
+
 export interface Product {
   id: string;
   name: string;
@@ -13,6 +19,8 @@ export interface Product {
   specs?: Record<string, string>;
   applications?: string[];
   faqs?: FAQItem[];
+  video?: ProductVideo;
+  videos?: ProductVideo[];
 }
 
 export interface FAQItem {
@@ -143,6 +151,23 @@ export const PRODUCTS: Product[] = [
       "Cling Rate": "Self-adhering (No Glue Residue)"
     },
     applications: ["Industrial Use", "Transport", "Warehouses"],
+    video: {
+      url: "https://stretchi.edgeone.dev/",
+      title: "Transparent Stretch Film Roll Wrapping & Cling Test",
+      defaultRotate: 0
+    },
+    videos: [
+      {
+        url: "https://stretchi.edgeone.dev/",
+        title: "Transparent Stretch Film Roll Wrapping & Cling Test",
+        defaultRotate: 0
+      },
+      {
+        url: "https://stretch.edgeone.dev/",
+        title: "Industrial Stretch Film Elasticity & High-Cling Demonstration",
+        defaultRotate: 90
+      }
+    ],
     faqs: [
       { question: "Is this film sticky on both sides?", answer: "It is a self-clinging film, meaning it binds perfectly to itself without leaving any sticky adhesive residue on your wrapped products." },
       { question: "What is the primary thickness of this stretch roll?", answer: "Our standard industrial stretch film is 23 microns thick, offering the ultimate balance of stretchability and tear resistance." },
@@ -187,6 +212,11 @@ export const PRODUCTS: Product[] = [
       "Waterproof Rate": "100% Leak Proof"
     },
     applications: ["Construction", "Agriculture", "Industrial Use"],
+    video: {
+      url: "https://dhalai.edgeone.dev/",
+      title: "Construction Blue Polythene Dhalai & Concrete Curing Video",
+      defaultRotate: 90
+    },
     faqs: [
       { question: "Why is blue polythene preferred for road construction?", answer: "Blue polythene prevents water evaporation during the cement-setting phase, ensuring a highly durable curing process with fewer cracks." },
       { question: "Which sizes are most popular in Bihar?", answer: "The most popular widths are 12 feet, 18 feet, and 24 feet, which are readily in stock for instant dispatch." },
@@ -312,6 +342,23 @@ export const PRODUCTS: Product[] = [
       "Lifespan": "Built to last multiple seasons"
     },
     applications: ["Agriculture", "Transport", "Construction", "Warehouses"],
+    video: {
+      url: "https://hopep.edgeone.dev/",
+      title: "HDPE Waterproof Tarpaulin Quality & Flexibility Test",
+      defaultRotate: 0
+    },
+    videos: [
+      {
+        url: "https://hopep.edgeone.dev/",
+        title: "HDPE Waterproof Tarpaulin Quality & Flexibility Test",
+        defaultRotate: 0
+      },
+      {
+        url: "https://sensible-blush-cjql8l17.edgeone.dev/",
+        title: "Heavy-Duty Tarpaulin Deployment & Stock Demonstration",
+        defaultRotate: 90
+      }
+    ],
     faqs: [
       { question: "What does 'GSM' mean, and which GSM should I choose?", answer: "GSM stands for Grams per Square Meter. Higher GSM (like 250+ GSM) represents thicker, heavier tarpaulin for long-term truck covering, while lower GSM (like 120 GSM) is ideal for grain drying and light cover." },
       { question: "Are the eyelets rust-proof?", answer: "Yes, our premium tarpaulins are equipped with anodized rust-resistant aluminum eyelets placed every 3 feet for secure tying." },

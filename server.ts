@@ -8,6 +8,39 @@ async function startServer() {
   const app = express();
   const PORT = 3000;
 
+  app.use(express.json());
+
+  // In-memory data stores with optional file persistence
+  const dataDir = path.join(process.cwd(), "data");
+  if (!fs.existsSync(dataDir)) {
+    try {
+      fs.mkdirSync(dataDir, { recursive: true });
+    } catch {
+      // ignore
+    }
+  }
+
+  const enquiriesFile = path.join(dataDir, "enquiries.json");
+  const reviewsFile = path.join(dataDir, "reviews.json");
+
+  let enquiriesStore: any[] = [];
+  try {
+    if (fs.existsSync(enquiriesFile)) {
+      enquiriesStore = JSON.parse(fs.readFileSync(enquiriesFile, "utf-8"));
+    }
+  } catch {
+    enquiriesStore = [];
+  }
+
+  let reviewsStore: any[] = [];
+  try {
+    if (fs.existsSync(reviewsFile)) {
+      reviewsStore = JSON.parse(fs.readFileSync(reviewsFile, "utf-8"));
+    }
+  } catch {
+    reviewsStore = [];
+  }
+
   // 1. Robots.txt Route
   app.get("/robots.txt", (req, res) => {
     res.type("text/plain");
@@ -42,6 +75,72 @@ ${urls.map(url => `  <url>
   // 3. API health check
   app.get("/api/health", (req, res) => {
     res.json({ status: "ok" });
+  });
+
+  // 4. Customer Enquiries API
+  app.get("/api/enquiries", (req, res) => {
+    res.json({ enquiries: enquiriesStore });
+  });
+
+  app.post("/api/enquiries", (req, res) => {
+    const body = req.body || {};
+    const enquiry = {
+      id: body.id || `enq_${Date.now()}`,
+      customerName: body.customerName || "Customer",
+      state: body.state || "",
+      city: body.city || "",
+      productName: body.productName || "",
+      productId: body.productId || "",
+      date: body.date || new Date().toISOString(),
+      time: body.time || "",
+      enquirySource: body.enquirySource || "Product Detail Page",
+      status: body.status || "New",
+    };
+
+    enquiriesStore.unshift(enquiry);
+    try {
+      fs.writeFileSync(enquiriesFile, JSON.stringify(enquiriesStore, null, 2));
+    } catch {
+      // ignore
+    }
+
+    res.json({ success: true, enquiry });
+  });
+
+  // 5. Product-Specific Reviews API
+  app.get("/api/reviews", (req, res) => {
+    const productId = req.query.productId as string;
+    if (!productId) {
+      return res.json({ reviews: reviewsStore });
+    }
+    const filtered = reviewsStore.filter((r) => r.productId === productId);
+    res.json({ reviews: filtered });
+  });
+
+  app.post("/api/reviews", (req, res) => {
+    const body = req.body || {};
+    if (!body.productId || !body.customerName || !body.rating || !body.reviewText) {
+      return res.status(400).json({ error: "Missing required review fields" });
+    }
+
+    const review = {
+      id: body.id || `rev_${Date.now()}`,
+      productId: body.productId,
+      customerName: body.customerName,
+      rating: Number(body.rating),
+      reviewText: body.reviewText,
+      createdAt: body.createdAt || new Date().toISOString(),
+      status: "approved",
+    };
+
+    reviewsStore.unshift(review);
+    try {
+      fs.writeFileSync(reviewsFile, JSON.stringify(reviewsStore, null, 2));
+    } catch {
+      // ignore
+    }
+
+    res.json({ success: true, review });
   });
 
   let vite: any;
