@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import { motion, AnimatePresence } from "motion/react";
 import {
   Star,
   MessageSquarePlus,
@@ -44,9 +45,10 @@ export default function ProductReviewsSection({
   );
   const [loading, setLoading] = useState(false);
   const [isWriteModalOpen, setIsWriteModalOpen] = useState(false);
-  const [activeCoachIndex, setActiveCoachIndex] = useState(0);
+  const [activeReviewIndex, setActiveReviewIndex] = useState(0);
 
-  const trainTrackRef = useRef<HTMLDivElement>(null);
+  const isHoveredRef = useRef(false);
+  const touchStartX = useRef<number | null>(null);
 
   // Form State
   const [reviewerName, setReviewerName] = useState("");
@@ -79,33 +81,49 @@ export default function ProductReviewsSection({
     };
   }, [productId]);
 
-  // Track active coach while user scrolls
-  const handleScroll = () => {
-    if (!trainTrackRef.current) return;
-    const container = trainTrackRef.current;
-    const cardWidth = container.firstElementChild?.clientWidth || 340;
-    const scrollLeft = container.scrollLeft;
-    const index = Math.round(scrollLeft / (cardWidth + 16));
-    setActiveCoachIndex(Math.max(0, Math.min(reviews.length - 1, index)));
+  // Auto-scroll 1 by 1 review every 4 seconds as requested
+  useEffect(() => {
+    if (reviews.length <= 1) return;
+
+    const interval = setInterval(() => {
+      if (isHoveredRef.current) return;
+      setActiveReviewIndex((prev) => (prev + 1) % reviews.length);
+    }, 4000);
+
+    return () => clearInterval(interval);
+  }, [reviews.length]);
+
+  const handlePrev = () => {
+    setActiveReviewIndex((prev) => (prev === 0 ? reviews.length - 1 : prev - 1));
   };
 
-  const scrollToCoach = (index: number) => {
-    if (!trainTrackRef.current) return;
-    const container = trainTrackRef.current;
-    const cardWidth = container.firstElementChild?.clientWidth || 340;
-    container.scrollTo({
-      left: index * (cardWidth + 16),
-      behavior: "smooth",
-    });
-    setActiveCoachIndex(index);
+  const handleNext = () => {
+    setActiveReviewIndex((prev) => (prev === reviews.length - 1 ? 0 : prev + 1));
   };
 
-  const scrollPrev = () => {
-    scrollToCoach(Math.max(0, activeCoachIndex - 1));
+  const scrollToReview = (index: number) => {
+    setActiveReviewIndex(index);
   };
 
-  const scrollNext = () => {
-    scrollToCoach(Math.min(reviews.length - 1, activeCoachIndex + 1));
+  // Touch Swipe Handlers for Mobile
+  const handleTouchStart = (e: React.TouchEvent) => {
+    isHoveredRef.current = true;
+    touchStartX.current = e.touches[0].clientX;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX.current !== null) {
+      const diffX = touchStartX.current - e.changedTouches[0].clientX;
+      if (diffX > 40) {
+        handleNext();
+      } else if (diffX < -40) {
+        handlePrev();
+      }
+    }
+    touchStartX.current = null;
+    setTimeout(() => {
+      isHoveredRef.current = false;
+    }, 3000);
   };
 
   const stats = computeRatingStats(reviews);
@@ -148,7 +166,7 @@ export default function ProductReviewsSection({
       setSelectedRating(5);
       setReviewContent("");
       setIsWriteModalOpen(false);
-      scrollToCoach(0);
+      scrollToReview(0);
     } catch (err) {
       setFormError("Failed to save your review. Please try again.");
     } finally {
@@ -187,37 +205,35 @@ export default function ProductReviewsSection({
               10 VERIFIED RATINGS
             </span>
             <span className="text-xs font-semibold text-slate-400">
-              • Regional Express Feed
+              • Direct Customer Feedback
             </span>
           </div>
           <h3 className="text-2xl sm:text-3xl font-black font-display text-slate-900 tracking-tight">
             Customer Reviews ({stats.average.toFixed(1)} ★)
           </h3>
           <p className="text-xs sm:text-sm text-slate-500 mt-0.5">
-            Verified buyer feedback from Maharajganj, Basantpur, Ekma, Chhapra, Patna, Siwan & Gopalganj.
+            Verified customer ratings and authentic product feedback.
           </p>
         </div>
 
         <div className="flex items-center gap-2.5">
-          {/* Train Navigation Buttons */}
+          {/* 1-by-1 Navigation Buttons */}
           <div className="flex items-center gap-1.5 bg-slate-100 p-1 rounded-xl border border-slate-200/80">
             <button
-              onClick={scrollPrev}
-              disabled={activeCoachIndex === 0}
-              className="p-2 rounded-lg bg-white shadow-xs hover:bg-orange-500 hover:text-white text-slate-700 disabled:opacity-30 disabled:hover:bg-white disabled:hover:text-slate-700 transition-all cursor-pointer"
-              title="Previous Review (Coach)"
+              onClick={handlePrev}
+              className="p-2 rounded-lg bg-white shadow-xs hover:bg-orange-500 hover:text-white text-slate-700 transition-all cursor-pointer"
+              title="Previous Review"
               aria-label="Previous Review"
             >
               <ChevronLeft className="w-4 h-4" />
             </button>
-            <span className="text-xs font-mono font-bold px-2 text-slate-700">
-              {activeCoachIndex + 1} / {reviews.length}
+            <span className="text-xs font-mono font-bold px-2 text-slate-700 min-w-[50px] text-center">
+              {activeReviewIndex + 1} / {reviews.length}
             </span>
             <button
-              onClick={scrollNext}
-              disabled={activeCoachIndex >= reviews.length - 1}
-              className="p-2 rounded-lg bg-white shadow-xs hover:bg-orange-500 hover:text-white text-slate-700 disabled:opacity-30 disabled:hover:bg-white disabled:hover:text-slate-700 transition-all cursor-pointer"
-              title="Next Review (Coach)"
+              onClick={handleNext}
+              className="p-2 rounded-lg bg-white shadow-xs hover:bg-orange-500 hover:text-white text-slate-700 transition-all cursor-pointer"
+              title="Next Review"
               aria-label="Next Review"
             >
               <ChevronRight className="w-4 h-4" />
@@ -267,171 +283,180 @@ export default function ProductReviewsSection({
           </div>
         </div>
 
-        {/* Region Badges Pills */}
-        <div className="flex flex-wrap items-center justify-center sm:justify-end gap-1.5 text-[11px] font-semibold text-slate-600">
-          <span className="text-slate-400 text-xs mr-1 hidden md:inline">Verified Areas:</span>
-          {allowedAreas.map((area) => (
-            <span
-              key={area}
-              className="bg-slate-100 hover:bg-orange-50 border border-slate-200/70 text-slate-700 px-2 py-0.5 rounded-md text-[10px] font-bold"
-            >
-              {area}
-            </span>
-          ))}
+        {/* Verified Trust Badge */}
+        <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-emerald-50 border border-emerald-200/70 text-emerald-800 text-xs font-bold">
+          <CheckCircle2 className="w-4 h-4 text-emerald-600" />
+          <span>100% Genuine Verified Buyer Feedback</span>
         </div>
       </div>
 
       {/* ========================================================================= */}
-      {/* HORIZONTAL REVIEWS TRAIN (COACH-BY-COACH SIDE BY SIDE) */}
+      {/* 1-BY-1 REVIEWS SHOWCASE (AUTO-SCROLLING EVERY 4 SECONDS) */}
       {/* ========================================================================= */}
-      <div className="relative w-full">
-        {/* Train Coaches Scroll Track */}
-        <div
-          ref={trainTrackRef}
-          onScroll={handleScroll}
-          className="flex gap-4 sm:gap-5 overflow-x-auto pb-4 pt-1 snap-x snap-mandatory scroll-smooth scrollbar-none"
-          style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
-        >
-          {loading ? (
-            <div className="w-full text-center py-12 text-slate-400 text-sm font-medium">
-              Loading reviews train...
-            </div>
-          ) : (
-            reviews.map((rev, index) => {
-              const { name: parsedName, area: parsedArea } = parseCustomerNameAndArea(
-                rev.customerName
-              );
-              const isActive = index === activeCoachIndex;
+      <div
+        className="relative w-full"
+        onMouseEnter={() => {
+          isHoveredRef.current = true;
+        }}
+        onMouseLeave={() => {
+          isHoveredRef.current = false;
+        }}
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+      >
+        {loading ? (
+          <div className="w-full text-center py-16 text-slate-400 text-sm font-medium bg-white rounded-3xl border border-slate-200">
+            Loading reviews...
+          </div>
+        ) : reviews.length === 0 ? (
+          <div className="w-full text-center py-16 text-slate-400 text-sm font-medium bg-white rounded-3xl border border-slate-200">
+            No reviews yet. Be the first to review!
+          </div>
+        ) : (
+          (() => {
+            const currentReview = reviews[activeReviewIndex] || reviews[0];
+            const { name: parsedName, area: parsedArea } = parseCustomerNameAndArea(
+              currentReview.customerName
+            );
 
-              return (
-                <div
-                  key={rev.id || index}
-                  onClick={() => scrollToCoach(index)}
-                  className={`min-w-[290px] max-w-[320px] sm:min-w-[340px] sm:max-w-[360px] md:min-w-[370px] md:max-w-[390px] shrink-0 snap-center rounded-3xl p-5 sm:p-6 border transition-all duration-300 flex flex-col justify-between cursor-pointer ${
-                    isActive
-                      ? "bg-white border-orange-300 shadow-md ring-2 ring-orange-500/20 scale-[1.01]"
-                      : "bg-white/90 border-slate-200/80 shadow-xs hover:border-slate-300 hover:bg-white hover:shadow-sm"
-                  }`}
-                >
-                  <div>
-                    {/* Coach Number & Rating Row */}
-                    <div className="flex items-center justify-between gap-2 mb-3 pb-3 border-b border-slate-100">
-                      <div className="flex items-center gap-1.5">
-                        <span className="text-[10px] font-black tracking-wider uppercase bg-orange-100 text-orange-800 px-2 py-0.5 rounded-md flex items-center gap-1">
-                          Coach #{index + 1}
+            return (
+              <div className="relative bg-white rounded-3xl p-6 sm:p-8 md:p-10 border border-slate-200 shadow-sm overflow-hidden group">
+                {/* 4-second auto-scroll animated progress line */}
+                <div className="absolute top-0 left-0 right-0 h-1 bg-slate-100 overflow-hidden">
+                  <motion.div
+                    key={activeReviewIndex}
+                    initial={{ width: "0%" }}
+                    animate={{ width: "100%" }}
+                    transition={{ duration: 4, ease: "linear" }}
+                    className="h-full bg-gradient-to-r from-orange-500 to-amber-500"
+                  />
+                </div>
+
+                <AnimatePresence mode="wait">
+                  <motion.div
+                    key={currentReview.id || activeReviewIndex}
+                    initial={{ opacity: 0, x: 20 }}
+                    animate={{ opacity: 1, x: 0 }}
+                    exit={{ opacity: 0, x: -20 }}
+                    transition={{ duration: 0.35, ease: "easeInOut" }}
+                    className="flex flex-col gap-6"
+                  >
+                    {/* Top Row: Review Badge & Rating */}
+                    <div className="flex flex-wrap items-center justify-between gap-3 pb-4 border-b border-slate-100">
+                      <div className="flex items-center gap-2">
+                        <span className="text-xs font-black tracking-wider uppercase bg-orange-100 text-orange-800 px-3 py-1 rounded-full flex items-center gap-1.5">
+                          Review #{activeReviewIndex + 1}
                         </span>
-                        <span className="text-[11px] font-bold text-slate-400">
-                          of 10
+                        <span className="text-xs font-bold text-slate-400 font-mono">
+                          of {reviews.length}
                         </span>
                       </div>
 
-                      <div className="flex items-center gap-1 bg-amber-50 px-2 py-0.5 rounded-md border border-amber-200/60">
-                        <div className="flex items-center text-amber-400">
-                          {[1, 2, 3, 4, 5].map((s) => (
-                            <Star
-                              key={s}
-                              className={`w-3.5 h-3.5 ${
-                                s <= rev.rating
-                                  ? "fill-amber-400 text-amber-400"
-                                  : "text-slate-200"
-                              }`}
-                            />
-                          ))}
-                        </div>
-                        <span className="text-xs font-black text-amber-900 font-mono ml-0.5">
-                          {rev.rating}.0
-                        </span>
-                      </div>
-                    </div>
-
-                    {/* Customer Info & Location */}
-                    <div className="flex items-center gap-3 mb-3">
-                      <div className="w-10 h-10 rounded-2xl bg-gradient-to-br from-slate-800 to-slate-900 text-white font-black text-sm flex items-center justify-center shadow-xs shrink-0">
-                        {parsedName.charAt(0).toUpperCase()}
-                      </div>
-
-                      <div className="min-w-0 flex-1">
-                        <div className="flex items-center gap-1.5 flex-wrap">
-                          <h4 className="font-extrabold text-slate-900 text-sm tracking-tight truncate">
-                            {parsedName}
-                          </h4>
-                          <span className="inline-flex items-center gap-0.5 text-[10px] font-bold text-emerald-700 bg-emerald-50 px-1.5 py-0.2 rounded border border-emerald-200/60 shrink-0">
-                            <CheckCircle2 className="w-3 h-3 text-emerald-600" />
-                            Verified
+                      <div className="flex items-center gap-3">
+                        <div className="flex items-center gap-1 bg-amber-50 px-3 py-1 rounded-full border border-amber-200/60">
+                          <div className="flex items-center text-amber-400">
+                            {[1, 2, 3, 4, 5].map((s) => (
+                              <Star
+                                key={s}
+                                className={`w-4 h-4 ${
+                                  s <= currentReview.rating
+                                    ? "fill-amber-400 text-amber-400"
+                                    : "text-slate-200"
+                                }`}
+                              />
+                            ))}
+                          </div>
+                          <span className="text-xs font-black text-amber-900 font-mono ml-1">
+                            {currentReview.rating}.0
                           </span>
                         </div>
 
-                        {/* Location Tag */}
-                        <div className="flex items-center gap-1 text-[11px] font-semibold text-slate-500 mt-0.5">
-                          <MapPin className="w-3 h-3 text-orange-500 shrink-0" />
-                          <span className="text-slate-700 font-bold">{parsedArea}</span>
-                          <span className="text-slate-300">•</span>
-                          <span className="text-slate-400 text-[10px]">{rev.createdAt}</span>
-                        </div>
+                        <span className="inline-flex items-center gap-1 text-xs font-bold text-emerald-700 bg-emerald-50 px-2.5 py-1 rounded-full border border-emerald-200/60">
+                          <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
+                          <span>Verified Buyer</span>
+                        </span>
                       </div>
                     </div>
 
-                    {/* Review Text */}
-                    <div className="relative mt-2 text-slate-700 text-xs sm:text-sm leading-relaxed font-normal bg-slate-50/70 p-3.5 rounded-2xl border border-slate-100">
-                      <Quote className="w-4 h-4 text-orange-400/50 mb-1" />
-                      <p className="italic">"{rev.reviewText}"</p>
+                    {/* Middle: Review Quote */}
+                    <div className="relative bg-slate-50/80 p-5 sm:p-6 rounded-2xl border border-slate-100">
+                      <Quote className="w-6 h-6 text-orange-400/60 mb-2" />
+                      <p className="text-base sm:text-lg text-slate-800 leading-relaxed font-normal not-italic">
+                        "{currentReview.reviewText}"
+                      </p>
                     </div>
-                  </div>
 
-                  {/* Coach Bottom Bar */}
-                  <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between text-[10px] text-slate-400 font-medium">
-                    <span className="flex items-center gap-1 text-slate-500 font-semibold">
-                      <Sparkles className="w-3 h-3 text-amber-500" />
-                      Verified Store Purchase
-                    </span>
-                    <span className="font-mono font-bold text-orange-600">
-                      Om Shringar Client
-                    </span>
-                  </div>
-                </div>
-              );
-            })
-          )}
-        </div>
+                    {/* Bottom: Customer profile & controls */}
+                    <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pt-2">
+                      <div className="flex items-center gap-3.5">
+                        <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-slate-800 to-slate-900 text-white font-black text-base flex items-center justify-center shadow-xs shrink-0">
+                          {parsedName.charAt(0).toUpperCase()}
+                        </div>
 
-        {/* Train Track Visual Representation & Station Dots */}
-        <div className="mt-4 pt-2 flex flex-col items-center">
-          {/* Track Railway Line with 10 Dots */}
-          <div className="w-full max-w-md flex items-center justify-between relative px-2 py-2">
-            <div className="absolute inset-x-4 top-1/2 -translate-y-1/2 h-1 bg-slate-200 rounded-full z-0" />
-            <div
-              className="absolute left-4 top-1/2 -translate-y-1/2 h-1 bg-orange-500 rounded-full transition-all duration-300 z-0"
-              style={{
-                width: `${(activeCoachIndex / Math.max(1, reviews.length - 1)) * 92}%`,
-              }}
-            />
+                        <div>
+                          <h4 className="font-extrabold text-slate-900 text-base tracking-tight">
+                            {parsedName}
+                          </h4>
+                          <div className="flex items-center gap-1.5 text-xs font-semibold text-slate-500 mt-0.5">
+                            <MapPin className="w-3.5 h-3.5 text-orange-500 shrink-0" />
+                            <span className="text-slate-700 font-bold">{parsedArea}</span>
+                            <span className="text-slate-300">•</span>
+                            <span className="text-slate-400">{currentReview.createdAt}</span>
+                          </div>
+                        </div>
+                      </div>
 
-            {reviews.map((_, dotIdx) => (
-              <button
-                key={dotIdx}
-                onClick={() => scrollToCoach(dotIdx)}
-                className={`relative z-10 w-6 h-6 rounded-full flex items-center justify-center font-mono text-[10px] font-bold transition-all cursor-pointer ${
-                  dotIdx === activeCoachIndex
-                    ? "bg-orange-500 text-white shadow-md scale-110"
-                    : dotIdx < activeCoachIndex
-                    ? "bg-orange-200 text-orange-900"
-                    : "bg-white text-slate-400 border border-slate-300 hover:border-orange-400"
-                }`}
-                title={`Jump to Review #${dotIdx + 1}`}
-                aria-label={`Jump to Review ${dotIdx + 1}`}
-              >
-                {dotIdx + 1}
-              </button>
-            ))}
+                      {/* Manual Previous & Next buttons */}
+                      <div className="flex items-center gap-2 self-end sm:self-center">
+                        <button
+                          onClick={handlePrev}
+                          className="p-2.5 rounded-xl bg-slate-100 hover:bg-orange-500 hover:text-white text-slate-700 transition-all cursor-pointer shadow-xs active:scale-95"
+                          title="Previous Review"
+                          aria-label="Previous Review"
+                        >
+                          <ChevronLeft className="w-5 h-5" />
+                        </button>
+                        <button
+                          onClick={handleNext}
+                          className="p-2.5 rounded-xl bg-slate-100 hover:bg-orange-500 hover:text-white text-slate-700 transition-all cursor-pointer shadow-xs active:scale-95"
+                          title="Next Review"
+                          aria-label="Next Review"
+                        >
+                          <ChevronRight className="w-5 h-5" />
+                        </button>
+                      </div>
+                    </div>
+                  </motion.div>
+                </AnimatePresence>
+              </div>
+            );
+          })()
+        )}
+
+        {/* 1-by-1 Pagination Pills */}
+        {reviews.length > 1 && (
+          <div className="mt-5 flex flex-col sm:flex-row items-center justify-between gap-3 px-1">
+            <div className="flex items-center gap-1.5">
+              {reviews.map((_, idx) => (
+                <button
+                  key={idx}
+                  onClick={() => scrollToReview(idx)}
+                  className={`h-2.5 rounded-full transition-all duration-300 cursor-pointer ${
+                    idx === activeReviewIndex
+                      ? "w-8 bg-orange-500"
+                      : "w-2.5 bg-slate-300 hover:bg-slate-400"
+                  }`}
+                  title={`View Review ${idx + 1}`}
+                  aria-label={`View Review ${idx + 1}`}
+                />
+              ))}
+            </div>
+
+            <div className="text-xs text-slate-500 font-medium">
+              Auto-scrolling 1 by 1 every 4 sec <span className="text-slate-400">(hover/touch to pause)</span>
+            </div>
           </div>
-
-          <div className="flex items-center justify-between w-full text-xs text-slate-400 font-medium mt-2 px-1">
-            <span>‹ Swipe left/right to browse all 10 reviews ›</span>
-            <span className="font-bold text-slate-600">
-              Showing Coach #{activeCoachIndex + 1} of 10
-            </span>
-          </div>
-        </div>
+        )}
       </div>
 
       {/* ========================================================================= */}

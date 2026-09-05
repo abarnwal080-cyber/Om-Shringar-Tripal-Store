@@ -80,12 +80,12 @@ export default function BrandCarousel({ lang = "en" }: BrandCarouselProps) {
     setActiveIndex((prev) => (prev === BRANDS.length - 1 ? 0 : prev + 1));
   };
 
-  // Auto-slide effect (smooth 3.5s interval)
+  // Auto-slide effect (smooth 1.5s interval as requested)
   useEffect(() => {
     if (isHovered || isUserTouching) return;
     const interval = setInterval(() => {
       handleNext();
-    }, 3500);
+    }, 1500);
     return () => clearInterval(interval);
   }, [isHovered, isUserTouching, activeIndex]);
 
@@ -144,18 +144,12 @@ export default function BrandCarousel({ lang = "en" }: BrandCarouselProps) {
     >
       <div className="max-w-7xl mx-auto px-4 md:px-8">
         {/* Premium Shop Name Headings */}
-        <div className="text-center mb-12 md:mb-16 space-y-4">
-          <div className="inline-flex items-center gap-2 bg-orange-50 border border-orange-200 text-[#FF6B00] font-mono text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-widest">
-            <span>Shop Name</span>
-          </div>
+        <div className="text-center mb-12 md:mb-16 space-y-3">
           <h2 className="text-3xl sm:text-4xl md:text-5xl font-black font-display text-[#0B2D5C] tracking-tight max-w-4xl mx-auto leading-tight">
             Om Shringar Tirpal Store
           </h2>
           <p className="text-base sm:text-lg font-extrabold text-slate-500 font-mono tracking-wide">
             Maharajganj, Siwan, Bihar
-          </p>
-          <p className="text-xs md:text-sm font-bold font-mono text-[#FF6B00] uppercase tracking-[0.2em] pt-2">
-            AUTHORIZED DISTRIBUTOR & TRADING PARTNER
           </p>
           <div className="w-20 h-1 bg-gradient-to-r from-[#FF6B00] to-orange-500 mx-auto rounded-full mt-4" />
         </div>
@@ -243,7 +237,7 @@ export default function BrandCarousel({ lang = "en" }: BrandCarouselProps) {
                 transition={{
                   type: "tween",
                   ease: "easeInOut",
-                  duration: 0.9,
+                  duration: 0.55,
                 }}
                 className={`absolute w-[82%] sm:w-[460px] md:w-[520px] h-[180px] sm:h-[260px] md:h-[320px] rounded-[24px] bg-white/75 backdrop-blur-md border border-slate-200/60 p-6 sm:p-8 flex flex-col items-center justify-center cursor-pointer transition-shadow duration-300 ${
                   isActive 

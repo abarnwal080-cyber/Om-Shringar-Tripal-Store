@@ -506,14 +506,9 @@ export default function App() {
                 </svg>
               </div>
               <div className="flex flex-col justify-center">
-                <span className="font-bold text-lg sm:text-xl font-display text-white tracking-tight block leading-tight">
+                <span className="font-amaranth-bold font-bold text-xl sm:text-2xl text-white tracking-tight block leading-tight">
                   OM SHRINGAR <span className="text-orange-400">TIRPAL STORE</span>
                 </span>
-                <div className="flex flex-col sm:flex-row sm:items-center gap-1.5 mt-0.5 sm:mt-0">
-                  <span className="text-[9px] sm:text-[10px] font-bold font-mono text-blue-200 uppercase tracking-widest block">
-                    Est. 2000 | Formerly Goyal Traders
-                  </span>
-                </div>
               </div>
             </div>
           </a>
@@ -679,23 +674,6 @@ export default function App() {
           )}
         </AnimatePresence>
       </header>
-
-      {/* MONSOON SALE CARD ON TOP */}
-      <div className="bg-gradient-to-r from-amber-500/10 via-orange-500/10 to-amber-500/10 border-b border-amber-500/20 py-3.5 px-4 relative z-30 shadow-sm">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-center gap-4 text-center sm:text-left">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 text-xs font-black font-mono text-white bg-gradient-to-r from-orange-600 to-amber-500 rounded-full animate-pulse border border-orange-400/30 uppercase tracking-wider w-fit mx-auto sm:mx-0 shadow-sm shrink-0">
-            🌧️ MONSOON SALE LIVE NOW!
-          </span>
-          <div className="flex flex-col">
-            <h3 className="text-slate-900 font-extrabold text-sm sm:text-base leading-snug">
-              Heavy-Duty Plastic Sheets & Waterproof Tarpaulins at Wholesale Prices!
-            </h3>
-            <p className="text-xs text-slate-600 font-medium mt-0.5">
-              Special 15% discount for bulk inquiries and direct factory dispatch during this rainy season.
-            </p>
-          </div>
-        </div>
-      </div>
 
       {matchedProduct ? (
         <SingleProductSection
@@ -1491,11 +1469,11 @@ export default function App() {
         </div>
       </footer>
 
-      {/* 13. FLOATING ACTION CTA WIDGETS */}
+      {/* 13. FLOATING ACTION CTA WIDGETS (Visible exclusively on Homescreen, hidden on product details) */}
 
       {/* Floating Center Aeroplane Scroll-To-Top Button with Scroll Progress Circle Ring */}
       <AnimatePresence>
-        {!isAtFooter && showScrollTop && (
+        {!isAtFooter && showScrollTop && !matchedProduct && !currentProductSlug && !isSupplierPageOpen && (
           <motion.div
             initial={{ opacity: 0, scale: 0.8, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}
@@ -1543,7 +1521,7 @@ export default function App() {
 
       {/* Floating Right-Side Size Calculator Button */}
       <AnimatePresence>
-        {!isAtFooter && (
+        {!isAtFooter && !matchedProduct && !currentProductSlug && !isSupplierPageOpen && (
           <motion.div
             initial={{ opacity: 0, scale: 0.8, x: 20 }}
             animate={{ opacity: 1, scale: 1, x: 0 }}
@@ -1583,7 +1561,7 @@ export default function App() {
 
       {/* Unified Floating WhatsApp Button: Mobile & Desktop (Aligned Bottom Left) */}
       <AnimatePresence>
-        {!isAtFooter && (
+        {!isAtFooter && !matchedProduct && !currentProductSlug && !isSupplierPageOpen && (
           <motion.div
             initial={{ opacity: 0, scale: 0.8, y: 20 }}
             animate={{ opacity: 1, scale: 1, y: 0 }}

@@ -51,194 +51,6 @@ interface SingleProductSectionProps {
 
 const WISHLIST_STORAGE_KEY = "om_shringar_wishlist";
 
-/**
- * Embedded Video Player for PDP with Rotation & Sound toggles
- */
-function EmbeddedProductVideo({
-  video,
-}: {
-  video: { url: string; title: string; defaultRotate?: number };
-}) {
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [isPlaying, setIsPlaying] = useState(false);
-  const [isMuted, setIsMuted] = useState(false);
-  const [rotation, setRotation] = useState<number>(video.defaultRotate || 0);
-
-  useEffect(() => {
-    setRotation(video.defaultRotate || 0);
-    setIsPlaying(false);
-  }, [video.url, video.defaultRotate]);
-
-  const togglePlay = () => {
-    if (!videoRef.current) return;
-    if (videoRef.current.paused) {
-      videoRef.current.play();
-      setIsPlaying(true);
-    } else {
-      videoRef.current.pause();
-      setIsPlaying(false);
-    }
-  };
-
-  const toggleMute = () => {
-    if (!videoRef.current) return;
-    videoRef.current.muted = !isMuted;
-    setIsMuted(!isMuted);
-  };
-
-  const rotate = () => {
-    setRotation((prev) => (prev + 90) % 360);
-  };
-
-  return (
-    <div className="relative w-full aspect-[4/3] sm:aspect-video bg-black rounded-2xl overflow-hidden shadow-xl border border-slate-800 flex items-center justify-center">
-      <video
-        ref={videoRef}
-        src={video.url}
-        playsInline
-        loop
-        muted={isMuted}
-        onClick={togglePlay}
-        onPlay={() => setIsPlaying(true)}
-        onPause={() => setIsPlaying(false)}
-        className="w-full h-full object-contain cursor-pointer transition-transform duration-300"
-        style={{
-          transform: `rotate(${rotation}deg) scale(${
-            rotation % 180 !== 0 ? 0.75 : 1
-          })`,
-        }}
-      />
-
-      {/* Play button overlay */}
-      {!isPlaying && (
-        <button
-          onClick={togglePlay}
-          className="absolute inset-0 m-auto w-16 h-16 rounded-full bg-orange-500/90 text-white flex items-center justify-center shadow-2xl hover:scale-110 active:scale-95 transition-transform cursor-pointer z-20"
-          aria-label="Play Video"
-        >
-          <Play className="w-8 h-8 fill-current ml-1" />
-        </button>
-      )}
-
-      {/* Bottom control bar */}
-      <div className="absolute bottom-3 inset-x-3 z-20 flex items-center justify-between px-4 py-2.5 rounded-xl bg-black/75 backdrop-blur-md text-white border border-white/15 text-xs font-semibold">
-        <button
-          onClick={togglePlay}
-          className="flex items-center gap-2 hover:text-orange-400 transition-colors cursor-pointer"
-        >
-          <Play
-            className={`w-4 h-4 ${
-              isPlaying ? "fill-orange-400 text-orange-400" : ""
-            }`}
-          />
-          <span>{isPlaying ? "Pause" : "Play Video"}</span>
-        </button>
-
-        <div className="flex items-center gap-2.5">
-          <button
-            onClick={rotate}
-            className="flex items-center gap-1.5 hover:text-orange-400 transition-colors cursor-pointer bg-white/10 px-2.5 py-1 rounded-lg text-xs"
-            title="Rotate Video 90°"
-          >
-            <RotateCw className="w-3.5 h-3.5" />
-            <span>Rotate ({rotation}°)</span>
-          </button>
-
-          <button
-            onClick={toggleMute}
-            className="p-1.5 rounded-lg hover:bg-white/15 text-white transition-colors cursor-pointer"
-            title={isMuted ? "Unmute" : "Mute"}
-          >
-            {isMuted ? (
-              <VolumeX className="w-4 h-4 text-rose-400" />
-            ) : (
-              <Volume2 className="w-4 h-4 text-emerald-400" />
-            )}
-          </button>
-        </div>
-      </div>
-    </div>
-  );
-}
-
-/**
- * Product Video Showcase supporting single or multiple demonstration videos
- */
-function ProductVideoShowcase({
-  video,
-  videos,
-}: {
-  video?: { url: string; title: string; defaultRotate?: number };
-  videos?: { url: string; title: string; defaultRotate?: number }[];
-}) {
-  const videoList =
-    videos && videos.length > 0 ? videos : video ? [video] : [];
-  const [activeIdx, setActiveIdx] = useState(0);
-
-  if (videoList.length === 0) return null;
-  const currentVideo = videoList[activeIdx] || videoList[0];
-
-  return (
-    <div className="bg-white rounded-3xl border border-slate-200/80 p-6 sm:p-8 lg:p-10 shadow-sm mb-10">
-      <div className="flex items-center gap-2 mb-2">
-        <Video className="w-5 h-5 text-orange-500" />
-        <span className="text-xs font-black text-slate-400 uppercase tracking-widest">
-          LIVE VIDEO DEMONSTRATION
-        </span>
-      </div>
-      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
-        <div>
-          <h2 className="text-2xl sm:text-3xl font-black font-display text-slate-900 tracking-tight">
-            {currentVideo.title}
-          </h2>
-          <p className="text-xs sm:text-sm text-slate-500 mt-1">
-            Actual on-site video footage showing material deployment, strength test, and verified product quality.
-          </p>
-        </div>
-
-        <div className="flex items-center gap-2">
-          <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-orange-50 text-orange-700 border border-orange-200 text-xs font-bold">
-            <ShieldCheck className="w-3.5 h-3.5 text-orange-600" />
-            Verified Footage
-          </span>
-        </div>
-      </div>
-
-      {/* Multi-video selector tabs if product has more than 1 video */}
-      {videoList.length > 1 && (
-        <div className="flex flex-wrap items-center gap-2.5 mb-6 p-2 rounded-2xl bg-slate-50 border border-slate-200">
-          <span className="text-xs font-bold text-slate-500 uppercase tracking-wider px-2">
-            Available Videos:
-          </span>
-          {videoList.map((vid, i) => (
-            <button
-              key={vid.url}
-              onClick={() => setActiveIdx(i)}
-              className={`flex items-center gap-2 px-4 py-2 rounded-xl text-xs font-bold transition-all cursor-pointer ${
-                activeIdx === i
-                  ? "bg-orange-500 text-white shadow-md shadow-orange-500/20"
-                  : "bg-white text-slate-700 hover:bg-slate-100 border border-slate-200"
-              }`}
-            >
-              <Video className="w-3.5 h-3.5" />
-              <span>
-                Video {i + 1}:{" "}
-                {vid.title.length > 35
-                  ? vid.title.slice(0, 35) + "..."
-                  : vid.title}
-              </span>
-            </button>
-          ))}
-        </div>
-      )}
-
-      <div className="max-w-3xl mx-auto">
-        <EmbeddedProductVideo video={currentVideo} />
-      </div>
-    </div>
-  );
-}
-
 export default function SingleProductSection({
   product,
   onBack,
@@ -424,13 +236,14 @@ export default function SingleProductSection({
         {/* ========================================================================= */}
         <div className="bg-white rounded-3xl border border-slate-200/80 shadow-sm overflow-hidden mb-10">
           <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-10 p-5 sm:p-8 lg:p-10">
-            {/* LEFT COLUMN: Product Image Gallery (45% desktop) */}
+            {/* LEFT COLUMN: Product Image Gallery & Video (45% desktop) */}
             <div className="lg:col-span-5 flex flex-col">
               <ProductGallery
                 images={product.images}
                 productName={product.name}
                 isBestSeller={product.isBestSeller}
                 video={product.video}
+                videos={product.videos}
               />
             </div>
 
@@ -756,13 +569,6 @@ export default function SingleProductSection({
             </div>
           )}
         </div>
-
-        {/* ========================================================================= */}
-        {/* DEDICATED PRODUCT VIDEO DEMONSTRATION SECTION */}
-        {/* ========================================================================= */}
-        {(product.video || (product.videos && product.videos.length > 0)) && (
-          <ProductVideoShowcase video={product.video} videos={product.videos} />
-        )}
 
         {/* ========================================================================= */}
         {/* SPECIFICATIONS SECTION (Amazon-Inspired Tabular Layout) */}

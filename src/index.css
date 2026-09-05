@@ -25,12 +25,14 @@
   }
 
   html {
-    scroll-behavior: smooth;
+    scroll-behavior: smooth !important;
     width: 100% !important;
     max-width: 100% !important;
     overflow-x: hidden !important;
     margin: 0 !important;
     padding: 0 !important;
+    -webkit-text-size-adjust: 100%;
+    -webkit-overflow-scrolling: touch;
   }
   
   body {
@@ -42,12 +44,20 @@
     overflow-x: hidden !important;
     margin: 0 !important;
     padding: 0 !important;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
 
   #root {
     width: 100% !important;
     max-width: 100% !important;
     overflow-x: hidden !important;
+  }
+
+  img, video {
+    max-width: 100%;
+    height: auto;
   }
 }
 

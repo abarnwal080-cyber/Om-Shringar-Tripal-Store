@@ -24,6 +24,11 @@ interface ProductGalleryProps {
     title: string;
     defaultRotate?: number;
   };
+  videos?: {
+    url: string;
+    title: string;
+    defaultRotate?: number;
+  }[];
 }
 
 export default function ProductGallery({
@@ -31,8 +36,12 @@ export default function ProductGallery({
   productName,
   isBestSeller,
   video,
+  videos,
 }: ProductGalleryProps) {
-  // If selectedIndex === -1, it represents the video slide
+  const allVideos = videos && videos.length > 0 ? videos : video ? [video] : [];
+  
+  // If selectedVideoIndex !== null, it represents the active video slide
+  const [selectedVideoIndex, setSelectedVideoIndex] = useState<number | null>(null);
   const [selectedIndex, setSelectedIndex] = useState<number>(0);
   const [isLightboxOpen, setIsLightboxOpen] = useState(false);
   const [lightboxZoom, setLightboxZoom] = useState(1);
@@ -41,7 +50,10 @@ export default function ProductGallery({
   const videoRef = useRef<HTMLVideoElement>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
-  const [rotation, setRotation] = useState<number>(video?.defaultRotate || 0);
+  const [rotation, setRotation] = useState<number>(0);
+
+  const isViewingVideo = selectedVideoIndex !== null && allVideos[selectedVideoIndex] !== undefined;
+  const currentVideo = isViewingVideo ? allVideos[selectedVideoIndex!] : null;
 
   // Desktop Hover Zoom state for images
   const [isHovering, setIsHovering] = useState(false);
@@ -52,14 +64,15 @@ export default function ProductGallery({
   const touchStartX = useRef<number | null>(null);
   const touchEndX = useRef<number | null>(null);
 
-  // Reset selected image when images list or product changes
+  // Reset selected image/video when images list or product changes
   useEffect(() => {
+    setSelectedVideoIndex(null);
     setSelectedIndex(0);
     setIsPlaying(false);
-    if (video) {
-      setRotation(video.defaultRotate || 0);
+    if (allVideos.length > 0) {
+      setRotation(allVideos[0].defaultRotate || 0);
     }
-  }, [images, video?.url]);
+  }, [images, allVideos.length > 0 ? allVideos[0].url : ""]);
 
   // Keyboard navigation for Lightbox
   useEffect(() => {
@@ -75,36 +88,52 @@ export default function ProductGallery({
     };
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
-  }, [isLightboxOpen, images.length]);
+  }, [isLightboxOpen, images.length, allVideos.length]);
 
-  const totalSlides = video ? images.length + 1 : images.length;
+  const totalSlides = images.length + allVideos.length;
 
   const handleNext = () => {
-    if (selectedIndex === -1) {
-      // from video to first image
-      setSelectedIndex(0);
-    } else if (selectedIndex === images.length - 1) {
-      if (video) {
-        setSelectedIndex(-1); // to video
+    if (isViewingVideo && selectedVideoIndex !== null) {
+      if (selectedVideoIndex < allVideos.length - 1) {
+        const nextV = selectedVideoIndex + 1;
+        setSelectedVideoIndex(nextV);
+        setRotation(allVideos[nextV].defaultRotate || 0);
       } else {
+        setSelectedVideoIndex(null);
         setSelectedIndex(0);
       }
     } else {
-      setSelectedIndex((prev) => prev + 1);
+      if (selectedIndex < images.length - 1) {
+        setSelectedIndex((prev) => prev + 1);
+      } else if (allVideos.length > 0) {
+        setSelectedVideoIndex(0);
+        setRotation(allVideos[0].defaultRotate || 0);
+      } else {
+        setSelectedIndex(0);
+      }
     }
   };
 
   const handlePrev = () => {
-    if (selectedIndex === -1) {
-      setSelectedIndex(images.length - 1);
-    } else if (selectedIndex === 0) {
-      if (video) {
-        setSelectedIndex(-1);
+    if (isViewingVideo && selectedVideoIndex !== null) {
+      if (selectedVideoIndex > 0) {
+        const prevV = selectedVideoIndex - 1;
+        setSelectedVideoIndex(prevV);
+        setRotation(allVideos[prevV].defaultRotate || 0);
       } else {
+        setSelectedVideoIndex(null);
         setSelectedIndex(images.length - 1);
       }
     } else {
-      setSelectedIndex((prev) => prev - 1);
+      if (selectedIndex > 0) {
+        setSelectedIndex((prev) => prev - 1);
+      } else if (allVideos.length > 0) {
+        const lastV = allVideos.length - 1;
+        setSelectedVideoIndex(lastV);
+        setRotation(allVideos[lastV].defaultRotate || 0);
+      } else {
+        setSelectedIndex(images.length - 1);
+      }
     }
   };
 
@@ -160,7 +189,6 @@ export default function ProductGallery({
   };
 
   const currentImage = selectedIndex >= 0 ? images[selectedIndex] || images[0] : "";
-  const isViewingVideo = selectedIndex === -1 && video;
 
   return (
     <div className="w-full flex flex-col gap-4">
@@ -178,21 +206,22 @@ export default function ProductGallery({
         {isViewingVideo && (
           <div className="absolute top-4 left-4 z-20 flex items-center gap-1.5 px-3 py-1 rounded-full bg-orange-600 text-white font-black text-[11px] shadow-md tracking-wider uppercase">
             <Video className="w-3.5 h-3.5 animate-pulse" />
-            <span>Product Video</span>
+            <span>{allVideos.length > 1 && selectedVideoIndex !== null ? `Video ${selectedVideoIndex + 1}` : "Product Video"}</span>
           </div>
         )}
 
         {/* Quick Button to Jump to Video if currently on image */}
-        {video && !isViewingVideo && (
+        {allVideos.length > 0 && !isViewingVideo && (
           <button
             onClick={() => {
-              setSelectedIndex(-1);
+              setSelectedVideoIndex(0);
               setIsPlaying(true);
+              setRotation(allVideos[0].defaultRotate || 0);
             }}
             className="absolute bottom-4 left-4 z-20 flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-slate-900/80 hover:bg-orange-600 text-white font-bold text-xs shadow-lg backdrop-blur-md transition-all cursor-pointer hover:scale-105 active:scale-95 border border-white/20"
           >
             <Play className="w-3.5 h-3.5 fill-current" />
-            <span>Watch Video</span>
+            <span>Watch Video {allVideos.length > 1 ? `(1/${allVideos.length})` : ""}</span>
           </button>
         )}
 
@@ -212,12 +241,12 @@ export default function ProductGallery({
         )}
 
         {/* MAIN DISPLAY: Either Video or Image */}
-        {isViewingVideo ? (
+        {isViewingVideo && currentVideo ? (
           /* Video Player View */
           <div className="relative w-full h-full flex items-center justify-center bg-black overflow-hidden">
             <video
               ref={videoRef}
-              src={video.url}
+              src={currentVideo.url}
               autoPlay
               loop
               playsInline
@@ -345,38 +374,46 @@ export default function ProductGallery({
 
       {/* Thumbnail Strip with Video support */}
       <div className="flex items-center gap-2.5 overflow-x-auto pb-1 scrollbar-thin">
-        {/* If video exists, show Video Thumbnail first or alongside images */}
-        {video && (
-          <button
-            type="button"
-            onClick={() => {
-              setSelectedIndex(-1);
-              setIsPlaying(true);
-            }}
-            className={`relative w-16 h-16 sm:w-20 sm:h-20 rounded-2xl overflow-hidden border-2 bg-slate-900 shrink-0 transition-all cursor-pointer flex flex-col items-center justify-center ${
-              isViewingVideo
-                ? "border-orange-500 ring-2 ring-orange-500/30 shadow-md scale-102"
-                : "border-slate-200/80 hover:border-orange-400 opacity-80 hover:opacity-100"
-            }`}
-            title="Watch Product Video"
-          >
-            <div className="w-8 h-8 rounded-full bg-orange-500 text-white flex items-center justify-center shadow-md mb-1">
-              <Play className="w-4 h-4 fill-current ml-0.5" />
-            </div>
-            <span className="text-[10px] font-black uppercase text-white tracking-wider">
-              Video
-            </span>
-          </button>
-        )}
+        {/* Videos Thumbnails */}
+        {allVideos.map((vid, vIdx) => {
+          const isSelected = isViewingVideo && selectedVideoIndex === vIdx;
+          return (
+            <button
+              key={vid.url + vIdx}
+              type="button"
+              onClick={() => {
+                setSelectedVideoIndex(vIdx);
+                setIsPlaying(true);
+                setRotation(vid.defaultRotate || 0);
+              }}
+              className={`relative w-16 h-16 sm:w-20 sm:h-20 rounded-2xl overflow-hidden border-2 bg-slate-900 shrink-0 transition-all cursor-pointer flex flex-col items-center justify-center p-1 ${
+                isSelected
+                  ? "border-orange-500 ring-2 ring-orange-500/30 shadow-md scale-102"
+                  : "border-slate-200/80 hover:border-orange-400 opacity-80 hover:opacity-100"
+              }`}
+              title={vid.title || `Watch Video ${vIdx + 1}`}
+            >
+              <div className="w-8 h-8 rounded-full bg-orange-500 text-white flex items-center justify-center shadow-md mb-1">
+                <Play className="w-4 h-4 fill-current ml-0.5" />
+              </div>
+              <span className="text-[10px] font-black uppercase text-white tracking-wider text-center line-clamp-1 px-1">
+                {allVideos.length > 1 ? `Video ${vIdx + 1}` : "Video"}
+              </span>
+            </button>
+          );
+        })}
 
         {/* Images Thumbnails */}
         {images.map((img, idx) => {
-          const isSelected = selectedIndex === idx;
+          const isSelected = !isViewingVideo && selectedIndex === idx;
           return (
             <button
               key={idx}
               type="button"
-              onClick={() => setSelectedIndex(idx)}
+              onClick={() => {
+                setSelectedVideoIndex(null);
+                setSelectedIndex(idx);
+              }}
               className={`relative w-16 h-16 sm:w-20 sm:h-20 rounded-2xl overflow-hidden border-2 bg-white shrink-0 transition-all cursor-pointer ${
                 isSelected
                   ? "border-orange-500 ring-2 ring-orange-500/20 shadow-md scale-102"
