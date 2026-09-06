@@ -19,6 +19,7 @@ import {
   Building,
   Award,
   ChevronRight,
+  ChevronLeft,
   HardHat,
   Bird,
   Leaf,
@@ -50,6 +51,326 @@ interface SingleProductSectionProps {
 }
 
 const WISHLIST_STORAGE_KEY = "om_shringar_wishlist";
+
+interface ProductVideoProps {
+  video: {
+    url: string;
+    title?: string;
+    defaultRotate?: number;
+  };
+  productName: string;
+}
+
+function ProductVideoShowcase({ video, productName }: ProductVideoProps) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [rotation, setRotation] = useState<number>(video.defaultRotate || 0);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [isMuted, setIsMuted] = useState(false);
+
+  const handleRotate = () => {
+    setRotation((prev) => (prev + 90) % 360);
+  };
+
+  const togglePlay = () => {
+    if (!videoRef.current) return;
+    if (videoRef.current.paused) {
+      videoRef.current.play().then(() => setIsPlaying(true)).catch(() => {});
+    } else {
+      videoRef.current.pause();
+      setIsPlaying(false);
+    }
+  };
+
+  const toggleMute = () => {
+    if (!videoRef.current) return;
+    videoRef.current.muted = !videoRef.current.muted;
+    setIsMuted(videoRef.current.muted);
+  };
+
+  return (
+    <div className="bg-slate-900 rounded-3xl border border-slate-800 p-6 sm:p-8 shadow-xl mb-10 text-white overflow-hidden relative">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
+        <div>
+          <div className="flex items-center gap-2 mb-1.5">
+            <span className="w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse" />
+            <span className="text-[11px] font-black uppercase tracking-widest text-orange-400">
+              OFFICIAL DEMONSTRATION VIDEO
+            </span>
+          </div>
+          <h2 className="text-xl sm:text-2xl font-black font-display tracking-tight text-white">
+            {video.title || `${productName} Quality & Strength Demonstration`}
+          </h2>
+        </div>
+
+        <div className="flex items-center gap-2">
+          <button
+            onClick={handleRotate}
+            className="flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-white/10 hover:bg-white/20 text-xs font-semibold text-white transition-colors border border-white/10 cursor-pointer"
+            title="Rotate Video 90°"
+          >
+            <RotateCw className="w-3.5 h-3.5" />
+            <span>Rotate {rotation > 0 ? `(${rotation}°)` : ""}</span>
+          </button>
+          <button
+            onClick={toggleMute}
+            className="flex items-center justify-center w-9 h-9 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-colors border border-white/10 cursor-pointer"
+            title={isMuted ? "Unmute" : "Mute"}
+          >
+            {isMuted ? <VolumeX className="w-4 h-4 text-rose-400" /> : <Volume2 className="w-4 h-4" />}
+          </button>
+        </div>
+      </div>
+
+      <div className="relative rounded-2xl overflow-hidden bg-black flex items-center justify-center min-h-[260px] sm:min-h-[420px] max-h-[560px]">
+        <div
+          className="w-full h-full flex items-center justify-center transition-transform duration-300"
+          style={{ transform: `rotate(${rotation}deg)` }}
+        >
+          <video
+            ref={videoRef}
+            src={video.url}
+            controls
+            playsInline
+            className="w-full max-h-[520px] object-contain rounded-xl"
+            onPlay={() => setIsPlaying(true)}
+            onPause={() => setIsPlaying(false)}
+          />
+        </div>
+      </div>
+
+      <div className="mt-4 flex flex-wrap items-center justify-between gap-3 text-xs text-slate-400 border-t border-white/10 pt-3">
+        <span className="flex items-center gap-1.5">
+          <ShieldCheck className="w-4 h-4 text-emerald-400" />
+          Authentic On-Counter & Testing Footage
+        </span>
+        <span className="text-[11px] text-slate-400">
+          Source: {video.url.replace("https://", "").replace("/", "")}
+        </span>
+      </div>
+    </div>
+  );
+}
+
+function MobileRelatedProductsCarousel({ products }: { products: Product[] }) {
+  const [activeIndex, setActiveIndex] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
+  const touchStartX = useRef<number | null>(null);
+  const touchStartY = useRef<number | null>(null);
+  const pauseTimer = useRef<NodeJS.Timeout | null>(null);
+
+  const handlePrev = () => {
+    setActiveIndex((prev) => (prev === 0 ? products.length - 1 : prev - 1));
+  };
+
+  const handleNext = () => {
+    setActiveIndex((prev) => (prev === products.length - 1 ? 0 : prev + 1));
+  };
+
+  // Auto-scroll one by one every 3.2 seconds on mobile
+  useEffect(() => {
+    if (isPaused || products.length <= 1) return;
+    const interval = setInterval(() => {
+      handleNext();
+    }, 3200);
+    return () => clearInterval(interval);
+  }, [isPaused, activeIndex, products.length]);
+
+  const pauseAutoScrollTemporarily = () => {
+    setIsPaused(true);
+    if (pauseTimer.current) clearTimeout(pauseTimer.current);
+    pauseTimer.current = setTimeout(() => {
+      setIsPaused(false);
+    }, 4500);
+  };
+
+  const handleTouchStart = (e: React.TouchEvent) => {
+    pauseAutoScrollTemporarily();
+    touchStartX.current = e.touches[0].clientX;
+    touchStartY.current = e.touches[0].clientY;
+  };
+
+  const handleTouchEnd = (e: React.TouchEvent) => {
+    if (touchStartX.current !== null && touchStartY.current !== null) {
+      const touchEndX = e.changedTouches[0].clientX;
+      const touchEndY = e.changedTouches[0].clientY;
+      const diffX = touchStartX.current - touchEndX;
+      const diffY = touchStartY.current - touchEndY;
+      const threshold = 35;
+
+      if (Math.abs(diffX) > Math.abs(diffY) && Math.abs(diffX) > threshold) {
+        if (diffX > 0) {
+          handleNext();
+        } else {
+          handlePrev();
+        }
+      }
+    }
+    touchStartX.current = null;
+    touchStartY.current = null;
+  };
+
+  if (!products || products.length === 0) return null;
+
+  return (
+    <div className="relative">
+      {/* Mobile Header Controls: Counter & Manual Arrows */}
+      <div className="flex items-center justify-between mb-3 px-1">
+        <div className="flex items-center gap-1.5 text-xs text-slate-500 font-semibold">
+          <span className="w-2 h-2 rounded-full bg-orange-500 animate-pulse" />
+          <span>Auto-scrolling 1 by 1</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <span className="text-[11px] font-bold text-slate-600 bg-slate-100 px-2.5 py-0.5 rounded-full font-mono">
+            {activeIndex + 1} / {products.length}
+          </span>
+          <button
+            onClick={() => {
+              pauseAutoScrollTemporarily();
+              handlePrev();
+            }}
+            aria-label="Previous product"
+            className="w-7 h-7 rounded-full bg-slate-100 active:bg-slate-200 border border-slate-200 flex items-center justify-center text-slate-700 transition-colors cursor-pointer"
+          >
+            <ChevronLeft className="w-3.5 h-3.5" />
+          </button>
+          <button
+            onClick={() => {
+              pauseAutoScrollTemporarily();
+              handleNext();
+            }}
+            aria-label="Next product"
+            className="w-7 h-7 rounded-full bg-slate-100 active:bg-slate-200 border border-slate-200 flex items-center justify-center text-slate-700 transition-colors cursor-pointer"
+          >
+            <ChevronRight className="w-3.5 h-3.5" />
+          </button>
+        </div>
+      </div>
+
+      {/* Slider Viewport */}
+      <div
+        className="overflow-hidden rounded-2xl border border-slate-200/90 shadow-sm bg-white"
+        onTouchStart={handleTouchStart}
+        onTouchEnd={handleTouchEnd}
+      >
+        <div
+          className="flex transition-transform duration-500 ease-out"
+          style={{ transform: `translateX(-${activeIndex * 100}%)` }}
+        >
+          {products.map((p) => {
+            const pStats = computeRatingStats(getAutoGeneratedReviews(p.id));
+            return (
+              <div key={p.id} className="w-full shrink-0 flex flex-col bg-white">
+                <div className="relative aspect-[16/10] bg-slate-100 overflow-hidden">
+                  <img
+                    src={p.images[0]}
+                    alt={p.name}
+                    referrerPolicy="no-referrer"
+                    className="w-full h-full object-cover"
+                  />
+                  {p.isBestSeller && (
+                    <span className="absolute top-2.5 left-2.5 bg-orange-500 text-white text-[10px] font-black px-2 py-0.5 rounded-md uppercase tracking-wider z-10 shadow-xs">
+                      Best Seller
+                    </span>
+                  )}
+                  <span className="absolute bottom-2.5 right-2.5 bg-black/60 backdrop-blur-xs text-white text-[10px] font-semibold px-2 py-0.5 rounded-full">
+                    {p.category}
+                  </span>
+                </div>
+
+                <div className="p-4 flex flex-col flex-1 justify-between">
+                  <div>
+                    <span className="text-[10px] font-bold text-orange-600 uppercase tracking-wider block mb-1">
+                      {p.category}
+                    </span>
+                    <h4 className="font-extrabold text-slate-900 text-base line-clamp-1">
+                      {p.name}
+                    </h4>
+
+                    {/* Ratings */}
+                    <div className="flex items-center gap-1.5 mt-1.5 mb-1">
+                      <div className="flex items-center text-amber-400">
+                        {[1, 2, 3, 4, 5].map((s) => (
+                          <Star
+                            key={s}
+                            className={`w-3.5 h-3.5 ${
+                              s <= Math.round(pStats.average)
+                                ? "fill-amber-400 text-amber-400"
+                                : "text-slate-200"
+                            }`}
+                          />
+                        ))}
+                      </div>
+                      <span className="text-xs font-bold text-slate-800">
+                        {pStats.average.toFixed(1)}
+                      </span>
+                      <span className="text-[11px] text-slate-400">
+                        ({pStats.totalCount} reviews)
+                      </span>
+                    </div>
+
+                    <p className="text-xs text-slate-500 mt-1 line-clamp-2 leading-relaxed">
+                      {p.description}
+                    </p>
+                  </div>
+
+                  <div className="mt-4 pt-3 border-t border-slate-100 flex items-center justify-between gap-2">
+                    <span
+                      className={`text-xs font-bold px-2.5 py-1 rounded-md ${
+                        p.id === "cosmetics-shringar"
+                          ? "text-rose-700 bg-rose-50 border border-rose-200/60"
+                          : "text-emerald-700 bg-emerald-50"
+                      }`}
+                    >
+                      {p.id === "cosmetics-shringar"
+                        ? "Retail Store Only"
+                        : "Price on Enquiry"}
+                    </span>
+                    <a
+                      href={`/products/${getProductSlug(p.id)}`}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        window.history.pushState(
+                          {},
+                          "",
+                          `/products/${getProductSlug(p.id)}`
+                        );
+                        window.dispatchEvent(new Event("popstate"));
+                        window.scrollTo({ top: 0, behavior: "smooth" });
+                      }}
+                      className="text-xs font-bold text-orange-600 active:text-orange-700 flex items-center gap-1 py-1.5 px-3 rounded-lg bg-orange-50 border border-orange-200/60 cursor-pointer"
+                    >
+                      <span>View Product</span>
+                      <ChevronRight className="w-3.5 h-3.5" />
+                    </a>
+                  </div>
+                </div>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      {/* Dots Indicator */}
+      <div className="flex items-center justify-center gap-1.5 mt-3">
+        {products.map((_, idx) => (
+          <button
+            key={idx}
+            onClick={() => {
+              pauseAutoScrollTemporarily();
+              setActiveIndex(idx);
+            }}
+            aria-label={`Go to slide ${idx + 1}`}
+            className={`transition-all duration-300 rounded-full cursor-pointer ${
+              idx === activeIndex
+                ? "w-6 h-1.5 bg-orange-500"
+                : "w-1.5 h-1.5 bg-slate-300"
+            }`}
+          />
+        ))}
+      </div>
+    </div>
+  );
+}
 
 export default function SingleProductSection({
   product,
@@ -152,7 +473,7 @@ export default function SingleProductSection({
   const otherProducts = PRODUCTS.filter(
     (p) => p.category !== product.category && p.id !== product.id
   );
-  const relatedProducts = [...sameCategoryProducts, ...otherProducts].slice(0, 4);
+  const relatedProducts = [...sameCategoryProducts, ...otherProducts].slice(0, 6);
 
   const isRetailItem = product.category.toLowerCase().includes("retail");
   const isCosmetics =
@@ -571,6 +892,13 @@ export default function SingleProductSection({
         </div>
 
         {/* ========================================================================= */}
+        {/* PRODUCT DEMONSTRATION VIDEO SECTION */}
+        {/* ========================================================================= */}
+        {product.video && (
+          <ProductVideoShowcase video={product.video} productName={product.name} />
+        )}
+
+        {/* ========================================================================= */}
         {/* SPECIFICATIONS SECTION (Amazon-Inspired Tabular Layout) */}
         {/* ========================================================================= */}
         <div className="bg-white rounded-3xl border border-slate-200/80 p-6 sm:p-8 lg:p-10 shadow-sm mb-10">
@@ -743,8 +1071,9 @@ export default function SingleProductSection({
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-            {relatedProducts.map((p) => {
+          {/* DESKTOP & TABLET: 4-COLUMN HORIZONTAL GRID (Preserved as requested) */}
+          <div className="hidden sm:grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+            {relatedProducts.slice(0, 4).map((p) => {
               const pStats = computeRatingStats(getAutoGeneratedReviews(p.id));
               return (
                 <div
@@ -835,6 +1164,11 @@ export default function SingleProductSection({
                 </div>
               );
             })}
+          </div>
+
+          {/* MOBILE: AUTO-SCROLL ONE-BY-ONE CAROUSEL */}
+          <div className="sm:hidden">
+            <MobileRelatedProductsCarousel products={relatedProducts} />
           </div>
         </div>
 

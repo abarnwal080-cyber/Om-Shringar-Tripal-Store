@@ -366,13 +366,18 @@ export const PRODUCTS: Product[] = [
     category: "All-Weather Protection",
     description: "Official premium heavy-duty Capstone Cheetah branded tarpaulin offering 100% waterproof and UV-stabilized elite coverage.",
     images: [
-      "https://plain-apac-prod-public.komododecks.com/202607/09/ZxQAks2XzqOFYBcyVBu4/image.png",
+      "https://cheetah.edgeone.dev/file.png",
       "https://plain-apac-prod-public.komododecks.com/202607/09/XZIjVVBxoKiATRHNKDXZ/image.jpg",
       "https://plain-apac-prod-public.komododecks.com/202607/09/IC8EGq4OoMQUyfg7wIj8/image.png",
       "https://plain-apac-prod-public.komododecks.com/202607/09/0YM1Z46abjzC6qEhFcNu/image.png",
       "https://plain-apac-prod-public.komododecks.com/202607/09/gGKNRgvofNlcUcvYnF9j/image.png",
       "https://lh3.googleusercontent.com/GVZyEChy8hTpNVgZds_-vzvfyIWXhKkdorFgQ07GeBxdJBQNI7a-3Dr_cZ4LZQGRXVszWUr182X1t-A2=w1690"
     ],
+    video: {
+      url: "https://cheetahmp4.edgeone.dev/",
+      title: "HDPE Capstone Cheetah Heavy-Duty Tarpaulin Video",
+      defaultRotate: 0
+    },
     availableSizes: "Available Sizes: 8 ft – 36 ft",
     commonSizes: ["8 ft", "10 ft", "12 ft", "15 ft", "18 ft", "20 ft", "24 ft", "30 ft", "36 ft"],
     features: [
@@ -416,6 +421,11 @@ export const PRODUCTS: Product[] = [
       "https://5.imimg.com/data5/SELLER/Default/2022/5/UO/IB/PP/147117331/nylon-bird-netting-250x250.jpg",
       "https://2.wlimg.com/product_images/bc-full/2021/1/748468/farm-fencing-net-1611398761-5700049.jpeg"
     ],
+    video: {
+      url: "https://reshamjal.edgeone.dev/",
+      title: "Resham Fencing Net (Resham Jal) Boundary Protection Video",
+      defaultRotate: 0
+    },
     isBestSeller: true,
     features: [
       "Resham Nylon",
@@ -458,6 +468,11 @@ export const PRODUCTS: Product[] = [
       "https://agroholicbd.com/uploads/media-manager//2023%2F12%2F202312132149596-Fit-High-Fencing-Net-scaled-1732660145.jpg",
       "https://5.imimg.com/data5/SELLER/Default/2025/7/532122957/XX/ZI/PB/104304307/nylon-blue-fencing-net-500x500.jpg"
     ],
+    video: {
+      url: "https://reshamjal.edgeone.dev/",
+      title: "Resham Fencing Net (Jali) Strength Video",
+      defaultRotate: 0
+    },
     availableSizes: "5 ft Height",
     commonSizes: ["100 ft Roll", "100 Meter Roll", "Custom Cut Lengths"],
     features: [

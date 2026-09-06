@@ -15,6 +15,16 @@ interface VideoSourceItem {
 
 const VIDEO_ITEMS: VideoSourceItem[] = [
   {
+    id: "video-cheetah",
+    url: "https://cheetahmp4.edgeone.dev/",
+    defaultRotate: 0,
+  },
+  {
+    id: "video-resham",
+    url: "https://reshamjal.edgeone.dev/",
+    defaultRotate: 0,
+  },
+  {
     id: "video-1",
     url: "https://dhalai.edgeone.dev/",
     defaultRotate: 90,

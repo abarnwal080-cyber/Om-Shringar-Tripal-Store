@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion } from "motion/react";
+import StoreHeroStatsSection from "./StoreHeroStatsSection";
 
 const BRANDS = [
   {
@@ -143,28 +144,9 @@ export default function BrandCarousel({ lang = "en" }: BrandCarouselProps) {
       onMouseLeave={() => setIsHovered(false)}
     >
       <div className="max-w-7xl mx-auto px-4 md:px-8">
-        {/* Premium Shop Name Headings */}
-        <div className="text-center mb-12 md:mb-16 space-y-3">
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black font-display text-[#0B2D5C] tracking-tight max-w-4xl mx-auto leading-tight">
-            Om Shringar Tirpal Store
-          </h2>
-          <p className="text-base sm:text-lg font-extrabold text-slate-500 font-mono tracking-wide">
-            Maharajganj, Siwan, Bihar
-          </p>
-          <div className="w-20 h-1 bg-gradient-to-r from-[#FF6B00] to-orange-500 mx-auto rounded-full mt-4" />
-        </div>
-
-        {/* Store Highlights Trust Banner Image */}
-        <div className="mb-14 sm:mb-16 relative z-10 max-w-5xl mx-auto flex justify-center px-2">
-          <div className="w-full rounded-2xl sm:rounded-3xl overflow-hidden shadow-lg border border-slate-200/80 bg-white hover:shadow-xl transition-all duration-300">
-            <img
-              src="https://plain-apac-prod-public.komododecks.com/202608/14/bVUVVLBhxabfY0hCENjj/image.png"
-              alt="Om Shringar Tirpal Store - 26+ Years of Trust, 50+ Sizes, 100% Waterproof, 10k+ Happy Customers"
-              referrerPolicy="no-referrer"
-              className="w-full h-auto object-cover sm:object-contain rounded-2xl sm:rounded-3xl block"
-              loading="lazy"
-            />
-          </div>
+        {/* Om Shringar Tirpal Store Interactive Trust & Highlights Section */}
+        <div className="mb-12">
+          <StoreHeroStatsSection />
         </div>
 
         {/* 3D Carousel Stage */}

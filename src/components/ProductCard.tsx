@@ -52,6 +52,14 @@ export default function ProductCard({ product, onViewDetails, currentLanguage = 
     >
       {/* Image Carousel Area */}
       <div className="relative aspect-video w-full overflow-hidden bg-slate-900">
+        {/* Video Badge */}
+        {product.video && (
+          <div className="absolute top-3 left-3 z-20 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/65 backdrop-blur-md border border-white/20 text-white text-[10px] font-black uppercase tracking-wider shadow-md">
+            <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
+            <span>Video Demo</span>
+          </div>
+        )}
+
         {/* Carousel Images */}
         <div className="absolute inset-0 w-full h-full">
           <AnimatePresence mode="wait">
