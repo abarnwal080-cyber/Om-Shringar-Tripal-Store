@@ -122,7 +122,7 @@ export default function ProductMiniCarousel({ lang, onSelectProduct }: ProductMi
     if (!isDragging) return;
     const deltaX = clientX - dragStartXRef.current;
     setDragOffset(deltaX);
-    if (Math.abs(deltaX) > 8) {
+    if (Math.abs(deltaX) > 20) {
       hasDraggedRef.current = true;
     }
   };
@@ -143,7 +143,6 @@ export default function ProductMiniCarousel({ lang, onSelectProduct }: ProductMi
   const onMouseDown = (e: React.MouseEvent) => {
     // Only drag with left click
     if (e.button !== 0) return;
-    e.preventDefault();
     handleDragStart(e.clientX);
   };
 
@@ -195,7 +194,7 @@ export default function ProductMiniCarousel({ lang, onSelectProduct }: ProductMi
     // Only capture drag if the user is actually swiping horizontally
     if (touchDirectionRef.current === "horizontal") {
       setDragOffset(deltaX);
-      if (Math.abs(deltaX) > 8) {
+      if (Math.abs(deltaX) > 22) {
         hasDraggedRef.current = true;
       }
     }
@@ -273,23 +272,51 @@ export default function ProductMiniCarousel({ lang, onSelectProduct }: ProductMi
                   className="bg-white rounded-2xl border border-slate-100 p-4 shadow-md hover:shadow-xl transition-all hover:-translate-y-1.5 cursor-pointer flex flex-col justify-between h-[310px] relative group overflow-hidden"
                 >
                   {/* Image Container */}
-                  <div className="w-full h-[65%] rounded-xl bg-slate-50 overflow-hidden flex items-center justify-center relative mb-3 pointer-events-none">
+                  <div 
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleCardClick(e, slug);
+                    }}
+                    className="w-full h-[65%] rounded-xl bg-slate-50 overflow-hidden flex items-center justify-center relative mb-3 cursor-pointer"
+                  >
                     <img
                       src={product.images[0]}
                       alt={product.name}
                       referrerPolicy="no-referrer"
-                      className="max-w-[85%] max-h-[85%] object-contain transition-transform duration-500 group-hover:scale-105"
+                      className="max-w-[85%] max-h-[85%] object-contain transition-transform duration-500 group-hover:scale-105 cursor-pointer"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleCardClick(e, slug);
+                      }}
                     />
                   </div>
 
-                  {/* Product Details - Only Name */}
-                  <div className="flex flex-col justify-between flex-grow text-left">
-                    <h4 className="text-sm font-extrabold text-[#0B2D5C] font-display line-clamp-2 tracking-tight group-hover:text-orange-600 transition-colors duration-200 text-center">
+                  {/* Product Details - Name & CTA */}
+                  <div 
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleCardClick(e, slug);
+                    }}
+                    className="flex flex-col justify-between flex-grow text-left cursor-pointer"
+                  >
+                    <h4 
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleCardClick(e, slug);
+                      }}
+                      className="text-sm font-extrabold text-[#0B2D5C] font-display line-clamp-2 tracking-tight group-hover:text-orange-600 transition-colors duration-200 text-center cursor-pointer"
+                    >
                       {product.name}
                     </h4>
                     
-                    <div className="flex items-center justify-center mt-3 pt-2.5 border-t border-slate-100">
-                      <span className="text-xs font-extrabold text-orange-600 flex items-center gap-1 group-hover:translate-x-1 transition-transform">
+                    <div 
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        handleCardClick(e, slug);
+                      }}
+                      className="flex items-center justify-center mt-3 pt-2.5 border-t border-slate-100 cursor-pointer"
+                    >
+                      <span className="text-xs font-extrabold text-orange-600 flex items-center gap-1 group-hover:translate-x-1 transition-transform cursor-pointer">
                         <span>{lang === "en" ? "View Details" : "विवरण देखें"}</span>
                         <span>➔</span>
                       </span>

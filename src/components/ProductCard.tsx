@@ -51,7 +51,13 @@ export default function ProductCard({ product, onViewDetails, currentLanguage = 
       className="bg-white rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-slate-200/80 flex flex-col h-full group cursor-pointer"
     >
       {/* Image Carousel Area */}
-      <div className="relative aspect-video w-full overflow-hidden bg-slate-900">
+      <div 
+        onClick={(e) => {
+          e.stopPropagation();
+          onViewDetails(product);
+        }}
+        className="relative aspect-video w-full overflow-hidden bg-slate-900 cursor-pointer"
+      >
         {/* Video Badge */}
         {product.video && (
           <div className="absolute top-3 left-3 z-20 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/65 backdrop-blur-md border border-white/20 text-white text-[10px] font-black uppercase tracking-wider shadow-md">
@@ -69,13 +75,13 @@ export default function ProductCard({ product, onViewDetails, currentLanguage = 
               animate={{ opacity: 1, scale: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.4 }}
-              className="w-full h-full"
+              className="w-full h-full cursor-pointer"
             >
               <LazyImage
                 src={product.images[currentSlide]}
                 alt={`${product.name} - View ${currentSlide + 1}`}
                 referrerPolicy="no-referrer"
-                className="group-hover:scale-105 transition-transform duration-700"
+                className="group-hover:scale-105 transition-transform duration-700 cursor-pointer"
               />
             </motion.div>
           </AnimatePresence>
@@ -124,13 +130,19 @@ export default function ProductCard({ product, onViewDetails, currentLanguage = 
 
       {/* Product Information Body */}
       <div className="p-5 flex-grow flex flex-col justify-between">
-        <div className="my-auto py-2">
-          <h3 className="text-lg md:text-xl font-extrabold font-display text-slate-900 tracking-tight text-center group-hover:text-orange-600 transition-colors line-clamp-2">
+        <div 
+          onClick={(e) => {
+            e.stopPropagation();
+            onViewDetails(product);
+          }}
+          className="my-auto py-2 cursor-pointer"
+        >
+          <h3 className="text-lg md:text-xl font-extrabold font-display text-slate-900 tracking-tight text-center group-hover:text-orange-600 transition-colors line-clamp-2 cursor-pointer">
             {product.name}
           </h3>
 
           {/* Star Rating & Review Count */}
-          <div className="flex items-center justify-center gap-1.5 mt-2.5">
+          <div className="flex items-center justify-center gap-1.5 mt-2.5 cursor-pointer">
             <div className="flex items-center text-amber-400">
               {[1, 2, 3, 4, 5].map((s) => (
                 <Star

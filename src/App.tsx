@@ -60,6 +60,8 @@ import SizeCalculatorModal from "./components/SizeCalculatorModal";
 import WhoWeAreSection from "./components/WhoWeAreSection";
 import UserTypeInquiryModal from "./components/UserTypeInquiryModal";
 import SizeChartSection from "./components/SizeChartSection";
+import GeminiChatbotSection from "./components/GeminiChatbotSection";
+import VisitShopSection from "./components/VisitShopSection";
 import { TRANSLATIONS } from "./translations";
 
 // Safe dynamic icon loader to keep code modular and readable
@@ -1045,157 +1047,13 @@ export default function App() {
         onSelectSize={(szStr) => handleEnquire("", `Inquiry for Size: ${szStr}`)}
       />
 
-      {/* 10. INTERACTIVE FAQ & INQUIRY FORM */}
-      <section id="enquire" ref={inquiryRef} className="py-20 bg-slate-50 border-t border-slate-100 relative scroll-mt-24 overflow-hidden">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="flex flex-col items-center text-center">
-            
-            {/* FAQs Column */}
-            <div className="w-full flex flex-col items-center">
-              <div className="inline-flex items-center gap-2 bg-blue-50 text-brand-blue-royal text-xs font-bold font-mono px-3.5 py-1.5 rounded-full w-fit mb-5">
-                <Users className="w-3.5 h-3.5 text-brand-orange" />
-                <span>FREQUENTLY ASKED QUESTIONS</span>
-              </div>
-              <h2 className="text-3xl sm:text-4xl font-extrabold font-display text-brand-blue-dark tracking-tight mb-6">
-                Have Any Doubts? Let Us Help You
-              </h2>
-              <p className="text-slate-600 text-sm sm:text-base leading-relaxed mb-8 max-w-2xl">
-                Cannot find the sizing or gauge details you are searching for? Browse through our popular customer inquiries or directly contact our helpdesk.
-              </p>
+      {/* 10. GEMINI AI HINGLISH CHATBOT SECTION (REPLACED FAQ) */}
+      <div id="enquire" ref={inquiryRef}>
+        <GeminiChatbotSection />
+      </div>
 
-              {/* FAQ Accordion */}
-              <div className="space-y-3.5 w-full text-left">
-                {FAQS.map((faq, idx) => (
-                  <div 
-                    key={idx} 
-                    className="bg-white rounded-2xl border border-slate-100 shadow-sm overflow-hidden transition-all duration-200"
-                  >
-                    <button
-                      onClick={() => setExpandedFAQ(expandedFAQ === idx ? null : idx)}
-                      className="w-full flex justify-between items-center p-4 sm:p-5 text-left font-bold text-sm sm:text-base font-display text-brand-blue-dark hover:text-brand-orange transition-colors cursor-pointer"
-                    >
-                      <span>{faq.question}</span>
-                      <ChevronDown 
-                        className={`w-5 h-5 text-slate-400 transition-transform duration-200 shrink-0 ml-3 ${
-                          expandedFAQ === idx ? "rotate-185 text-brand-orange" : ""
-                        }`} 
-                      />
-                    </button>
-                    
-                    <AnimatePresence initial={false}>
-                      {expandedFAQ === idx && (
-                        <motion.div
-                          initial={{ height: 0, opacity: 0 }}
-                          animate={{ height: "auto", opacity: 1 }}
-                          exit={{ height: 0, opacity: 0 }}
-                          transition={{ duration: 0.25 }}
-                          className="border-t border-slate-50 bg-slate-50/50"
-                        >
-                          <div className="p-4 sm:p-5 text-xs sm:text-sm text-slate-600 leading-relaxed">
-                            {faq.answer}
-                          </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </section>
-
-      {/* 11. CONTACT & MAPS SECTION */}
-      <section id="contact" className="py-20 bg-white relative scroll-mt-24 overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-            
-            {/* Location Details Left */}
-            <div className="lg:col-span-5">
-              <div className="inline-flex items-center gap-2 bg-blue-50 text-brand-blue-royal text-xs font-bold font-mono px-3.5 py-1.5 rounded-full w-fit mb-5">
-                <MapPin className="w-3.5 h-3.5 text-brand-orange" />
-                <span>VISIT OUR SHOWROOM</span>
-              </div>
-              <h2 className="text-3xl sm:text-4xl font-extrabold font-display text-brand-blue-dark tracking-tight mb-6">
-                Come Visit Our Physical Store In Maharajganj, Siwan
-              </h2>
-              <p className="text-slate-600 text-sm sm:text-base leading-relaxed mb-8">
-                Our main dealer showroom is packed with ready stock. We welcome farmers, builders, and wholesalers to walk in for direct physical quality check, instant sizing customization, and secure payment handling.
-              </p>
-
-              {/* Contact Info blocks */}
-              <div className="space-y-4">
-                <div className="flex gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-100">
-                  <div className="w-10 h-10 bg-white border border-slate-100 rounded-xl flex items-center justify-center text-brand-orange shrink-0">
-                    <MapPin className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-sm text-brand-blue-dark font-display">Store Address</h4>
-                    <p className="text-xs sm:text-sm text-slate-500 mt-1 leading-relaxed">
-                      {BUSINESS_INFO.address}
-                    </p>
-                    <p className="text-xs text-brand-blue-royal font-bold mt-1">
-                      Landmark: {BUSINESS_INFO.landmark}
-                    </p>
-                  </div>
-                </div>
-
-                {/* Live Store Status & Timing Card */}
-                <StoreStatusCard currentLanguage={lang} variant="dark" className="shadow-lg border-slate-800" />
-
-                <div className="flex gap-4 p-4 rounded-2xl bg-slate-50 border border-slate-100">
-                  <div className="w-10 h-10 bg-white border border-slate-100 rounded-xl flex items-center justify-center text-brand-orange shrink-0">
-                    <Phone className="w-5 h-5" />
-                  </div>
-                  <div>
-                    <h4 className="font-bold text-sm text-brand-blue-dark font-display">Proprietor Contact</h4>
-                    <p className="text-xs sm:text-sm text-slate-500 mt-1">
-                      Owner: Mr. Vinod Kumar Varnawal
-                    </p>
-                    <a 
-                      href={BUSINESS_INFO.phoneFormatted}
-                      className="text-sm font-extrabold text-brand-blue-royal font-mono hover:text-brand-orange transition-colors block mt-0.5"
-                    >
-                      +91 8210625483
-                    </a>
-                  </div>
-                </div>
-              </div>
-
-              {/* Get Directions Button */}
-              <a
-                href={BUSINESS_INFO.googleMapsUrl}
-                target="_blank"
-                rel="noreferrer"
-                className="w-full sm:w-fit flex items-center justify-center gap-2 mt-8 bg-orange-600 hover:bg-orange-700 text-white py-3.5 px-6 rounded-full font-bold text-sm shadow-md transition-all active:scale-[0.98]"
-              >
-                <span>Open Google Maps Directions</span>
-                <ExternalLink className="w-4 h-4" />
-              </a>
-            </div>
-
-            {/* Embedded Google Maps Area */}
-            <div className="lg:col-span-7">
-              <div className="bg-slate-100 rounded-3xl overflow-hidden shadow-lg border border-slate-200 aspect-video lg:aspect-square relative group">
-                
-                {/* Embed Map Using Free OpenStreetMaps or Google Maps Static Mockup which is fully responsive */}
-                {/* We can use an iframe to embed a real live Google Maps iframe or OpenStreetMap! Let's embed a real Google Map for মহারাজগঞ্জ (Maharajganj) Siwan, Bihar */}
-                <iframe
-                  title="Om Shringar Tirpal Store Google Maps Location"
-                  src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d223.91629173090806!2d84.50128406584182!3d26.10999340821257!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3992ef4fff9f0e1d%3A0xa7ddfd61780664c3!2sOm%20Shringar%20Tirpal%20Store!5e0!3m2!1sen!2sin!4v1783526928179!5m2!1sen!2sin"
-                  className="w-full h-full border-0"
-                  allowFullScreen
-                  loading="lazy"
-                  referrerPolicy="strict-origin-when-cross-origin"
-                ></iframe>
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </section>
+      {/* 11. VISIT PHYSICAL STORE SHOWROOM SECTION */}
+      <VisitShopSection />
 
       </>
       )}
@@ -1285,15 +1143,26 @@ export default function App() {
                 Our Top Polymer Goods
               </h4>
               <div className="flex flex-col gap-2.5 text-xs sm:text-sm">
-                {PRODUCTS.map((p) => (
-                  <button
-                    key={p.id}
-                    onClick={() => handleEnquire(p.name)}
-                    className="hover:text-white text-left transition-colors cursor-pointer"
-                  >
-                    {p.name}
-                  </button>
-                ))}
+                {PRODUCTS.map((p) => {
+                  const slug = getProductSlug(p.id);
+                  return (
+                    <a
+                      key={p.id}
+                      href={`/products/${slug}`}
+                      onClick={(e) => {
+                        e.preventDefault();
+                        window.history.pushState({}, "", `/products/${slug}`);
+                        setCurrentProductSlug(slug);
+                        setIsSupplierPageOpen(false);
+                        setIsCatalogOpen(false);
+                        window.scrollTo({ top: 0, behavior: "smooth" });
+                      }}
+                      className="hover:text-white text-left transition-colors cursor-pointer"
+                    >
+                      {p.name}
+                    </a>
+                  );
+                })}
               </div>
             </div>
 
