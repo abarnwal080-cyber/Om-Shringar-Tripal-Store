@@ -39,7 +39,6 @@ const warehouseImage = "https://plain-apac-prod-public.komododecks.com/202608/03
 import {
   BUSINESS_INFO,
   PRODUCTS,
-  WHY_CHOOSE_US,
   FAQS,
   Product,
   getProductSlug,
@@ -58,6 +57,7 @@ import CustomerSuccessCarousel from "./components/CustomerSuccessCarousel";
 import { ProductVideosSection } from "./components/ProductVideosSection";
 import { TermsModal } from "./components/TermsModal";
 import SizeCalculatorModal from "./components/SizeCalculatorModal";
+import WhoWeAreSection from "./components/WhoWeAreSection";
 import UserTypeInquiryModal from "./components/UserTypeInquiryModal";
 import SizeChartSection from "./components/SizeChartSection";
 import { TRANSLATIONS } from "./translations";
@@ -107,6 +107,8 @@ export default function App() {
   const [userTypeModalProduct, setUserTypeModalProduct] = useState("");
   const [userTypeModalContext, setUserTypeModalContext] = useState("");
 
+  const [isSizeChartModalOpen, setIsSizeChartModalOpen] = useState(false);
+
   const [currentProductSlug, setCurrentProductSlug] = useState<string | null>(null);
 
   // Clear enquiry submission state on page refresh (initial app mount)
@@ -115,7 +117,7 @@ export default function App() {
   }, []);
 
   // Professional Modal Popup System: Lock body scroll, prevent layout shifts, handle keyboard/touch, restore scroll position
-  const isAnyModalActive = isCatalogOpen || isTermsOpen || sizeCalcOpen || userTypeModalOpen;
+  const isAnyModalActive = isCatalogOpen || isTermsOpen || sizeCalcOpen || userTypeModalOpen || isSizeChartModalOpen;
 
   useEffect(() => {
     if (!isAnyModalActive) return;
@@ -144,6 +146,7 @@ export default function App() {
         setIsTermsOpen(false);
         setSizeCalcOpen(false);
         setUserTypeModalOpen(false);
+        setIsSizeChartModalOpen(false);
         return;
       }
 
@@ -322,7 +325,7 @@ export default function App() {
 
   // Intersection Observer for Active Navigation Highlight
   useEffect(() => {
-    const sections = ["about", "products", "special-uses", "size-matrix", "why-choose", "reviews", "enquire", "contact"];
+    const sections = ["about", "products", "special-uses", "size-matrix", "reviews", "enquire", "contact"];
     const observerOptions = {
       root: null,
       rootMargin: "-25% 0px -55% 0px",
@@ -403,6 +406,9 @@ export default function App() {
 
     if (targetId === "products") {
       setIsCatalogOpen(true);
+    }
+    if (targetId === "size-matrix") {
+      setIsSizeChartModalOpen(true);
     }
     
     // Smooth scroll with offset for sticky header
@@ -520,7 +526,6 @@ export default function App() {
               { href: "#products", label: t.navProducts, id: "products" },
               { href: "#special-uses", label: t.navApplications, id: "special-uses" },
               { href: "#size-matrix", label: t.navSizeChart, id: "size-matrix" },
-              { href: "#why-choose", label: t.navWhyUs, id: "why-choose" },
               { href: "#contact", label: t.navFindStore, id: "contact" }
             ].map((link) => (
               <a 
@@ -535,6 +540,9 @@ export default function App() {
                   }
                   if (link.id === "products") {
                     setIsCatalogOpen(true);
+                  }
+                  if (link.id === "size-matrix") {
+                    setIsSizeChartModalOpen(true);
                   }
                   window.location.hash = link.href;
                   setTimeout(() => {
@@ -632,13 +640,6 @@ export default function App() {
                   {t.navSizeChart}
                 </a>
                 <a 
-                  href="#why-choose" 
-                  onClick={(e) => handleMobileNavClick(e, "why-choose")}
-                  className="text-base font-semibold text-slate-700 hover:text-orange-600 py-1"
-                >
-                  {t.navWhyUs}
-                </a>
-                <a 
                   href="#contact" 
                   onClick={(e) => handleMobileNavClick(e, "contact")}
                   className="text-base font-semibold text-slate-700 hover:text-orange-600 py-1"
@@ -704,14 +705,25 @@ export default function App() {
           <BrandCarousel lang={lang} />
 
           {/* 6. PRODUCTS CATALOG PREVIEW SECTION */}
-          <section id="products" className="py-24 bg-slate-50 text-slate-900 relative border-y border-slate-200/60 overflow-hidden scroll-mt-24">
+          <section id="products" className="py-20 bg-slate-50 text-slate-900 relative border-y border-slate-200/60 overflow-hidden scroll-mt-24">
             {/* Subtle grid texture */}
             <div className="absolute inset-0 bg-[linear-gradient(to_right,#00000003_1px,transparent_1px),linear-gradient(to_bottom,#00000003_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none" />
             {/* Soft radial glow behind content */}
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full bg-orange-600/[0.04] blur-[120px] pointer-events-none" />
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-              <div className="flex justify-center mb-10">
+              {/* Dynamic automatic product carousel sliding every 1s */}
+              <ProductMiniCarousel
+                lang={lang}
+                onSelectProduct={(slug) => {
+                  window.history.pushState({}, "", `/products/${slug}`);
+                  setCurrentProductSlug(slug);
+                  window.scrollTo({ top: 0 });
+                }}
+              />
+
+              {/* VIEW PRODUCTS TAB/BUTTON - MOVED DIRECTLY BELOW PRODUCTS */}
+              <div className="flex justify-center mt-8 sm:mt-10">
                 <motion.button
                   whileHover={{ y: -4, scale: 1.02, boxShadow: "0 20px 40px rgba(255,106,0,0.3), 0 8px 24px rgba(11,31,58,0.2)" }}
                   whileTap={{ scale: 0.97 }}
@@ -748,16 +760,6 @@ export default function App() {
                   </div>
                 </motion.button>
               </div>
-
-              {/* Dynamic automatic product carousel sliding every 1s */}
-              <ProductMiniCarousel
-                lang={lang}
-                onSelectProduct={(slug) => {
-                  window.history.pushState({}, "", `/products/${slug}`);
-                  setCurrentProductSlug(slug);
-                  window.scrollTo({ top: 0 });
-                }}
-              />
             </div>
           </section>
 
@@ -767,7 +769,7 @@ export default function App() {
       {/* SHOP FRONT SHOWCASE SECTION */}
       <section id="shop-showcase" className="py-16 bg-gradient-to-b from-white to-slate-50 relative overflow-hidden border-b border-slate-200/50">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
+          <div className="grid grid-cols-1 lg:grid-cols-12 gap-10 items-center">
             
             {/* Left side: Text describing the physical shop & warehouse */}
             <div className="lg:col-span-5 flex flex-col text-left">
@@ -817,63 +819,58 @@ export default function App() {
               </div>
             </div>
 
-            {/* Right side: Store Front & Warehouse in side-by-side cute neon frames */}
-            <div className="lg:col-span-7 grid grid-cols-1 sm:grid-cols-2 gap-5 items-center relative">
+            {/* Right side: Store Front & Warehouse in compact, side-by-side frames (ek dusre ke bagal mein) */}
+            <div className="lg:col-span-7 grid grid-cols-2 gap-3 sm:gap-4 items-center">
               
-              {/* Cute glowing neon floating particle elements */}
-              <div className="absolute top-[-20px] left-[-20px] w-12 h-12 text-pink-500 animate-pulse pointer-events-none opacity-80 select-none z-20">
-                <Sparkles className="w-7 h-7 animate-spin-slow" />
-              </div>
-              <div className="absolute bottom-[-20px] right-[-10px] w-12 h-12 text-yellow-400 animate-pulse pointer-events-none opacity-80 select-none z-20">
-                <Sparkles className="w-6 h-6 animate-pulse" />
-              </div>
-
-              {/* Neon Ambient Shadow Layer behind */}
-              <div className="absolute inset-4 bg-gradient-to-tr from-orange-500 via-pink-500 to-yellow-500 rounded-[2.5rem] blur-2xl opacity-20 animate-pulse-slow" />
-
               {/* Frame 1: Main Store Front */}
               <motion.div 
-                whileHover={{ scale: 1.03, rotate: 0.5 }}
-                transition={{ duration: 0.3 }}
-                className="relative p-2 rounded-[1.8rem] bg-slate-900 border-2 border-orange-500/50 animate-cute-neon-glow shadow-xl overflow-hidden w-full"
+                whileHover={{ scale: 1.02 }}
+                transition={{ duration: 0.2 }}
+                className="relative rounded-2xl bg-white border border-slate-200/90 shadow-sm hover:shadow-md overflow-hidden flex flex-col group/shop transition-all"
               >
-                <div className="relative rounded-[1.3rem] overflow-hidden bg-slate-950 aspect-[4/3] group/shop">
+                <div className="relative aspect-[4/3] w-full overflow-hidden bg-slate-100">
                   <img 
                     src={shopFrontImage} 
                     alt="Om Shringar Tirpal Store physical storefront" 
-                    className="w-full h-full object-cover group-hover/shop:scale-105 transition-transform duration-700 ease-in-out"
+                    className="w-full h-full object-cover group-hover/shop:scale-105 transition-transform duration-500 ease-in-out"
                     loading="lazy"
                   />
-                  <div className="absolute top-3 left-3 bg-slate-950/85 backdrop-blur-md border border-orange-500/30 text-orange-400 font-mono text-[10px] font-extrabold px-2.5 py-1 rounded-lg z-20 shadow">
-                    🏬 {lang === "en" ? "Main Store Front" : "मुख्य स्टोर फ़्रंट"}
+                  <div className="absolute top-2 left-2 bg-slate-950/80 backdrop-blur-xs border border-white/10 text-orange-400 font-mono text-[9px] sm:text-[10px] font-bold px-2 py-0.5 rounded-md shadow">
+                    🏬 {lang === "en" ? "Store Front" : "स्टोर फ़्रंट"}
                   </div>
-                  <div className="absolute bottom-3 left-3 bg-slate-950/80 backdrop-blur-md border border-white/10 text-white font-mono text-[10px] font-bold px-2.5 py-1 rounded-full flex items-center gap-1.5 z-20 shadow-lg">
-                    <span className="w-2 h-2 rounded-full bg-emerald-500 animate-ping" />
-                    <span>{lang === "en" ? "Visit Store Today" : "आज ही पधारें"}</span>
-                  </div>
+                </div>
+                <div className="p-2 sm:p-2.5 bg-slate-50/90 border-t border-slate-100 flex items-center justify-between text-[11px] sm:text-xs">
+                  <span className="font-bold text-slate-800 truncate">{lang === "en" ? "Main Store" : "मुख्य स्टोर"}</span>
+                  <span className="text-[10px] text-emerald-600 font-semibold flex items-center gap-1 shrink-0">
+                    <span className="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse" />
+                    Open
+                  </span>
                 </div>
               </motion.div>
 
               {/* Frame 2: Stock Warehouse */}
               <motion.div 
-                whileHover={{ scale: 1.03, rotate: -0.5 }}
-                transition={{ duration: 0.3 }}
-                className="relative p-2 rounded-[1.8rem] bg-slate-900 border-2 border-amber-500/50 animate-cute-neon-glow shadow-xl overflow-hidden w-full"
+                whileHover={{ scale: 1.02 }}
+                transition={{ duration: 0.2 }}
+                className="relative rounded-2xl bg-white border border-slate-200/90 shadow-sm hover:shadow-md overflow-hidden flex flex-col group/warehouse transition-all"
               >
-                <div className="relative rounded-[1.3rem] overflow-hidden bg-slate-950 aspect-[4/3] group/warehouse">
+                <div className="relative aspect-[4/3] w-full overflow-hidden bg-slate-100">
                   <img 
                     src={warehouseImage} 
                     alt="Om Shringar Tirpal Store central stock warehouse" 
-                    className="w-full h-full object-cover group-hover/warehouse:scale-105 transition-transform duration-700 ease-in-out"
+                    className="w-full h-full object-cover group-hover/warehouse:scale-105 transition-transform duration-500 ease-in-out"
                     loading="lazy"
                   />
-                  <div className="absolute top-3 left-3 bg-slate-950/85 backdrop-blur-md border border-amber-500/30 text-amber-400 font-mono text-[10px] font-extrabold px-2.5 py-1 rounded-lg z-20 shadow">
-                    🏭 {lang === "en" ? "Central Stock Warehouse" : "केंद्रीय स्टॉक गोदाम"}
+                  <div className="absolute top-2 left-2 bg-slate-950/80 backdrop-blur-xs border border-white/10 text-amber-400 font-mono text-[9px] sm:text-[10px] font-bold px-2 py-0.5 rounded-md shadow">
+                    🏭 {lang === "en" ? "Warehouse" : "गोदाम"}
                   </div>
-                  <div className="absolute bottom-3 left-3 bg-slate-950/80 backdrop-blur-md border border-white/10 text-white font-mono text-[10px] font-bold px-2.5 py-1 rounded-full flex items-center gap-1.5 z-20 shadow-lg">
-                    <span className="w-2 h-2 rounded-full bg-amber-400 animate-pulse" />
-                    <span>{lang === "en" ? "Ready Stock Bulk" : "रेडी स्टॉक थोक"}</span>
-                  </div>
+                </div>
+                <div className="p-2 sm:p-2.5 bg-slate-50/90 border-t border-slate-100 flex items-center justify-between text-[11px] sm:text-xs">
+                  <span className="font-bold text-slate-800 truncate">{lang === "en" ? "Bulk Stock" : "थोक गोदाम"}</span>
+                  <span className="text-[10px] text-amber-600 font-semibold flex items-center gap-1 shrink-0">
+                    <span className="w-1.5 h-1.5 rounded-full bg-amber-500 animate-pulse" />
+                    Ready
+                  </span>
                 </div>
               </motion.div>
 
@@ -1007,99 +1004,8 @@ export default function App() {
       {/* CUSTOMER REVIEWS SECTION */}
       <CustomerReviewsSection />
 
-      {/* 5. ABOUT US SECTION */}
-      <section id="about" className="py-20 bg-white relative overflow-hidden scroll-mt-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 items-center">
-            
-            {/* About Left Column - Graphic/Features */}
-            <div className="lg:col-span-5 relative">
-              <div className="aspect-square bg-gradient-to-tr from-slate-100 to-blue-50/50 rounded-3xl border border-slate-100 p-8 flex flex-col justify-between shadow-sm relative overflow-hidden group">
-                <div className="absolute inset-0 bg-grid-slate-100 [mask-image:linear-gradient(0deg,white,rgba(255,255,255,0.6))]" />
-                
-                <div>
-                  <div className="w-12 h-12 bg-brand-orange/10 text-brand-orange rounded-2xl flex items-center justify-center mb-6">
-                    <Award className="w-6 h-6" />
-                  </div>
-                  <h4 className="text-2xl font-bold font-display text-brand-blue-dark mb-4">
-                    Established in the year 2000
-                  </h4>
-                  <p className="text-slate-600 text-sm sm:text-base leading-relaxed">
-                    With over two decades of experience, we originally launched as <strong className="text-slate-900">Goyal Traders</strong>. As we expanded and introduced premium brand distributorships, we transitioned into <strong className="text-slate-900">Om Shringar Tirpal Store</strong>.
-                  </p>
-                </div>
-
-                <div className="mt-8 border-t border-slate-200/80 pt-6 space-y-4">
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-full bg-blue-50 text-brand-blue-royal flex items-center justify-center font-bold text-xs">
-                      1
-                    </div>
-                    <span className="text-sm font-semibold text-slate-700">Trusted by over 10,000+ local customers</span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-full bg-blue-50 text-brand-blue-royal flex items-center justify-center font-bold text-xs">
-                      2
-                    </div>
-                    <span className="text-sm font-semibold text-slate-700">Led by regional expert Mr. Vinod Kumar Varnawal</span>
-                  </div>
-                  <div className="flex items-center gap-3">
-                    <div className="w-8 h-8 rounded-full bg-blue-50 text-brand-blue-royal flex items-center justify-center font-bold text-xs">
-                      3
-                    </div>
-                    <span className="text-sm font-semibold text-slate-700">One-stop shop for tarpaulin & heavy-duty covers</span>
-                  </div>
-                </div>
-
-                {/* Overlay background water mark */}
-                <span className="absolute right-4 bottom-2 text-9xl font-black text-slate-100/60 font-display select-none pointer-events-none">
-                  26
-                </span>
-              </div>
-            </div>
-
-            {/* About Right Column - Text Details */}
-            <div className="lg:col-span-7 flex flex-col">
-              <div className="flex items-center gap-2 bg-blue-50 text-brand-blue-royal text-xs font-bold font-mono px-3.5 py-1.5 rounded-full w-fit mb-5">
-                <Users className="w-3.5 h-3.5" />
-                <span>WHO WE ARE</span>
-              </div>
-              
-              <h2 className="text-3xl sm:text-4xl font-extrabold font-display text-brand-blue-dark tracking-tight mb-6">
-                Premium Polymers & Weather Protection For Every Sector
-              </h2>
-
-              <p className="text-slate-600 text-base leading-relaxed mb-6">
-                Under the visionary leadership of <strong className="text-slate-900">Mr. Vinod Kumar Varnawal</strong>, Om Shringar Tirpal Store has grown from a local merchant (previously Goyal Traders) into Siwan's most prominent supplier of Waterproof Tarpaulins, Plastic Rolls, Construction Curing Polythene, Stretch Wraps, and Resham Nets.
-              </p>
-
-              <p className="text-slate-600 text-base leading-relaxed mb-8">
-                We cater extensively to multiple domains, ensuring they get industrial-grade plastics with heavy weather protection, optimized water-proofing, and anti-tear guarantees:
-              </p>
-
-              {/* Grid of Sectors Served */}
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                {[
-                  { name: "Farmers & Agriculture", desc: "Grain drying (sattering), crop protection, silos, and fencing nets.", icon: "Sprout" },
-                  { name: "Builders & Contractors", desc: "Heavy-duty concrete slab underlays and road construction films.", icon: "HardHat" },
-                  { name: "Transporters & Truckers", desc: "High-density customized truck and trailer vehicle tarpaulin covers.", icon: "Truck" },
-                  { name: "Warehouses & Shops", desc: "Silage rolls, stretch wrap films, and large inventory protective covers.", icon: "Warehouse" }
-                ].map((sec, idx) => (
-                  <div key={idx} className="p-4 rounded-2xl bg-slate-50 border border-slate-100 flex gap-3.5">
-                    <div className="w-10 h-10 bg-white border border-slate-100 rounded-xl flex items-center justify-center text-brand-blue-royal shrink-0 shadow-sm">
-                      <DynamicIcon name={sec.icon} className="w-5 h-5 text-brand-orange" />
-                    </div>
-                    <div>
-                      <h4 className="font-bold text-sm text-brand-blue-dark font-display">{sec.name}</h4>
-                      <p className="text-xs text-slate-500 mt-0.5 leading-relaxed">{sec.desc}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-          </div>
-        </div>
-      </section>
+      {/* 5. ABOUT US SECTION (WHO WE ARE) */}
+      <WhoWeAreSection />
 
 
 
@@ -1130,56 +1036,12 @@ export default function App() {
 
 
 
-      {/* 9. WHY CHOOSE US */}
-      <section id="why-choose" className="py-20 bg-white relative scroll-mt-24 overflow-hidden">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
-          
-          {/* Section Header */}
-          <div className="text-center max-w-3xl mx-auto mb-16">
-            <div className="inline-flex items-center gap-2 bg-blue-50 text-brand-blue-royal text-xs font-bold font-mono px-3.5 py-1.5 rounded-full mb-4">
-              <ShieldCheck className="w-3.5 h-3.5 text-brand-orange" />
-              <span>THE POLMER HOUSE OF TRUST</span>
-            </div>
-            <h2 className="text-3xl sm:text-4xl font-extrabold font-display text-brand-blue-dark tracking-tight mb-4">
-              Why Siwan Prefers Om Shringar Tirpal Store
-            </h2>
-            <p className="text-slate-600 text-sm sm:text-base">
-              Through consistent reliability, authorized brand relationships, and wholesale price cards, we have sustained over 26 years of market authority.
-            </p>
-          </div>
-
-          {/* Highlight Cards Grid */}
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-            {WHY_CHOOSE_US.map((item, idx) => (
-              <motion.div
-                key={idx}
-                initial={{ opacity: 0, y: 15 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.4, delay: idx * 0.08 }}
-                className="p-6 md:p-8 bg-slate-50 hover:bg-white rounded-3xl border border-slate-100 hover:border-brand-orange/20 shadow-sm hover:shadow-xl transition-all duration-300 relative group overflow-hidden"
-              >
-                {/* Decorative background glow */}
-                <div className="absolute -right-6 -bottom-6 w-16 h-16 bg-brand-orange/5 rounded-full blur-xl group-hover:bg-brand-orange/15 transition-all duration-300" />
-
-                <div className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center text-brand-orange border border-slate-100 group-hover:bg-brand-orange group-hover:text-white group-hover:border-transparent transition-all duration-300 mb-6 shadow-sm">
-                  <DynamicIcon name={item.iconName} className="w-6 h-6" />
-                </div>
-                <h3 className="text-lg font-bold font-display text-brand-blue-dark mb-3 group-hover:text-brand-orange transition-colors">
-                  {item.title}
-                </h3>
-                <p className="text-sm text-slate-500 leading-relaxed relative z-10">
-                  {item.description}
-                </p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
       {/* 8. AVAILABLE PLASTIC & TARPAULIN SIZES (PREMIUM SIZE CHART) */}
       <SizeChartSection
         lang={lang}
+        isModalOpen={isSizeChartModalOpen}
+        onOpenModal={() => setIsSizeChartModalOpen(true)}
+        onCloseModal={() => setIsSizeChartModalOpen(false)}
         onSelectSize={(szStr) => handleEnquire("", `Inquiry for Size: ${szStr}`)}
       />
 
@@ -1388,8 +1250,25 @@ export default function App() {
                   Products Catalog
                 </a>
                 <a href="#special-uses" className="hover:text-white transition-colors">Special Applications</a>
-                <a href="#size-matrix" className="hover:text-white transition-colors">Size Spec Tables</a>
-                <a href="#why-choose" className="hover:text-white transition-colors">Why Choose Us</a>
+                <a 
+                  href="#size-matrix" 
+                  onClick={(e) => {
+                    e.preventDefault();
+                    setIsSizeChartModalOpen(true);
+                    setTimeout(() => {
+                      const element = document.getElementById("size-matrix");
+                      if (element) {
+                        const headerOffset = 100;
+                        const elementPosition = element.getBoundingClientRect().top;
+                        const offsetPosition = elementPosition + window.scrollY - headerOffset;
+                        window.scrollTo({ top: offsetPosition, behavior: "smooth" });
+                      }
+                    }, 50);
+                  }}
+                  className="hover:text-white transition-colors cursor-pointer"
+                >
+                  Size Spec Tables & Matrix
+                </a>
                 <button 
                   onClick={() => setIsTermsOpen(true)}
                   className="text-white hover:text-orange-400 font-bold transition-colors text-left cursor-pointer flex items-center gap-1.5 pt-1"

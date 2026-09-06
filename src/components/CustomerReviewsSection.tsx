@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "motion/react";
-import { Star, CheckCircle2, MapPin, UserCheck, Building2, Sparkles, Quote, ChevronLeft, ChevronRight } from "lucide-react";
+import { Star, CheckCircle2, MapPin, Sparkles, Quote, ChevronLeft, ChevronRight } from "lucide-react";
 
 export interface ReviewItem {
   id: string;
@@ -198,44 +198,10 @@ export const CustomerReviewsSection: React.FC = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
         
         {/* Section Header */}
-        <div className="text-center max-w-3xl mx-auto mb-10">
-          <div className="inline-flex items-center gap-2 bg-orange-50 border border-orange-200/80 text-[#FF7A00] font-mono text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-wider mb-4 shadow-xs">
+        <div className="text-center max-w-3xl mx-auto mb-8">
+          <div className="inline-flex items-center gap-2 bg-orange-50 border border-orange-200/80 text-[#FF7A00] font-mono text-xs font-bold px-4 py-1.5 rounded-full uppercase tracking-wider shadow-xs">
             <Sparkles className="w-3.5 h-3.5 text-[#FF7A00] animate-pulse" />
             <span>Customer Reviews</span>
-          </div>
-
-          <h2 className="text-3xl sm:text-4xl md:text-5xl font-black font-display text-[#0B2D5C] tracking-tight mb-4 leading-tight">
-            Trusted by local customers, dealers, and contractors
-          </h2>
-
-          <p className="text-slate-600 text-base sm:text-lg font-medium leading-relaxed">
-            Read verified feedback from our valued customers, retail partners, and construction engineers across Bihar.
-          </p>
-
-          {/* Trust Highlights Strip */}
-          <div className="mt-8 flex flex-wrap items-center justify-center gap-4 sm:gap-8 pt-6 border-t border-slate-200/60">
-            <div className="flex items-center gap-2">
-              <div className="flex text-amber-400">
-                {[...Array(5)].map((_, i) => (
-                  <Star key={i} className="w-4 h-4 fill-amber-400" />
-                ))}
-              </div>
-              <span className="text-xs font-extrabold text-[#0B2D5C]">5.0 Out of 5 Stars</span>
-            </div>
-            
-            <div className="h-4 w-px bg-slate-200 hidden sm:block" />
-
-            <div className="flex items-center gap-1.5 text-xs font-bold text-emerald-700 bg-emerald-50 px-3 py-1 rounded-full border border-emerald-200/60">
-              <UserCheck className="w-4 h-4 text-emerald-600" />
-              <span>100% Genuine Local Testimonials</span>
-            </div>
-
-            <div className="h-4 w-px bg-slate-200 hidden sm:block" />
-
-            <div className="flex items-center gap-1.5 text-xs font-bold text-slate-700">
-              <Building2 className="w-4 h-4 text-slate-500" />
-              <span>Serving Bihar Since 2000</span>
-            </div>
           </div>
         </div>
 
