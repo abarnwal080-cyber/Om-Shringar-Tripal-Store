@@ -61,6 +61,7 @@ import WhoWeAreSection from "./components/WhoWeAreSection";
 import UserTypeInquiryModal from "./components/UserTypeInquiryModal";
 import SizeChartSection from "./components/SizeChartSection";
 import GeminiChatbotSection from "./components/GeminiChatbotSection";
+import ChatbotWidget from "./components/ChatbotWidget";
 import VisitShopSection from "./components/VisitShopSection";
 import { TRANSLATIONS } from "./translations";
 
@@ -106,6 +107,7 @@ export default function App() {
 
   // User Role / Type Selection Modal for customized WhatsApp drafts
   const [userTypeModalOpen, setUserTypeModalOpen] = useState(false);
+  const [isChatOpen, setIsChatOpen] = useState(false);
   const [userTypeModalProduct, setUserTypeModalProduct] = useState("");
   const [userTypeModalContext, setUserTypeModalContext] = useState("");
 
@@ -119,7 +121,7 @@ export default function App() {
   }, []);
 
   // Professional Modal Popup System: Lock body scroll, prevent layout shifts, handle keyboard/touch, restore scroll position
-  const isAnyModalActive = isCatalogOpen || isTermsOpen || sizeCalcOpen || userTypeModalOpen || isSizeChartModalOpen;
+  const isAnyModalActive = isCatalogOpen || isTermsOpen || sizeCalcOpen || userTypeModalOpen || isSizeChartModalOpen || isChatOpen;
 
   useEffect(() => {
     if (!isAnyModalActive) return;
@@ -767,6 +769,8 @@ export default function App() {
 
           {/* PRODUCT VIDEOS SHOWCASE SECTION */}
           <ProductVideosSection lang={lang} onEnquire={handleEnquire} />
+          
+          <ChatbotWidget onClick={() => setIsChatOpen(true)} />
 
       {/* SHOP FRONT SHOWCASE SECTION */}
       <section id="shop-showcase" className="py-16 bg-gradient-to-b from-white to-slate-50 relative overflow-hidden border-b border-slate-200/50">
@@ -1048,9 +1052,7 @@ export default function App() {
       />
 
       {/* 10. GEMINI AI HINGLISH CHATBOT SECTION (REPLACED FAQ) */}
-      <div id="enquire" ref={inquiryRef}>
-        <GeminiChatbotSection />
-      </div>
+      <div id="enquire" ref={inquiryRef} />
 
       {/* 11. VISIT PHYSICAL STORE SHOWROOM SECTION */}
       <VisitShopSection />
@@ -1347,6 +1349,7 @@ export default function App() {
         lang={lang}
       />
 
+      <GeminiChatbotSection isOpen={isChatOpen} onClose={() => setIsChatOpen(false)} />
     </div>
   );
 }
