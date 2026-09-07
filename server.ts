@@ -153,40 +153,22 @@ ${urls.map(url => `  <url>
 
       const customerDisplayName = userName && typeof userName === "string" && userName.trim() ? `${userName.trim()} ji` : "ji";
 
-      const systemInstruction = `You are "Om Setu" (also known as Tirpal Saathi), the smart, cute, warm, and friendly AI Shopping Assistant of "Om Shringar Tirpal Store" (formerly Goyal Traders, est. 2000, 26+ years of trust in Maharajganj, Siwan, Bihar).
-Customer's Name: ${userName && typeof userName === "string" && userName.trim() ? userName.trim() : "Valued Customer"}.
-Address the customer warmly as "${customerDisplayName}" (e.g., "Namaste ${customerDisplayName}! 😊").
-Proprietor: Mr. Vinod Kumar Varnawal (श्री विनोद कुमार वर्णवाल).
-Phone / WhatsApp: +91 8210625483.
-Store Address: Meetha Hatti, Kazi Bazar, Maharajganj, Siwan, Bihar – 841238.
-Landmark: Near Kazi Bazar, Meetha Hatti Road.
-Store Timings: 7:00 AM to 7:00 PM, Monday to Sunday (Open all 7 days).
-Wholesale & Retail: We are the primary distributor and wholesale dealer for Siwan, Gopalganj, Chhapra, and across Bihar. Direct factory pricing, bulk supply discounts, and instant sizing customization available.
+      const systemInstruction = `You are "Om Setu", the smart, polite, and concise AI Shopping Assistant of "Om Shringar Tirpal Store" (Maharajganj, Siwan, Bihar, Proprietor: Mr. Vinod Kumar Varnawal, Phone/WhatsApp: +91 8210625483).
+Customer Name: ${userName && typeof userName === "string" && userName.trim() ? userName.trim() : "Valued Customer"}.
+Address the customer warmly as "${customerDisplayName}".
 
-Products & Knowledge:
-1. Tirpal (HDPE & Multilayer Tarpaulins):
-   - Best for roof waterproofing (chhat tapakne se rokne ke liye), trucks, tractors, grain/gehu/dhan storage, construction, and temporary shades.
-   - GSM Guide:
-     * 120 GSM: Light-duty, dust cover, short-term use.
-     * 150-200 GSM: Medium-duty farming, grain storage, godowns.
-     * 250 GSM & 300+ GSM: Heavy-duty and super-duty, torrential monsoon rain, truck transport, roof leak protection.
-   - Sizes: 6x6, 9x12, 12x18, 15x18, 18x24, 24x30, 30x40, 30x60 feet, and custom sizes. Heat-sealed borders with rust-free aluminum eyelets (grommets).
-2. Silpaulin Tarpaulins:
-   - 100% leak-proof, multi-layered cross-laminated sheet.
-   - Ideal for Fish Pond Liner (मछली पालन तालाब), Biofloc, Azolla culture, silage making.
-3. Construction Plastic Rolls & LDPE Film:
-   - Used for roof concrete curing (chhat ki dhalaai ke baad paani rokne ke liye), foundation moisture barrier, greenhouse, mulch film.
-   - Available in 100, 150, 200, 250+ micron rolls.
-4. Agro Shade Nets (हरा जाली):
-   - 50% and 75% shading factor for vegetable nurseries, terrace gardens, vehicle parking shade, poultry farms.
-5. Packaging Materials:
-   - Stretch film rolls, bubble wrap, PP woven bags/boriyaan, heavy-duty plastic sutli & ropes.
+Store Highlights:
+- Address: Meetha Hatti, Kazi Bazar, Maharajganj, Siwan, Bihar - 841238.
+- Timings: 7:00 AM to 7:00 PM, all 7 days open.
+- Products: Waterproof HDPE Tarpaulins (120 to 300+ GSM), Multilayer Silpaulin (Fish pond / Biofloc), Concrete Curing Construction LDPE Plastic Rolls (100 to 250+ micron), Agro Green Shade Nets (50% & 75%), Packaging materials.
+- Wholesale & Retail: Siwan, Gopalganj, Chhapra & Bihar distributor.
 
-Guidelines for your response:
-- Respond in natural, warm, polite, and respectful HINGLISH (conversational blend of Hindi and English, e.g., "Namaste ${customerDisplayName}! Chhat ke liye 200 ya 250 GSM ka heavy-duty waterproof tirpal sabse best hota hai...").
-- Keep replies helpful, practical, concise, and easy to read with bullet points when listing sizes or options.
-- If the customer asks for wholesale rate, price quotes, or bulk orders, warmly guide them to call or WhatsApp Mr. Vinod Kumar Varnawal at +91 8210625483 or visit the store in Maharajganj, Siwan.
-- Always be courteous, friendly, and welcoming.`;
+CRITICAL RULES:
+1. NEVER USE THE ASTERISK SYMBOL "*" UNDER ANY CIRCUMSTANCE. Do NOT use * or ** for bold, italic, or bullet points. Use plain text, numbers, or dashes (-) or bullets (•) only.
+2. CONCISE & SATIK: Keep all answers very accurate, precise, concise, and straight to the point without unnecessary fluff.
+3. ILLEGAL / INAPPROPRIATE QUERIES: If any user asks about illegal activities, weapons, violence, adult/vulgar content, hacking, scams, or any unethical/harmful query, strictly output this WARNING:
+"Chetavni (Warning): Yeh AI assistant keval Om Shringar Tirpal Store ke vyavsayik utpado aur sevaon ke liye hai. Kisi bhi anuchit ya gair-kanuni vishay par charcha yahan sakht mana hai."
+4. Always speak in natural, respectful Hinglish. Direct wholesale inquiries to Mr. Vinod Kumar Varnawal at +91 8210625483.`;
 
       let replyText = "";
 
@@ -228,7 +210,7 @@ Guidelines for your response:
                 contents: contents,
                 config: {
                   systemInstruction: systemInstruction,
-                  temperature: 0.7,
+                  temperature: 0.5,
                 },
               });
               if (response && response.text) {
@@ -237,7 +219,6 @@ Guidelines for your response:
               }
             } catch (modelErr: any) {
               console.warn(`Model ${modelName} encountered error:`, modelErr?.message || modelErr);
-              // continue to next fallback candidate
             }
           }
         } catch (apiError: any) {
@@ -245,58 +226,72 @@ Guidelines for your response:
         }
       }
 
+      // Check for illegal or abusive content in local fallback
+      const lower = message.toLowerCase();
+      const isSuspicious =
+        lower.includes("hack") ||
+        lower.includes("weapon") ||
+        lower.includes("bomb") ||
+        lower.includes("kill") ||
+        lower.includes("drugs") ||
+        lower.includes("sex") ||
+        lower.includes("porn") ||
+        lower.includes("scam") ||
+        lower.includes("steal") ||
+        lower.includes("chori") ||
+        lower.includes("maro") ||
+        lower.includes("gaali");
+
+      if (isSuspicious) {
+        replyText = "Chetavni (Warning): Yeh AI assistant keval Om Shringar Tirpal Store ke vyavsayik utpado aur sevaon ke liye hai. Kisi bhi anuchit ya gair-kanuni vishay par charcha yahan sakht mana hai.";
+      }
+
       // Intelligent Hinglish Fallback if Gemini key is not configured or all models are busy/503
       if (!replyText) {
-        const lower = message.toLowerCase();
-        const prefix = `Namaste ${customerDisplayName}! 😊 `;
+        const prefix = `Namaste ${customerDisplayName}! `;
 
         if (lower.includes("chhat") || lower.includes("roof") || lower.includes("tapak") || lower.includes("leak") || lower.includes("baarish")) {
-          replyText = `${prefix}Chhat ke liye sabse best **200 GSM ya 250 GSM ka Heavy-Duty Waterproof HDPE ya Silpaulin tirpal** hota hai.
-• Yeh 100% waterproof aur UV-stabilized hota hai jo tej dhoop aur bhari baarish dono se chhat ko surakshit rakhta hai.
-• Popular sizes: 12x18 ft, 18x24 ft, 24x30 ft, ya 30x40 ft.
-Aapki chhat ka approximate size kya hai? Ya fir direct Vinod ji ko call/WhatsApp karein: 📞 **+91 8210625483**!`;
+          replyText = `${prefix}Chhat ke liye sabse behtar 200 GSM ya 250 GSM ka Heavy-Duty Waterproof Tirpal ya Silpaulin hota hai.
+• 100% waterproof aur dhoop-baarish se surakshit.
+• Sizes: 12x18, 18x24, 24x30, 30x40 ft uplabdh.
+Apni chhat ke size ke anusaar order ke liye Vinod ji ko call karein: +91 8210625483.`;
         } else if (lower.includes("rate") || lower.includes("price") || lower.includes("daam") || lower.includes("kitna") || lower.includes("wholesale") || lower.includes("discount")) {
-          replyText = `${prefix}Om Shringar Tirpal Store me Siwan aur pure Bihar ka sabse kifaayati **Wholesale & Factory Rate** milta hai.
-• Rate tirpal ke GSM (120, 150, 200, 250 GSM) aur exact size par depend karta hai.
-• Bulk purchase aur direct wholesale discount ke liye humare proprietor Mr. Vinod Kumar Varnawal ji se direct call/WhatsApp par baat karein: 📞 **+91 8210625483**.`;
+          replyText = `${prefix}Om Shringar Tirpal Store me factory direct wholesale rate milta hai.
+• Rate tirpal ke GSM (120, 150, 200, 250 GSM) aur size par aadharit hota hai.
+• Wholesale rate list aur discount ke liye direct proprietor Mr. Vinod Kumar Varnawal ji se WhatsApp ya call karein: +91 8210625483.`;
         } else if (lower.includes("kahan") || lower.includes("address") || lower.includes("location") || lower.includes("dukaan") || lower.includes("store") || lower.includes("pata")) {
-          replyText = `${prefix}Humari physical wholesale shop Maharajganj, Siwan me sthit hai:
-📍 **Om Shringar Tirpal Store**, Meetha Hatti, Kazi Bazar, Maharajganj, Siwan, Bihar – 841238.
-Landmark: Kazi Bazar, Meetha Hatti Road ke paas.
-⏰ **Timing:** Subah 7:00 AM se Shaam 7:00 PM (Saaton din open).
-Aap direct store visit karke material check kar sakte hain!`;
-        } else if (lower.includes("fish") || lower.includes("machhli") || lower.includes("pond") || lower.includes("pond liner") || lower.includes("silpaulin") || lower.includes("biofloc")) {
-          replyText = `${prefix}Fish pond (मछली पालन), Biofloc aur Azolla ke liye **Multilayer Cross-Laminated Silpaulin Sheet** sabse best choice hai!
-• Yeh 100% leakproof, puncture resistant aur long-life sheet hoti hai.
-• Ready rolls aur custom ponds ke sizes uplabdh hain. Order aur inquiry ke liye call karein: 📞 **+91 8210625483**.`;
-        } else if (lower.includes("dhalai") || lower.includes("dhalayi") || lower.includes("construction") || lower.includes("plastic roll") || lower.includes("micron")) {
-          replyText = `${prefix}Chhat dhalai (concrete curing) aur foundation moisture barrier ke liye humare paas **100, 150, 200 aur 250+ Micron ke Heavy LDPE Plastic Rolls** available hain.
-• Concrete ko majbooti milti hai aur paani nahi sukhta. Ready rolls available hain wholesale rate par!`;
+          replyText = `${prefix}Humari dukaan ka pata:
+Om Shringar Tirpal Store, Meetha Hatti, Kazi Bazar, Maharajganj, Siwan, Bihar - 841238.
+Timing: Subah 7:00 AM se Shaam 7:00 PM (Saaton din open).`;
+        } else if (lower.includes("fish") || lower.includes("machhli") || lower.includes("pond") || lower.includes("silpaulin") || lower.includes("biofloc")) {
+          replyText = `${prefix}Fish pond (machhli palan) ke liye Multilayer Cross-Laminated Silpaulin Sheet sabse behtareen aur 100% leakproof hai.
+Details aur ready sizes ke liye call karein: +91 8210625483.`;
+        } else if (lower.includes("dhalai") || lower.includes("construction") || lower.includes("plastic roll") || lower.includes("micron")) {
+          replyText = `${prefix}Chhat dhalai (concrete curing) ke liye 100, 150, 200 aur 250+ micron ke heavy LDPE plastic rolls ready stock me uplabdh hain.`;
         } else if (lower.includes("green") || lower.includes("shade") || lower.includes("jali") || lower.includes("agro") || lower.includes("net")) {
-          replyText = `${prefix}Kheti, nursery, terrace garden aur dhoop se bachav ke liye **50% aur 75% Green Agro Shade Net (हरा जाली)** available hai.
-• UV stabilized, durable aur best quality material. Direct wholesale pricing ke liye call karein: 📞 **+91 8210625483**.`;
+          replyText = `${prefix}Kheti aur nursery ke liye 50% aur 75% Green Agro Shade Net (hara jaali) wholesale daam par uplabdh hai.`;
         } else if (lower.includes("number") || lower.includes("phone") || lower.includes("call") || lower.includes("contact") || lower.includes("owner") || lower.includes("vinod")) {
-          replyText = `${prefix}Aap direct humare proprietor **Mr. Vinod Kumar Varnawal ji** se baat kar sakte hain:
-📞 Phone / WhatsApp: **+91 8210625483**
-📍 Store: Meetha Hatti, Kazi Bazar, Maharajganj, Siwan. Subah 7 AM se Shaam 7 PM tak kabhi bhi call ya visit karein!`;
+          replyText = `${prefix}Proprietor Mr. Vinod Kumar Varnawal ji ka contact:
+Phone / WhatsApp: +91 8210625483
+Dukaan: Meetha Hatti, Kazi Bazar, Maharajganj, Siwan.`;
         } else if (lower.includes("size") || lower.includes("sizes") || lower.includes("gsm")) {
-          replyText = `${prefix}Humare paas sabhi standard aur custom sizes ready stock me hain:
-• **Sizes:** 6x6, 9x12, 12x18, 15x18, 18x24, 24x30, 30x40, 30x60 ft.
-• **GSM Options:** 120 GSM (Light-duty), 150-200 GSM (Medium/Farming), 250-300+ GSM (Heavy Duty).
-Aapko kis use ke liye tirpal chahiye? Batayiye, main exact size recommend karta hoon!`;
+          replyText = `${prefix}Ready Sizes: 6x6, 9x12, 12x18, 15x18, 18x24, 24x30, 30x40, 30x60 ft.
+GSM Options: 120, 150, 200, 250, 300+ GSM. Custom size bhi banta hai.`;
         } else {
-          replyText = `${prefix}Main Om Shringar Tirpal Store ka AI Assistant **Om Setu** hoon.
-Aap humse waterproof tirpal, silpaulin, dhalai plastic, green shade net ya factory wholesale rate ke baare me kuch bhi poochh sakte hain.
-Direct guidance ke liye aap Mr. Vinod Kumar Varnawal ji ko bhi call kar sakte hain: 📞 **+91 8210625483**.`;
+          replyText = `${prefix}Main Om Shringar Tirpal Store ka AI Assistant Om Setu hoon.
+Aap humse tirpal, silpaulin, dhalai plastic, green shade net ya factory wholesale rate ke baare me satik jankari le sakte hain. Direct call: +91 8210625483.`;
         }
       }
+
+      // Enforce NO asterisk symbol in final output
+      replyText = replyText.replace(/\*/g, "");
 
       res.json({ reply: replyText });
     } catch (err: any) {
       console.error("Chat error:", err);
       res.json({
         reply:
-          "Namaste ji! 🙏 Om Shringar Tirpal Store me aapka swagat hai. Direct rate ya kisi bhi product inquiry ke liye aap humare proprietor Mr. Vinod Kumar Varnawal ji se direct call ya WhatsApp par baat kar sakte hain: 📞 +91 8210625483.",
+          "Namaste ji! Om Shringar Tirpal Store me aapka swagat hai. Kisi bhi jankari ya rate ke liye direct call ya WhatsApp karein: +91 8210625483 (Mr. Vinod Kumar Varnawal, Maharajganj).",
       });
     }
   });
