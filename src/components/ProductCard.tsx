@@ -48,7 +48,7 @@ export default function ProductCard({ product, onViewDetails, currentLanguage = 
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onClick={() => onViewDetails(product)}
-      className="bg-white rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-slate-200/80 flex flex-col h-full group cursor-pointer"
+      className="bg-white rounded-2xl sm:rounded-3xl overflow-hidden shadow-md hover:shadow-xl transition-all duration-300 border border-slate-200/80 flex flex-col h-full group cursor-pointer"
     >
       {/* Image Carousel Area */}
       <div 
@@ -60,7 +60,7 @@ export default function ProductCard({ product, onViewDetails, currentLanguage = 
       >
         {/* Video Badge */}
         {product.video && (
-          <div className="absolute top-3 left-3 z-20 flex items-center gap-1.5 px-2.5 py-1 rounded-full bg-black/65 backdrop-blur-md border border-white/20 text-white text-[10px] font-black uppercase tracking-wider shadow-md">
+          <div className="absolute top-2 left-2 sm:top-3 sm:left-3 z-20 flex items-center gap-1 sm:gap-1.5 px-2 py-0.5 sm:px-2.5 sm:py-1 rounded-full bg-black/65 backdrop-blur-md border border-white/20 text-white text-[9px] sm:text-[10px] font-black uppercase tracking-wider shadow-md">
             <span className="w-1.5 h-1.5 rounded-full bg-red-500 animate-pulse" />
             <span>Video Demo</span>
           </div>
@@ -96,20 +96,20 @@ export default function ProductCard({ product, onViewDetails, currentLanguage = 
             <button
               onClick={prevSlide}
               aria-label="Previous Slide"
-              className="absolute left-3 top-1/2 -translate-y-1/2 z-20 w-8 h-8 flex items-center justify-center rounded-full bg-black/45 hover:bg-orange-500 text-white backdrop-blur-sm transition-all duration-200 active:scale-90 opacity-0 group-hover:opacity-100"
+              className="absolute left-1.5 sm:left-3 top-1/2 -translate-y-1/2 z-20 w-6 h-6 sm:w-8 sm:h-8 flex items-center justify-center rounded-full bg-black/45 hover:bg-orange-500 text-white backdrop-blur-sm transition-all duration-200 active:scale-90 opacity-0 group-hover:opacity-100"
             >
-              <ChevronLeft className="w-4 h-4" />
+              <ChevronLeft className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             </button>
             <button
               onClick={nextSlide}
               aria-label="Next Slide"
-              className="absolute right-3 top-1/2 -translate-y-1/2 z-20 w-8 h-8 flex items-center justify-center rounded-full bg-black/45 hover:bg-orange-500 text-white backdrop-blur-sm transition-all duration-200 active:scale-90 opacity-0 group-hover:opacity-100"
+              className="absolute right-1.5 sm:right-3 top-1/2 -translate-y-1/2 z-20 w-6 h-6 sm:w-8 sm:h-8 flex items-center justify-center rounded-full bg-black/45 hover:bg-orange-500 text-white backdrop-blur-sm transition-all duration-200 active:scale-90 opacity-0 group-hover:opacity-100"
             >
-              <ChevronRight className="w-4 h-4" />
+              <ChevronRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
             </button>
 
             {/* Slider Dots Indicator */}
-            <div className="absolute bottom-2.5 left-1/2 -translate-x-1/2 z-20 flex gap-1.5 bg-black/40 px-2.5 py-1 rounded-full backdrop-blur-sm">
+            <div className="absolute bottom-2 sm:bottom-2.5 left-1/2 -translate-x-1/2 z-20 flex gap-1 sm:gap-1.5 bg-black/40 px-2 sm:px-2.5 py-0.5 sm:py-1 rounded-full backdrop-blur-sm">
               {product.images.map((_, idx) => (
                 <button
                   key={idx}
@@ -129,25 +129,25 @@ export default function ProductCard({ product, onViewDetails, currentLanguage = 
       </div>
 
       {/* Product Information Body */}
-      <div className="p-5 flex-grow flex flex-col justify-between">
+      <div className="p-3 sm:p-5 flex-grow flex flex-col justify-between">
         <div 
           onClick={(e) => {
             e.stopPropagation();
             onViewDetails(product);
           }}
-          className="my-auto py-2 cursor-pointer"
+          className="my-auto py-1 sm:py-2 cursor-pointer"
         >
-          <h3 className="text-lg md:text-xl font-extrabold font-display text-slate-900 tracking-tight text-center group-hover:text-orange-600 transition-colors line-clamp-2 cursor-pointer">
+          <h3 className="text-xs sm:text-base md:text-xl font-extrabold font-display text-slate-900 tracking-tight text-center group-hover:text-orange-600 transition-colors line-clamp-2 cursor-pointer leading-snug">
             {product.name}
           </h3>
 
           {/* Star Rating & Review Count */}
-          <div className="flex items-center justify-center gap-1.5 mt-2.5 cursor-pointer">
+          <div className="flex items-center justify-center gap-1 sm:gap-1.5 mt-1 sm:mt-2.5 cursor-pointer">
             <div className="flex items-center text-amber-400">
               {[1, 2, 3, 4, 5].map((s) => (
                 <Star
                   key={s}
-                  className={`w-3.5 h-3.5 ${
+                  className={`w-3 h-3 sm:w-3.5 sm:h-3.5 ${
                     s <= Math.round(stats.average)
                       ? "fill-amber-400 text-amber-400"
                       : "text-slate-200"
@@ -155,13 +155,13 @@ export default function ProductCard({ product, onViewDetails, currentLanguage = 
                 />
               ))}
             </div>
-            <span className="text-xs font-black text-slate-800">{stats.average.toFixed(1)}</span>
-            <span className="text-[11px] text-slate-400 font-medium">({stats.totalCount} reviews)</span>
+            <span className="text-[10.5px] sm:text-xs font-black text-slate-800">{stats.average.toFixed(1)}</span>
+            <span className="text-[9.5px] sm:text-[11px] text-slate-400 font-medium">({stats.totalCount})</span>
           </div>
         </div>
 
         {/* Action Button */}
-        <div className="mt-4 pt-3 border-t border-slate-100 flex items-center">
+        <div className="mt-2.5 sm:mt-4 pt-2 sm:pt-3 border-t border-slate-100 flex items-center">
           <a
             href={`/products/${getProductSlug(product.id)}`}
             onClick={(e) => {
@@ -169,7 +169,7 @@ export default function ProductCard({ product, onViewDetails, currentLanguage = 
               e.stopPropagation();
               onViewDetails(product);
             }}
-            className={`w-full flex items-center justify-center gap-2 py-3 px-4 rounded-full text-white font-extrabold text-xs sm:text-sm transition-all duration-200 shadow-md hover:scale-[1.01] active:scale-[0.98] cursor-pointer text-center ${
+            className={`w-full flex items-center justify-center gap-1 sm:gap-2 py-2 sm:py-3 px-2 sm:px-4 rounded-full text-white font-extrabold text-[11px] sm:text-sm transition-all duration-200 shadow-md hover:scale-[1.01] active:scale-[0.98] cursor-pointer text-center ${
               product.id === "cosmetics-shringar"
                 ? "bg-gradient-to-r from-rose-600 to-pink-500 hover:from-rose-700 hover:to-pink-600"
                 : "bg-gradient-to-r from-orange-600 to-amber-500 hover:from-orange-700 hover:to-amber-600"
@@ -178,13 +178,13 @@ export default function ProductCard({ product, onViewDetails, currentLanguage = 
             <span>
               {product.id === "cosmetics-shringar"
                 ? currentLanguage === "hi"
-                  ? "रिटेल स्टोर ओनली (विवरण देखें)"
-                  : "Retail Store Only (View Details)"
+                  ? "विवरण देखें"
+                  : "View Details"
                 : currentLanguage === "hi"
                 ? "अधिक जानें"
                 : "Know More"}
             </span>
-            <ArrowRight className="w-4 h-4" />
+            <ArrowRight className="w-3.5 h-3.5 sm:w-4 sm:h-4" />
           </a>
         </div>
       </div>
