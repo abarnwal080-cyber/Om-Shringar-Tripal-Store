@@ -113,7 +113,7 @@ export default function GeminiChatbotSection({
           id: `welcome-${Date.now()}`,
           role: "assistant",
           content: cleanText(
-            `Hi! 👋 Main Om Setu hoon. Om Shringar Tirpal Store me aapka swagat hai.\n\nAap humse tarpaulin sizes, prices, delivery ya waterproofing ke baare me satik jankari le sakte hain. Poochhiye!`
+            `Namaste! 🙏 Main "Om Setu AI" hoon, Om Shringar Tirpal Store (Maharajganj, Siwan) ka virtual assistant.\n\nAap humse tirpal (waterproof HDPE / Silpaulin), available sizes, rates, concrete dhalai plastic ya delivery ke baare me pooch sakte hain. Main aapki kya madad kar sakta hoon?`
           ),
           time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
         },
@@ -286,7 +286,7 @@ export default function GeminiChatbotSection({
         id: `welcome-${Date.now()}`,
         role: "assistant",
         content: cleanText(
-          `Hi! 👋 Main Om Setu hoon. Om Shringar Tirpal Store me aapka swagat hai.\n\nAap humse tarpaulin sizes, prices, delivery ya waterproofing ke baare me satik jankari le sakte hain. Poochhiye!`
+          `Namaste! 🙏 Main "Om Setu AI" hoon, Om Shringar Tirpal Store (Maharajganj, Siwan) ka virtual assistant.\n\nAap humse tirpal (waterproof HDPE / Silpaulin), available sizes, rates, concrete dhalai plastic ya delivery ke baare me pooch sakte hain. Main aapki kya madad kar sakta hoon?`
         ),
         time: new Date().toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }),
       },
