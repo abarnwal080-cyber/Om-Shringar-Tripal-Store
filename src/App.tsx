@@ -971,10 +971,10 @@ export default function App() {
                     </motion.div>
                   )}
                 </AnimatePresence>
-                {/* 2 Products in a row (ek saath do do products in a row) */}
+                {/* 2 Products in a row on mobile, multi-column on laptop & desktop */}
                 <motion.div
                   layout
-                  className="grid grid-cols-2 gap-3 sm:gap-6 md:gap-8 max-w-5xl mx-auto"
+                  className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6 md:gap-8 max-w-7xl mx-auto"
                 >
                   {PRODUCTS.map((product) => (
                     <motion.div
