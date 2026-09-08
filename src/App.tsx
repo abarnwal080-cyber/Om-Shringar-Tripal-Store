@@ -46,7 +46,7 @@ import {
 } from "./data";
 
 import ProductCard from "./components/ProductCard";
-import CustomerReviewsSection from "./components/CustomerReviewsSection";
+import GoogleReviewSection from "./components/GoogleReviewSection";
 import BrandCarousel from "./components/BrandCarousel";
 import ProductMiniCarousel from "./components/ProductMiniCarousel";
 import SingleProductSection from "./components/SingleProductSection";
@@ -775,16 +775,10 @@ export default function App() {
               {/* SECTION 1: POLYWARE INDUSTRIAL */}
               <div className="mb-14">
                 <div className="flex flex-col items-center mb-6">
-                  <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-900/10 border border-blue-900/20 text-[#0B2D5C] text-xs font-black uppercase tracking-wider mb-2">
+                  <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-900/10 border border-blue-900/20 text-[#0B2D5C] text-xs font-black uppercase tracking-wider">
                     <Icons.Factory className="w-4 h-4 text-orange-600" />
                     <span>Section 1 • Polyware Industrial</span>
                   </div>
-                  <h2 className="text-2xl sm:text-3xl md:text-4xl font-black font-display text-slate-900 tracking-tight">
-                    POLYWARE <span className="text-orange-600">INDUSTRIAL PRODUCTS</span>
-                  </h2>
-                  <p className="text-slate-600 text-xs sm:text-sm font-medium mt-1 max-w-2xl mx-auto">
-                    Tarpaulin Sheets, Plastic Sheets, Polythene Rolls, Stretch Films, Fencing Nets, Thermocol Sheets, Plastic Mats, Table Covers & Packaging Materials
-                  </p>
                 </div>
 
                 {/* Polyware Product Mini Carousel */}
@@ -806,7 +800,7 @@ export default function App() {
                     onClick={() => {
                       window.history.pushState({}, "", "/polyware");
                       setCatalogPageMode("polyware");
-                      window.scrollTo({ top: 0, behavior: "smooth" });
+                      window.scrollTo(0, 0);
                     }}
                     className="group relative flex items-center justify-between gap-4 px-4 sm:px-6 w-full max-w-[560px] h-[72px] rounded-full bg-gradient-to-r from-[#071324] via-[#0B1F3A] to-[#071324] border border-white/10 text-white font-sans transition-all duration-300 cursor-pointer select-none overflow-hidden animate-cta-pulse focus:outline-none focus:ring-4 focus:ring-orange-500/40 focus:ring-offset-2 shadow-[0_12px_30px_rgba(255,106,0,.25),_0_4px_12px_rgba(0,0,0,.12)]"
                     aria-label="View Polyware Catalog"
@@ -822,13 +816,10 @@ export default function App() {
                       <Icons.Factory className="w-5 h-5 sm:w-6 sm:h-6 stroke-[1.5] text-[#FF7A00] group-hover:scale-110 transition-transform duration-300" />
                     </div>
 
-                    {/* CENTER: Text */}
-                    <div className="flex flex-col text-left relative z-10 leading-tight flex-grow ml-2 sm:ml-4">
+                    {/* CENTER: Text (Just View Polyware) */}
+                    <div className="flex items-center text-left relative z-10 flex-grow ml-2 sm:ml-4">
                       <span className="text-[18px] sm:text-[24px] md:text-[26px] font-black tracking-tight text-white drop-shadow-sm font-sans uppercase">
                         {lang === "en" ? "VIEW POLYWARE" : "पॉलीवेयर देखें"}
-                      </span>
-                      <span className="text-[11px] sm:text-[14px] font-medium text-orange-400/95 font-sans tracking-wide">
-                        {lang === "en" ? "View Details & Industrial Catalog" : "विवरण और इंडस्ट्रियल कैटलॉग देखें"}
                       </span>
                     </div>
 
@@ -853,16 +844,10 @@ export default function App() {
               {/* SECTION 2: GENERAL STORE & RETAIL */}
               <div>
                 <div className="flex flex-col items-center mb-6">
-                  <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-pink-900/10 border border-pink-900/20 text-[#831843] text-xs font-black uppercase tracking-wider mb-2">
+                  <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-pink-900/10 border border-pink-900/20 text-[#831843] text-xs font-black uppercase tracking-wider">
                     <Icons.ShoppingBag className="w-4 h-4 text-pink-600" />
                     <span>Section 2 • General Store & Retail</span>
                   </div>
-                  <h2 className="text-2xl sm:text-3xl md:text-4xl font-black font-display text-slate-900 tracking-tight">
-                    GENERAL STORE <span className="text-pink-600">& RETAIL PRODUCTS</span>
-                  </h2>
-                  <p className="text-slate-600 text-xs sm:text-sm font-medium mt-1 max-w-2xl mx-auto">
-                    Cosmetics, Safari & Aristocrat Bags, Rucksacks, Handbags, Leather Belts, Crystal Scenery, Ropes, Flags & Gamcha
-                  </p>
                 </div>
 
                 {/* General Store Product Mini Carousel */}
@@ -884,7 +869,7 @@ export default function App() {
                     onClick={() => {
                       window.history.pushState({}, "", "/retail-store");
                       setCatalogPageMode("general-store");
-                      window.scrollTo({ top: 0, behavior: "smooth" });
+                      window.scrollTo(0, 0);
                     }}
                     className="group relative flex items-center justify-between gap-4 px-4 sm:px-6 w-full max-w-[560px] h-[72px] rounded-full bg-gradient-to-r from-[#071324] via-[#0B1F3A] to-[#071324] border border-white/10 text-white font-sans transition-all duration-300 cursor-pointer select-none overflow-hidden animate-cta-pulse focus:outline-none focus:ring-4 focus:ring-orange-500/40 focus:ring-offset-2 shadow-[0_12px_30px_rgba(255,106,0,.25),_0_4px_12px_rgba(0,0,0,.12)]"
                     aria-label="View Retail Store"
@@ -900,13 +885,10 @@ export default function App() {
                       <Icons.ShoppingBag className="w-5 h-5 sm:w-6 sm:h-6 stroke-[1.5] text-[#FF7A00] group-hover:scale-110 transition-transform duration-300" />
                     </div>
 
-                    {/* CENTER: Text */}
-                    <div className="flex flex-col text-left relative z-10 leading-tight flex-grow ml-2 sm:ml-4">
+                    {/* CENTER: Text (Just View Retail Store) */}
+                    <div className="flex items-center text-left relative z-10 flex-grow ml-2 sm:ml-4">
                       <span className="text-[18px] sm:text-[24px] md:text-[26px] font-black tracking-tight text-white drop-shadow-sm font-sans uppercase">
                         {lang === "en" ? "VIEW RETAIL STORE" : "रिटेल स्टोर देखें"}
-                      </span>
-                      <span className="text-[11px] sm:text-[14px] font-medium text-orange-400/95 font-sans tracking-wide">
-                        {lang === "en" ? "View Details & Retail Collection" : "विवरण और रिटेल कलेक्शन देखें"}
                       </span>
                     </div>
 
@@ -923,6 +905,11 @@ export default function App() {
 
           {/* PRODUCT VIDEOS SHOWCASE SECTION */}
           <ProductVideosSection lang={lang} onEnquire={handleEnquire} />
+
+          {/* GOOGLE REVIEW RATING POPUP SECTION (Directly below Homepage Video Slider) */}
+          <section id="reviews">
+            <GoogleReviewSection variant="banner" />
+          </section>
           
           <ChatbotWidget onClick={() => setIsChatOpen(true)} />
 
@@ -1058,8 +1045,10 @@ export default function App() {
         </motion.button>
       </div>
 
-      {/* CUSTOMER REVIEWS SECTION */}
-      <CustomerReviewsSection />
+      {/* GOOGLE REVIEW RATING POPUP SECTION */}
+      <section id="reviews">
+        <GoogleReviewSection variant="banner" />
+      </section>
 
       {/* 5. ABOUT US SECTION (WHO WE ARE) */}
       <WhoWeAreSection />

@@ -1,0 +1,525 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Google Review Rating Popup Component</title>
+  <style>
+    /* ==========================================================================
+       GOOGLE REVIEW POPUP COMPONENT (PURE CSS)
+       All class names are prefixed with 'grp-' to prevent conflicts.
+       ========================================================================== */
+
+    /* Universal box-sizing for this component */
+    .grp-btn, .grp-modal-backdrop, .grp-modal-card, .grp-modal-card * {
+      box-sizing: border-box;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    }
+
+    /* Container for centering the main button */
+    .grp-container {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 40px 20px;
+    }
+
+    /* Main Trigger Button */
+    .grp-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 14px 28px;
+      background-color: #ffffff;
+      color: #1a1a1a;
+      font-size: 15px;
+      font-weight: 700;
+      border: 1px solid #e2e8f0;
+      border-radius: 24px;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+      cursor: pointer;
+      transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+      user-select: none;
+      text-decoration: none;
+    }
+
+    .grp-btn:hover {
+      background-color: #fafafa;
+      border-color: #cbd5e1;
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.09);
+      transform: translateY(-2px);
+    }
+
+    .grp-btn:active {
+      transform: translateY(0);
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.05);
+    }
+
+    .grp-star-icon {
+      color: #fbbf24;
+      font-size: 18px;
+      line-height: 1;
+      transition: transform 0.2s ease;
+    }
+
+    .grp-btn:hover .grp-star-icon {
+      transform: scale(1.2);
+    }
+
+    .grp-arrow-icon {
+      color: #94a3b8;
+      font-size: 13px;
+      font-family: monospace;
+      font-weight: 600;
+      transition: color 0.2s ease;
+    }
+
+    .grp-btn:hover .grp-arrow-icon {
+      color: #475569;
+    }
+
+    /* Backdrop & Overlay */
+    .grp-modal-backdrop {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      width: 100vw;
+      height: 100vh;
+      background-color: rgba(15, 23, 42, 0.45);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      z-index: 99999;
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.25s ease, visibility 0.25s ease;
+    }
+
+    .grp-modal-backdrop.grp-active {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    /* Modal Card */
+    .grp-modal-card {
+      position: relative;
+      width: 100%;
+      max-width: 420px;
+      background: #ffffff;
+      border: 1px solid #e2e8f0;
+      border-radius: 24px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.15), 0 4px 16px rgba(0, 0, 0, 0.04);
+      padding: 32px 28px 28px;
+      text-align: center;
+      transform: scale(0.92) translateY(8px);
+      opacity: 0;
+      transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
+    }
+
+    .grp-modal-backdrop.grp-active .grp-modal-card {
+      transform: scale(1) translateY(0);
+      opacity: 1;
+    }
+
+    /* Close Button */
+    .grp-close-btn {
+      position: absolute;
+      top: 16px;
+      right: 16px;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      border: none;
+      background: #f1f5f9;
+      color: #64748b;
+      font-size: 20px;
+      line-height: 1;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s ease;
+      padding: 0;
+    }
+
+    .grp-close-btn:hover {
+      background: #e2e8f0;
+      color: #0f172a;
+    }
+
+    /* Header & Badge */
+    .grp-badge-icon {
+      width: 48px;
+      height: 48px;
+      margin: 0 auto 16px;
+      background: #ffffff;
+      border: 1px solid #f1f5f9;
+      border-radius: 16px;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.04);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 24px;
+      color: #fbbf24;
+    }
+
+    .grp-title {
+      font-size: 22px;
+      font-weight: 800;
+      color: #0f172a;
+      margin: 0 0 6px;
+      letter-spacing: -0.02em;
+    }
+
+    .grp-subtext {
+      font-size: 13px;
+      color: #64748b;
+      margin: 0 0 22px;
+      line-height: 1.45;
+    }
+
+    /* Stars Row */
+    .grp-stars-row {
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 12px;
+    }
+
+    .grp-star-btn {
+      background: none;
+      border: none;
+      outline: none;
+      padding: 4px;
+      font-size: 38px;
+      line-height: 1;
+      color: #e2e8f0;
+      cursor: pointer;
+      transition: transform 0.15s ease, color 0.15s ease, filter 0.15s ease;
+      user-select: none;
+    }
+
+    .grp-star-btn:hover {
+      transform: scale(1.22);
+    }
+
+    .grp-star-btn.grp-star-active {
+      color: #fbbf24;
+      filter: drop-shadow(0 2px 6px rgba(251, 191, 36, 0.4));
+    }
+
+    .grp-star-btn.grp-star-hover {
+      color: #fcd34d;
+    }
+
+    /* Dynamic Feedback Text */
+    .grp-feedback-text {
+      min-height: 22px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #334155;
+      margin: 0 0 20px;
+      transition: opacity 0.2s ease;
+    }
+
+    /* Submit / Continue Button */
+    .grp-submit-btn {
+      width: 100%;
+      padding: 14px 20px;
+      background: #0f172a;
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 700;
+      border: none;
+      border-radius: 18px;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s ease;
+      box-shadow: 0 4px 14px rgba(15, 23, 42, 0.15);
+    }
+
+    .grp-submit-btn:not(:disabled):hover {
+      background: #1e293b;
+      box-shadow: 0 6px 18px rgba(15, 23, 42, 0.2);
+      transform: translateY(-1px);
+    }
+
+    .grp-submit-btn:disabled {
+      background: #f1f5f9;
+      color: #94a3b8;
+      border: 1px solid #e2e8f0;
+      box-shadow: none;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    /* Thank You State */
+    .grp-thankyou-screen {
+      display: none;
+      animation: grpFadeIn 0.3s ease forwards;
+    }
+
+    @keyframes grpFadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .grp-heart-icon {
+      width: 52px;
+      height: 52px;
+      margin: 4px auto 16px;
+      background: #fff1f2;
+      border: 1px solid #ffe4e6;
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+    }
+
+    .grp-trust-badge {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 16px;
+      padding: 14px;
+      margin: 18px 0 22px;
+    }
+
+    .grp-trust-badge-title {
+      font-size: 13px;
+      font-weight: 800;
+      color: #0f172a;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .grp-trust-badge-sub {
+      font-size: 12px;
+      color: #64748b;
+      margin-top: 2px;
+    }
+
+    .grp-done-btn {
+      width: 100%;
+      padding: 13px 20px;
+      background: #0f172a;
+      color: #ffffff;
+      font-size: 14px;
+      font-weight: 700;
+      border: none;
+      border-radius: 18px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .grp-done-btn:hover {
+      background: #1e293b;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ==================== 1. TRIGGER BUTTON ==================== -->
+  <div class="grp-container">
+    <button type="button" class="grp-btn" id="grp-trigger-btn" aria-haspopup="dialog">
+      <span class="grp-star-icon">★</span>
+      <span>Rate Us on Google</span>
+      <span class="grp-arrow-icon">↗</span>
+    </button>
+  </div>
+
+  <!-- ==================== 2. MODAL POPUP ==================== -->
+  <div class="grp-modal-backdrop" id="grp-backdrop" role="dialog" aria-modal="true" aria-hidden="true">
+    <div class="grp-modal-card" id="grp-card">
+      
+      <!-- Close Button -->
+      <button type="button" class="grp-close-btn" id="grp-close-btn" aria-label="Close">×</button>
+
+      <!-- SCREEN 1: RATING SELECTION -->
+      <div id="grp-rating-screen">
+        <div class="grp-badge-icon">★</div>
+        <h3 class="grp-title">How was your experience?</h3>
+        <p class="grp-subtext">Your feedback helps us serve you better.</p>
+
+        <!-- 5 Interactive Stars -->
+        <div class="grp-stars-row" id="grp-stars-container">
+          <button type="button" class="grp-star-btn" data-star="1" aria-label="1 star">★</button>
+          <button type="button" class="grp-star-btn" data-star="2" aria-label="2 stars">★</button>
+          <button type="button" class="grp-star-btn" data-star="3" aria-label="3 stars">★</button>
+          <button type="button" class="grp-star-btn" data-star="4" aria-label="4 stars">★</button>
+          <button type="button" class="grp-star-btn" data-star="5" aria-label="5 stars">★</button>
+        </div>
+
+        <!-- Dynamic Feedback Text -->
+        <div class="grp-feedback-text" id="grp-feedback-text">&nbsp;</div>
+
+        <!-- Continue Button -->
+        <button type="button" class="grp-submit-btn" id="grp-submit-btn" disabled>
+          <span>Continue to Google</span>
+          <span style="font-family: monospace;">↗</span>
+        </button>
+      </div>
+
+      <!-- SCREEN 2: THANK YOU SCREEN -->
+      <div class="grp-thankyou-screen" id="grp-thankyou-screen">
+        <div class="grp-heart-icon">❤️</div>
+        <h3 class="grp-title">Thank You! ❤️</h3>
+        <p class="grp-subtext" style="margin-bottom: 0;">
+          We truly appreciate your valuable feedback and support.
+        </p>
+
+        <!-- 26+ Years of Trust Badge -->
+        <div class="grp-trust-badge">
+          <div class="grp-trust-badge-title">26+ Years of Trust</div>
+          <div class="grp-trust-badge-sub">Serving customers with care</div>
+        </div>
+
+        <!-- Done Button -->
+        <button type="button" class="grp-done-btn" id="grp-done-btn">Done</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ==================== 3. JAVASCRIPT ==================== -->
+  <script>
+    (function () {
+      "use strict";
+
+      // Google Review URL
+      var GOOGLE_REVIEW_URL = "https://g.page/r/CcNkBnhh_d2nEBM/review";
+
+      // Dynamic feedback text mapping
+      var FEEDBACK_TEXTS = {
+        1: "We're sorry to hear that.",
+        2: "Thank you for your feedback.",
+        3: "Thanks for sharing your experience.",
+        4: "We're glad you had a good experience!",
+        5: "We're delighted you loved your experience! ❤️"
+      };
+
+      // State variables
+      var selectedRating = 0;
+      var hoveredRating = 0;
+
+      // DOM Elements
+      var triggerBtn = document.getElementById("grp-trigger-btn");
+      var backdrop = document.getElementById("grp-backdrop");
+      var card = document.getElementById("grp-card");
+      var closeBtn = document.getElementById("grp-close-btn");
+      var starsContainer = document.getElementById("grp-stars-container");
+      var starBtns = starsContainer.querySelectorAll(".grp-star-btn");
+      var feedbackText = document.getElementById("grp-feedback-text");
+      var submitBtn = document.getElementById("grp-submit-btn");
+      var ratingScreen = document.getElementById("grp-rating-screen");
+      var thankyouScreen = document.getElementById("grp-thankyou-screen");
+      var doneBtn = document.getElementById("grp-done-btn");
+
+      // Open Modal
+      function openModal() {
+        resetState();
+        backdrop.classList.add("grp-active");
+        backdrop.setAttribute("aria-hidden", "false");
+        document.body.style.overflow = "hidden";
+      }
+
+      // Close Modal
+      function closeModal() {
+        backdrop.classList.remove("grp-active");
+        backdrop.setAttribute("aria-hidden", "true");
+        document.body.style.overflow = "";
+        resetState();
+      }
+
+      // Reset rating & screen state
+      function resetState() {
+        selectedRating = 0;
+        hoveredRating = 0;
+        updateStarsVisual();
+        submitBtn.disabled = true;
+        feedbackText.innerHTML = "&nbsp;";
+        ratingScreen.style.display = "block";
+        thankyouScreen.style.display = "none";
+      }
+
+      // Update stars UI
+      function updateStarsVisual() {
+        var active = hoveredRating || selectedRating;
+        starBtns.forEach(function (btn) {
+          var starVal = parseInt(btn.getAttribute("data-star"), 10);
+          if (hoveredRating > 0) {
+            btn.classList.toggle("grp-star-hover", starVal <= hoveredRating);
+            btn.classList.toggle("grp-star-active", starVal <= hoveredRating);
+          } else {
+            btn.classList.remove("grp-star-hover");
+            btn.classList.toggle("grp-star-active", starVal <= selectedRating);
+          }
+        });
+
+        if (active > 0 && FEEDBACK_TEXTS[active]) {
+          feedbackText.textContent = FEEDBACK_TEXTS[active];
+        } else {
+          feedbackText.innerHTML = "&nbsp;";
+        }
+      }
+
+      // Star interaction listeners
+      starBtns.forEach(function (btn) {
+        btn.addEventListener("mouseenter", function () {
+          hoveredRating = parseInt(this.getAttribute("data-star"), 10);
+          updateStarsVisual();
+        });
+
+        btn.addEventListener("click", function () {
+          selectedRating = parseInt(this.getAttribute("data-star"), 10);
+          submitBtn.disabled = false;
+          updateStarsVisual();
+        });
+      });
+
+      starsContainer.addEventListener("mouseleave", function () {
+        hoveredRating = 0;
+        updateStarsVisual();
+      });
+
+      // Continue to Google button click
+      submitBtn.addEventListener("click", function () {
+        if (selectedRating === 0) return;
+        // Open Google review link in new tab
+        window.open(GOOGLE_REVIEW_URL, "_blank", "noopener,noreferrer");
+        // Show thank you screen
+        ratingScreen.style.display = "none";
+        thankyouScreen.style.display = "block";
+      });
+
+      // Event Listeners for Open / Close
+      if (triggerBtn) triggerBtn.addEventListener("click", openModal);
+      if (closeBtn) closeBtn.addEventListener("click", closeModal);
+      if (doneBtn) doneBtn.addEventListener("click", closeModal);
+
+      // Outside click to close
+      backdrop.addEventListener("click", function (e) {
+        if (e.target === backdrop) {
+          closeModal();
+        }
+      });
+
+      // Escape key to close
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape" && backdrop.classList.contains("grp-active")) {
+          closeModal();
+        }
+      });
+    })();
+  </script>
+</body>
+</html>

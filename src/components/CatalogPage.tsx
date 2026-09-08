@@ -31,9 +31,9 @@ export default function CatalogPage({
     setActiveDivision(initialDivision);
   }, [initialDivision]);
 
-  // Scroll to top on mount
+  // Scroll to top on mount immediately without animation
   useEffect(() => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo(0, 0);
   }, [activeDivision]);
 
   const polywareProducts = useMemo(() => {

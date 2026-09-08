@@ -5,6 +5,7 @@ interface LazyImageProps {
   src: string;
   alt: string;
   className?: string;
+  fit?: "cover" | "contain";
   referrerPolicy?: React.HTMLAttributeReferrerPolicy;
   onClick?: (e: React.MouseEvent<HTMLImageElement>) => void;
 }
@@ -13,6 +14,7 @@ export default function LazyImage({
   src,
   alt,
   className = "",
+  fit = "cover",
   referrerPolicy,
   onClick
 }: LazyImageProps) {
@@ -46,7 +48,9 @@ export default function LazyImage({
         loading="lazy"
         onLoad={() => setIsLoaded(true)}
         onClick={onClick}
-        className={`w-full h-full object-cover transition-opacity duration-500 ease-in-out ${
+        className={`w-full h-full ${
+          fit === "contain" ? "object-contain" : "object-cover"
+        } transition-opacity duration-500 ease-in-out ${
           isLoaded ? "opacity-100" : "opacity-0"
         } ${onClick ? "cursor-pointer" : ""}`}
       />

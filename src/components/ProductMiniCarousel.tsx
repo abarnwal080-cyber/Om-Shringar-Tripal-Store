@@ -102,13 +102,13 @@ export default function ProductMiniCarousel({ lang, onSelectProduct, products }:
     }
   }, [isSeamlessReset]);
 
-  // Autoplay timer sliding smoothly every 5s (pauses on hover, touch, or active dragging)
+  // Autoplay timer sliding smoothly every 6.5s (pauses on hover, touch, or active dragging)
   useEffect(() => {
     if (isHovered || isDragging || isUserTouching || isSeamlessReset) return;
 
     const timer = setInterval(() => {
       handleNext();
-    }, 5000);
+    }, 6500);
 
     return () => clearInterval(timer);
   }, [isHovered, isDragging, isUserTouching, isSeamlessReset, currentIndex]);
@@ -273,15 +273,15 @@ export default function ProductMiniCarousel({ lang, onSelectProduct, products }:
               >
                 <div
                   onClick={(e) => handleCardClick(e, slug)}
-                  className="bg-white rounded-2xl border border-slate-100 p-4 shadow-md hover:shadow-xl transition-all hover:-translate-y-1.5 cursor-pointer flex flex-col justify-between h-[270px] relative group overflow-hidden"
+                  className="bg-white rounded-2xl border border-slate-200/90 p-3 sm:p-4 shadow-sm hover:shadow-xl transition-all cursor-pointer flex flex-col justify-between h-[280px] relative group overflow-hidden"
                 >
-                  {/* Image Container */}
+                  {/* Square Image Container (Amazon style) */}
                   <div 
                     onClick={(e) => {
                       e.stopPropagation();
                       handleCardClick(e, slug);
                     }}
-                    className="w-full h-[72%] rounded-xl bg-slate-50 overflow-hidden flex items-center justify-center relative mb-2 cursor-pointer"
+                    className="w-full aspect-square max-h-[190px] rounded-xl bg-slate-50 overflow-hidden flex items-center justify-center relative mb-2 p-2 cursor-pointer border border-slate-100"
                   >
                     {product.saleType && (
                       <span className="absolute top-2 right-2 z-10 px-2 py-0.5 rounded-full bg-emerald-600/95 text-white text-[8px] sm:text-[9px] font-bold tracking-tight shadow-sm">
@@ -292,7 +292,7 @@ export default function ProductMiniCarousel({ lang, onSelectProduct, products }:
                       src={product.images[0]}
                       alt={product.name}
                       referrerPolicy="no-referrer"
-                      className="max-w-[85%] max-h-[85%] object-contain transition-transform duration-500 group-hover:scale-105 cursor-pointer"
+                      className="max-w-[90%] max-h-[90%] object-contain transition-transform duration-500 group-hover:scale-105 cursor-pointer"
                       onClick={(e) => {
                         e.stopPropagation();
                         handleCardClick(e, slug);
