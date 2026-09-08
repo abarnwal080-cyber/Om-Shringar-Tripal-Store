@@ -31,30 +31,9 @@ export default function ChatbotWidget({ onClick }: ChatbotWidgetProps) {
         </div>
 
         {/* Title: Ask me Anything & Meet Om Setu */}
-        <h2 className="relative z-10 text-2xl sm:text-3xl font-extrabold text-[#06265d] tracking-tight font-display mb-2">
+        <h2 className="relative z-10 text-2xl sm:text-3xl font-extrabold text-[#06265d] tracking-tight font-display mb-8">
           Ask me Anything
         </h2>
-
-        {/* Subtitle / Description */}
-        <p className="relative z-10 text-xs sm:text-sm text-[#184872] max-w-[290px] leading-relaxed font-medium mb-5">
-          Your smart shopping assistant for products, tarpaulin sizes, prices, delivery and more.
-        </p>
-
-        {/* Feature Pills */}
-        <div className="relative z-10 flex flex-wrap justify-center gap-2 mb-7 max-w-[320px]">
-          <span className="px-3 py-1.5 rounded-full bg-white/60 backdrop-blur-md border border-white/80 text-[#064b79] text-[11px] sm:text-xs font-extrabold flex items-center gap-1 shadow-xs">
-            🤖 Smart AI
-          </span>
-          <span className="px-3 py-1.5 rounded-full bg-white/60 backdrop-blur-md border border-white/80 text-[#064b79] text-[11px] sm:text-xs font-extrabold flex items-center gap-1 shadow-xs">
-            📏 Size Help
-          </span>
-          <span className="px-3 py-1.5 rounded-full bg-white/60 backdrop-blur-md border border-white/80 text-[#064b79] text-[11px] sm:text-xs font-extrabold flex items-center gap-1 shadow-xs">
-            🎙️ Voice
-          </span>
-          <span className="px-3 py-1.5 rounded-full bg-white/60 backdrop-blur-md border border-white/80 text-[#064b79] text-[11px] sm:text-xs font-extrabold flex items-center gap-1 shadow-xs">
-            ⚡ Instant Answers
-          </span>
-        </div>
 
         {/* Chat Now Button: Dark Blue text, smaller responsive size, sleek animation */}
         <button

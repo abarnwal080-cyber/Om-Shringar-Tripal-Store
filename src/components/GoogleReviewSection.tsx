@@ -92,43 +92,24 @@ export default function GoogleReviewSection({
         <div
           id="google-ad-voucher-banner"
           onClick={handleOpen}
-          className={`group relative overflow-hidden bg-gradient-to-r from-amber-50/95 via-orange-50/80 to-white border border-amber-300/80 hover:border-amber-400 rounded-2xl p-3 sm:p-4 shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer ${className}`}
+          className={`group relative overflow-hidden bg-gradient-to-r from-amber-50/95 via-orange-50/80 to-white border border-amber-300/80 hover:border-amber-400 rounded-2xl p-2.5 sm:p-3 shadow-sm hover:shadow-md transition-all duration-300 cursor-pointer ${className}`}
         >
-          {/* Subtle Google Ad badge indicator in top right */}
-          <div className="absolute top-2 right-3 flex items-center gap-1 text-[10px] font-bold text-slate-400 select-none">
-            <span className="px-1.5 py-0.2 rounded bg-slate-200/80 text-slate-600 font-mono text-[9px] uppercase tracking-wider">Ad</span>
-            <span className="text-[10px] text-slate-400 font-sans hidden sm:inline">• Google Review Reward</span>
-          </div>
-
-          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 sm:gap-4 pr-10 sm:pr-0">
-            {/* Left: Gift GIF + Headline */}
-            <div className="flex items-center gap-3 sm:gap-4">
-              <div className="relative w-12 h-12 sm:w-14 sm:h-14 rounded-2xl bg-white border border-amber-200 shadow-xs flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+          <div className="flex items-center justify-between gap-3 sm:gap-4">
+            {/* Left: Gift GIF + Text */}
+            <div className="flex items-center gap-3">
+              <div className="relative w-10 h-10 sm:w-12 sm:h-12 rounded-xl bg-white border border-amber-200 shadow-xs flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
                 <img
                   src="/assets/gift-box.gif"
                   alt="Gift Voucher"
-                  className="w-9 h-9 sm:w-10 sm:h-10 object-contain"
+                  className="w-7 h-7 sm:w-8 sm:h-8 object-contain"
                 />
                 <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-red-500 animate-ping" />
                 <span className="absolute -top-1 -right-1 w-2.5 h-2.5 rounded-full bg-red-500" />
               </div>
 
-              <div className="flex flex-col text-left">
-                <div className="flex items-center gap-1.5 mb-0.5">
-                  <div className="flex text-amber-400 text-xs">
-                    ★★★★★
-                  </div>
-                  <span className="text-[10px] sm:text-[11px] font-black text-amber-800 bg-amber-100/90 px-2 py-0.5 rounded-full tracking-wide uppercase">
-                    SPECIAL OFFER
-                  </span>
-                </div>
-                <h4 className="text-sm sm:text-base font-black text-slate-900 tracking-tight font-display leading-snug group-hover:text-orange-600 transition-colors">
-                  Rate Us 5★ &amp; Get a Chance to Win a ₹100 Shopping Voucher 🎁
-                </h4>
-                <p className="text-[11px] sm:text-xs text-slate-600 font-medium">
-                  Review Om Shringar Tirpal Store on Google to claim your instant lucky voucher.
-                </p>
-              </div>
+              <h4 className="text-sm sm:text-base font-black text-slate-900 tracking-tight font-display leading-tight group-hover:text-orange-600 transition-colors">
+                Rate 5★ &amp; win 100 rs
+              </h4>
             </div>
 
             {/* Right: CTA button */}
@@ -139,9 +120,9 @@ export default function GoogleReviewSection({
                   e.stopPropagation();
                   handleOpen();
                 }}
-                className="inline-flex items-center justify-center gap-1.5 px-4 py-2 sm:py-2.5 bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-700 hover:to-amber-700 text-white font-extrabold text-xs sm:text-sm rounded-xl shadow-xs hover:shadow transition-all group-hover:scale-105 cursor-pointer whitespace-nowrap"
+                className="inline-flex items-center justify-center gap-1.5 px-3 py-1.5 sm:px-4 sm:py-2 bg-gradient-to-r from-orange-600 to-amber-600 hover:from-orange-700 hover:to-amber-700 text-white font-extrabold text-xs sm:text-sm rounded-xl shadow-xs hover:shadow transition-all group-hover:scale-105 cursor-pointer whitespace-nowrap"
               >
-                <span>Rate &amp; Win ₹100</span>
+                <span>Rate Now</span>
                 <span className="font-mono text-xs">↗</span>
               </button>
             </div>

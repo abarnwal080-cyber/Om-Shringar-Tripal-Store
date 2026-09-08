@@ -1184,55 +1184,6 @@ export default function App() {
               </nav>
             </div>
 
-            {/* Column 3: Products Quick Access */}
-            <div className="lg:col-span-3 flex flex-col">
-              <h4 className="text-white font-bold font-display text-sm tracking-wider uppercase mb-4">
-                Our Top Polymer Goods
-              </h4>
-              <div className="flex flex-col gap-2.5 text-xs sm:text-sm">
-                {PRODUCTS.map((p) => {
-                  const slug = getProductSlug(p.id);
-                  return (
-                    <a
-                      key={p.id}
-                      href={`/products/${slug}`}
-                      onClick={(e) => {
-                        e.preventDefault();
-                        window.history.pushState({}, "", `/products/${slug}`);
-                        setCurrentProductSlug(slug);
-                        setIsSupplierPageOpen(false);
-                        setCatalogPageMode(null);
-                        window.scrollTo({ top: 0, behavior: "smooth" });
-                      }}
-                      className="hover:text-white text-left transition-colors cursor-pointer"
-                    >
-                      {p.name}
-                    </a>
-                  );
-                })}
-              </div>
-            </div>
-
-            {/* Column 4: Location Summary */}
-            <div className="lg:col-span-3 flex flex-col">
-              <h4 className="text-white font-bold font-display text-sm tracking-wider uppercase mb-4">
-                Store Location Details
-              </h4>
-              <p className="text-xs leading-relaxed text-slate-400 mb-4">
-                Om Shringar Tirpal Store<br />
-                Meetha Hatti, Kazi Bazar<br />
-                Maharajganj, Siwan<br />
-                Bihar – 841238<br />
-                Landmark: Near Kazi Bazar Road
-              </p>
-              <p className="text-xs text-brand-orange font-mono">
-                📞 {BUSINESS_INFO.phone}
-              </p>
-              <p className="text-xs text-slate-500 font-mono mt-1">
-                📧 shridanta.official@gmail.com
-              </p>
-            </div>
-
           </div>
 
           <div className="border-t border-white/5 pt-8 flex flex-col sm:flex-row justify-between items-center gap-4 text-xs">

@@ -329,12 +329,8 @@ export default function ProductGallery({
             </div>
           </div>
         ) : (
-          /* Image View with Desktop Hover Zoom */
+          /* Image View (Without Zoom Feature) */
           <div
-            ref={imageContainerRef}
-            onMouseEnter={() => setIsHovering(true)}
-            onMouseLeave={() => setIsHovering(false)}
-            onMouseMove={handleMouseMove}
             onTouchStart={handleTouchStart}
             onTouchMove={handleTouchMove}
             onTouchEnd={handleTouchEnd}
@@ -349,22 +345,13 @@ export default function ProductGallery({
               alt={`${productName} - Image ${selectedIndex + 1}`}
               referrerPolicy="no-referrer"
               loading="eager"
-              className={`w-full h-full object-contain transition-transform duration-200 ease-out pointer-events-none ${
-                isHovering ? "scale-150" : "scale-100"
-              }`}
-              style={
-                isHovering
-                  ? {
-                      transformOrigin: `${mousePos.x}% ${mousePos.y}%`,
-                    }
-                  : undefined
-              }
+              className="w-full h-full object-contain pointer-events-none"
             />
 
-            {/* Desktop Zoom Instruction Overlay */}
+            {/* Desktop Instruction Overlay */}
             <div className="absolute bottom-3 right-3 z-10 hidden sm:flex items-center gap-1 bg-slate-900/60 backdrop-blur-sm text-white text-[10px] font-semibold px-2.5 py-1 rounded-full pointer-events-none opacity-70 group-hover:opacity-100 transition-opacity">
-              <ZoomIn className="w-3 h-3" />
-              <span>Hover to zoom • Click for fullscreen</span>
+              <Maximize2 className="w-3 h-3" />
+              <span>Click for fullscreen</span>
             </div>
           </div>
         )}

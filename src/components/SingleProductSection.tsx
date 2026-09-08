@@ -616,20 +616,6 @@ export default function SingleProductSection({
                           ? `Available in Multiple Sizes: ${product.availableSizes}`
                           : "Available in Multiple Sizes"}
                       </span>
-
-                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-emerald-50 text-emerald-800 border border-emerald-200/70">
-                        <Check className="w-3.5 h-3.5 text-emerald-600" />
-                        {product.saleType
-                          ? product.saleType
-                          : isRetailItem
-                          ? "Retail Counter Supply"
-                          : "Wholesale & Retail Supply"}
-                      </span>
-
-                      <span className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-bold bg-purple-50 text-purple-800 border border-purple-200/70">
-                        <Layers className="w-3.5 h-3.5 text-purple-600" />
-                        {product.saleType ? "Household, Commercial & Retail Use" : "Suitable for Industrial & Construction Use"}
-                      </span>
                     </>
                   )}
                 </div>
@@ -765,7 +751,7 @@ export default function SingleProductSection({
                   <div className="flex items-center gap-2 p-2.5 rounded-xl bg-slate-50/80 border border-slate-150">
                     <Package className="w-4 h-4 text-orange-600 shrink-0" />
                     <span className="text-[11px] font-bold text-slate-700">
-                      Wholesale & Retail Supply
+                      Quality Assured
                     </span>
                   </div>
 

@@ -91,6 +91,11 @@ export const TermsModal: React.FC<TermsModalProps> = ({ isOpen, onClose }) => {
                   If you believe that any image or content on this website infringes your copyright or intellectual property rights, please contact us with proof of ownership. We will promptly review and, where appropriate, remove or replace the content.
                 </p>
 
+                <p className="bg-amber-50/50 border border-amber-100 p-4 rounded-2xl text-slate-700">
+                  <strong className="text-amber-800 block mb-1">Google Review Reward Disclaimer:</strong>
+                  For our Google Review promotional campaigns, we will reward 1 person out of 100. Please do not claim it as a guaranteed reward. We reserve the right to change, modify, or terminate these conditions at any time without prior notice.
+                </p>
+
                 <p className="text-xs sm:text-sm text-slate-500 font-medium pt-2 border-t border-slate-100">
                   All original website content, logo, branding, and design are the intellectual property of <strong>Om Shringar Tirpal Store</strong>. Unauthorized copying or reproduction is prohibited.
                 </p>

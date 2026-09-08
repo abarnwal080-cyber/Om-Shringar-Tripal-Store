@@ -85,7 +85,7 @@ export default function CatalogPage({
             className="inline-flex items-center gap-1.5 px-3.5 py-2 rounded-xl bg-gradient-to-r from-[#0B2D5C] to-blue-900 hover:from-blue-950 hover:to-[#0B2D5C] text-white text-xs sm:text-sm font-extrabold transition-all shadow-sm active:scale-95 cursor-pointer"
           >
             <PhoneCall className="w-3.5 h-3.5 text-orange-400" />
-            <span className="hidden sm:inline">Bulk Call</span>
+            <span className="hidden sm:inline">Call Now</span>
           </a>
         </div>
       </div>
@@ -107,15 +107,12 @@ export default function CatalogPage({
                   <h2 className="text-xl sm:text-2xl font-black text-slate-900 font-display tracking-tight">
                     POLYWARE <span className="text-orange-600">INDUSTRIAL</span>
                   </h2>
-                  <span className="text-xs text-slate-500 font-medium">
-                    {polywareProducts.length} Industrial Lines • Direct Factory Rates
-                  </span>
                 </div>
               </div>
 
               <div className="flex items-center gap-2">
                 <button
-                  onClick={() => onEnquire("Polyware Bulk Order", "Polyware Category")}
+                  onClick={() => onEnquire("Polyware Order", "Polyware Category")}
                   className="hidden sm:inline-flex items-center gap-1 px-3 py-1.5 rounded-lg bg-emerald-50 text-emerald-700 hover:bg-emerald-100 border border-emerald-200 text-xs font-bold transition-all cursor-pointer"
                 >
                   <MessageSquare className="w-3.5 h-3.5" />
@@ -126,7 +123,7 @@ export default function CatalogPage({
                   className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-orange-500 hover:bg-orange-600 text-white text-xs font-bold transition-all shadow-xs"
                 >
                   <PhoneCall className="w-3.5 h-3.5" />
-                  <span>Bulk Call</span>
+                  <span>Call Now</span>
                 </a>
               </div>
             </div>
@@ -172,9 +169,6 @@ export default function CatalogPage({
                   <h2 className="text-xl sm:text-2xl font-black text-slate-900 font-display tracking-tight">
                     GENERAL STORE <span className="text-pink-600">& RETAIL</span>
                   </h2>
-                  <span className="text-xs text-slate-500 font-medium">
-                    {generalStoreProducts.length} Retail Categories • Ready Stock at Maharajganj
-                  </span>
                 </div>
               </div>
 
