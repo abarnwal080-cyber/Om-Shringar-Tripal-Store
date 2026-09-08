@@ -20,8 +20,18 @@ const VIDEO_ITEMS: VideoSourceItem[] = [
     defaultRotate: 0,
   },
   {
-    id: "video-resham",
-    url: "https://reshamjal.edgeone.dev/",
+    id: "video-polynet",
+    url: "https://polynet.edgeone.dev/",
+    defaultRotate: 0,
+  },
+  {
+    id: "video-polymat",
+    url: "https://polymat.edgeone.dev/",
+    defaultRotate: 0,
+  },
+  {
+    id: "video-shisha",
+    url: "https://shisha.edgeone.dev/",
     defaultRotate: 0,
   },
   {

@@ -88,22 +88,8 @@ export default function App() {
   const lastScrollY = useRef(0);
 
   const [isCatalogOpen, setIsCatalogOpen] = useState(false);
-  const [showShippingNotice, setShowShippingNotice] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [isTermsOpen, setIsTermsOpen] = useState(false);
-
-  // Auto-hide Shipping & Delivery notice after 2 seconds when catalog opens
-  useEffect(() => {
-    if (isCatalogOpen) {
-      setShowShippingNotice(true);
-      const timer = setTimeout(() => {
-        setShowShippingNotice(false);
-      }, 2000);
-      return () => clearTimeout(timer);
-    } else {
-      setShowShippingNotice(false);
-    }
-  }, [isCatalogOpen]);
 
   // User Role / Type Selection Modal for customized WhatsApp drafts
   const [userTypeModalOpen, setUserTypeModalOpen] = useState(false);
@@ -952,25 +938,6 @@ export default function App() {
               <div className="absolute bottom-1/4 right-1/4 w-[30%] h-[30%] rounded-full bg-blue-500/[0.02] blur-3xl pointer-events-none" />
 
               <div className="max-w-7xl mx-auto relative z-10">
-                
-                {/* Physical Store Shipping Notice Banner (Auto Disappears after 2 seconds) */}
-                <AnimatePresence>
-                  {showShippingNotice && (
-                    <motion.div
-                      initial={{ opacity: 0, height: 0, marginBottom: 0 }}
-                      animate={{ opacity: 1, height: "auto", marginBottom: 24 }}
-                      exit={{ opacity: 0, height: 0, marginBottom: 0 }}
-                      transition={{ duration: 0.4, ease: "easeInOut" }}
-                      className="w-full max-w-2xl mx-auto bg-amber-50 border border-amber-300/80 rounded-2xl p-3.5 flex items-start gap-2.5 text-amber-950 text-xs font-semibold shadow-sm overflow-hidden"
-                    >
-                      <Icons.Store className="w-4 h-4 text-amber-600 shrink-0 mt-0.5" />
-                      <div>
-                        <strong className="text-amber-900 font-extrabold block text-[10px] uppercase tracking-wider mb-0.5">Shipping & Delivery Notice:</strong>
-                        For shipping your product, you have to visit our physical store; online shipping service is not available.
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
                 {/* 2 Products in a row on mobile, multi-column on laptop & desktop */}
                 <motion.div
                   layout

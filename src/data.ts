@@ -294,6 +294,18 @@ export const PRODUCTS: Product[] = [
       "Texture": "Smooth Glass-finish"
     },
     applications: ["Gardening", "Industrial Use", "Warehouses"],
+    video: {
+      url: "https://shisha.edgeone.dev/",
+      title: "Transparent Shisha Polythene Sheet Roll Demo Video",
+      defaultRotate: 0
+    },
+    videos: [
+      {
+        url: "https://shisha.edgeone.dev/",
+        title: "Transparent Shisha Polythene Sheet Roll Demo Video",
+        defaultRotate: 0
+      }
+    ],
     faqs: [
       { question: "Is this material heat resistant for hot food plates?", answer: "It can withstand warm tea cups and regular food plates, but placing burning hot pans directly on it is not recommended." },
       { question: "How do I clean dust or oil stains from the shisha sheet?", answer: "Just wipe it down with standard glass-cleaner spray or mild soapy water. It gets clean instantly." },
@@ -422,10 +434,17 @@ export const PRODUCTS: Product[] = [
       "https://2.wlimg.com/product_images/bc-full/2021/1/748468/farm-fencing-net-1611398761-5700049.jpeg"
     ],
     video: {
-      url: "https://reshamjal.edgeone.dev/",
-      title: "Resham Fencing Net (Resham Jal) Boundary Protection Video",
+      url: "https://polynet.edgeone.dev/",
+      title: "Polyester / Resham Fencing Net Boundary Protection Video",
       defaultRotate: 0
     },
+    videos: [
+      {
+        url: "https://polynet.edgeone.dev/",
+        title: "Polyester / Resham Fencing Net Boundary Protection Video",
+        defaultRotate: 0
+      }
+    ],
     isBestSeller: true,
     features: [
       "Resham Nylon",
@@ -469,10 +488,17 @@ export const PRODUCTS: Product[] = [
       "https://5.imimg.com/data5/SELLER/Default/2025/7/532122957/XX/ZI/PB/104304307/nylon-blue-fencing-net-500x500.jpg"
     ],
     video: {
-      url: "https://reshamjal.edgeone.dev/",
-      title: "Resham Fencing Net (Jali) Strength Video",
+      url: "https://polynet.edgeone.dev/",
+      title: "Fencing Net (Jali) Strength Video",
       defaultRotate: 0
     },
+    videos: [
+      {
+        url: "https://polynet.edgeone.dev/",
+        title: "Fencing Net (Jali) Strength Video",
+        defaultRotate: 0
+      }
+    ],
     availableSizes: "5 ft Height",
     commonSizes: ["100 ft Roll", "100 Meter Roll", "Custom Cut Lengths"],
     features: [
@@ -592,6 +618,18 @@ export const PRODUCTS: Product[] = [
       "Travel",
       "Camping",
       "Floor sitting"
+    ],
+    video: {
+      url: "https://polymat.edgeone.dev/",
+      title: "Premium Plastic Floor Mat (Chatai) Demonstration Video",
+      defaultRotate: 0
+    },
+    videos: [
+      {
+        url: "https://polymat.edgeone.dev/",
+        title: "Premium Plastic Floor Mat (Chatai) Demonstration Video",
+        defaultRotate: 0
+      }
     ],
     faqs: [
       { question: "Is this plastic mat fully washable?", answer: "Yes! You can wash it directly with running water from a pipe or wipe it down with a damp cloth and mild soap. It dries very quickly in the air." },
