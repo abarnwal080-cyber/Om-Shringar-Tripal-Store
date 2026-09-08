@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useMemo } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import * as Icons from "lucide-react";
 import {
@@ -63,6 +63,7 @@ import SizeChartSection from "./components/SizeChartSection";
 import GeminiChatbotSection from "./components/GeminiChatbotSection";
 import ChatbotWidget from "./components/ChatbotWidget";
 import VisitShopSection from "./components/VisitShopSection";
+import CatalogPage from "./components/CatalogPage";
 import { TRANSLATIONS } from "./translations";
 
 // Safe dynamic icon loader to keep code modular and readable
@@ -77,6 +78,7 @@ export default function App() {
   const [activeTab, setActiveTab] = useState("All");
   const [expandedFAQ, setExpandedFAQ] = useState<number | null>(null);
   const [isSupplierPageOpen, setIsSupplierPageOpen] = useState(false);
+  const [catalogPageMode, setCatalogPageMode] = useState<null | "all" | "polyware" | "general-store">(null);
   const [heroBgImage, setHeroBgImage] = useState("https://plain-apac-prod-public.komododecks.com/202607/03/eckT9KEMGbavrebTJwPJ/image.png");
   const [sizeCalcOpen, setSizeCalcOpen] = useState(false);
 
@@ -87,7 +89,6 @@ export default function App() {
   const [activeSection, setActiveSection] = useState("");
   const lastScrollY = useRef(0);
 
-  const [isCatalogOpen, setIsCatalogOpen] = useState(false);
   const [searchQuery, setSearchQuery] = useState("");
   const [isTermsOpen, setIsTermsOpen] = useState(false);
 
@@ -107,7 +108,7 @@ export default function App() {
   }, []);
 
   // Professional Modal Popup System: Lock body scroll, prevent layout shifts, handle keyboard/touch, restore scroll position
-  const isAnyModalActive = isCatalogOpen || isTermsOpen || sizeCalcOpen || userTypeModalOpen || isSizeChartModalOpen || isChatOpen;
+  const isAnyModalActive = isTermsOpen || sizeCalcOpen || userTypeModalOpen || isSizeChartModalOpen || isChatOpen;
 
   useEffect(() => {
     if (!isAnyModalActive) return;
@@ -132,7 +133,6 @@ export default function App() {
     // 4. Handle Escape key & block background page scroll keys
     const handleKeyDown = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
-        setIsCatalogOpen(false);
         setIsTermsOpen(false);
         setSizeCalcOpen(false);
         setUserTypeModalOpen(false);
@@ -206,17 +206,51 @@ export default function App() {
       }
       if (path === "/meet-the-supplier" || path === "/meet-supplier") {
         setIsSupplierPageOpen(true);
+        setCatalogPageMode(null);
         return null;
       } else {
         setIsSupplierPageOpen(false);
       }
+      if (path === "/polyware") {
+        setCatalogPageMode("polyware");
+        setIsSupplierPageOpen(false);
+        return null;
+      }
+      if (path === "/retail-store" || path === "/general-store") {
+        setCatalogPageMode("general-store");
+        setIsSupplierPageOpen(false);
+        return null;
+      }
+      if (path === "/catalog" || path === "/products-catalog" || path === "/all-products") {
+        setCatalogPageMode("all");
+        setIsSupplierPageOpen(false);
+        return null;
+      }
+      if (path === "/" || path === "") {
+        setCatalogPageMode(null);
+        setIsSupplierPageOpen(false);
+      }
       if (path.startsWith("/products/")) {
+        setCatalogPageMode(null);
         return path.substring("/products/".length) || null;
       }
       if (path && path !== "/") {
         const slug = path.substring(1);
         if (slug === "meet-the-supplier" || slug === "meet-supplier") {
           setIsSupplierPageOpen(true);
+          setCatalogPageMode(null);
+          return null;
+        }
+        if (slug === "polyware") {
+          setCatalogPageMode("polyware");
+          return null;
+        }
+        if (slug === "retail-store" || slug === "general-store") {
+          setCatalogPageMode("general-store");
+          return null;
+        }
+        if (slug === "catalog" || slug === "products-catalog" || slug === "all-products") {
+          setCatalogPageMode("all");
           return null;
         }
         if (slug) {
@@ -224,6 +258,7 @@ export default function App() {
           if (matched) {
             const canonicalSlug = getProductSlug(matched.id);
             window.history.replaceState({}, "", `/products/${canonicalSlug}`);
+            setCatalogPageMode(null);
             return canonicalSlug;
           }
         }
@@ -250,9 +285,6 @@ export default function App() {
       const hash = window.location.hash;
       if (hash && hash !== "#notifications") {
         setActiveSection(hash.substring(1));
-        if (hash === "#products") {
-          setIsCatalogOpen(true);
-        }
       }
     };
 
@@ -388,15 +420,13 @@ export default function App() {
     e.preventDefault();
     setMobileMenuOpen(false);
     
-    if (isSupplierPageOpen || currentProductSlug) {
+    if (isSupplierPageOpen || currentProductSlug || catalogPageMode) {
       window.history.pushState({}, "", "/");
       setIsSupplierPageOpen(false);
       setCurrentProductSlug(null);
+      setCatalogPageMode(null);
     }
 
-    if (targetId === "products") {
-      setIsCatalogOpen(true);
-    }
     if (targetId === "size-matrix") {
       setIsSizeChartModalOpen(true);
     }
@@ -471,6 +501,14 @@ export default function App() {
 
   const filteredProducts = getFilteredProducts();
 
+  const polywareProducts = useMemo(() => {
+    return PRODUCTS.filter((p) => (p.division || "polyware") === "polyware");
+  }, []);
+
+  const generalStoreProducts = useMemo(() => {
+    return PRODUCTS.filter((p) => p.division === "general-store");
+  }, []);
+
   const matchedProduct = findProductBySlug(currentProductSlug || "");
 
   return (
@@ -484,11 +522,12 @@ export default function App() {
           <a
             href="/"
             onClick={(e) => {
-              if (isSupplierPageOpen || currentProductSlug) {
+              if (isSupplierPageOpen || currentProductSlug || catalogPageMode) {
                 e.preventDefault();
                 window.history.pushState({}, "", "/");
                 setIsSupplierPageOpen(false);
                 setCurrentProductSlug(null);
+                setCatalogPageMode(null);
                 window.scrollTo({ top: 0, behavior: "smooth" });
               }
             }}
@@ -523,13 +562,11 @@ export default function App() {
                 href={link.href} 
                 onClick={(e) => {
                   e.preventDefault();
-                  if (isSupplierPageOpen || currentProductSlug) {
+                  if (isSupplierPageOpen || currentProductSlug || catalogPageMode) {
                     window.history.pushState({}, "", "/");
                     setIsSupplierPageOpen(false);
                     setCurrentProductSlug(null);
-                  }
-                  if (link.id === "products") {
-                    setIsCatalogOpen(true);
+                    setCatalogPageMode(null);
                   }
                   if (link.id === "size-matrix") {
                     setIsSizeChartModalOpen(true);
@@ -670,10 +707,24 @@ export default function App() {
         <SingleProductSection
           product={matchedProduct}
           onBack={() => {
-            window.history.pushState({}, "", "/");
-            setCurrentProductSlug(null);
-            setIsSupplierPageOpen(false);
-            window.scrollTo({ top: 0 });
+            if (catalogPageMode) {
+              setCurrentProductSlug(null);
+              window.history.pushState(
+                {},
+                "",
+                catalogPageMode === "polyware"
+                  ? "/polyware"
+                  : catalogPageMode === "general-store"
+                  ? "/retail-store"
+                  : "/catalog"
+              );
+            } else {
+              window.history.pushState({}, "", "/");
+              setCurrentProductSlug(null);
+              setIsSupplierPageOpen(false);
+              setCatalogPageMode(null);
+              window.scrollTo({ top: 0, behavior: "smooth" });
+            }
           }}
           currentLanguage={lang}
           onEnquire={handleEnquire}
@@ -684,10 +735,28 @@ export default function App() {
             window.history.pushState({}, "", "/");
             setIsSupplierPageOpen(false);
             setCurrentProductSlug(null);
+            setCatalogPageMode(null);
             window.scrollTo({ top: 0, behavior: "smooth" });
           }}
           lang={lang}
           onEnquire={handleEnquire}
+        />
+      ) : catalogPageMode ? (
+        <CatalogPage
+          initialDivision={catalogPageMode}
+          currentLanguage={lang}
+          onEnquire={handleEnquire}
+          onViewDetails={(prod) => {
+            const slug = getProductSlug(prod.id);
+            window.history.pushState({}, "", `/products/${slug}`);
+            setCurrentProductSlug(slug);
+            window.scrollTo({ top: 0 });
+          }}
+          onBack={() => {
+            window.history.pushState({}, "", "/");
+            setCatalogPageMode(null);
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          }}
         />
       ) : (
         <>
@@ -702,54 +771,153 @@ export default function App() {
             <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[500px] h-[500px] rounded-full bg-orange-600/[0.04] blur-[120px] pointer-events-none" />
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
-              {/* Dynamic automatic product carousel sliding every 1s */}
-              <ProductMiniCarousel
-                lang={lang}
-                onSelectProduct={(slug) => {
-                  window.history.pushState({}, "", `/products/${slug}`);
-                  setCurrentProductSlug(slug);
-                  window.scrollTo({ top: 0 });
-                }}
-              />
+              
+              {/* SECTION 1: POLYWARE INDUSTRIAL */}
+              <div className="mb-14">
+                <div className="flex flex-col items-center mb-6">
+                  <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-900/10 border border-blue-900/20 text-[#0B2D5C] text-xs font-black uppercase tracking-wider mb-2">
+                    <Icons.Factory className="w-4 h-4 text-orange-600" />
+                    <span>Section 1 • Polyware Industrial</span>
+                  </div>
+                  <h2 className="text-2xl sm:text-3xl md:text-4xl font-black font-display text-slate-900 tracking-tight">
+                    POLYWARE <span className="text-orange-600">INDUSTRIAL PRODUCTS</span>
+                  </h2>
+                  <p className="text-slate-600 text-xs sm:text-sm font-medium mt-1 max-w-2xl mx-auto">
+                    Tarpaulin Sheets, Plastic Sheets, Polythene Rolls, Stretch Films, Fencing Nets, Thermocol Sheets, Plastic Mats, Table Covers & Packaging Materials
+                  </p>
+                </div>
 
-              {/* VIEW PRODUCTS TAB/BUTTON - MOVED DIRECTLY BELOW PRODUCTS */}
-              <div className="flex justify-center mt-8 sm:mt-10">
-                <motion.button
-                  whileHover={{ y: -4, scale: 1.02, boxShadow: "0 20px 40px rgba(255,106,0,0.3), 0 8px 24px rgba(11,31,58,0.2)" }}
-                  whileTap={{ scale: 0.97 }}
-                  onClick={() => {
-                    setIsCatalogOpen(true);
+                {/* Polyware Product Mini Carousel */}
+                <ProductMiniCarousel
+                  products={polywareProducts}
+                  lang={lang}
+                  onSelectProduct={(slug) => {
+                    window.history.pushState({}, "", `/products/${slug}`);
+                    setCurrentProductSlug(slug);
+                    window.scrollTo({ top: 0 });
                   }}
-                  className="group relative flex items-center justify-between gap-4 px-4 sm:px-6 w-full max-w-[560px] h-[72px] rounded-full bg-gradient-to-r from-[#071324] via-[#0B1F3A] to-[#071324] border border-white/10 text-white font-sans transition-all duration-300 cursor-pointer select-none overflow-hidden animate-cta-pulse focus:outline-none focus:ring-4 focus:ring-orange-500/40 focus:ring-offset-2 shadow-[0_12px_30px_rgba(255,106,0,.25),_0_4px_12px_rgba(0,0,0,.12)]"
-                  aria-label="View Products Catalog"
-                >
-                  {/* Subtle top glossy highlight layer */}
-                  <div className="absolute inset-0 rounded-full border-t border-white/20 bg-gradient-to-b from-white/10 to-transparent pointer-events-none" />
+                />
 
-                  {/* Shimmer/light sweep element (repeating every 5s) */}
-                  <div className="absolute inset-0 w-1/3 h-full bg-gradient-to-r from-transparent via-white/15 to-transparent animate-cta-shimmer pointer-events-none" />
+                {/* VIEW POLYWARE TAB/BUTTON */}
+                <div className="flex justify-center mt-6 sm:mt-8">
+                  <motion.button
+                    whileHover={{ y: -4, scale: 1.02, boxShadow: "0 20px 40px rgba(255,106,0,0.3), 0 8px 24px rgba(11,31,58,0.2)" }}
+                    whileTap={{ scale: 0.97 }}
+                    onClick={() => {
+                      window.history.pushState({}, "", "/polyware");
+                      setCatalogPageMode("polyware");
+                      window.scrollTo({ top: 0, behavior: "smooth" });
+                    }}
+                    className="group relative flex items-center justify-between gap-4 px-4 sm:px-6 w-full max-w-[560px] h-[72px] rounded-full bg-gradient-to-r from-[#071324] via-[#0B1F3A] to-[#071324] border border-white/10 text-white font-sans transition-all duration-300 cursor-pointer select-none overflow-hidden animate-cta-pulse focus:outline-none focus:ring-4 focus:ring-orange-500/40 focus:ring-offset-2 shadow-[0_12px_30px_rgba(255,106,0,.25),_0_4px_12px_rgba(0,0,0,.12)]"
+                    aria-label="View Polyware Catalog"
+                  >
+                    {/* Subtle top glossy highlight layer */}
+                    <div className="absolute inset-0 rounded-full border-t border-white/20 bg-gradient-to-b from-white/10 to-transparent pointer-events-none" />
 
-                  {/* LEFT: Premium outlined package/cube SVG icon inside a circular glass background */}
-                  <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/15 shadow-[inset_0_1px_3px_rgba(255,255,255,0.2)] text-white shrink-0">
-                    <Icons.Package className="w-5 h-5 sm:w-6 sm:h-6 stroke-[1.5] text-[#FF7A00] group-hover:scale-110 transition-transform duration-300" />
-                  </div>
+                    {/* Shimmer/light sweep element */}
+                    <div className="absolute inset-0 w-1/3 h-full bg-gradient-to-r from-transparent via-white/15 to-transparent animate-cta-shimmer pointer-events-none" />
 
-                  {/* CENTER: Text with Poppins/Manrope/Inter fonts, high weight and custom sizes */}
-                  <div className="flex flex-col text-left relative z-10 leading-tight flex-grow ml-2 sm:ml-4">
-                    <span className="text-[18px] sm:text-[24px] md:text-[26px] font-black tracking-tight text-white drop-shadow-sm font-sans uppercase">
-                      {lang === "en" ? "VIEW PRODUCTS" : "उत्पाद देखें"}
-                    </span>
-                    <span className="text-[11px] sm:text-[14px] font-medium text-orange-400/95 font-sans tracking-wide">
-                      {lang === "en" ? "Explore Our Complete Range" : "हमारे संपूर्ण रेंज को देखें"}
-                    </span>
-                  </div>
+                    {/* LEFT: Icon */}
+                    <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/15 shadow-[inset_0_1px_3px_rgba(255,255,255,0.2)] text-white shrink-0">
+                      <Icons.Factory className="w-5 h-5 sm:w-6 sm:h-6 stroke-[1.5] text-[#FF7A00] group-hover:scale-110 transition-transform duration-300" />
+                    </div>
 
-                  {/* RIGHT: Orange circular button containing an animated right arrow */}
-                  <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-gradient-to-r from-[#FF6A00] to-[#FF8C00] flex items-center justify-center border border-white/20 shadow-lg text-white shrink-0 group-hover:scale-105 transition-transform duration-300 relative z-10">
-                    <Icons.ArrowRight className="w-5 h-5 stroke-[2.5] group-hover:translate-x-1.5 transition-transform duration-300" />
-                  </div>
-                </motion.button>
+                    {/* CENTER: Text */}
+                    <div className="flex flex-col text-left relative z-10 leading-tight flex-grow ml-2 sm:ml-4">
+                      <span className="text-[18px] sm:text-[24px] md:text-[26px] font-black tracking-tight text-white drop-shadow-sm font-sans uppercase">
+                        {lang === "en" ? "VIEW POLYWARE" : "पॉलीवेयर देखें"}
+                      </span>
+                      <span className="text-[11px] sm:text-[14px] font-medium text-orange-400/95 font-sans tracking-wide">
+                        {lang === "en" ? "View Details & Industrial Catalog" : "विवरण और इंडस्ट्रियल कैटलॉग देखें"}
+                      </span>
+                    </div>
+
+                    {/* RIGHT: Arrow */}
+                    <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-gradient-to-r from-[#FF6A00] to-[#FF8C00] flex items-center justify-center border border-white/20 shadow-lg text-white shrink-0 group-hover:scale-105 transition-transform duration-300 relative z-10">
+                      <Icons.ArrowRight className="w-5 h-5 stroke-[2.5] group-hover:translate-x-1.5 transition-transform duration-300" />
+                    </div>
+                  </motion.button>
+                </div>
               </div>
+
+              {/* STYLISH SECTION DIVIDER */}
+              <div className="relative my-10 sm:my-14 flex items-center justify-center">
+                <div className="w-full border-t border-slate-200" />
+                <div className="absolute px-4 bg-slate-50 text-xs font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
+                  <span className="w-2 h-2 rounded-full bg-orange-500" />
+                  <span>Explore Retail Division</span>
+                  <span className="w-2 h-2 rounded-full bg-pink-500" />
+                </div>
+              </div>
+
+              {/* SECTION 2: GENERAL STORE & RETAIL */}
+              <div>
+                <div className="flex flex-col items-center mb-6">
+                  <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-pink-900/10 border border-pink-900/20 text-[#831843] text-xs font-black uppercase tracking-wider mb-2">
+                    <Icons.ShoppingBag className="w-4 h-4 text-pink-600" />
+                    <span>Section 2 • General Store & Retail</span>
+                  </div>
+                  <h2 className="text-2xl sm:text-3xl md:text-4xl font-black font-display text-slate-900 tracking-tight">
+                    GENERAL STORE <span className="text-pink-600">& RETAIL PRODUCTS</span>
+                  </h2>
+                  <p className="text-slate-600 text-xs sm:text-sm font-medium mt-1 max-w-2xl mx-auto">
+                    Cosmetics, Safari & Aristocrat Bags, Rucksacks, Handbags, Leather Belts, Crystal Scenery, Ropes, Flags & Gamcha
+                  </p>
+                </div>
+
+                {/* General Store Product Mini Carousel */}
+                <ProductMiniCarousel
+                  products={generalStoreProducts}
+                  lang={lang}
+                  onSelectProduct={(slug) => {
+                    window.history.pushState({}, "", `/products/${slug}`);
+                    setCurrentProductSlug(slug);
+                    window.scrollTo({ top: 0 });
+                  }}
+                />
+
+                {/* VIEW RETAIL STORE TAB/BUTTON */}
+                <div className="flex justify-center mt-6 sm:mt-8">
+                  <motion.button
+                    whileHover={{ y: -4, scale: 1.02, boxShadow: "0 20px 40px rgba(255,106,0,0.3), 0 8px 24px rgba(11,31,58,0.2)" }}
+                    whileTap={{ scale: 0.97 }}
+                    onClick={() => {
+                      window.history.pushState({}, "", "/retail-store");
+                      setCatalogPageMode("general-store");
+                      window.scrollTo({ top: 0, behavior: "smooth" });
+                    }}
+                    className="group relative flex items-center justify-between gap-4 px-4 sm:px-6 w-full max-w-[560px] h-[72px] rounded-full bg-gradient-to-r from-[#071324] via-[#0B1F3A] to-[#071324] border border-white/10 text-white font-sans transition-all duration-300 cursor-pointer select-none overflow-hidden animate-cta-pulse focus:outline-none focus:ring-4 focus:ring-orange-500/40 focus:ring-offset-2 shadow-[0_12px_30px_rgba(255,106,0,.25),_0_4px_12px_rgba(0,0,0,.12)]"
+                    aria-label="View Retail Store"
+                  >
+                    {/* Subtle top glossy highlight layer */}
+                    <div className="absolute inset-0 rounded-full border-t border-white/20 bg-gradient-to-b from-white/10 to-transparent pointer-events-none" />
+
+                    {/* Shimmer/light sweep element */}
+                    <div className="absolute inset-0 w-1/3 h-full bg-gradient-to-r from-transparent via-white/15 to-transparent animate-cta-shimmer pointer-events-none" />
+
+                    {/* LEFT: Icon */}
+                    <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/15 shadow-[inset_0_1px_3px_rgba(255,255,255,0.2)] text-white shrink-0">
+                      <Icons.ShoppingBag className="w-5 h-5 sm:w-6 sm:h-6 stroke-[1.5] text-[#FF7A00] group-hover:scale-110 transition-transform duration-300" />
+                    </div>
+
+                    {/* CENTER: Text */}
+                    <div className="flex flex-col text-left relative z-10 leading-tight flex-grow ml-2 sm:ml-4">
+                      <span className="text-[18px] sm:text-[24px] md:text-[26px] font-black tracking-tight text-white drop-shadow-sm font-sans uppercase">
+                        {lang === "en" ? "VIEW RETAIL STORE" : "रिटेल स्टोर देखें"}
+                      </span>
+                      <span className="text-[11px] sm:text-[14px] font-medium text-orange-400/95 font-sans tracking-wide">
+                        {lang === "en" ? "View Details & Retail Collection" : "विवरण और रिटेल कलेक्शन देखें"}
+                      </span>
+                    </div>
+
+                    {/* RIGHT: Arrow */}
+                    <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-gradient-to-r from-[#FF6A00] to-[#FF8C00] flex items-center justify-center border border-white/20 shadow-lg text-white shrink-0 group-hover:scale-105 transition-transform duration-300 relative z-10">
+                      <Icons.ArrowRight className="w-5 h-5 stroke-[2.5] group-hover:translate-x-1.5 transition-transform duration-300" />
+                    </div>
+                  </motion.button>
+                </div>
+              </div>
+
             </div>
           </section>
 
@@ -890,90 +1058,6 @@ export default function App() {
         </motion.button>
       </div>
 
-
-      {/* FULLSCREEN PRODUCTS CATALOG OVERLAY */}
-      <AnimatePresence>
-        {isCatalogOpen && (
-          <motion.div
-            initial={{ y: "100%", opacity: 0.95 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: "100%", opacity: 0.95 }}
-            transition={{ type: "spring", damping: 30, stiffness: 220 }}
-            className="fixed inset-0 bg-slate-50 z-50 overflow-y-auto flex flex-col antialiased text-slate-900 modal-scrollable-content overscroll-contain"
-            style={{ WebkitOverflowScrolling: "touch", touchAction: "pan-y" }}
-          >
-            {/* STICKY GLASSMORPHIC HEADER */}
-            <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200/80 px-4 py-3 sm:px-6 shadow-sm">
-              <div className="max-w-7xl mx-auto flex items-center justify-between">
-                
-                {/* Back Button (SVG Arrow only) */}
-                <button
-                  onClick={() => {
-                    setIsCatalogOpen(false);
-                  }}
-                  className="p-2.5 rounded-full bg-slate-100 hover:bg-slate-200 border border-slate-200/80 text-slate-800 transition-all active:scale-95 cursor-pointer flex items-center justify-center shadow-sm"
-                  aria-label="Back"
-                >
-                  <Icons.ArrowLeft className="w-5 h-5 text-orange-600" />
-                </button>
-
-                {/* Close Button (SVG Cross only) */}
-                <button
-                  onClick={() => {
-                    setIsCatalogOpen(false);
-                  }}
-                  className="p-2.5 rounded-full bg-slate-100 hover:bg-slate-200 border border-slate-200/80 text-slate-700 hover:text-slate-900 transition-all active:scale-95 cursor-pointer flex items-center justify-center shadow-sm"
-                  aria-label="Close"
-                >
-                  <Icons.X className="w-5 h-5" />
-                </button>
-
-              </div>
-            </header>
-
-            {/* OVERLAY BODY AREA */}
-            <main className="flex-1 bg-slate-50 py-8 px-4 sm:px-6 lg:px-8 relative">
-              {/* Background ambient glows */}
-              <div className="absolute top-1/4 left-1/4 w-[30%] h-[30%] rounded-full bg-orange-500/[0.03] blur-3xl pointer-events-none" />
-              <div className="absolute bottom-1/4 right-1/4 w-[30%] h-[30%] rounded-full bg-blue-500/[0.02] blur-3xl pointer-events-none" />
-
-              <div className="max-w-7xl mx-auto relative z-10">
-                {/* 2 Products in a row on mobile, multi-column on laptop & desktop */}
-                <motion.div
-                  layout
-                  className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-6 md:gap-8 max-w-7xl mx-auto"
-                >
-                  {PRODUCTS.map((product) => (
-                    <motion.div
-                      layout
-                      key={product.id}
-                      initial={{ opacity: 0, scale: 0.95 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.95 }}
-                      transition={{ duration: 0.3 }}
-                      className="h-full"
-                    >
-                      <ProductCard
-                        product={product}
-                        onEnquire={handleEnquire}
-                        currentLanguage={lang}
-                        onViewDetails={(prod) => {
-                          setIsCatalogOpen(false);
-                          const slug = getProductSlug(prod.id);
-                          window.history.pushState({}, "", `/products/${slug}`);
-                          setCurrentProductSlug(slug);
-                          window.scrollTo({ top: 0 });
-                        }}
-                      />
-                    </motion.div>
-                  ))}
-                </motion.div>
-              </div>
-            </main>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
       {/* CUSTOMER REVIEWS SECTION */}
       <CustomerReviewsSection />
 
@@ -1061,7 +1145,12 @@ export default function App() {
                   href="#products" 
                   onClick={(e) => {
                     e.preventDefault();
-                    setIsCatalogOpen(true);
+                    if (isSupplierPageOpen || currentProductSlug || catalogPageMode) {
+                      window.history.pushState({}, "", "/");
+                      setIsSupplierPageOpen(false);
+                      setCurrentProductSlug(null);
+                      setCatalogPageMode(null);
+                    }
                     setTimeout(() => {
                       const element = document.getElementById("products");
                       if (element) {
@@ -1123,7 +1212,7 @@ export default function App() {
                         window.history.pushState({}, "", `/products/${slug}`);
                         setCurrentProductSlug(slug);
                         setIsSupplierPageOpen(false);
-                        setIsCatalogOpen(false);
+                        setCatalogPageMode(null);
                         window.scrollTo({ top: 0, behavior: "smooth" });
                       }}
                       className="hover:text-white text-left transition-colors cursor-pointer"

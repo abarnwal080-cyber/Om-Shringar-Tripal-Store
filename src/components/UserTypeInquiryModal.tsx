@@ -203,13 +203,6 @@ export default function UserTypeInquiryModal({
               })}
             </div>
 
-            {/* Cute Footnote */}
-            <div className="mt-3 text-center">
-              <span className="inline-block text-[10px] text-slate-500 font-semibold bg-slate-100 px-3 py-1 rounded-full border border-slate-200/80">
-                ⚡ {lang === "hi" ? "क्लिक करते ही तैयार मैसेज के साथ व्हाट्सएप खुल जाएगा" : "Clicking will open WhatsApp with custom message draft"}
-              </span>
-            </div>
-
           </div>
         </div>
       </div>

@@ -1,18 +1,22 @@
 import React, { useState, useEffect, useRef } from "react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { PRODUCTS, getProductSlug } from "../data";
+import { PRODUCTS, Product, getProductSlug } from "../data";
 
 interface ProductMiniCarouselProps {
   lang: "en" | "hi";
   onSelectProduct: (slug: string) => void;
+  products?: Product[];
 }
 
 const CLONE_COUNT = 4;
 
-export default function ProductMiniCarousel({ lang, onSelectProduct }: ProductMiniCarouselProps) {
+export default function ProductMiniCarousel({ lang, onSelectProduct, products }: ProductMiniCarouselProps) {
+  const productList = products && products.length > 0 ? products : PRODUCTS;
+  const cloneCount = Math.min(CLONE_COUNT, productList.length);
+
   // Responsive Visible Cards State
   const [visibleCount, setVisibleCount] = useState(4);
-  const [currentIndex, setCurrentIndex] = useState(CLONE_COUNT);
+  const [currentIndex, setCurrentIndex] = useState(cloneCount);
   const [isSeamlessReset, setIsSeamlessReset] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
 
@@ -61,9 +65,9 @@ export default function ProductMiniCarousel({ lang, onSelectProduct }: ProductMi
 
   // Clone items on left and right for seamless looping
   const displayProducts = [
-    ...PRODUCTS.slice(-CLONE_COUNT),
-    ...PRODUCTS,
-    ...PRODUCTS.slice(0, CLONE_COUNT),
+    ...productList.slice(-cloneCount),
+    ...productList,
+    ...productList.slice(0, cloneCount),
   ];
 
   // Sliding Navigations
@@ -79,12 +83,12 @@ export default function ProductMiniCarousel({ lang, onSelectProduct }: ProductMi
 
   // Seamless Infinite reset handling
   const handleTransitionEnd = () => {
-    if (currentIndex >= PRODUCTS.length + CLONE_COUNT) {
+    if (currentIndex >= productList.length + cloneCount) {
       setIsSeamlessReset(true);
-      setCurrentIndex(CLONE_COUNT);
-    } else if (currentIndex < CLONE_COUNT) {
+      setCurrentIndex(cloneCount);
+    } else if (currentIndex < cloneCount) {
       setIsSeamlessReset(true);
-      setCurrentIndex(PRODUCTS.length + CLONE_COUNT - 1);
+      setCurrentIndex(productList.length + cloneCount - 1);
     }
   };
 
@@ -98,13 +102,13 @@ export default function ProductMiniCarousel({ lang, onSelectProduct }: ProductMi
     }
   }, [isSeamlessReset]);
 
-  // Autoplay timer sliding smoothly every 3.5s (pauses on hover, touch, or active dragging)
+  // Autoplay timer sliding smoothly every 5s (pauses on hover, touch, or active dragging)
   useEffect(() => {
     if (isHovered || isDragging || isUserTouching || isSeamlessReset) return;
 
     const timer = setInterval(() => {
       handleNext();
-    }, 3500);
+    }, 5000);
 
     return () => clearInterval(timer);
   }, [isHovered, isDragging, isUserTouching, isSeamlessReset, currentIndex]);
@@ -269,7 +273,7 @@ export default function ProductMiniCarousel({ lang, onSelectProduct }: ProductMi
               >
                 <div
                   onClick={(e) => handleCardClick(e, slug)}
-                  className="bg-white rounded-2xl border border-slate-100 p-4 shadow-md hover:shadow-xl transition-all hover:-translate-y-1.5 cursor-pointer flex flex-col justify-between h-[310px] relative group overflow-hidden"
+                  className="bg-white rounded-2xl border border-slate-100 p-4 shadow-md hover:shadow-xl transition-all hover:-translate-y-1.5 cursor-pointer flex flex-col justify-between h-[270px] relative group overflow-hidden"
                 >
                   {/* Image Container */}
                   <div 
@@ -277,8 +281,13 @@ export default function ProductMiniCarousel({ lang, onSelectProduct }: ProductMi
                       e.stopPropagation();
                       handleCardClick(e, slug);
                     }}
-                    className="w-full h-[65%] rounded-xl bg-slate-50 overflow-hidden flex items-center justify-center relative mb-3 cursor-pointer"
+                    className="w-full h-[72%] rounded-xl bg-slate-50 overflow-hidden flex items-center justify-center relative mb-2 cursor-pointer"
                   >
+                    {product.saleType && (
+                      <span className="absolute top-2 right-2 z-10 px-2 py-0.5 rounded-full bg-emerald-600/95 text-white text-[8px] sm:text-[9px] font-bold tracking-tight shadow-sm">
+                        Retail & Bulk
+                      </span>
+                    )}
                     <img
                       src={product.images[0]}
                       alt={product.name}
@@ -291,13 +300,13 @@ export default function ProductMiniCarousel({ lang, onSelectProduct }: ProductMi
                     />
                   </div>
 
-                  {/* Product Details - Name & CTA */}
+                  {/* Product Details - Name */}
                   <div 
                     onClick={(e) => {
                       e.stopPropagation();
                       handleCardClick(e, slug);
                     }}
-                    className="flex flex-col justify-between flex-grow text-left cursor-pointer"
+                    className="flex flex-col justify-center items-center flex-grow text-center cursor-pointer"
                   >
                     <h4 
                       onClick={(e) => {
@@ -308,19 +317,6 @@ export default function ProductMiniCarousel({ lang, onSelectProduct }: ProductMi
                     >
                       {product.name}
                     </h4>
-                    
-                    <div 
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        handleCardClick(e, slug);
-                      }}
-                      className="flex items-center justify-center mt-3 pt-2.5 border-t border-slate-100 cursor-pointer"
-                    >
-                      <span className="text-xs font-extrabold text-orange-600 flex items-center gap-1 group-hover:translate-x-1 transition-transform cursor-pointer">
-                        <span>{lang === "en" ? "View Details" : "विवरण देखें"}</span>
-                        <span>➔</span>
-                      </span>
-                    </div>
                   </div>
                   
                   {/* Decorative Glass Overlay */}
@@ -351,15 +347,15 @@ export default function ProductMiniCarousel({ lang, onSelectProduct }: ProductMi
 
       {/* Slider Pagination Indicator Dots */}
       <div className="flex justify-center gap-1.5 mt-8">
-        {PRODUCTS.map((_, idx) => {
-          const normalizedIndex = (currentIndex - CLONE_COUNT + PRODUCTS.length) % PRODUCTS.length;
+        {productList.map((_, idx) => {
+          const normalizedIndex = (currentIndex - cloneCount + productList.length) % productList.length;
           const isActive = normalizedIndex === idx;
           return (
             <button
               key={idx}
               onClick={() => {
                 setIsSeamlessReset(true);
-                setCurrentIndex(idx + CLONE_COUNT);
+                setCurrentIndex(idx + cloneCount);
               }}
               className={`h-1.5 rounded-full transition-all duration-300 ${
                 isActive ? "w-6 bg-orange-500" : "w-1.5 bg-slate-200 hover:bg-slate-300"
