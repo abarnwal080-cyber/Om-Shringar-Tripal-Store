@@ -252,6 +252,18 @@ export const PRODUCTS: Product[] = [
       "Acid Resistance": "High (Protects from soil minerals)"
     },
     applications: ["Construction", "Agriculture", "Warehouses"],
+    video: {
+      url: "https://blacksheet.edgeone.dev/",
+      title: "Construction Black Polythene Damp Proofing & Silage Demo Video",
+      defaultRotate: 0
+    },
+    videos: [
+      {
+        url: "https://blacksheet.edgeone.dev/",
+        title: "Construction Black Polythene Damp Proofing & Silage Demo Video",
+        defaultRotate: 0
+      }
+    ],
     faqs: [
       { question: "Can I use black polythene under concrete house foundation?", answer: "Yes, it is widely used as a Damp Proof Course (DPC) sheet to prevent ground moisture from leaking into walls and ceilings." },
       { question: "Is this black sheet completely opaque?", answer: "Yes, it is 100% black and opaque, which makes it perfect for solar weed-killing and silage storage." },
@@ -568,6 +580,18 @@ export const PRODUCTS: Product[] = [
       "Cold storage",
       "Packaging",
       "False ceiling"
+    ],
+    video: {
+      url: "https://theps.edgeone.dev/",
+      title: "Construction Thermocol (EPS) Sheets & Blocks Demonstration Video",
+      defaultRotate: 0
+    },
+    videos: [
+      {
+        url: "https://theps.edgeone.dev/",
+        title: "Construction Thermocol (EPS) Sheets & Blocks Demonstration Video",
+        defaultRotate: 0
+      }
     ],
     faqs: [
       { question: "What sizes and thicknesses of Thermocol sheets are available?", answer: "We keep standard thicknesses of 0.5 inch, 1 inch, 1.5 inch, and 2 inch in stock. Custom block sizes can also be ordered for large-scale insulation requirements." },

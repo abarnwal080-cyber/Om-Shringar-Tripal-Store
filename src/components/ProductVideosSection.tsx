@@ -35,6 +35,16 @@ const VIDEO_ITEMS: VideoSourceItem[] = [
     defaultRotate: 0,
   },
   {
+    id: "video-theps",
+    url: "https://theps.edgeone.dev/",
+    defaultRotate: 0,
+  },
+  {
+    id: "video-blacksheet",
+    url: "https://blacksheet.edgeone.dev/",
+    defaultRotate: 0,
+  },
+  {
     id: "video-1",
     url: "https://dhalai.edgeone.dev/",
     defaultRotate: 90,
