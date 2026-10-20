@@ -362,8 +362,8 @@ export default function VisitShopSection() {
                 </svg>
               </span>
               <div>
-                <strong>26+ Years</strong>
-                <small>of Trust</small>
+                <strong>30+ Years</strong>
+                <small>Experience</small>
               </div>
             </div>
           </div>

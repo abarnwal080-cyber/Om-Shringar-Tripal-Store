@@ -44,10 +44,10 @@ export const MeetSupplierSection: React.FC<MeetSupplierSectionProps> = ({
           <polyline points="12 6 12 12 16 14" />
         </svg>
       ),
-      title: isHindi ? "24+ वर्षों का अटूट विश्वास" : "24+ Years Industry Legacy",
+      title: isHindi ? "30+ वर्षों का अटूट विश्वास" : "30+ Years Industry Legacy",
       desc: isHindi
-        ? "साल 2000 से (पूर्व में गोयल ट्रेडर्स) महाराजगंज, सीवान और पूरे बिहार में लाखों किसानों और व्यापारियों की पहली पसंद।"
-        : "Serving farmers, transport logistics, and retail partners across Maharajganj, Siwan & Bihar since 2000.",
+        ? "साल 1995 से (पूर्व में गोयल ट्रेडर्स) महाराजगंज, सीवान और पूरे बिहार में लाखों किसानों और व्यापारियों की पहली पसंद।"
+        : "Serving farmers, transport logistics, and retail partners across Maharajganj, Siwan & Bihar since 1995.",
     },
     {
       icon: (
@@ -178,7 +178,7 @@ export const MeetSupplierSection: React.FC<MeetSupplierSectionProps> = ({
                   Om Shringar Tirpal Store • Maharajganj, Siwan, Bihar
                 </p>
                 <p className="text-xs text-slate-500 font-amaranth-bold mt-0.5">
-                  (Formerly Goyal Traders • Serving Bihar & Eastern India Since 2000)
+                  (Formerly Goyal Traders • Serving Bihar & Eastern India Since 1995)
                 </p>
               </div>
             </div>

@@ -6,11 +6,12 @@ interface ProductMiniCarouselProps {
   lang: "en" | "hi";
   onSelectProduct: (slug: string) => void;
   products?: Product[];
+  autoSlideInterval?: number;
 }
 
 const CLONE_COUNT = 4;
 
-export default function ProductMiniCarousel({ lang, onSelectProduct, products }: ProductMiniCarouselProps) {
+export default function ProductMiniCarousel({ lang, onSelectProduct, products, autoSlideInterval }: ProductMiniCarouselProps) {
   const productList = products && products.length > 0 ? products : PRODUCTS;
   const cloneCount = Math.min(CLONE_COUNT, productList.length);
 
@@ -102,16 +103,17 @@ export default function ProductMiniCarousel({ lang, onSelectProduct, products }:
     }
   }, [isSeamlessReset]);
 
-  // Autoplay timer sliding smoothly every 6.5s (pauses on hover, touch, or active dragging)
+  // Autoplay timer sliding smoothly (pauses on hover, touch, or active dragging)
   useEffect(() => {
     if (isHovered || isDragging || isUserTouching || isSeamlessReset) return;
 
+    const intervalTime = autoSlideInterval || 6500;
     const timer = setInterval(() => {
       handleNext();
-    }, 6500);
+    }, intervalTime);
 
     return () => clearInterval(timer);
-  }, [isHovered, isDragging, isUserTouching, isSeamlessReset, currentIndex]);
+  }, [isHovered, isDragging, isUserTouching, isSeamlessReset, currentIndex, autoSlideInterval]);
 
   // Drag and Touch Handlers
   const handleDragStart = (clientX: number) => {

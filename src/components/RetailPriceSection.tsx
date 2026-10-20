@@ -27,7 +27,7 @@ interface PriceItem {
 
 const PRICE_ITEMS: PriceItem[] = [
   {
-    image: "https://5.imimg.com/data5/SELLER/Default/2023/4/301281309/FL/MC/FC/123837/waterproof-tarpaulins.webp",
+    image: "https://plain-apac-prod-public.komododecks.com/202610/20/4umbUcsRDFqxtlazQUV9/image.jpg",
     en: {
       name: "Tarpaulin Sheets (Tirpal)",
       price: "₹120 – ₹10,000 / Piece",

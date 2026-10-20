@@ -60,8 +60,6 @@ import SizeCalculatorModal from "./components/SizeCalculatorModal";
 import WhoWeAreSection from "./components/WhoWeAreSection";
 import UserTypeInquiryModal from "./components/UserTypeInquiryModal";
 import SizeChartSection from "./components/SizeChartSection";
-import GeminiChatbotSection from "./components/GeminiChatbotSection";
-import ChatbotWidget from "./components/ChatbotWidget";
 import VisitShopSection from "./components/VisitShopSection";
 import CatalogPage from "./components/CatalogPage";
 import { TRANSLATIONS } from "./translations";
@@ -78,7 +76,7 @@ export default function App() {
   const [activeTab, setActiveTab] = useState("All");
   const [expandedFAQ, setExpandedFAQ] = useState<number | null>(null);
   const [isSupplierPageOpen, setIsSupplierPageOpen] = useState(false);
-  const [catalogPageMode, setCatalogPageMode] = useState<null | "all" | "polyware" | "general-store">(null);
+  const [catalogPageMode, setCatalogPageMode] = useState<string | null>(null);
   const [heroBgImage, setHeroBgImage] = useState("https://plain-apac-prod-public.komododecks.com/202607/03/eckT9KEMGbavrebTJwPJ/image.png");
   const [sizeCalcOpen, setSizeCalcOpen] = useState(false);
 
@@ -94,7 +92,6 @@ export default function App() {
 
   // User Role / Type Selection Modal for customized WhatsApp drafts
   const [userTypeModalOpen, setUserTypeModalOpen] = useState(false);
-  const [isChatOpen, setIsChatOpen] = useState(false);
   const [userTypeModalProduct, setUserTypeModalProduct] = useState("");
   const [userTypeModalContext, setUserTypeModalContext] = useState("");
 
@@ -108,7 +105,7 @@ export default function App() {
   }, []);
 
   // Professional Modal Popup System: Lock body scroll, prevent layout shifts, handle keyboard/touch, restore scroll position
-  const isAnyModalActive = isTermsOpen || sizeCalcOpen || userTypeModalOpen || isSizeChartModalOpen || isChatOpen;
+  const isAnyModalActive = isTermsOpen || sizeCalcOpen || userTypeModalOpen || isSizeChartModalOpen;
 
   useEffect(() => {
     if (!isAnyModalActive) return;
@@ -211,13 +208,18 @@ export default function App() {
       } else {
         setIsSupplierPageOpen(false);
       }
-      if (path === "/polyware") {
-        setCatalogPageMode("polyware");
+      if (path === "/tarpaulins" || path === "/tarpaulin" || path === "/category/tarpaulins") {
+        setCatalogPageMode("tarpaulins");
         setIsSupplierPageOpen(false);
         return null;
       }
-      if (path === "/retail-store" || path === "/general-store") {
-        setCatalogPageMode("general-store");
+      if (path === "/polythene-sheets" || path === "/plastic-sheets" || path === "/category/polythene-sheets" || path === "/polyware") {
+        setCatalogPageMode("polythene-sheets");
+        setIsSupplierPageOpen(false);
+        return null;
+      }
+      if (path === "/others" || path === "/other" || path === "/category/others" || path === "/retail-store" || path === "/general-store") {
+        setCatalogPageMode("others");
         setIsSupplierPageOpen(false);
         return null;
       }
@@ -241,12 +243,16 @@ export default function App() {
           setCatalogPageMode(null);
           return null;
         }
-        if (slug === "polyware") {
-          setCatalogPageMode("polyware");
+        if (slug === "tarpaulins" || slug === "tarpaulin") {
+          setCatalogPageMode("tarpaulins");
           return null;
         }
-        if (slug === "retail-store" || slug === "general-store") {
-          setCatalogPageMode("general-store");
+        if (slug === "polythene-sheets" || slug === "plastic-sheets" || slug === "polyware") {
+          setCatalogPageMode("polythene-sheets");
+          return null;
+        }
+        if (slug === "others" || slug === "other" || slug === "retail-store" || slug === "general-store") {
+          setCatalogPageMode("others");
           return null;
         }
         if (slug === "catalog" || slug === "products-catalog" || slug === "all-products") {
@@ -509,6 +515,30 @@ export default function App() {
     return PRODUCTS.filter((p) => p.division === "general-store");
   }, []);
 
+  // Category 1: Tarpaulins (Shalimar, Kangaroo, Silpaulin, Great Paulin, Gold Paulin)
+  const tarpaulinProducts = useMemo(() => {
+    const order = ["shalimar-tarpaulin", "kangaroo-tarpaulin", "silpaulin-tarpaulin", "great-paulin", "gold-paulin"];
+    return order
+      .map((id) => PRODUCTS.find((p) => p.id === id))
+      .filter((p): p is Product => Boolean(p));
+  }, []);
+
+  // Category 2: Polythene sheets (black, sessha, cheetah, blue, stretch)
+  const polytheneSheetProducts = useMemo(() => {
+    const order = ["black-polythene", "transparent-shisha", "capstone-cheetah", "blue-polythene", "stretch-film"];
+    return order
+      .map((id) => PRODUCTS.find((p) => p.id === id))
+      .filter((p): p is Product => Boolean(p));
+  }, []);
+
+  // Others (dono fencing nets, mat, table cloth, ropes)
+  const otherProducts = useMemo(() => {
+    const ids = ["fencing-net", "fencing-net-jali", "plastic-mat-chatai", "waterproof-table-cover", "ropes-all-kinds"];
+    return ids
+      .map((id) => PRODUCTS.find((p) => p.id === id))
+      .filter((p): p is Product => Boolean(p));
+  }, []);
+
   const matchedProduct = findProductBySlug(currentProductSlug || "");
 
   return (
@@ -534,11 +564,12 @@ export default function App() {
             className="flex flex-col"
           >
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-lg bg-orange-500 flex items-center justify-center text-white shadow-md p-1.5 shrink-0">
-                <svg viewBox="0 0 24 24" className="w-full h-full text-white" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-                  <path d="m9 12 2 2 4-4"/>
-                </svg>
+              <div className="h-11 w-11 sm:h-12 sm:w-12 shrink-0 overflow-hidden rounded-xl flex items-center justify-center">
+                <img
+                  src="https://plain-apac-prod-public.komododecks.com/202610/20/3oYsJzQYwScdhzuKsG5M/image.jpg"
+                  alt="Om Shringar Tirpal Store"
+                  className="w-full h-full object-contain"
+                />
               </div>
               <div className="flex flex-col justify-center">
                 <span className="font-amaranth-bold font-bold text-xl sm:text-2xl text-white tracking-tight block leading-tight">
@@ -743,7 +774,7 @@ export default function App() {
         />
       ) : catalogPageMode ? (
         <CatalogPage
-          initialDivision={catalogPageMode}
+          initialCategory={catalogPageMode}
           currentLanguage={lang}
           onEnquire={handleEnquire}
           onViewDetails={(prod) => {
@@ -763,8 +794,8 @@ export default function App() {
           {/* 4. BRAND PARTNERS BAR (CAROUSEL) - MOVED TO TOP */}
           <BrandCarousel lang={lang} />
 
-          {/* 6. PRODUCTS CATALOG PREVIEW SECTION */}
-          <section id="products" className="py-20 bg-slate-50 text-slate-900 relative border-y border-slate-200/60 overflow-hidden scroll-mt-24">
+          {/* 6. PRODUCTS CATALOG PREVIEW SECTION - 3 DISTINCT CATEGORIES */}
+          <section id="products" className="py-14 sm:py-20 bg-slate-50 text-slate-900 relative border-y border-slate-200/60 overflow-hidden scroll-mt-24">
             {/* Subtle grid texture */}
             <div className="absolute inset-0 bg-[linear-gradient(to_right,#00000003_1px,transparent_1px),linear-gradient(to_bottom,#00000003_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none" />
             {/* Soft radial glow behind content */}
@@ -772,19 +803,19 @@ export default function App() {
 
             <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
               
-              {/* SECTION 1: POLYWARE INDUSTRIAL */}
+              {/* TARPAULINS SECTION */}
               <div className="mb-14">
                 <div className="flex flex-col items-center mb-6">
-                  <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-900/10 border border-blue-900/20 text-[#0B2D5C] text-xs font-black uppercase tracking-wider">
-                    <Icons.Factory className="w-4 h-4 text-orange-600" />
-                    <span>Section 1 • Polyware Industrial</span>
-                  </div>
+                  <h3 className="text-2xl sm:text-3xl font-black text-slate-900 font-display tracking-tight">
+                    Tarpaulins
+                  </h3>
                 </div>
 
-                {/* Polyware Product Mini Carousel */}
+                {/* Tarpaulin Product Mini Carousel (white bg card carousel) */}
                 <ProductMiniCarousel
-                  products={polywareProducts}
+                  products={tarpaulinProducts}
                   lang={lang}
+                  autoSlideInterval={3500}
                   onSelectProduct={(slug) => {
                     window.history.pushState({}, "", `/products/${slug}`);
                     setCurrentProductSlug(slug);
@@ -792,68 +823,40 @@ export default function App() {
                   }}
                 />
 
-                {/* VIEW POLYWARE TAB/BUTTON */}
-                <div className="flex justify-center mt-6 sm:mt-8">
-                  <motion.button
-                    whileHover={{ y: -4, scale: 1.02, boxShadow: "0 20px 40px rgba(255,106,0,0.3), 0 8px 24px rgba(11,31,58,0.2)" }}
-                    whileTap={{ scale: 0.97 }}
+                {/* Direct link to dedicated Tarpaulins subpage */}
+                <div className="mt-6 flex justify-center">
+                  <button
                     onClick={() => {
-                      window.history.pushState({}, "", "/polyware");
-                      setCatalogPageMode("polyware");
-                      window.scrollTo(0, 0);
+                      window.history.pushState({}, "", "/tarpaulins");
+                      setCatalogPageMode("tarpaulins");
+                      window.scrollTo({ top: 0, behavior: "smooth" });
                     }}
-                    className="group relative flex items-center justify-between gap-4 px-4 sm:px-6 w-full max-w-[560px] h-[72px] rounded-full bg-gradient-to-r from-[#071324] via-[#0B1F3A] to-[#071324] border border-white/10 text-white font-sans transition-all duration-300 cursor-pointer select-none overflow-hidden animate-cta-pulse focus:outline-none focus:ring-4 focus:ring-orange-500/40 focus:ring-offset-2 shadow-[0_12px_30px_rgba(255,106,0,.25),_0_4px_12px_rgba(0,0,0,.12)]"
-                    aria-label="View Polyware Catalog"
+                    className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-orange-500 hover:bg-orange-600 active:scale-95 text-white font-extrabold text-sm shadow-sm transition-all cursor-pointer"
                   >
-                    {/* Subtle top glossy highlight layer */}
-                    <div className="absolute inset-0 rounded-full border-t border-white/20 bg-gradient-to-b from-white/10 to-transparent pointer-events-none" />
-
-                    {/* Shimmer/light sweep element */}
-                    <div className="absolute inset-0 w-1/3 h-full bg-gradient-to-r from-transparent via-white/15 to-transparent animate-cta-shimmer pointer-events-none" />
-
-                    {/* LEFT: Icon */}
-                    <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/15 shadow-[inset_0_1px_3px_rgba(255,255,255,0.2)] text-white shrink-0">
-                      <Icons.Factory className="w-5 h-5 sm:w-6 sm:h-6 stroke-[1.5] text-[#FF7A00] group-hover:scale-110 transition-transform duration-300" />
-                    </div>
-
-                    {/* CENTER: Text (Just View Polyware) */}
-                    <div className="flex items-center text-left relative z-10 flex-grow ml-2 sm:ml-4">
-                      <span className="text-[18px] sm:text-[24px] md:text-[26px] font-black tracking-tight text-white drop-shadow-sm font-sans uppercase">
-                        {lang === "en" ? "VIEW POLYWARE" : "पॉलीवेयर देखें"}
-                      </span>
-                    </div>
-
-                    {/* RIGHT: Arrow */}
-                    <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-gradient-to-r from-[#FF6A00] to-[#FF8C00] flex items-center justify-center border border-white/20 shadow-lg text-white shrink-0 group-hover:scale-105 transition-transform duration-300 relative z-10">
-                      <Icons.ArrowRight className="w-5 h-5 stroke-[2.5] group-hover:translate-x-1.5 transition-transform duration-300" />
-                    </div>
-                  </motion.button>
+                    <span>View Tarpaulins</span>
+                    <Icons.ArrowRight className="w-4 h-4" />
+                  </button>
                 </div>
               </div>
 
-              {/* STYLISH SECTION DIVIDER */}
-              <div className="relative my-10 sm:my-14 flex items-center justify-center">
+              {/* CLEAN SECTION DIVIDER */}
+              <div className="relative my-12 sm:my-16 flex items-center justify-center">
                 <div className="w-full border-t border-slate-200" />
-                <div className="absolute px-4 bg-slate-50 text-xs font-bold text-slate-400 uppercase tracking-widest flex items-center gap-2">
-                  <span className="w-2 h-2 rounded-full bg-orange-500" />
-                  <span>Explore Retail Division</span>
-                  <span className="w-2 h-2 rounded-full bg-pink-500" />
-                </div>
               </div>
 
-              {/* SECTION 2: GENERAL STORE & RETAIL */}
-              <div>
+              {/* POLYTHENE SHEETS SECTION */}
+              <div className="mb-14">
                 <div className="flex flex-col items-center mb-6">
-                  <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-pink-900/10 border border-pink-900/20 text-[#831843] text-xs font-black uppercase tracking-wider">
-                    <Icons.ShoppingBag className="w-4 h-4 text-pink-600" />
-                    <span>Section 2 • General Store & Retail</span>
-                  </div>
+                  <h3 className="text-2xl sm:text-3xl font-black text-slate-900 font-display tracking-tight">
+                    Polythene Sheets
+                  </h3>
                 </div>
 
-                {/* General Store Product Mini Carousel */}
+                {/* Polythene Sheet Product Mini Carousel */}
                 <ProductMiniCarousel
-                  products={generalStoreProducts}
+                  products={polytheneSheetProducts}
                   lang={lang}
+                  autoSlideInterval={1500}
                   onSelectProduct={(slug) => {
                     window.history.pushState({}, "", `/products/${slug}`);
                     setCurrentProductSlug(slug);
@@ -861,42 +864,60 @@ export default function App() {
                   }}
                 />
 
-                {/* VIEW RETAIL STORE TAB/BUTTON */}
-                <div className="flex justify-center mt-6 sm:mt-8">
-                  <motion.button
-                    whileHover={{ y: -4, scale: 1.02, boxShadow: "0 20px 40px rgba(255,106,0,0.3), 0 8px 24px rgba(11,31,58,0.2)" }}
-                    whileTap={{ scale: 0.97 }}
+                {/* Direct link to dedicated Polythene Sheets subpage */}
+                <div className="mt-6 flex justify-center">
+                  <button
                     onClick={() => {
-                      window.history.pushState({}, "", "/retail-store");
-                      setCatalogPageMode("general-store");
-                      window.scrollTo(0, 0);
+                      window.history.pushState({}, "", "/polythene-sheets");
+                      setCatalogPageMode("polythene-sheets");
+                      window.scrollTo({ top: 0, behavior: "smooth" });
                     }}
-                    className="group relative flex items-center justify-between gap-4 px-4 sm:px-6 w-full max-w-[560px] h-[72px] rounded-full bg-gradient-to-r from-[#071324] via-[#0B1F3A] to-[#071324] border border-white/10 text-white font-sans transition-all duration-300 cursor-pointer select-none overflow-hidden animate-cta-pulse focus:outline-none focus:ring-4 focus:ring-orange-500/40 focus:ring-offset-2 shadow-[0_12px_30px_rgba(255,106,0,.25),_0_4px_12px_rgba(0,0,0,.12)]"
-                    aria-label="View Retail Store"
+                    className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-[#0B2D5C] hover:bg-blue-900 active:scale-95 text-white font-extrabold text-sm shadow-sm transition-all cursor-pointer"
                   >
-                    {/* Subtle top glossy highlight layer */}
-                    <div className="absolute inset-0 rounded-full border-t border-white/20 bg-gradient-to-b from-white/10 to-transparent pointer-events-none" />
+                    <span>View Plastic Sheets</span>
+                    <Icons.ArrowRight className="w-4 h-4" />
+                  </button>
+                </div>
+              </div>
 
-                    {/* Shimmer/light sweep element */}
-                    <div className="absolute inset-0 w-1/3 h-full bg-gradient-to-r from-transparent via-white/15 to-transparent animate-cta-shimmer pointer-events-none" />
+              {/* CLEAN SECTION DIVIDER */}
+              <div className="relative my-12 sm:my-16 flex items-center justify-center">
+                <div className="w-full border-t border-slate-200" />
+              </div>
 
-                    {/* LEFT: Icon */}
-                    <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/15 shadow-[inset_0_1px_3px_rgba(255,255,255,0.2)] text-white shrink-0">
-                      <Icons.ShoppingBag className="w-5 h-5 sm:w-6 sm:h-6 stroke-[1.5] text-[#FF7A00] group-hover:scale-110 transition-transform duration-300" />
-                    </div>
+              {/* OTHERS SECTION */}
+              <div className="mb-4">
+                <div className="flex flex-col items-center mb-6">
+                  <h3 className="text-2xl sm:text-3xl font-black text-slate-900 font-display tracking-tight">
+                    Others
+                  </h3>
+                </div>
 
-                    {/* CENTER: Text (Just View Retail Store) */}
-                    <div className="flex items-center text-left relative z-10 flex-grow ml-2 sm:ml-4">
-                      <span className="text-[18px] sm:text-[24px] md:text-[26px] font-black tracking-tight text-white drop-shadow-sm font-sans uppercase">
-                        {lang === "en" ? "VIEW RETAIL STORE" : "रिटेल स्टोर देखें"}
-                      </span>
-                    </div>
+                {/* Others Product Mini Carousel */}
+                <ProductMiniCarousel
+                  products={otherProducts}
+                  lang={lang}
+                  autoSlideInterval={3500}
+                  onSelectProduct={(slug) => {
+                    window.history.pushState({}, "", `/products/${slug}`);
+                    setCurrentProductSlug(slug);
+                    window.scrollTo({ top: 0 });
+                  }}
+                />
 
-                    {/* RIGHT: Arrow */}
-                    <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-gradient-to-r from-[#FF6A00] to-[#FF8C00] flex items-center justify-center border border-white/20 shadow-lg text-white shrink-0 group-hover:scale-105 transition-transform duration-300 relative z-10">
-                      <Icons.ArrowRight className="w-5 h-5 stroke-[2.5] group-hover:translate-x-1.5 transition-transform duration-300" />
-                    </div>
-                  </motion.button>
+                {/* Direct link to dedicated Others subpage */}
+                <div className="mt-6 flex justify-center">
+                  <button
+                    onClick={() => {
+                      window.history.pushState({}, "", "/others");
+                      setCatalogPageMode("others");
+                      window.scrollTo({ top: 0, behavior: "smooth" });
+                    }}
+                    className="inline-flex items-center gap-2 px-6 py-2.5 rounded-xl bg-emerald-600 hover:bg-emerald-700 active:scale-95 text-white font-extrabold text-sm shadow-sm transition-all cursor-pointer"
+                  >
+                    <span>View Others</span>
+                    <Icons.ArrowRight className="w-4 h-4" />
+                  </button>
                 </div>
               </div>
 
@@ -910,8 +931,6 @@ export default function App() {
           <section id="reviews">
             <GoogleReviewSection variant="banner" />
           </section>
-          
-          <ChatbotWidget onClick={() => setIsChatOpen(true)} />
 
       {/* SHOP FRONT SHOWCASE SECTION */}
       <section id="shop-showcase" className="py-16 bg-gradient-to-b from-white to-slate-50 relative overflow-hidden border-b border-slate-200/50">
@@ -1091,6 +1110,44 @@ export default function App() {
         onSelectSize={(szStr) => handleEnquire("", `Inquiry for Size: ${szStr}`)}
       />
 
+      {/* VIEW RETAIL STORE TAB/BUTTON (Positioned Directly Below Size Matrix) */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-10 flex justify-center">
+        <motion.button
+          whileHover={{ y: -4, scale: 1.02, boxShadow: "0 20px 40px rgba(255,106,0,0.3), 0 8px 24px rgba(11,31,58,0.2)" }}
+          whileTap={{ scale: 0.97 }}
+          onClick={() => {
+            window.history.pushState({}, "", "/retail-store");
+            setCatalogPageMode("general-store");
+            window.scrollTo(0, 0);
+          }}
+          className="group relative flex items-center justify-between gap-4 px-4 sm:px-6 w-full max-w-[560px] h-[72px] rounded-full bg-gradient-to-r from-[#071324] via-[#0B1F3A] to-[#071324] border border-white/10 text-white font-sans transition-all duration-300 cursor-pointer select-none overflow-hidden animate-cta-pulse focus:outline-none focus:ring-4 focus:ring-orange-500/40 focus:ring-offset-2 shadow-[0_12px_30px_rgba(255,106,0,.25),_0_4px_12px_rgba(0,0,0,.12)]"
+          aria-label="View Retail Store"
+        >
+          {/* Subtle top glossy highlight layer */}
+          <div className="absolute inset-0 rounded-full border-t border-white/20 bg-gradient-to-b from-white/10 to-transparent pointer-events-none" />
+
+          {/* Shimmer/light sweep element */}
+          <div className="absolute inset-0 w-1/3 h-full bg-gradient-to-r from-transparent via-white/15 to-transparent animate-cta-shimmer pointer-events-none" />
+
+          {/* LEFT: Icon */}
+          <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-white/10 backdrop-blur-md flex items-center justify-center border border-white/15 shadow-[inset_0_1px_3px_rgba(255,255,255,0.2)] text-white shrink-0">
+            <Icons.ShoppingBag className="w-5 h-5 sm:w-6 sm:h-6 stroke-[1.5] text-[#FF7A00] group-hover:scale-110 transition-transform duration-300" />
+          </div>
+
+          {/* CENTER: Text */}
+          <div className="flex items-center text-left relative z-10 flex-grow ml-2 sm:ml-4">
+            <span className="text-[18px] sm:text-[24px] md:text-[26px] font-black tracking-tight text-white drop-shadow-sm font-sans uppercase">
+              {lang === "en" ? "VIEW RETAIL STORE" : "रिटेल स्टोर देखें"}
+            </span>
+          </div>
+
+          {/* RIGHT: Arrow */}
+          <div className="w-11 h-11 sm:w-12 sm:h-12 rounded-full bg-gradient-to-r from-[#FF6A00] to-[#FF8C00] flex items-center justify-center border border-white/20 shadow-lg text-white shrink-0 group-hover:scale-105 transition-transform duration-300 relative z-10">
+            <Icons.ArrowRight className="w-5 h-5 stroke-[2.5] group-hover:translate-x-1.5 transition-transform duration-300" />
+          </div>
+        </motion.button>
+      </div>
+
       {/* 10. GEMINI AI HINGLISH CHATBOT SECTION (REPLACED FAQ) */}
       <div id="enquire" ref={inquiryRef} />
 
@@ -1108,15 +1165,19 @@ export default function App() {
             {/* Column 1: Store Intro */}
             <div className="lg:col-span-4 flex flex-col">
               <a href="#" className="flex items-center gap-2 mb-4">
-                <div className="w-8 h-8 rounded-lg bg-brand-orange flex items-center justify-center text-white font-bold text-sm">
-                  OS
+                <div className="w-10 h-10 rounded-lg flex items-center justify-center overflow-hidden shrink-0">
+                  <img
+                    src="https://plain-apac-prod-public.komododecks.com/202610/20/3oYsJzQYwScdhzuKsG5M/image.jpg"
+                    alt="Om Shringar Tirpal Store"
+                    className="w-full h-full object-contain"
+                  />
                 </div>
                 <span className="font-bold text-lg font-display text-white tracking-tight">
                   Om Shringar Tirpal <span className="text-brand-orange">Store</span>
                 </span>
               </a>
               <p className="text-xs sm:text-sm text-slate-400 leading-relaxed mb-6">
-                Established in 2000 as Goyal Traders, we are Siwan's premier wholesale and retail distributor for high-durability tarpaulins, construction plastic rolls, stretch films, and agricultural resham nets.
+                Established in 1995 as Goyal Traders, we are Siwan's premier wholesale and retail distributor for high-durability tarpaulins, construction plastic rolls, stretch films, and agricultural resham nets.
               </p>
               <div className="text-[11px] font-mono uppercase bg-white/5 border border-white/10 text-brand-orange px-3 py-1.5 rounded-lg w-fit">
                 Owner: Vinod Kumar Varnawal
@@ -1344,8 +1405,6 @@ export default function App() {
         customContext={userTypeModalContext}
         lang={lang}
       />
-
-      <GeminiChatbotSection isOpen={isChatOpen} onClose={() => setIsChatOpen(false)} />
     </div>
   );
 }

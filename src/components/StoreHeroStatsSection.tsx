@@ -144,7 +144,7 @@ export default function StoreHeroStatsSection() {
         >
           <Award className="w-3.5 h-3.5 text-blue-600" />
           <span className="text-xs font-black tracking-wider uppercase font-mono">
-            SINCE 2000
+            SINCE 1995
           </span>
           <span className="w-1.5 h-1.5 rounded-full bg-blue-500 animate-pulse" />
         </motion.div>
@@ -231,22 +231,22 @@ export default function StoreHeroStatsSection() {
                   </div>
                   <span className="hidden sm:inline-flex items-center gap-1 text-[11px] font-bold text-blue-700 bg-blue-100/80 px-2.5 py-0.5 rounded-full">
                     <CheckCircle2 className="w-3 h-3 text-blue-600" />
-                    Est. 2000
+                    Est. 1995
                   </span>
                 </div>
 
                 <div className="space-y-0.5 sm:space-y-1 mb-0 sm:mb-2 text-center sm:text-left">
                   <div className="text-[19px] sm:text-4xl md:text-5xl font-black font-display text-blue-950 tracking-tight flex items-baseline justify-center sm:justify-start gap-0.5 leading-[1.1] sm:leading-normal">
-                    <AnimatedCounter end={26} suffix="+" />
+                    <AnimatedCounter end={30} suffix="+" />
                   </div>
                   <h3 className="text-[9px] sm:text-base font-extrabold text-slate-900 font-display leading-[1.1] sm:leading-normal">
-                    <span className="hidden sm:inline">Years of Trust</span>
-                    <span className="sm:hidden">Trust</span>
+                    <span className="hidden sm:inline">Years of Experience</span>
+                    <span className="sm:hidden">Experience</span>
                   </h3>
                 </div>
 
                 <p className="hidden sm:block text-xs text-slate-500 leading-relaxed font-medium">
-                  Continuous reliable supply of heavy-duty tarpaulins since year 2000.
+                  Continuous reliable supply of heavy-duty tarpaulins since year 1995.
                 </p>
               </div>
 

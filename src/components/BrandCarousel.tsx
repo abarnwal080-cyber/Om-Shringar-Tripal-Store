@@ -5,7 +5,11 @@ import StoreHeroStatsSection from "./StoreHeroStatsSection";
 const BRANDS = [
   {
     name: "Shalimar",
-    logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQhYupOFug5Yj8fRM0Q74ENy_gKWvv5Dy6M9SlsFfbaJTHeWNACb06XwCwy&s=10",
+    logo: "https://www.shalimargroupindia.com/assets/img/logo.png",
+  },
+  {
+    name: "Kangaroo",
+    logo: "https://www.kangaroositesupplies.com.au/cdn/shop/files/Kangaroo_site_supplies_logo.png?v=1692248444&width=3831",
   },
   {
     name: "Greatpaulin",
@@ -13,7 +17,7 @@ const BRANDS = [
   },
   {
     name: "Silpaulin",
-    logo: "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQeMUnP6Z2TnQ59-T8IoNdUnuS71PtlmQcf7bQIttKIS6MUbQv_4_OmhU4&s=10",
+    logo: "https://www.supreme.co.in/dist/img/xf/silpaulin-logo.png",
   },
   {
     name: "Cheetah",

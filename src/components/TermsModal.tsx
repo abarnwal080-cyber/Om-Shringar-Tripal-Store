@@ -103,17 +103,10 @@ export const TermsModal: React.FC<TermsModalProps> = ({ isOpen, onClose }) => {
             </div>
 
             {/* Modal Footer */}
-            <div className="bg-slate-50 px-6 py-4 border-t border-slate-100 flex flex-col sm:flex-row items-center justify-between gap-3">
+            <div className="bg-slate-50 px-6 py-4 border-t border-slate-100 flex items-center justify-between">
               <span className="text-xs text-slate-500 font-mono">
                 Om Shringar Tirpal Store © {new Date().getFullYear()}
               </span>
-              <button
-                onClick={onClose}
-                className="w-full sm:w-auto px-6 py-2.5 bg-[#0B2D5C] hover:bg-[#0D3A75] text-white font-bold text-sm rounded-xl shadow-md transition-all active:scale-95 flex items-center justify-center gap-2 cursor-pointer"
-              >
-                <CheckCircle2 className="w-4 h-4 text-emerald-400" />
-                <span>I Understand & Agree</span>
-              </button>
             </div>
           </motion.div>
         </div>

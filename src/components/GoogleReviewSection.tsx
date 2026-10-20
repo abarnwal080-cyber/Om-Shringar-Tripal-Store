@@ -302,7 +302,7 @@ export default function GoogleReviewSection({
                 {/* Trust Badge */}
                 <div className="w-full bg-slate-50 rounded-2xl border border-slate-200/80 p-4 mb-6 text-center">
                   <div className="text-xs sm:text-sm font-extrabold text-slate-900 tracking-wide uppercase">
-                    26+ Years of Trust
+                    30+ Years of Experience
                   </div>
                   <div className="text-[11px] sm:text-xs text-slate-500 font-medium mt-0.5">
                     Serving customers with care

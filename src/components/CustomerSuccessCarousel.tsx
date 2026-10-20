@@ -176,8 +176,8 @@ export default function CustomerSuccessCarousel({ currentLanguage, onEnquire }: 
           </h2>
           <p className="text-slate-400 text-sm sm:text-base">
             {currentLanguage === "en" 
-              ? "Over 26 years of supplying genuine waterproof sheets, helping locals protect their assets, crops, and construction foundations successfully."
-              : "२६ से अधिक वर्षों से असली वाटरप्रूफ शीट की आपूर्ति, स्थानीय लोगों को अपनी फसल, निर्माण नींव और संपत्तियों को सफलतापूर्वक सुरक्षित करने में मदद कर रहे हैं।"}
+              ? "Over 30 years of supplying genuine waterproof sheets, helping locals protect their assets, crops, and construction foundations successfully."
+              : "३० से अधिक वर्षों से असली वाटरप्रूफ शीट की आपूर्ति, स्थानीय लोगों को अपनी फसल, निर्माण नींव और संपत्तियों को सफलतापूर्वक सुरक्षित करने में मदद कर रहे हैं।"}
           </p>
         </div>
 

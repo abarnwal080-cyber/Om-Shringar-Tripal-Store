@@ -16,14 +16,14 @@ interface Slide {
 
 const HERO_SLIDES: Slide[] = [
   {
-    image: "https://5.imimg.com/data5/SELLER/Default/2023/4/301281309/FL/MC/FC/123837/waterproof-tarpaulins.webp",
+    image: "https://plain-apac-prod-public.komododecks.com/202610/20/4umbUcsRDFqxtlazQUV9/image.jpg",
     en: {
-      title: "Premium Waterproof Tarpaulins (Tirpal)",
-      subtitle: "Multi-layered cross-laminated supreme protection"
+      title: "Original Certified Branded Tarpaulins (Tirpal)",
+      subtitle: "Shalimar, Kangaroo, Silpaulin, Greatpaulin & Goldpaulin"
     },
     hi: {
-      title: "प्रीमियम वाटरप्रूफ तिरपाल (Tirpal)",
-      subtitle: "मल्टी-लेयर क्रॉस लैमिनेटेड उत्कृष्ट सुरक्षा"
+      title: "ओरिजिनल प्रमाणित ब्रांडेड तिरपाल (Tirpal)",
+      subtitle: "शालीमार, कंगारू, सिलपॉलिन, ग्रेटपॉलिन एवं गोल्डपॉलिन"
     }
   },
   {

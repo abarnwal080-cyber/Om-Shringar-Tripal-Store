@@ -82,16 +82,16 @@ export const TRANSLATIONS: Record<"en" | "hi", TranslationSet> = {
     
     heroBadge: "⭐️ PREMIUM WHOLESALE PLASTICS & TARPAULINS",
     heroTitle1: "Trusted Tarpaulin &",
-    heroTitle2: "Plastic Sheet Dealer Since 2000",
+    heroTitle2: "Plastic Sheet Dealer Since 1995",
     heroSubtitle: "Serving Siwan, Maharajganj, and nearby districts with premium quality Tarpaulins, Construction Sheets, Multilayered Film, and Farming Nets at unbeatable wholesale rates.",
     heroCtaCall: "Call Store Now",
     heroCtaWhatsApp: "WhatsApp Price List",
     
     aboutBadge: "OUR HERITAGE",
-    aboutTitle: "Serving Siwan & Bihar For Over 24+ Years",
-    aboutDesc1: "Om Shringar Tirpal Store (formerly known as Goyal Traders) was established in the year 2000 in Maharajganj, Siwan, Bihar. Under the leadership of Mr. Vinod Kumar Varnawal, we have been the ultimate choice for thousands of farmers, contractors, transporters, and retail buyers.",
+    aboutTitle: "Serving Siwan & Bihar For Over 30+ Years",
+    aboutDesc1: "Om Shringar Tirpal Store (formerly known as Goyal Traders) was established in the year 1995 in Maharajganj, Siwan, Bihar. Under the leadership of Mr. Vinod Kumar Varnawal, we have been the ultimate choice for thousands of farmers, contractors, transporters, and retail buyers.",
     aboutDesc2: "We specialize in heavy-duty tarpaulins, construction curing sheets, agricultural covers, and pond liners. We deal only in premium certified brands to guarantee maximum longevity and tear resistance.",
-    aboutFeature1: "24+ Years of Trust & Quality",
+    aboutFeature1: "30+ Years of Experience & Quality",
     aboutFeature2: "Genuine Certified Brand Partners",
     aboutFeature3: "Complete Size and Thickness Range",
     aboutFeature4: "Wholesale Price Matching Guaranteed",
@@ -131,7 +131,7 @@ export const TRANSLATIONS: Record<"en" | "hi", TranslationSet> = {
     formSubmit: "Submit Quote Request",
     formSuccess: "Thank you! Your quote request has been compiled successfully.",
     
-    footerDesc: "Serving Bihar's farmers, builders, and transporters with durable water and dust shielding products since 2000.",
+    footerDesc: "Serving Bihar's farmers, builders, and transporters with durable water and dust shielding products since 1995.",
     footerRights: "Om Shringar Tirpal Store (Formerly Goyal Traders). All rights reserved.",
     footerDevelopedBy: "Developed by",
     
@@ -153,16 +153,16 @@ export const TRANSLATIONS: Record<"en" | "hi", TranslationSet> = {
     
     heroBadge: "⭐️ प्रीमियम थोक प्लास्टिक और तिरपाल स्टोर",
     heroTitle1: "भरोसेमंद तिरपाल और",
-    heroTitle2: "प्लास्टिक शीट डीलर (सन 2000 से)",
+    heroTitle2: "प्लास्टिक शीट डीलर (सन 1995 से)",
     heroSubtitle: "सिवान, महाराजगंज और आसपास के जिलों में प्रीमियम गुणवत्ता के तिरपाल, कंस्ट्रक्शन शीट, मल्टीलेयर फिल्म और कृषि नेट सबसे कम थोक दरों पर उपलब्ध हैं।",
     heroCtaCall: "स्टोर को अभी कॉल करें",
     heroCtaWhatsApp: "व्हाट्सएप पर रेट लिस्ट पाएं",
     
     aboutBadge: "हमारी विरासत",
-    aboutTitle: "24+ वर्षों से सिवान और बिहार की सेवा में",
-    aboutDesc1: "ओम श्रृंगार तिरपाल स्टोर (पूर्व नाम: गोयल ट्रेडर्स) की स्थापना वर्ष 2000 में महाराजगंज, सिवान, बिहार में हुई थी। श्री विनोद कुमार वर्णवाल के नेतृत्व में, हम हजारों किसानों, ठेकेदारों, ट्रांसपोर्टर्स और खुदरा खरीदारों की पहली पसंद रहे हैं।",
+    aboutTitle: "30+ वर्षों से सिवान और बिहार की सेवा में",
+    aboutDesc1: "ओम श्रृंगार तिरपाल स्टोर (पूर्व नाम: गोयल ट्रेडर्स) की स्थापना वर्ष 1995 में महाराजगंज, सिवान, बिहार में हुई थी। श्री विनोद कुमार वर्णवाल के नेतृत्व में, हम हजारों किसानों, ठेकेदारों, ट्रांसपोर्टर्स और खुदरा खरीदारों की पहली पसंद रहे हैं।",
     aboutDesc2: "हम भारी-भरकम वाटरप्रूफ तिरपाल, सीमेंट तराई प्लास्टिक शीट्स, कृषि कवर्स और तालाब लाइनर्स के विशेषज्ञ हैं। हम अधिकतम स्थायित्व की गारंटी के लिए केवल प्रामाणिक ब्रांडों में डील करते हैं।",
-    aboutFeature1: "24+ वर्षों का अटूट विश्वास और गुणवत्ता",
+    aboutFeature1: "30+ वर्षों का अटूट विश्वास और अनुभव",
     aboutFeature2: "असली और प्रमाणित ब्रांड पार्टनर्स",
     aboutFeature3: "सभी साइज़ और मोटाई (GSM) में रेंज उपलब्ध",
     aboutFeature4: "थोक दरों की गारंटी",
@@ -202,7 +202,7 @@ export const TRANSLATIONS: Record<"en" | "hi", TranslationSet> = {
     formSubmit: "कोटेशन के लिए भेजें",
     formSuccess: "धन्यवाद! आपका अनुरोध सफलतापूर्वक दर्ज कर लिया गया है।",
     
-    footerDesc: "वर्ष 2000 से बिहार के किसानों, बिल्डरों और ट्रांसपोर्टरों को टिकाऊ वाटरप्रूफ कवर्स और प्लास्टिक प्रदान कर रहे हैं।",
+    footerDesc: "वर्ष 1995 से बिहार के किसानों, बिल्डरों और ट्रांसपोर्टरों को टिकाऊ वाटरप्रूफ कवर्स और प्लास्टिक प्रदान कर रहे हैं।",
     footerRights: "ओम श्रृंगार तिरपाल स्टोर (पूर्व नाम: गोयल ट्रेडर्स)। सर्वाधिकार सुरक्षित।",
     footerDevelopedBy: "द्वारा विकसित",
     

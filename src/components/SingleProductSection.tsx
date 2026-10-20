@@ -9,7 +9,6 @@ import {
   ShieldCheck,
   Package,
   Layers,
-  Sparkles,
   MapPin,
   Heart,
   MessageSquare,
@@ -33,7 +32,7 @@ import {
   VolumeX,
   Video,
 } from "lucide-react";
-import { Product, PRODUCTS, getProductSlug, BUSINESS_INFO } from "../data";
+import { Product, PRODUCTS, getProductSlug, BUSINESS_INFO, TARPAULIN_GSM_SPECS } from "../data";
 import ProductGallery from "./gallery/ProductGallery";
 import TypeformEnquiryModal from "./enquiry/TypeformEnquiryModal";
 import GoogleReviewSection from "./GoogleReviewSection";
@@ -463,6 +462,11 @@ export default function SingleProductSection({
     product.name.toLowerCase().includes("cosmetic") ||
     product.name.toLowerCase().includes("shringar");
 
+  const isTarpaulin =
+    product.category === "Tarpaulins" ||
+    product.id.toLowerCase().includes("tarpaulin") ||
+    product.id.toLowerCase().includes("paulin");
+
   // Helper to render application icons
   const getAppIcon = (app: string) => {
     const lower = app.toLowerCase();
@@ -765,7 +769,7 @@ export default function SingleProductSection({
                   <div className="flex items-center gap-2 p-2.5 rounded-xl bg-slate-50/80 border border-slate-150">
                     <Building className="w-4 h-4 text-slate-700 shrink-0" />
                     <span className="text-[11px] font-bold text-slate-700">
-                      Est. 2000 in Siwan, Bihar
+                      Est. 1995 in Siwan, Bihar
                     </span>
                   </div>
 
@@ -788,74 +792,128 @@ export default function SingleProductSection({
           </div>
         </div>
 
-        {/* ========================================================================= */}
-        {/* PRODUCT HIGHLIGHTS SECTION */}
-        {/* ========================================================================= */}
-        <div className="bg-white rounded-3xl border border-slate-200/80 p-6 sm:p-8 lg:p-10 shadow-sm mb-10">
-          <div className="flex items-center gap-2 mb-2">
-            <Sparkles className="w-5 h-5 text-orange-500" />
-            <span className="text-xs font-black text-slate-400 uppercase tracking-widest">
-              CORE ADVANTAGES
-            </span>
-          </div>
-          <h2 className="text-2xl sm:text-3xl font-black font-display text-slate-900 tracking-tight mb-6">
-            PRODUCT HIGHLIGHTS
-          </h2>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-            {product.features.map((feat, idx) => (
-              <div
-                key={idx}
-                className="flex items-start gap-3 p-4 rounded-2xl bg-slate-50 border border-slate-150 hover:bg-orange-50/20 hover:border-orange-200 transition-colors"
-              >
-                <div className="w-7 h-7 rounded-full bg-emerald-100 text-emerald-700 flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">
-                  ✓
-                </div>
-                <div>
-                  <p className="text-xs sm:text-sm font-bold text-slate-800 leading-snug">
-                    {feat}
-                  </p>
-                </div>
-              </div>
-            ))}
-
-            {/* Additional benefits from product data */}
-            {product.benefits &&
-              product.benefits.map((benefit, idx) => (
-                <div
-                  key={`b-${idx}`}
-                  className="flex items-start gap-3 p-4 rounded-2xl bg-slate-50 border border-slate-150 hover:bg-orange-50/20 hover:border-orange-200 transition-colors"
-                >
-                  <div className="w-7 h-7 rounded-full bg-blue-100 text-blue-700 flex items-center justify-center font-bold text-xs shrink-0 mt-0.5">
-                    ✓
-                  </div>
-                  <div>
-                    <p className="text-xs sm:text-sm font-semibold text-slate-700 leading-snug">
-                      {benefit}
-                    </p>
-                  </div>
-                </div>
-              ))}
-          </div>
-
-          {/* Detailed Description */}
-          {product.detailedDescription && (
-            <div className="mt-8 pt-6 border-t border-slate-100">
-              <h3 className="text-sm font-bold uppercase tracking-wider text-slate-500 mb-2">
-                Detailed Product Overview
-              </h3>
-              <p className="text-xs sm:text-sm text-slate-600 leading-relaxed font-normal">
-                {product.detailedDescription}
-              </p>
-            </div>
-          )}
-        </div>
 
         {/* ========================================================================= */}
         {/* PRODUCT DEMONSTRATION VIDEO SECTION */}
         {/* ========================================================================= */}
         {product.video && (
           <ProductVideoShowcase video={product.video} productName={product.name} />
+        )}
+
+        {/* ========================================================================= */}
+        {/* CERTIFIED BRANDED TARPAULINS DEPOT & GSM SPECIFICATIONS MATRIX */}
+        {/* ========================================================================= */}
+        {isTarpaulin && (
+          <div className="bg-white rounded-3xl border border-slate-200/80 p-6 sm:p-8 lg:p-10 shadow-sm mb-10 text-slate-800">
+            {/* Depot Header */}
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6 pb-6 border-b border-slate-100">
+              <div>
+                <div className="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-orange-50 border border-orange-200/80 text-orange-700 text-[11px] font-bold uppercase tracking-wider mb-2">
+                  <ShieldCheck className="w-3.5 h-3.5 text-orange-600" />
+                  <span>Original Certified Branded Tarpaulins Depot</span>
+                </div>
+                <h2 className="text-xl sm:text-2xl font-black font-display text-slate-900 tracking-tight">
+                  Original Certified Branded Tarpaulins Depot
+                </h2>
+                <p className="text-xs sm:text-sm text-slate-500 mt-1 max-w-2xl leading-relaxed">
+                  Direct wholesale distribution of India's most trusted HDPE &amp; cross-laminated tarpaulins with official factory warranties and custom size fabrication.
+                </p>
+              </div>
+            </div>
+
+            {/* 3 Core Protective Pillars (Rain, Wind, Protection) */}
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-3.5 sm:gap-4 mb-8">
+              <div className="flex items-center gap-3.5 p-3.5 sm:p-4 rounded-2xl bg-slate-50 border border-slate-200/70">
+                <div className="w-11 h-11 rounded-xl bg-orange-500/10 p-2 flex items-center justify-center shrink-0 border border-orange-200/60">
+                  <img
+                    src="https://www.shalimargroupindia.com/assets/img/rain-logo.png"
+                    alt="Rain Shield"
+                    className="w-full h-full object-contain"
+                  />
+                </div>
+                <div>
+                  <div className="text-[11px] font-bold text-orange-700 uppercase tracking-wider">Rain Shield</div>
+                  <div className="text-xs sm:text-sm font-extrabold text-slate-900">100% Rainproof</div>
+                  <div className="text-[11px] text-slate-500 font-medium">Zero Water Leakage</div>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-3.5 p-3.5 sm:p-4 rounded-2xl bg-slate-50 border border-slate-200/70">
+                <div className="w-11 h-11 rounded-xl bg-blue-500/10 p-2 flex items-center justify-center shrink-0 border border-blue-200/60">
+                  <img
+                    src="https://www.shalimargroupindia.com/assets/img/wind-logo.png"
+                    alt="Wind Resistant"
+                    className="w-full h-full object-contain"
+                  />
+                </div>
+                <div>
+                  <div className="text-[11px] font-bold text-blue-700 uppercase tracking-wider">Wind Resistant</div>
+                  <div className="text-xs sm:text-sm font-extrabold text-slate-900">High Storm Wind Shield</div>
+                  <div className="text-[11px] text-slate-500 font-medium">Heavy Bound Hemming</div>
+                </div>
+              </div>
+
+              <div className="flex items-center gap-3.5 p-3.5 sm:p-4 rounded-2xl bg-slate-50 border border-slate-200/70">
+                <div className="w-11 h-11 rounded-xl bg-emerald-500/10 p-2 flex items-center justify-center shrink-0 border border-emerald-200/60">
+                  <img
+                    src="https://www.shalimargroupindia.com/assets/img/protection-logo.png"
+                    alt="Total Protection"
+                    className="w-full h-full object-contain"
+                  />
+                </div>
+                <div>
+                  <div className="text-[11px] font-bold text-emerald-700 uppercase tracking-wider">Total Protection</div>
+                  <div className="text-xs sm:text-sm font-extrabold text-slate-900">UV &amp; Tear Resistance</div>
+                  <div className="text-[11px] text-slate-500 font-medium">Cross-Laminated Toughness</div>
+                </div>
+              </div>
+            </div>
+
+            {/* Quality & GSM Thickness Specifications Matrix Subsection */}
+            <div className="pt-2">
+              <div className="flex items-center gap-2 mb-1.5">
+                <Layers className="w-4 h-4 text-orange-600" />
+                <h3 className="text-base sm:text-lg font-black font-display text-slate-900 tracking-tight">
+                  Quality &amp; GSM Thickness Specifications Matrix
+                </h3>
+              </div>
+              <p className="text-xs text-slate-500 mb-4">
+                Standard certified GSM ratings for domestic, harvest, and heavy industrial tarpaulins
+              </p>
+
+              {/* Table in Small Text, White BG, No Enquire Column */}
+              <div className="border border-slate-200 rounded-2xl overflow-hidden shadow-xs">
+                <table className="w-full text-left border-collapse">
+                  <thead>
+                    <tr className="bg-slate-100/90 text-slate-700 text-[11px] uppercase font-black border-b border-slate-200">
+                      <th className="py-3 px-3 sm:px-5">Quality Grade</th>
+                      <th className="py-3 px-3 sm:px-5">Certified GSM</th>
+                      <th className="py-3 px-3 sm:px-5">Ideal Recommended Application</th>
+                    </tr>
+                  </thead>
+                  <tbody className="divide-y divide-slate-100 text-xs text-slate-700">
+                    {TARPAULIN_GSM_SPECS.map((spec, sIdx) => (
+                      <tr
+                        key={sIdx}
+                        className={sIdx % 2 === 0 ? "bg-white hover:bg-slate-50/80" : "bg-slate-50/40 hover:bg-slate-50/80"}
+                      >
+                        <td className="py-2.5 px-3 sm:px-5 font-bold text-slate-900">
+                          {spec.quality}
+                        </td>
+                        <td className="py-2.5 px-3 sm:px-5 font-black text-orange-600 font-mono text-[11px] sm:text-xs">
+                          {spec.gsm}
+                        </td>
+                        <td className="py-2.5 px-3 sm:px-5 font-medium text-slate-600 text-[11px] sm:text-xs">
+                          {spec.application}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
         )}
 
         {/* ========================================================================= */}

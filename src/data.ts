@@ -44,7 +44,7 @@ export interface SpecialSheet {
 export const BUSINESS_INFO = {
   name: "Om Shringar Tirpal Store",
   previousName: "Goyal Traders",
-  established: 2000,
+  established: 1995,
   owner: "Mr. Vinod Kumar Varnawal",
   phone: "+91 8210625483",
   phoneFormatted: "tel:+918210625483",
@@ -331,26 +331,24 @@ export const PRODUCTS: Product[] = [
     ]
   },
   {
-    id: "tarpaulins",
-    name: "Waterproof Premium Tarpaulins",
-    category: "All-Weather Protection",
+    id: "shalimar-tarpaulin",
+    name: "Shalimar Tarpaulin",
+    category: "Tarpaulins",
     division: "polyware",
-    description: "Cross-laminated multi-layer waterproof tarpaulins (Tirpal) for cargo trucks, grain stockpiles, and monsoon tents.",
+    description: "One name that has gained wide popularity with total protection from rain is Shalimar Tarpaulin. Baarish ki dhal, Shalimar Tirpal.",
     images: [
-      "https://5.imimg.com/data5/SELLER/Default/2023/4/301281309/FL/MC/FC/123837/waterproof-tarpaulins.webp",
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTMnKRYsLO4-_dEvoXIbHeNHj318r5xTIn_NU6K6kP-qg&s=10",
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRdDU6nw67_n3nYfJG-sm__4Shap_KWkczVDA0LU92Psw&s=10",
-      "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTL3qnwqOQoCT7Un7Zev_Du5vQ0pfv5IualSuyDYL418Q&s=10",
-      "https://images.jdmagicbox.com/quickquotes/images_main/vinyl-tarpaulin-300-gsm-p9rt7wzr.jpg"
+      "https://plain-apac-prod-public.komododecks.com/202610/20/4umbUcsRDFqxtlazQUV9/image.jpg",
+      "https://plain-apac-prod-public.komododecks.com/202610/20/pqLGnJKkinyg12M23RBw/image.jpg",
+      "https://plain-apac-prod-public.komododecks.com/202610/20/K0I1zOJhAnM2GXcrZpiZ/image.jpg"
     ],
-    availableSizes: "6×6 ft up to 60×100 ft",
+    availableSizes: "6×6 ft up to 60×100 ft (95 GSM to 250 GSM)",
     features: [
-      "100% Waterproof",
-      "Rust-Proof Eyelets",
-      "Tear Resistant",
-      "Multi-Layer Strength"
+      "Brand Leader in India",
+      "Baarish Ki Dhal",
+      "100% Rain & Sun Proof",
+      "Heavy Aluminum Eyelets"
     ],
-    detailedDescription: "Om Shringar Tirpal Store's signature product: Waterproof Premium Tarpaulins (Tirpal) represent the absolute gold standard of heavy-duty protection in Siwan and Maharajganj. Built with cross-laminated technology, heat-sealed double joints, and rust-proof aluminum eyelets, these tirpals safeguard crops, cargo trucks, and shelters in extreme monsoons.",
+    detailedDescription: "One name that has gained wide popularity with total protection from rain is Shalimar Tarpaulin. Shalimar is the brand leader in HDPE tarpaulin and is the most wanted brand in India for domestic, commercial as well as industrial use. The very famous ad slogan of Shalimar Tarpaulin- \"Baarish ki dhal, Shalimar Tirpal\" sums it up for its durability, consistency and reliability.",
     benefits: [
       "100% waterproof protection even under heavy standing water.",
       "Reinforced ropes sealed into the borders to survive severe windstorms.",
@@ -358,38 +356,145 @@ export const PRODUCTS: Product[] = [
       "UV coatings prevent sun cracking and material hardening over years."
     ],
     specs: {
-      "Material": "Cross-Laminated Multi-Layer Tarpaulin",
-      "Thickness/GSM": "70 GSM to 450 GSM",
+      "Material": "Cross-Laminated Multi-Layer HDPE Tarpaulin",
+      "Thickness/GSM": "95 GSM to 250 GSM (Light to Ex. Strong)",
       "Color Options": "Yellow, Blue, Green, White, Silver, Black",
-      "Brand": "Shalimar / Silpaulin / Goldpaulin",
+      "Brand": "Shalimar",
       "Sizing Range": "6×6 feet up to 60×100 feet",
       "Eyelets": "Aluminum rust-proof every 3 feet",
-      "Tear Strength": "Extremely High (Patented Cross-lamination)",
-      "Lifespan": "Built to last multiple seasons"
+      "Tear Strength": "Extremely High (Brand Leader Grade)"
     },
     applications: ["Agriculture", "Transport", "Construction", "Warehouses"],
-    video: {
-      url: "https://hopep.edgeone.dev/",
-      title: "HDPE Waterproof Tarpaulin Quality & Flexibility Test",
-      defaultRotate: 0
-    },
-    videos: [
-      {
-        url: "https://hopep.edgeone.dev/",
-        title: "HDPE Waterproof Tarpaulin Quality & Flexibility Test",
-        defaultRotate: 0
-      },
-      {
-        url: "https://sensible-blush-cjql8l17.edgeone.dev/",
-        title: "Heavy-Duty Tarpaulin Deployment & Stock Demonstration",
-        defaultRotate: 90
-      }
-    ],
     faqs: [
-      { question: "What does 'GSM' mean, and which GSM should I choose?", answer: "GSM stands for Grams per Square Meter. Higher GSM (like 250+ GSM) represents thicker, heavier tarpaulin for long-term truck covering, while lower GSM (like 120 GSM) is ideal for grain drying and light cover." },
-      { question: "Are the eyelets rust-proof?", answer: "Yes, our premium tarpaulins are equipped with anodized rust-resistant aluminum eyelets placed every 3 feet for secure tying." },
+      { question: "What does 'GSM' mean, and which GSM should I choose?", answer: "GSM stands for Grams per Square Meter. Higher GSM (like 200–250 GSM) represents thicker, heavier tarpaulin for long-term truck covering, while lower GSM (like 95–120 GSM) is ideal for grain drying and light cover." },
+      { question: "Are the eyelets rust-proof?", answer: "Yes, genuine Shalimar tarpaulins are equipped with anodized rust-resistant aluminum eyelets placed every 3 feet for secure tying." },
       { question: "Do you supply customized sizes for large trucks?", answer: "Absolutely. We keep extra large sizes like 30x40 ft, 40x50 ft, and up to 60x100 ft in stock, perfect for wholesale or custom requirements." }
     ]
+  },
+  {
+    id: "kangaroo-tarpaulin",
+    name: "Kangaroo Tarpaulin",
+    category: "Tarpaulins",
+    division: "polyware",
+    description: "Registered Indian trademark heavy-duty HDPE tarpaulin engineered for rugged all-weather protection since 1991.",
+    images: [
+      "https://plain-apac-prod-public.komododecks.com/202610/20/yQyAMBtuHjtLhRRP9V7Z/image.jpg",
+      "https://plain-apac-prod-public.komododecks.com/202610/20/jJDewjrmKX1mfz3i9kE7/image.jpg"
+    ],
+    availableSizes: "Available in all standard and heavy-duty sizes",
+    features: [
+      "Registered Trademark (Class 22)",
+      "Since 1991 Quality",
+      "Heavy-Duty HDPE",
+      "UV Stabilized"
+    ],
+    detailedDescription: "Kangaroo Tarpaulin refers to a registered Indian trademark for tarps and canvas equipment as well as heavy-duty HDPE tarpaulin products. The Kangaroo Tarpaulin trademark (Class 22) in India is registered under proprietor Mr. Dhanraj Chaganlal Shah based in Pune, Maharashtra, in use since February 1991.",
+    benefits: [
+      "Long-standing registered Indian brand with decades of trusted track record.",
+      "High tensile tear strength against extreme seasonal monsoon winds.",
+      "Heat-sealed joints prevent any water seepage or leaks.",
+      "Tough, resilient borders with heavy eyelets for reliable tie-downs."
+    ],
+    specs: {
+      "Material": "Virgin Polymer HDPE Multi-layer Tarpaulin",
+      "Brand": "Kangaroo Tarpaulin",
+      "Trademark Status": "Registered Class 22 (Since Feb 1991)",
+      "Weather Resistance": "100% Waterproof & UV-Stabilized"
+    },
+    applications: ["Truck Covers", "Farming & Harvest Protection", "Monsoon Shelters"]
+  },
+  {
+    id: "silpaulin-tarpaulin",
+    name: "Silpaulin Tarpaulin",
+    category: "Tarpaulins",
+    division: "polyware",
+    description: "Branded multilayered cross-laminated plastic tarpaulin manufactured by Supreme Industries with Swiss patented technology.",
+    images: [
+      "https://plain-apac-prod-public.komododecks.com/202610/20/E7C85jJCbcx3PRflwZGF/image.jpg",
+      "https://www.supreme.co.in/uploads/images/wbrss6wJ3QFVWhc5GYjcUIRrwCVEko0Vw4K4SEYp.jpg",
+      "https://images.jdmagicbox.com/quickquotes/images_main/-c1ukxqz9.jpg"
+    ],
+    availableSizes: "Custom cut & pre-fabricated standard sizes",
+    features: [
+      "Supreme Industries Limited",
+      "Swiss Cross-Lamination",
+      "Ultra-Lightweight & Strong",
+      "Patented Multi-Layer"
+    ],
+    detailedDescription: "Silpaulin is a branded, multilayered cross-laminated plastic tarpaulin manufactured in India by The Supreme Industries Limited using patented technology from Switzerland's Rasmussen Polymer Development AG.",
+    benefits: [
+      "Cross-laminated multi-layer film prevents puncture propagation.",
+      "Significantly lighter than conventional canvas yet much stronger in tensile load.",
+      "Seamless ultrasonic sealing ensures zero water permeation.",
+      "Resistant to UV degradation, chemical sprays, and acidic monsoon moisture."
+    ],
+    specs: {
+      "Material": "Cross-Laminated Film (Rasmussen Polymer Development AG Tech)",
+      "Manufacturer": "The Supreme Industries Limited",
+      "Brand": "Silpaulin",
+      "Waterproof": "100% Certified Leakproof"
+    },
+    applications: ["Pond Lining", "Shed Protection", "Agriculture", "Industrial Warehouse Coverage"]
+  },
+  {
+    id: "great-paulin",
+    name: "Great Paulin Tarpaulin",
+    category: "Tarpaulins",
+    division: "polyware",
+    description: "Popular PE-laminated LDPE and HDPE plastic tarpaulins for agriculture, construction, truck covers, and weather protection.",
+    images: [
+      "https://5.imimg.com/data5/SELLER/Default/2022/12/WB/HL/XJ/93809852/greatpaulin-multylayer-tarpaulin.jpeg",
+      "https://5.imimg.com/data5/IOS/Default/2025/1/479618803/EE/RS/AA/124267968/product-jpeg-1000x1000.png"
+    ],
+    availableSizes: "Multi-size rolls and stitched covers",
+    features: [
+      "PE-Laminated Multilayer",
+      "Weather & Sun Protection",
+      "Commercial Truck Grade",
+      "Easy Fold & Handling"
+    ],
+    detailedDescription: "(Greatpaulin) is a popular brand of waterproof, PE-laminated LDPE and HDPE plastic tarpaulins used for agriculture, construction, truck covers, and weather protection.",
+    benefits: [
+      "Robust PE-lamination over virgin polymer mesh guarantees waterproof reliability.",
+      "Popular choice for agricultural harvests, mandis, and transport fleet covers.",
+      "Flexible in low temperatures and heat-resistant in peak summer."
+    ],
+    specs: {
+      "Material": "PE-laminated LDPE/HDPE Multilayer",
+      "Brand": "Greatpaulin",
+      "Usage": "Truck, Warehouse, Civil Construction"
+    },
+    applications: ["Agricultural Mandi", "Logistics Trucks", "Construction Curing Covers"]
+  },
+  {
+    id: "gold-paulin",
+    name: "Gold Paulin Tarpaulin",
+    category: "Tarpaulins",
+    division: "polyware",
+    description: "Heavy-duty waterproof plastic sheet (tadpatri) engineered for outdoor shelters, vehicle covers, and construction protection.",
+    images: [
+      "https://cpimg.tistatic.com/05574642/b/6/Gold-Pauline.jpg",
+      "https://content.jdmagicbox.com/quickquotes/images_main/uv-resistant-tarpaulin-fabric-803217362-yxo2zdga.png?impolicy=queryparam&im=Resize=(360,360),aspect=fit"
+    ],
+    availableSizes: "Heavy-gauge tadpatri standard & bulk rolls",
+    features: [
+      "Heavy-Duty Tadpatri Grade",
+      "UV Resistant Coating",
+      "Outdoor Shelter Protection",
+      "Reinforced Edge Hemming"
+    ],
+    detailedDescription: "A gold paulin (commonly spelled tarpaulin or \"tadpatri\") refers to a heavy-duty, waterproof plastic sheet used for outdoor shelters, vehicle covers, and construction protection.",
+    benefits: [
+      "Heavy duty tadpatri construction for tough civil and outdoor environments.",
+      "Reinforced hem stitched with internal cord for solid tie-downs.",
+      "High weather endurance across intense rains and sun exposure."
+    ],
+    specs: {
+      "Material": "Heavy-Duty Waterproof Polymer Fabric",
+      "Brand": "Gold Paulin / Tadpatri",
+      "Finish": "UV-resistant protective coating"
+    },
+    applications: ["Outdoor Shelters", "Machinery Covers", "Monsoon Roof Tops"]
   },
   {
     id: "capstone-cheetah",
@@ -506,7 +611,6 @@ export const PRODUCTS: Product[] = [
     images: [
       "https://5.imimg.com/data5/SELLER/Default/2025/11/558470631/QJ/IJ/SO/253883783/garden-fencing-net-1000x1000.jpg",
       "https://static-01.daraz.com.bd/p/mdc/2fc6ed62f2ce6db8e2f917f70c9e4bb3.jpg",
-      "https://agroholicbd.com/uploads/media-manager//2023%2F12%2F202312132149596-Fit-High-Fencing-Net-scaled-1732660145.jpg",
       "https://5.imimg.com/data5/SELLER/Default/2025/7/532122957/XX/ZI/PB/104304307/nylon-blue-fencing-net-500x500.jpg"
     ],
     video: {
@@ -1156,7 +1260,7 @@ export const PRODUCTS: Product[] = [
     id: "ropes-all-kinds",
     name: "Ropes (All Kinds - Nylon, Cotton & Jute)",
     category: "Ropes & Utility",
-    division: "general-store",
+    division: "polyware",
     description: "Complete inventory of high-tensile nylon braided ropes, twisted polypropylene ropes, pure cotton clothesline ropes, and natural jute cords in all gauges and cut lengths.",
     images: [
       "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTAkiy8QKTQwbA4ZeI6LtlLzl5WsNco8JtQVomgVgNZBw&s=10",
@@ -1340,7 +1444,7 @@ export const SIZE_MATRIX = [
 ];
 
 export const WHY_CHOOSE_US = [
-  { title: "Since 2000", description: "Serving Siwan, Maharajganj and nearby districts for over 26 glorious years with trust and transparency.", iconName: "CalendarDays" },
+  { title: "Since 1995", description: "Serving Siwan, Maharajganj and nearby districts for over 30 glorious years with trust and transparency.", iconName: "CalendarDays" },
   { title: "Wholesale & Retail", description: "We offer unbeatable prices for single purchases as well as bulk commercial orders.", iconName: "TrendingUp" },
   { title: "Genuine Brands", description: "Authorized partner with top-tier brands like Shalimar, Silpaulin, and Capstone.", iconName: "Award" },
   { title: "Bulk & Fast Delivery", description: "Ready stocks for immediate supply. Fast delivery across the region.", iconName: "Zap" },
@@ -1351,7 +1455,7 @@ export const WHY_CHOOSE_US = [
 export const FAQS: FAQItem[] = [
   {
     question: "Who is the leading tarpaulin supplier in Maharajganj and Siwan?",
-    answer: "Om Shringar Tirpal Store (Estd. 2000, formerly Goyal Traders) managed by Mr. Vinod Kumar Varnawal is a primary tarpaulin supplier in Maharajganj and Siwan. Located in Kazi Bazar (Meetha Hatti Road), Maharajganj, Siwan, Bihar – 841238, we provide heavy-duty waterproof tarpaulins, Shalimar, Silpaulin, and Capstone Cheetah products at factory wholesale rates."
+    answer: "Om Shringar Tirpal Store (Estd. 1995, formerly Goyal Traders) managed by Mr. Vinod Kumar Varnawal is a primary tarpaulin supplier in Maharajganj and Siwan. Located in Kazi Bazar (Meetha Hatti Road), Maharajganj, Siwan, Bihar – 841238, we provide heavy-duty waterproof tarpaulins, Shalimar, Silpaulin, and Capstone Cheetah products at factory wholesale rates."
   },
   {
     question: "Where can I find a reliable polythene sheet supplier in Siwan and Bihar?",
@@ -1371,7 +1475,7 @@ export const FAQS: FAQItem[] = [
   },
   {
     question: "What was the previous name of your business and when was it established?",
-    answer: "We were established in the year 2000 as Goyal Traders and later rebranded as Om Shringar Tirpal Store under Mr. Vinod Kumar Varnawal to reflect our expanded inventory in plastic sheets, tarpaulins, and fencing nets."
+    answer: "We were established in the year 1995 as Goyal Traders and later rebranded as Om Shringar Tirpal Store under Mr. Vinod Kumar Varnawal to reflect our expanded inventory in plastic sheets, tarpaulins, and fencing nets."
   },
   {
     question: "How can I place an order or get a bulk wholesale quote?",
@@ -1385,7 +1489,12 @@ export const PRODUCT_SLUG_MAP: Record<string, { slug: string; aliases: string[] 
   "blue-polythene": { slug: "blue-polythene-roll", aliases: ["construction-blue-polythene-roll"] },
   "black-polythene": { slug: "pond-liner", aliases: ["construction-black-polythene-roll"] },
   "transparent-shisha": { slug: "transparent-shisha-roll", aliases: [] },
-  "tarpaulins": { slug: "blue-tarpaulin", aliases: ["waterproof-premium-tarpaulins"] },
+  "shalimar-tarpaulin": { slug: "shalimar-tarpaulin", aliases: ["shalimar", "blue-tarpaulin", "waterproof-premium-tarpaulins", "tarpaulins"] },
+  "kangaroo-tarpaulin": { slug: "kangaroo-tarpaulin", aliases: ["kangaroo"] },
+  "silpaulin-tarpaulin": { slug: "silpaulin-tarpaulin", aliases: ["silpaulin"] },
+  "great-paulin": { slug: "great-paulin", aliases: ["greatpaulin"] },
+  "gold-paulin": { slug: "gold-paulin", aliases: ["goldpaulin"] },
+  "tarpaulins": { slug: "shalimar-tarpaulin", aliases: ["waterproof-premium-tarpaulins"] },
   "capstone-cheetah": { slug: "hdpe-tarpaulin", aliases: ["hdpe-capstone-cheetah"] },
   "fencing-net": { slug: "shade-net", aliases: ["resham-fencing-net"] },
   "fencing-net-jali": { slug: "fencing-net-jali", aliases: [] },
@@ -1429,4 +1538,84 @@ export function findProductBySlug(slug: string): Product | undefined {
   const targetId = foundEntry ? foundEntry[0] : normalized;
   return PRODUCTS.find(p => p.id === targetId || p.id === normalized || getProductSlug(p.id) === normalized);
 }
+
+export interface TarpaulinBrandItem {
+  id: string;
+  name: string;
+  tagline?: string;
+  logo?: string;
+  description: string;
+  images: string[];
+}
+
+export const TARPAULIN_BRANDS_SHOWCASE: TarpaulinBrandItem[] = [
+  {
+    id: "shalimar-tarpaulin",
+    name: "Shalimar",
+    tagline: "Baarish ki dhal, Shalimar Tirpal",
+    logo: "https://www.shalimargroupindia.com/assets/img/logo.png",
+    description: "One name that has gained wide popularity with total protection from rain is Shalimar Tarpaulin. Shalimar is the brand leader in HDPE tarpaulin and is the most wanted brand in India for domestic, commercial as well as industrial use. The very famous ad slogan of Shalimar Tarpaulin- \"Baarish ki dhal, Shalimar Tirpal\" sums it up for its durability, consistency and reliability.",
+    images: [
+      "https://plain-apac-prod-public.komododecks.com/202610/20/4umbUcsRDFqxtlazQUV9/image.jpg",
+      "https://plain-apac-prod-public.komododecks.com/202610/20/pqLGnJKkinyg12M23RBw/image.jpg",
+      "https://plain-apac-prod-public.komododecks.com/202610/20/K0I1zOJhAnM2GXcrZpiZ/image.jpg"
+    ]
+  },
+  {
+    id: "kangaroo-tarpaulin",
+    name: "Kangaroo",
+    tagline: "Registered Trademark (Class 22) Since 1991",
+    logo: "https://www.kangaroositesupplies.com.au/cdn/shop/files/Kangaroo_site_supplies_logo.png?v=1692248444&width=3831",
+    description: "Kangaroo Tarpaulin refers to a registered Indian trademark for tarps and canvas equipment as well as heavy-duty HDPE tarpaulin products.The Kangaroo Tarpaulin trademark (Class 22) in India is registered under proprietor Mr. Dhanraj Chaganlal Shah based in Pune, Maharashtra, in use since February 1991.",
+    images: [
+      "https://plain-apac-prod-public.komododecks.com/202610/20/jJDewjrmKX1mfz3i9kE7/image.jpg",
+      "https://plain-apac-prod-public.komododecks.com/202610/20/yQyAMBtuHjtLhRRP9V7Z/image.jpg"
+    ]
+  },
+  {
+    id: "silpaulin-tarpaulin",
+    name: "Silpaulin",
+    tagline: "The Supreme Industries Limited • Patented Swiss Tech",
+    logo: "https://www.supreme.co.in/dist/img/xf/silpaulin-logo.png",
+    description: "Silpaulin is a branded, multilayered cross-laminated plastic tarpaulin manufactured in India by The Supreme Industries Limited using patented technology from Switzerland's Rasmussen Polymer Development AG.",
+    images: [
+      "https://plain-apac-prod-public.komododecks.com/202610/20/E7C85jJCbcx3PRflwZGF/image.jpg",
+      "https://www.supreme.co.in/uploads/images/wbrss6wJ3QFVWhc5GYjcUIRrwCVEko0Vw4K4SEYp.jpg",
+      "https://images.jdmagicbox.com/quickquotes/images_main/-c1ukxqz9.jpg"
+    ]
+  },
+  {
+    id: "great-paulin",
+    name: "Great Paulin",
+    tagline: "PE-Laminated Multilayer Protection",
+    description: "(Greatpaulin) is a popular brand of waterproof, PE-laminated LDPE and HDPE plastic tarpaulins used for agriculture, construction, truck covers, and weather protection.",
+    images: [
+      "https://5.imimg.com/data5/SELLER/Default/2022/12/WB/HL/XJ/93809852/greatpaulin-multylayer-tarpaulin.jpeg",
+      "https://5.imimg.com/data5/IOS/Default/2025/1/479618803/EE/RS/AA/124267968/product-jpeg-1000x1000.png"
+    ]
+  },
+  {
+    id: "gold-paulin",
+    name: "Gold Paulin",
+    tagline: "Heavy-Duty Tadpatri Weather Shield",
+    description: "A gold paulin (commonly spelled tarpaulin or \"tadpatri\") refers to a heavy-duty, waterproof plastic sheet used for outdoor shelters, vehicle covers, and construction protection.",
+    images: [
+      "https://cpimg.tistatic.com/05574642/b/6/Gold-Pauline.jpg",
+      "https://content.jdmagicbox.com/quickquotes/images_main/uv-resistant-tarpaulin-fabric-803217362-yxo2zdga.png?impolicy=queryparam&im=Resize=(360,360),aspect=fit"
+    ]
+  }
+];
+
+export const TARPAULIN_GSM_SPECS = [
+  { quality: "Light", gsm: "95 GSM", application: "Light Agricultural & Grain Covering" },
+  { quality: "Medium", gsm: "120 GSM", application: "Domestic Tent, Monsoon Shedding & Vehicle Cover" },
+  { quality: "Heavy", gsm: "135 GSM", application: "Domestic Tent, Monsoon Shedding & Vehicle Cover" },
+  { quality: "Super", gsm: "160 GSM", application: "Commercial Freight Cargo Trucks & Concrete Sattering" },
+  { quality: "Deluxe", gsm: "170 GSM", application: "Commercial Freight Cargo Trucks & Concrete Sattering" },
+  { quality: "Deluxe", gsm: "190 GSM", application: "Commercial Freight Cargo Trucks & Concrete Sattering" },
+  { quality: "Deluxe", gsm: "200 GSM", application: "Commercial Freight Cargo Trucks & Concrete Sattering" },
+  { quality: "Special", gsm: "225 GSM", application: "Heavy Industrial Warehousing, Pond Liners & Extreme Weather" },
+  { quality: "Ex. Strong", gsm: "250 GSM", application: "Heavy Industrial Warehousing, Pond Liners & Extreme Weather" }
+];
+
 
